@@ -112,7 +112,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
   unsigned char oldval;
   /* Note: the "xchg" instruction does not need a "lock" prefix */
   __asm__ __volatile__("xchgb %0, %1"
-		: "=r"(oldval), "=m"(*addr)
+		: "=q"(oldval), "=m"(*addr)
 		: "0"(0xff), "m"(*addr) : "memory");
   return (AO_TS_VAL_t)oldval;
 }
