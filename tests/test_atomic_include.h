@@ -5,6 +5,15 @@
  * see doc/COPYING for details.
  */
 
+void test_atomic(void);
+void test_atomic_release(void);
+void test_atomic_acquire(void);
+void test_atomic_read(void);
+void test_atomic_write(void);
+void test_atomic_full(void);
+void test_atomic_release_write(void);
+void test_atomic_acquire_read(void);
+
 /* Some basic sanity tests.  These do not test the barrier semantics. */
 
 #undef TA_assert

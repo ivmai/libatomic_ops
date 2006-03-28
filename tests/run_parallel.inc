@@ -9,6 +9,8 @@
     defined(_WIN32) && !defined(__CYGWIN32__) && !defined(__CYGWIN__) || \
     defined(_WIN32_WINCE)
 #  define USE_WINTHREADS
+#elif defined(__vxworks)
+#  define USE_VXTHREADS
 #else
 #  define USE_PTHREADS
 #endif
@@ -18,6 +20,11 @@
 
 #ifdef USE_PTHREADS
 # include <pthread.h>
+#endif
+
+#ifdef USE_VXTHREADS
+# include <vxworks.h>
+# include <taskLib.h>
 #endif
 
 #ifdef USE_WINTHREADS
@@ -30,8 +37,10 @@ typedef void * (* thr_func)(void *);
 
 typedef int (* test_func)(void);	/* Returns != 0 on success */
 
+void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name);
+
 #ifdef USE_PTHREADS
-void * run_parallel(int nthreads, thr_func f1, test_func t, char *name)
+void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
 {
   pthread_attr_t attr;
   pthread_t thr[100];
@@ -87,6 +96,48 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, char *name)
 }
 #endif /* USE_PTHREADS */
 
+#ifdef USE_VXTHREADS
+void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
+{
+  int thr[100];
+  int i;
+
+  fprintf(stderr, "Testing %s\n", name);
+  if (nthreads > 100) 
+    {
+      fprintf(stderr, "run_parallel: requested too many threads\n");
+      taskSuspend(0);
+    }
+
+  for (i = 0; i < nthreads; ++i)
+    {
+      thr[i] = taskSpawn((char*) name, 180, 0, 32768, (FUNCPTR) f1, i,
+                         1, 2, 3, 4, 5, 6, 7, 8, 9);
+      if (thr[i] == ERROR)
+	{
+	  fprintf(stderr, "taskSpawn failed with %d, thread %d\n",
+			  errno, i);
+	  taskSuspend(0);
+        }
+    }
+  for (i = 0; i < nthreads; ++i)
+    {
+      while (taskIdVerify(thr[i]) == OK)
+        taskDelay(60);
+    }
+  if (t())
+    {
+      fprintf(stderr, "Succeeded\n");
+    }
+  else
+    {
+      fprintf(stderr, "Failed\n");
+      taskSuspend(0);
+    }
+  return 0;
+}
+#endif /* USE_VXTHREADS */
+
 #ifdef USE_WINTHREADS
 
 struct tramp_args {
@@ -101,7 +152,7 @@ DWORD WINAPI tramp(LPVOID param)
   return (DWORD)(args -> fn)((LPVOID)(args -> arg));
 }
 
-void * run_parallel(int nthreads, thr_func f1, test_func t, char *name)
+void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
 {
   HANDLE thr[100];
   struct tramp_args args[100];

@@ -27,6 +27,13 @@
 # define NITERS 10000000
 #endif
 
+void * add1sub1_thr(void * id);
+int add1sub1_test(void);
+void * acqrel_thr(void *id);
+int acqrel_test(void);
+void * test_and_set_thr(void * id);
+int test_and_set_test(void);
+
 #if defined(AO_HAVE_fetch_and_add1) && defined(AO_HAVE_fetch_and_sub1)
 
 AO_t counter = 0;

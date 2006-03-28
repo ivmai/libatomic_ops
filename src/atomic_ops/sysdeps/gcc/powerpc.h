@@ -66,7 +66,6 @@ AO_lwsync()
 AO_INLINE AO_t
 AO_load_acquire(volatile AO_t *addr)
 {
-  int cr;
   AO_t result;
 
   /* FIXME: We should get gcc to allocate one of the condition	*/

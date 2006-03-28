@@ -1,3 +1,25 @@
+2006-03-28 Earl Chew (Agilent)
+        * src/atomic_ops/sysdeps/gcc/powerpc.h: Remove unused variable cr.
+        * src/atomic_ops/sysdeps/msftc/x86.h:
+        Use new intrinsics available in MSVC 2003 and MSVC 2005.
+        Use inline assembler to generate mfence and byte sized xchg
+        Use correct prototype for InterlockedCompareExchange.
+        * src/atomic_ops.h: Add test for __PPC__ .
+        * tests/run_parallel.inc: Add simple VxWorks support.
+        * tests/test_atomic.c, tests/test_atomic_include.h: Add prototypes         to silence compiler warnings.
+
+2006-1-13 Hans Boehm <Hans.Boehm@hp.com>
+        *src/atomic_ops/sysdeps/gcc/powerpc.h: Beginnings of 64 bit support.
+        *src/atomic_ops/sysdeps/gcc/x86.h: Use "=q" for AO_test_and_set_full.
+
+2005-11-4 Hans Boehm <Hans.Boehm@hp.com>
+        *src/atomic_ops/sysdeps/gcc/ia64.h: Include
+        all_acquire_release_volatile.h, instead of just the pointer-sized
+        version.
+        *src/atomic_ops/sysdeps/gcc/ia64.h: Include
+        all_acquire_release_volatile.h and all_atomic_load_store.h,
+        instead of just the pointer-sized versions.
+
 [1.1 release]
 
 2003-09-27 Hans Boehm <Hans.Boehm@hp.com>

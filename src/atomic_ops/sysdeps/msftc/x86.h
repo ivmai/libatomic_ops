@@ -23,7 +23,7 @@
 /* The following really assume we have a 486 or better. */
 /* If ASSUME_WINDOWS98 is defined, we assume Windows 98 or newer.	*/
 
-#include "../aligned_atomic_load_store.h"
+#include "../all_aligned_atomic_load_store.h"
 
 /* Real X86 implementations, except for some old WinChips, appear	*/
 /* to enforce ordering between memory operations, EXCEPT that a later	*/
@@ -34,20 +34,72 @@
 
 #include "../ordered_except_wr.h"
 
-#include "../test_and_set_t_is_ao_t.h"
-	/* We should use byte-sized test-and-set locations, as with	*/
-	/* gcc.  But I couldn't find the appropriate compiler		*/
-	/* intrinsic.	- HB						*/
+#include "../test_and_set_t_is_char.h"
 
-#include <windows.h>
+#include <winbase.h>
+
+#if _MSC_VER < 1310
+
+#define _InterlockedIncrement       InterlockedIncrement
+#define _InterlockedDecrement       InterlockedDecrement
+#define _InterlockedExchange        InterlockedExchange 
+#define _InterlockedCompareExchange InterlockedCompareExchange
+
+#else
+
+#if _MSC_VER >= 1400
+#include <intrin.h>
+
+#pragma intrinsic (_ReadWriteBarrier)
+
+#else
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+LONG __cdecl _InterlockedIncrement(LONG volatile *Addend);
+LONG __cdecl _InterlockedDecrement(LONG volatile *Addend);
+LONG __cdecl _InterlockedExchangeAdd(LONG volatile* Target, LONG Addend);
+LONG __cdecl _InterlockedExchange(LONG volatile* Target, LONG Value);
+LONG __cdecl _InterlockedCompareExchange(LONG volatile* Dest,
+                                         LONG Exchange, LONG Comp);
+
+#ifdef __cplusplus
+}
+#endif
+#endif /* _MSC_VER >= 1400 */
+
+#pragma intrinsic (_InterlockedIncrement)
+#pragma intrinsic (_InterlockedDecrement)
+#pragma intrinsic (_InterlockedExchange)
+#pragma intrinsic (_InterlockedExchangeAdd)
+#pragma intrinsic (_InterlockedCompareExchange)
+
+#endif /* _MSC_VER < 1310 */
 
 /* As far as we can tell, the lfence and sfence instructions are not	*/
 /* currently needed or useful for cached memory accesses.		*/
 
+AO_INLINE void
+AO_nop_full()
+{
+  __asm { mfence }
+}
+
+#define AO_HAVE_nop_full
+
+AO_INLINE AO_t
+AO_fetch_and_add_full (volatile AO_t *p, AO_t incr)
+{
+  return _InterlockedExchangeAdd((LONG volatile*)p, (LONG)incr);
+}
+
+#define AO_HAVE_fetch_and_add_full
+
 AO_INLINE AO_t
 AO_fetch_and_add1_full (volatile AO_t *p)
 {
-  return InterlockedIncrement((LONG volatile *)p) - 1;
+  return _InterlockedIncrement((LONG volatile *)p) - 1;
 }
 
 #define AO_HAVE_fetch_and_add1_full
@@ -55,7 +107,7 @@ AO_fetch_and_add1_full (volatile AO_t *p)
 AO_INLINE AO_t
 AO_fetch_and_sub1_full (volatile AO_t *p)
 {
-  return InterlockedDecrement((LONG volatile *)p) + 1;
+  return _InterlockedDecrement((LONG volatile *)p) + 1;
 }
 
 #define AO_HAVE_fetch_and_sub1_full
@@ -63,8 +115,12 @@ AO_fetch_and_sub1_full (volatile AO_t *p)
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
 {
-  return (AO_TS_VAL_t) InterlockedExchange((LONG volatile *)addr,
-		   			   (LONG)AO_TS_SET);
+    __asm
+    {
+	mov	eax,AO_TS_SET		;
+	mov	ebx,addr		;
+	xchg	byte ptr [ebx],al	;
+    }
 }
 
 #define AO_HAVE_test_and_set_full
@@ -75,20 +131,14 @@ AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr,
 		  	 AO_t old, AO_t new_val) 
 {
-# if 0
-    /* Use the pointer variant, since that should always have the right size. */
-    /* This seems to fail with VC++ 6 on Win2000 because the routine isn't    */
-    /* actually there.							      */
-    return InterlockedCompareExchangePointer((PVOID volatile *)addr,
-		    			     (PVOID)new_val, (PVOID) old)
-	   == (PVOID)old;
-# endif
-    /* FIXME - This is nearly useless on win64.			*/
-    /* Use InterlockedCompareExchange64 for win64?		*/
-    return InterlockedCompareExchange((DWORD volatile *)addr,
-		    		      (DWORD)new_val, (DWORD) old)
-	   == (DWORD)old;
+    return _InterlockedCompareExchange((LONG volatile *)addr,
+                                       (LONG)new_val, (LONG)old)
+	   == (LONG)old;
 }
 
 #define AO_HAVE_compare_and_swap_full
 #endif /* ASSUME_WINDOWS98 */
+
+#ifndef _WIN64
+#include "../ao_t_is_int.h"
+#endif
