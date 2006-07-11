@@ -130,7 +130,7 @@ AO_INLINE int
 AO_char_compare_and_swap_release(volatile unsigned char *addr,
 		                 unsigned char old, unsigned char new_val) 
 {
-  insigned char oldval;
+  unsigned char oldval;
   _Asm_mov_to_ar(_AREG_CCV, old, _UP_MEM_FENCE);
   oldval = _Asm_cmpxchg(_SZ_B, _SEM_REL, addr,
 		  	new_val, _LDHINT_NONE, _UP_MEM_FENCE);
@@ -158,7 +158,7 @@ AO_INLINE int
 AO_short_compare_and_swap_release(volatile unsigned short *addr,
 		                 unsigned short old, unsigned short new_val) 
 {
-  insigned short oldval;
+  unsigned short oldval;
   _Asm_mov_to_ar(_AREG_CCV, old, _UP_MEM_FENCE);
   oldval = _Asm_cmpxchg(_SZ_B, _SEM_REL, addr,
 		  	new_val, _LDHINT_NONE, _UP_MEM_FENCE);
@@ -169,6 +169,6 @@ AO_short_compare_and_swap_release(volatile unsigned short *addr,
 #define AO_HAVE_short_compare_and_swap_release
 
 #ifndef __LP64__
-# include "ao_t_is_int.h"
+# include "../ao_t_is_int.h"
 #endif
 
