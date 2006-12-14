@@ -115,7 +115,7 @@ AO_test_and_set(volatile AO_TS_t *addr) {
               : "r"(addr), "r"(temp)
               : "memory", "cc");
 
-  return oldval;
+  return (AO_TS_VAL_t)oldval;
 }
 
 #else
@@ -136,7 +136,7 @@ AO_test_and_set(volatile AO_TS_t *addr) {
               : "r"(addr), "r"(temp)
               : "memory", "cc");
 
-  return oldval;
+  return (AO_TS_VAL_t)oldval;
 }
 
 #endif
