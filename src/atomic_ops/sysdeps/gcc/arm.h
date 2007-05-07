@@ -15,8 +15,8 @@
  *
  */
 
-/* There exist multiprocessor SoC ARM processors, so this may actually	*/
-/* matter.								*/
+/* There exist multiprocessor SoC ARM processors, so this matters.	*/
+/* This needs to be augmented for later ARM (e.g. V7) procesors.	*/
 
 /* I found a slide set that, if I read it correctly, claims that	*/
 /* Loads followed by either a Load or Store are ordered, but nothing	*/
@@ -31,7 +31,7 @@
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr) {
-  int oldval;
+  AO_TS_VAL_t oldval;
   /* SWP on ARM is very similar to XCHG on x86. 		*/
   /* The first operand is the result, the second the value	*/
   /* to be stored.  Both registers must be different from addr.	*/
