@@ -1,3 +1,6 @@
+2007-05-14 Hans Boehm <Hans.Boehm@hp.com>
+	doc/README.txt: Update to reflect C++0x effort.
+
 2007-05-07  Hans Boehm <Hans.Boehm@hp.com> (with help from Philipp Zambelli)
 	* src/atomic_ops/sysdeps/msftc/x86.h: Don't just assume that mfence
 	is present.

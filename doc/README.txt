@@ -59,8 +59,8 @@ whose size matches that of pointers on the given architecture.  Exceptions
 are:
 
 - AO_test_and_set operates on AO_TS_t, which is whatever size the hardware
-supports with good performance.  In some cases this is the length of a cache line.
-In some cases it is a byte.  In many cases it is equivalent to AO_t.
+supports with good performance.  In some cases this is the length of a cache
+line.  In some cases it is a byte.  In many cases it is equivalent to AO_t.
 
 - A few operations are implemented on smaller or larger size integers.
 Such operations are indicated by the appropriate prefix:
@@ -162,7 +162,8 @@ _dd_acquire_read: Ordered with respect to later reads that are data
 	       a pointer read, which is later dereferenced to read a
 	       second value, with the expectation that the second
 	       read is ordered after the first one.  On most architectures,
-	       this is equivalent to no barrier.
+	       this is equivalent to no barrier.  (This is very
+	       hard to define precisely.  It should probably be avoided.)
 _release_read: Ordered with respect to earlier reads.  Useful for
 	       implementing read locks.  Can be implemented as _release,
 	       but not as _read, since _read groups the current operation
@@ -194,10 +195,22 @@ make list_atomic.i
 
 Future directions:
 
-We expect the list of memory barrier types to remain more or less fixed.
-However, it is likely that the list of underlying atomic operations will
-grow.  It would also be useful to support double-wide and narrower operations
-when available.
+It currently appears that something roughly analogous to this is very likely
+to become part of the C++0x standard.  That effort has pointed out a number
+of issues that we expect to address there.  Since some of the solutions
+really require compiler support, they may not be completely addressed here.
+
+Known issues include:
+
+We should be more precise in defining the semantics of the ordering
+constraints, and if and how we can guarantee sequential consistency.
+
+Dd_acquire_read is very hard or impossible to define in a way that cannot
+be invalidated by reasonably standard compiler transformations.
+
+There is probably no good reason to provide operations on standard
+integer types, since those may have the wrong alignment constraints.
+
 
 Example:
 
