@@ -81,7 +81,7 @@ AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t * addr)
 {
   volatile unsigned int *a = __ldcw_align (addr);
-  return __ldcw (a);
+  return (AO_TS_VAL_t) __ldcw (a);
 } 
 
 AO_INLINE void

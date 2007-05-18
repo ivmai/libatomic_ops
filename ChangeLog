@@ -1,3 +1,7 @@
+2007-05-17 Hans Boehm <Hans.Boehm@hp.com>
+	* src/atomic_ops/sysdeps/gcc/hppa.h (AO_test_and_set_full):
+	Add cast for return.
+
 2007-05-14 Hans Boehm <Hans.Boehm@hp.com>
 	doc/README.txt: Update to reflect C++0x effort.
 
