@@ -33,6 +33,7 @@ nobase_sysdep_HEADERS= generic_pthread.h \
 	  icc/ia64.h \
 	\
 	  msftc/x86.h \
+	  msftc/x86_64.h \
 	\
 	  hpc/ia64.h hpc/hppa.h \
 	\

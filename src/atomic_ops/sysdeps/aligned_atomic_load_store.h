@@ -28,7 +28,7 @@
 AO_INLINE AO_t
 AO_load(volatile AO_t *addr)
 {
-  assert(((unsigned long)addr & (sizeof(AO_t) - 1)) == 0);
+  assert(((size_t)addr & (sizeof(AO_t) - 1)) == 0);
   /* Cast away the volatile for architectures where		*/
   /* volatile adds barrier semantics.				*/
   return *(AO_t *)addr;
@@ -39,7 +39,7 @@ AO_load(volatile AO_t *addr)
 AO_INLINE void
 AO_store(volatile AO_t *addr, AO_t new_val)
 {
-  assert(((unsigned long)addr & (sizeof(AO_t) - 1)) == 0);
+  assert(((size_t)addr & (sizeof(AO_t) - 1)) == 0);
   (*(AO_t *)addr) = new_val;
 }
 

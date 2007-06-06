@@ -1,3 +1,14 @@
+2007-06-06 Hans Boehm <Hans.Boehm@hp.com>
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: New file.
+	* src/atomic_ops.h: Add test for msftc/x86_64.h.
+	* src/atomic_ops/sysdeps/msftc/x86.h: Complain for _WIN64.
+	* src/atomic_ops/sysdeps/Makefile.am: Add x86_64.h.
+	* src/atomic_ops/sysdeps/Makefile.in: Regenerate.
+	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h,
+	  src/atomic_ops/sysdeps/int_aligned_atomic_load_store.h,
+	  src/atomic_ops/sysdeps/short_aligned_atomic_load_store.h:
+	  Replace unsigned long cast with size_t.
+
 2007-05-17 Hans Boehm <Hans.Boehm@hp.com>
 	* src/atomic_ops/sysdeps/gcc/hppa.h (AO_test_and_set_full):
 	Add cast for return.

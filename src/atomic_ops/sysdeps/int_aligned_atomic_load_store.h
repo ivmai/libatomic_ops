@@ -28,7 +28,7 @@
 AO_INLINE unsigned int
 AO_int_load(volatile unsigned int *addr)
 {
-  assert(((unsigned long)addr & (sizeof(unsigned int) - 1)) == 0);
+  assert(((size_t)addr & (sizeof(unsigned int) - 1)) == 0);
   /* Cast away the volatile for architectures like IA64 where	*/
   /* volatile adds barrier semantics.				*/
   return (*(unsigned int *)addr);
@@ -39,7 +39,7 @@ AO_int_load(volatile unsigned int *addr)
 AO_INLINE void
 AO_int_store(volatile unsigned int *addr, unsigned int new_val)
 {
-  assert(((unsigned long)addr & (sizeof(unsigned int) - 1)) == 0);
+  assert(((size_t)addr & (sizeof(unsigned int) - 1)) == 0);
   (*(unsigned int *)addr) = new_val;
 }
 

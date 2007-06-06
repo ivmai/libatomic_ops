@@ -138,9 +138,7 @@
 /* atomic_ops_generalize.h.					*/
 
 /* Some common defaults.  Overridden for some architectures.	*/
-#define AO_t unsigned long
-	/* Could conceivably be redefined below if/when we add	*/
-	/* win64 support.					*/
+#define AO_t size_t
 
 /* The test_and_set primitive returns an AO_TS_VAL_t value.	*/
 /* AO_TS_t is the type of an in-memory test-and-set location.	*/
@@ -157,7 +155,16 @@
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER)
 # define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")
 #elif defined(_MSC_VER)
-# define AO_compiler_barrier() __asm { }
+# if defined(_AMD64_)
+#   pragma intrinsic(_ReadWriteBarrier)
+#   define AO_compiler_barrier() _ReadWriteBarrier()
+	/* We assume this does not generate a fence instruction.	*/
+	/* The documentation is a bit unclear.				*/
+# else
+#   define AO_compiler_barrier() __asm { }
+	/* The preceding implementation may be preferable here too.	*/
+	/* But the documentation warns about VC++ 2003 and earlier.	*/
+# endif
 #elif defined(__INTEL_COMPILER)
 # define AO_compiler_barrier() __memory_barrier() /* Too strong? IA64-only? */
 #elif defined(_HPUX_SOURCE)
@@ -246,7 +253,9 @@
 #endif
 
 #if defined(_MSC_VER)
-# if _M_IX86 >= 400
+# if defined(_AMD64_)
+#   include "atomic_ops/sysdeps/msftc/x86_64.h"
+# elif _M_IX86 >= 400
 #   include "atomic_ops/sysdeps/msftc/x86.h"
 # endif
 #endif

@@ -34,50 +34,49 @@
 
 #include "../ordered_except_wr.h"
 
+#if 0
+FIXME: Need to reimplement testandset
+
 #include "../test_and_set_t_is_char.h"
+
+#else
+
+#include "../test_and_set_t_is_ao_t.h"
+
+#endif
 
 #include <windows.h>
 	/* Seems like over-kill, but that's what MSDN recommends.	*/
 	/* And apparently winbase.h is not always self-contained.	*/
 
-#if _MSC_VER < 1310
 
-#define _InterlockedIncrement       InterlockedIncrement
-#define _InterlockedDecrement       InterlockedDecrement
-#define _InterlockedExchange        InterlockedExchange 
-#define _InterlockedCompareExchange InterlockedCompareExchange
-
-#else
-
-#if _MSC_VER >= 1400
 #include <intrin.h>
 
 #pragma intrinsic (_ReadWriteBarrier)
 
-#else
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-LONG __cdecl _InterlockedIncrement(LONG volatile *Addend);
-LONG __cdecl _InterlockedDecrement(LONG volatile *Addend);
-LONG __cdecl _InterlockedExchangeAdd(LONG volatile* Target, LONG Addend);
-LONG __cdecl _InterlockedExchange(LONG volatile* Target, LONG Value);
-LONG __cdecl _InterlockedCompareExchange(LONG volatile* Dest,
-                                         LONG Exchange, LONG Comp);
+LONGLONG __cdecl _InterlockedIncrement64(LONGLONG volatile *Addend);
+LONGLONG __cdecl _InterlockedDecrement64(LONGLONG volatile *Addend);
+LONGLONG __cdecl _InterlockedExchangeAdd64(LONGLONG volatile* Target,
+					   LONGLONG Addend);
+LONGLONG __cdecl _InterlockedExchange64(LONGLONG volatile* Target,
+				        LONGLONG Value);
+LONGLONG __cdecl _InterlockedCompareExchange64(LONGLONG volatile* Dest,
+                                               LONGLONG Exchange,
+					       LONGLONG Comp);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* _MSC_VER >= 1400 */
 
-#pragma intrinsic (_InterlockedIncrement)
-#pragma intrinsic (_InterlockedDecrement)
-#pragma intrinsic (_InterlockedExchange)
-#pragma intrinsic (_InterlockedExchangeAdd)
-#pragma intrinsic (_InterlockedCompareExchange)
-
-#endif /* _MSC_VER < 1310 */
+#pragma intrinsic (_InterlockedIncrement64)
+#pragma intrinsic (_InterlockedDecrement64)
+#pragma intrinsic (_InterlockedExchange64)
+#pragma intrinsic (_InterlockedExchangeAdd64)
+#pragma intrinsic (_InterlockedCompareExchange64)
 
 /* As far as we can tell, the lfence and sfence instructions are not	*/
 /* currently needed or useful for cached memory accesses.		*/
@@ -107,7 +106,7 @@ AO_nop_full()
 AO_INLINE AO_t
 AO_fetch_and_add_full (volatile AO_t *p, AO_t incr)
 {
-  return _InterlockedExchangeAdd((LONG volatile*)p, (LONG)incr);
+  return _InterlockedExchangeAdd64((LONGLONG volatile *)p, (LONGLONG)incr);
 }
 
 #define AO_HAVE_fetch_and_add_full
@@ -115,7 +114,7 @@ AO_fetch_and_add_full (volatile AO_t *p, AO_t incr)
 AO_INLINE AO_t
 AO_fetch_and_add1_full (volatile AO_t *p)
 {
-  return _InterlockedIncrement((LONG volatile *)p) - 1;
+  return _InterlockedIncrement64((LONGLONG volatile *)p) - 1;
 }
 
 #define AO_HAVE_fetch_and_add1_full
@@ -123,11 +122,24 @@ AO_fetch_and_add1_full (volatile AO_t *p)
 AO_INLINE AO_t
 AO_fetch_and_sub1_full (volatile AO_t *p)
 {
-  return _InterlockedDecrement((LONG volatile *)p) + 1;
+  return _InterlockedDecrement64((LONGLONG volatile *)p) + 1;
 }
 
 #define AO_HAVE_fetch_and_sub1_full
 
+AO_INLINE int
+AO_compare_and_swap_full(volatile AO_t *addr,
+		  	 AO_t old, AO_t new_val) 
+{
+    return _InterlockedCompareExchange64((LONGLONG volatile *)addr,
+                                         (LONGLONG)new_val, (LONGLONG)old)
+	   == (LONGLONG)old;
+}
+
+#define AO_HAVE_compare_and_swap_full
+
+#if 0
+FIXME: (__asm not supported)
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
 {
@@ -140,23 +152,5 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 }
 
 #define AO_HAVE_test_and_set_full
-
-#ifdef AO_ASSUME_WINDOWS98
-/* Returns nonzero if the comparison succeeded. */
-AO_INLINE int
-AO_compare_and_swap_full(volatile AO_t *addr,
-		  	 AO_t old, AO_t new_val) 
-{
-    return _InterlockedCompareExchange((LONG volatile *)addr,
-                                       (LONG)new_val, (LONG)old)
-	   == (LONG)old;
-}
-
-#define AO_HAVE_compare_and_swap_full
-#endif /* ASSUME_WINDOWS98 */
-
-#ifdef _WIN64
-#  error wrong architecture
 #endif
 
-#include "../ao_t_is_int.h"
