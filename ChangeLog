@@ -1,3 +1,6 @@
+2007-06-13 Hans Boehm <Hans.Boehm@hp.com>
+        * src/atomic_ops.h: include stddef.h
+
 2007-06-06 Hans Boehm <Hans.Boehm@hp.com>
 	* src/atomic_ops/sysdeps/msftc/x86_64.h: New file.
 	* src/atomic_ops.h: Add test for msftc/x86_64.h.

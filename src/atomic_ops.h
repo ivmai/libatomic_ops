@@ -25,6 +25,7 @@
 #define ATOMIC_OPS_H
 
 #include <assert.h>
+#include <stddef.h>
 
 /* We define various atomic operations on memory in a 		*/
 /* machine-specific way.  Unfortunately, this is complicated 	*/
