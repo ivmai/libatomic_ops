@@ -1,3 +1,7 @@
+2007-06-26 Hans Boehm <Hans.Boehm@hp.com> (really Luca Barbato)
+        * src/atomic_ops/sysdeps/gcc/powerpc.h (AO_load_acquire): Add
+	64-bit version.
+
 2007-06-13 Hans Boehm <Hans.Boehm@hp.com>
         * src/atomic_ops.h: include stddef.h
 

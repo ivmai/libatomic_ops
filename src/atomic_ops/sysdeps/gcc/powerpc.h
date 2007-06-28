@@ -63,6 +63,26 @@ AO_lwsync()
 /* seems to be that a data dependent branch followed by an isync is 	*/
 /* cheaper.  And the documentation is fairly explicit that this also 	*/
 /* has acquire semantics.						*/
+/* ppc64 uses ld not lwz */
+#if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
+AO_INLINE AO_t
+AO_load_acquire(volatile AO_t *addr)
+{
+  AO_t result;
+
+  /* FIXME: We should get gcc to allocate one of the condition	*/
+  /* registers.  I always got "impossible constraint" when I	*/
+  /* tried the "y" constraint.					*/
+  __asm__ __volatile__ (
+    "ld %0,%1\n"
+    "cmpw cr7,%0,%0\n"
+    "bne- cr7,1f\n"
+    "1: isync\n"
+    : "=r" (result)
+    : "m"(*addr) : "memory", "cc");
+  return result;
+}
+#else
 AO_INLINE AO_t
 AO_load_acquire(volatile AO_t *addr)
 {
@@ -80,7 +100,7 @@ AO_load_acquire(volatile AO_t *addr)
     : "m"(*addr) : "memory", "cc");
   return result;
 }
-
+#endif
 #define AO_HAVE_load_acquire
 
 /* We explicitly specify store_release, since it relies 	*/
