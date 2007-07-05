@@ -1,3 +1,8 @@
+2007-07-05  Andreas Tobler  <a.tobler@schweiz.org>
+
+	* src/atomic_ops.h: Check for __powerpc64__ and __ppc64__ to include
+	powerpc.h.
+
 2007-06-26 Hans Boehm <Hans.Boehm@hp.com> (really Luca Barbato)
         * src/atomic_ops/sysdeps/gcc/powerpc.h (AO_load_acquire): Add
 	64-bit version.
