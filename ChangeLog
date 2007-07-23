@@ -1,5 +1,8 @@
-2007-07-05  Andreas Tobler  <a.tobler@schweiz.org>
+2007-07-23 Hans Boehm <Hans.Boehm@hp.com> (really Jim Marshall)
+	* src/atomic_ops/sysdeps/msftc/x86.h (_InterlockedExchangeAdd): Define
+	for VC++6.
 
+2007-07-05  Andreas Tobler  <a.tobler@schweiz.org>
 	* src/atomic_ops.h: Check for __powerpc64__ and __ppc64__ to include
 	powerpc.h.
 

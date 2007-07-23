@@ -45,6 +45,7 @@
 #define _InterlockedIncrement       InterlockedIncrement
 #define _InterlockedDecrement       InterlockedDecrement
 #define _InterlockedExchange        InterlockedExchange 
+#define _InterlockedExchangeAdd     InterlockedExchangeAdd
 #define _InterlockedCompareExchange InterlockedCompareExchange
 
 #else
