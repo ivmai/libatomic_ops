@@ -1,3 +1,7 @@
+2008-01-02 Hans Boehm <Hans.Boehm@hp.com>
+	* src/atomic_ops/sysdeps/gcc/powerpc.h (AO_load_acquire): Add
+	%X1 modifier to support indexed addressing.
+
 2007-07-23 Hans Boehm <Hans.Boehm@hp.com> (really Jim Marshall)
 	* src/atomic_ops/sysdeps/msftc/x86.h (_InterlockedExchangeAdd): Define
 	for VC++6.

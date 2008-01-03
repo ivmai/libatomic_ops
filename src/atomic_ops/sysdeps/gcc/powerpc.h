@@ -92,7 +92,7 @@ AO_load_acquire(volatile AO_t *addr)
   /* registers.  I always got "impossible constraint" when I	*/
   /* tried the "y" constraint.					*/
   __asm__ __volatile__ (
-    "lwz %0,%1\n"
+    "lwz%X1 %0,%1\n"
     "cmpw cr7,%0,%0\n"
     "bne- cr7,1f\n"
     "1: isync\n"
