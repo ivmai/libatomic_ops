@@ -1,3 +1,10 @@
+2008-01-03 Hans Boehm <Hans.Boehm@hp.com>
+	(Merge from separate atomic_ops tree)
+	* src/atomic_ops/sysdeps/gcc/x86.h: Define correct macro for
+	double-width cas, and fix its implementation.
+	* doc/README.txt: Clarify use of _full.  Add more warnings about
+	data dependencies.
+
 2008-01-02 Hans Boehm <Hans.Boehm@hp.com>
 	* src/atomic_ops/sysdeps/gcc/powerpc.h (AO_load_acquire): Add
 	%X1 modifier to support indexed addressing.

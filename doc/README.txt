@@ -154,6 +154,8 @@ _read: Subsequent reads must become visible after reads included in
 _write: Earlier writes become visible before writes during or after
         the atomic operation.  Rarely useful for clients?
 _full: Ordered with respect to both earlier and later memops.
+       AO_store_full or AO_nop_full are the normal ways to force a store
+       to be ordered with respect to a later load.
 _release_write: Ordered with respect to earlier writes.  This is
 	        normally implemented as either a _write or _release
 		barrier.
@@ -163,7 +165,11 @@ _dd_acquire_read: Ordered with respect to later reads that are data
 	       second value, with the expectation that the second
 	       read is ordered after the first one.  On most architectures,
 	       this is equivalent to no barrier.  (This is very
-	       hard to define precisely.  It should probably be avoided.)
+	       hard to define precisely.  It should probably be avoided.
+	       A major problem is that optimizers tend to try to
+	       eliminate dependencies from the generated code, since
+	       dependencies force the hardware to execute the code
+	       serially.)
 _release_read: Ordered with respect to earlier reads.  Useful for
 	       implementing read locks.  Can be implemented as _release,
 	       but not as _read, since _read groups the current operation

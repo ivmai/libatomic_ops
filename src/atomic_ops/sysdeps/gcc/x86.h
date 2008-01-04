@@ -141,13 +141,17 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 			               AO_t new_val1, AO_t new_val2) 
 {
   char result;
+  register AO_t nv1 asm("%ebx") = new_val1;
+  	/* The above hack seems to avoid a gcc error complaining	*/
+  	/* that ebx is unavailable.					*/
+
   __asm__ __volatile__("lock; cmpxchg8b %0; setz %1"
 	    	       : "=m"(*addr), "=q"(result)
-		       : "m"(*addr), "d" (old_val1), "a" (old_val2),
-		         "c" (new_val1), "b" (new_val2) : "memory");
+		       : "m"(*addr), "a" (old_val1), "d" (old_val2),
+		         "b" (nv1), "c" (new_val2) : "memory");
   return (int) result;
 }
 
-#define AO_HAVE_double_compare_and_swap_full
+#define AO_HAVE_compare_double_and_swap_double_full
 
 #include "../ao_t_is_int.h"
