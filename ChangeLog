@@ -1,3 +1,14 @@
+2008-01-06 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Joerg Wagner)
+	* src/atomic_ops/generalize.h: Add test_and_set generalizations,
+	Add AO_double_compare_and_swap generalizations.
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h: New file.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Handle V6 and V7.
+	* src/atomic_ops/sysdeps/gcc/x86.h,
+	src/atomic_ops/sysdeps/{gcc,msftc}/x86_64.h: Conditionally add
+	compare_double_and_swap_double, commented out for msftc.
+	* src/atomic_ops/sysdeps/standard_ao_double_t.h:  Add
+	double_ptr_storage field.
+
 2008-01-03 Hans Boehm <Hans.Boehm@hp.com>
 	(Merge from separate atomic_ops tree)
 	* src/atomic_ops/sysdeps/gcc/x86.h: Define correct macro for

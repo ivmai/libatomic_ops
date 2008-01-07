@@ -34,6 +34,8 @@
 
 #include "../test_and_set_t_is_char.h"
 
+#include "../standard_ao_double_t.h"
+
 #if defined(AO_USE_PENTIUM4_INSTRS)
 AO_INLINE void
 AO_nop_full()
@@ -133,7 +135,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 /* Returns nonzero if the comparison succeeded. */
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr,
-		  	     AO_t old, AO_t new_val) 
+		  	 AO_t old, AO_t new_val) 
 {
   char result;
   __asm__ __volatile__("lock; cmpxchgq %3, %0; setz %1"
@@ -144,4 +146,50 @@ AO_compare_and_swap_full(volatile AO_t *addr,
 
 #define AO_HAVE_compare_and_swap_full
 
-/* FIXME: The Intel version has a 16byte CAS instruction.	*/
+#ifdef AO_CMPXCHG16B_AVAILABLE
+/* NEC LE-IT: older AMD Opterons are missing this instruction.
+ * On these machines SIGILL will be thrown. Define AO_CASDOUBLE_MISSING
+ * to have an emulated (lock based) version available */ 
+/* HB: Changed this to not define either by default.  There are
+ * enough machines and tool chains around on which cmpxchg16b
+ * doesn't work.  And the emulation is unsafe by our usual rules.
+ * Hoewever both are clearly useful in certain cases.
+ */
+AO_INLINE int
+AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
+				       AO_t old_val1, AO_t old_val2,
+		                       AO_t new_val1, AO_t new_val2)
+{
+  char result;
+  __asm__ __volatile__("lock; cmpxchg16b %0; setz %1"
+	    	       		: "=m"(*addr), "=q"(result)
+		       			: "m"(*addr),
+		       			  "d" (old_val1),
+		       			  "a" (old_val2),
+		         		  "c" (new_val1),
+		         		  "b" (new_val2)  : "memory");
+  return (int) result;
+}
+#define AO_HAVE_compare_double_and_swap_double_full
+#else
+/* this one provides spinlock based emulation of CAS implemented in	*/
+/* atomic_ops.c.  We probably do not want to do this here, since it is  */
+/* not attomic with respect to other kinds of updates of *addr.  On the */
+/* other hand, this may be a useful facility on occasion.  		*/
+#ifdef AO_WEAK_DOUBLE_CAS_EMULATION
+int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
+						AO_t old_val1, AO_t old_val2,
+				              	AO_t new_val1, AO_t new_val2);
+
+AO_INLINE int
+AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
+				       AO_t old_val1, AO_t old_val2,
+		                       AO_t new_val1, AO_t new_val2)
+{
+	return AO_compare_double_and_swap_double_emulation(addr,
+							   old_val1, old_val2,
+				                           new_val1, new_val2);
+}
+#define AO_HAVE_compare_double_and_swap_double_full
+#endif /* AO_WEAK_DOUBLE_CAS_EMULATION */
+#endif /* AO_CMPXCHG16B_AVAILABLE */

@@ -152,5 +152,35 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 }
 
 #define AO_HAVE_test_and_set_full
-#endif
+
+FIXME: (__asm not supported)
+NEC LE-IT: Don't have a working Win64 environment here at the moment.
+AO_compare_double_and_swap_double_full needs implementation for Win64
+But there is no _InterlockedCompareExchange128 in the WinAPI, so we
+need basically whats given below.
+Also see gcc/x86_64.h for partial old opteron workaround:
+
+#ifndef AO_CASDOUBLE_MISSING
+
+AO_INLINE int
+AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
+				       AO_t old_val1, AO_t old_val2,
+		                       AO_t new_val1, AO_t new_val2)
+{
+	char result;
+	__asm
+	{
+		mov	rdx,QWORD PTR [old_val]
+		mov	rax,QWORD PTR [old_val + 8]
+		mov	rcx,QWORD PTR [new_val]
+		mov	rbx,QWORD PTR [new_val + 8]
+		lock cmpxchg16b	[addr]
+		setz result;
+	}
+	return result;
+}
+#endif // AO_CASDOUBLE_MISSING
+#define AO_HAVE_compare_double_and_swap_double_full
+
+#endif /* 0 */
 
