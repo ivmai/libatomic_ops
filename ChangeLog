@@ -1,3 +1,7 @@
+2008-01-08 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Joerg Wagner)
+	* src/atomic_ops/sysdeps/msftc/x86.h: Conditionally add
+	compare_double_and_swap_double.
+
 2008-01-06 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Joerg Wagner)
 	* src/atomic_ops/generalize.h: Add test_and_set generalizations,
 	Add AO_double_compare_and_swap generalizations.
