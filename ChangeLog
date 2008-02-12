@@ -1,3 +1,9 @@
+2008-02-11 Hans Boehm <Hans.Boehm@hp.com>
+	   (Really Ian Wienand & Debian maintainers)
+	* src/atomic_ops/sysdeps/gcc/x86.h
+	(AO_compare_double_and_swap_double_full): Correctly account for
+	ebx usage with PIC.
+
 2008-01-09 Hans Boehm <Hans.Boehm@hp.com>
 	* src/atomic_ops/sysdeps/standard_ao_double_t.h: Let
 	double_ptr_storage default to long long; define everywhere.
