@@ -30,8 +30,8 @@
 /*   may be delayed.  Otherwise everything is ordered.		*/
 /* - There is a hardware compare-and-swap (CS) instruction.	*/
 
-#include "ordered_except_wr.h"
-#include "all_aligned_atomic_load_store.h"
+#include "../ordered_except_wr.h"
+#include "../all_aligned_atomic_load_store.h"
 
 #include "../test_and_set_t_is_ao_t.h"
 /* FIXME: Is there a way to do byte-sized test-and-set?	*/

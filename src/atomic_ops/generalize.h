@@ -1202,7 +1202,7 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
     && !defined(AO_HAVE_compare_and_swap_double_acquire)
    AO_INLINE int
    AO_compare_and_swap_double_acquire(volatile AO_double_t *addr,
-		   		      	     AO_t o1, AO_t o2,
+		   		      	     AO_t o1,
 				             AO_t n1, AO_t n2)
    {
      int result = AO_compare_and_swap_double(addr, o1, n1, n2);

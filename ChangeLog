@@ -1,3 +1,14 @@
+2008-05-30 Hans Boehm <Hans.Boehm@hp.com> (Really from various Debian
+	contributors)
+	* src/atomic_ops.h, src/atomic_ops/sysdeps/Makefile.am,
+	src/atomic_ops/sysdeps/gcc/mips.h: Add mips support.
+	* src/atomic_ops/sysdeps/gcc/m68k.h: Make test_and_set work
+	on char, align AO_t.  Add cas, or.
+	* src/atomic_ops/sysdeps/gcc/s390.h: Fix include paths.
+	* src/atomic_ops/generalize.h: Fix AO_compare_and_swap_double_acquire.
+	* Makefile.in, aclocal.m4, src/atomic_ops/sysdeps/Makefile.in,
+	tests/Makefile.in: Regenerate.
+
 2008-02-11 Hans Boehm <Hans.Boehm@hp.com>
 	   (Really Ian Wienand & Debian maintainers)
 	* src/atomic_ops/sysdeps/gcc/x86.h

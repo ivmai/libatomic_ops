@@ -229,6 +229,9 @@
 # if defined(__cris__) || defined(CRIS)
 #   include "atomic_ops/sysdeps/gcc/cris.h"
 # endif
+# if defined(__mips__)
+#   include "atomic_ops/sysdeps/gcc/mips.h"
+# endif /* __mips__ */
 #endif /* __GNUC__ && !AO_USE_PTHREAD_DEFS */
 
 #if defined(__INTEL_COMPILER) && !defined(AO_USE_PTHREAD_DEFS)

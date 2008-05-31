@@ -15,6 +15,11 @@
  *
  */
 
+/* The cas instruction causes an emulation trap for the	*/
+/* 060 with a misaligned pointer, so let's avoid this.	*/
+#undef AO_t
+typedef unsigned long AO_t __attribute__ ((aligned (4)));
+
 /* FIXME.  Very incomplete.  */
 #include "../all_aligned_atomic_load_store.h"
 
@@ -22,24 +27,55 @@
 /* AFAIK, Alliants were sequentially consistent.	*/
 #include "../ordered.h"
 
-#include "../test_and_set_t_is_ao_t.h"
+#include "../test_and_set_t_is_char.h"
 
 /* Contributed by Tony Mantler or new.  Should be changed to MIT license? */
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr) {
-  int oldval;
+  AO_TS_t oldval;
 
-  /* The return value is semi-phony. */
-  /* 'tas' sets bit 7 while the return */
-  /* value pretends bit 0 was set */
+  /* The value at addr is semi-phony.	*/
+  /* 'tas' sets bit 7 while the return	*/
+  /* value pretends all bits were set,	*/
+  /* which at least matches AO_TS_SET.	*/
   __asm__ __volatile__(
-                 "tas %1@; sne %0; negb %0"
-                 : "=d" (oldval)
-                 : "a" (addr) : "memory");
+		"tas %1; sne %0"
+		: "=d" (oldval), "=m" (*addr)
+		: "m" (*addr)
+		: "memory");
    return oldval;
 }
 
 #define AO_HAVE_test_and_set_full
 
+/* Returns nonzero if the comparison succeeded. */
+AO_INLINE int
+AO_compare_and_swap_full(volatile AO_t *addr,
+			 AO_t old, AO_t new_val)
+{
+  char result;
 
+  __asm__ __volatile__(
+		"cas.l %3,%4,%1; seq %0"
+		: "=d" (result), "=m" (*addr)
+		: "m" (*addr), "d" (old), "d" (new_val)
+		: "memory");
+  return -result;
+}
 
+#define AO_HAVE_compare_and_swap_full
+
+/* This is not really SMP safe...		*/
+AO_INLINE void
+AO_or_full (volatile AO_t *p, AO_t incr)
+{
+  __asm__ __volatile__ (
+		"or.l %1,%0"
+		: "=m" (*p)
+		: "d" (incr), "m" (*p)
+		: "memory");
+}
+
+#define AO_HAVE_or_full
+
+#include "../ao_t_is_int.h"
