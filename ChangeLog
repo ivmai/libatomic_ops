@@ -1,4 +1,8 @@
 2008-05-30 Hans Boehm <Hans.Boehm@hp.com> (Really from various Debian
+	* doc/Makefile.in, src/Makefile.in, src/atomic_ops/Makefile.in:
+	Regenerate.
+
+2008-05-30 Hans Boehm <Hans.Boehm@hp.com> (Really from various Debian
 	contributors)
 	* src/atomic_ops.h, src/atomic_ops/sysdeps/Makefile.am,
 	src/atomic_ops/sysdeps/gcc/mips.h: Add mips support.
