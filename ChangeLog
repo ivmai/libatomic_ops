@@ -1,4 +1,9 @@
+2008-07-03 Hans Boehm <Hans.Boehm@hp.com> (Really Thiemo Seufer)
+	* src/atomic_ops/sysdeps/gcc/mips.h: Really add mips support,
+	fixing a merge accident.
+
 2008-05-30 Hans Boehm <Hans.Boehm@hp.com> (Really from various Debian
+	contributors)
 	* doc/Makefile.in, src/Makefile.in, src/atomic_ops/Makefile.in:
 	Regenerate.
 

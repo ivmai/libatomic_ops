@@ -1,52 +1,107 @@
-/*
- * Copyright (c) 2008 Hewlett-Packard Development Company, L.P.
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE. 
+/* 
+ * Copyright (c) 2005,2007  Thiemo Seufer <ths@networkno.de>
  *
- */ 
-???? needs work
+ * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
+ * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
+ *
+ * Permission is hereby granted to use or copy this program
+ * for any purpose,  provided the above notices are retained on all copies.
+ * Permission to modify the code and to distribute modified code is granted,
+ * provided the above notices are retained, and a notice that the code was
+ * modified is included with the above copyright notice.
+ */
 
-#include "../all_atomic_load_store.h"
+/*
+ * FIXME:  This should probably make finer distinctions.  SGI MIPS is
+ * much more strongly ordered, and in fact closer to sequentially
+ * consistent.  This is really aimed at modern embedded implementations.
+ * It looks to me like this assumes a 32-bit ABI.  -HB
+ */
 
-??? What is mips memory ordering anyway???
+#include "../all_aligned_atomic_load_store.h"
+#include "../acquire_release_volatile.h"
+#include "../test_and_set_t_is_ao_t.h"
+#include "../standard_ao_double_t.h"
 
-#define AO_TS_t int
+/* Data dependence does not imply read ordering.  */
+#define AO_NO_DD_ORDERING
 
-#    ifdef LINUX
-#      include <sys/tas.h>
-#      define GC_test_and_set(addr) _test_and_set((int *) addr,1)
-#      define GC_TEST_AND_SET_DEFINED
-#    elif __mips < 3 || !(defined (_ABIN32) || defined(_ABI64)) \
-	|| !defined(_COMPILER_VERSION) || _COMPILER_VERSION < 700
-#	 ifdef __GNUC__
-#          define GC_test_and_set(addr) _test_and_set((void *)addr,1)
-#	 else
-#          define GC_test_and_set(addr) test_and_set((void *)addr,1)
-#	 endif
-#    else
-#	 include <sgidefs.h>
-#	 include <mutex.h>
-#	 define GC_test_and_set(addr) __test_and_set32((void *)addr,1)
-#	 define GC_clear(addr) __lock_release(addr);
-#	 define GC_CLEAR_DEFINED
-#    endif
+AO_INLINE void
+AO_nop_full()
+{
+  __asm__ __volatile__(
+      "       .set push           \n"
+      "       .set mips2          \n"
+      "       .set noreorder      \n"
+      "       .set nomacro        \n"
+      "       sync                \n"
+      "       .set pop              "
+      : : : "memory");
+}
 
+#define AO_HAVE_nop_full
 
-#define AO_HAVE_test_and_set_full
+AO_INLINE int
+AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
+{
+  register int was_equal = 0;
+  register int temp;
 
+  __asm__ __volatile__(
+      "       .set push           \n"
+      "       .set mips2          \n"
+      "       .set noreorder      \n"
+      "       .set nomacro        \n"
+      "1:     ll      %0, %1      \n"
+      "       bne     %0, %4, 2f  \n"
+      "        move   %0, %3      \n"
+      "       sc      %0, %1      \n"
+      "       .set pop            \n"
+      "       beqz    %0, 1b      \n"
+      "       li      %2, 1       \n"
+      "2:                           "
+      : "=&r" (temp), "+R" (*addr), "+r" (was_equal)
+      : "r" (new_val), "r" (old)
+      : "memory");
+  return was_equal;
+}
+
+#define AO_HAVE_compare_and_swap
+
+/* FIXME: I think the implementations below should be automatically	*/
+/* generated if we omit them.  - HB					*/
+
+AO_INLINE int
+AO_compare_and_swap_acquire(volatile AO_t *addr, AO_t old, AO_t new_val) {
+  int result = AO_compare_and_swap(addr, old, new_val);
+  AO_nop_full();
+  return result;
+}
+
+#define AO_HAVE_compare_and_swap_acquire
+
+AO_INLINE int
+AO_compare_and_swap_release(volatile AO_t *addr, AO_t old, AO_t new_val) {
+  AO_nop_full();
+  return AO_compare_and_swap(addr, old, new_val);
+}
+
+#define AO_HAVE_compare_and_swap_release
+
+AO_INLINE int
+AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
+  AO_t result;
+  AO_nop_full();
+  result = AO_compare_and_swap(addr, old, new_val);
+  AO_nop_full();
+  return result;
+}
+
+#define AO_HAVE_compare_and_swap_full
+
+/*
+ * FIXME: We should also implement fetch_and_add and or primitives
+ * directly.
+ */
+
+#include "../ao_t_is_int.h"
