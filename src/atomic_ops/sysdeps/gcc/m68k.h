@@ -65,17 +65,5 @@ AO_compare_and_swap_full(volatile AO_t *addr,
 
 #define AO_HAVE_compare_and_swap_full
 
-/* This is not really SMP safe...		*/
-AO_INLINE void
-AO_or_full (volatile AO_t *p, AO_t incr)
-{
-  __asm__ __volatile__ (
-		"or.l %1,%0"
-		: "=m" (*p)
-		: "d" (incr), "m" (*p)
-		: "memory");
-}
-
-#define AO_HAVE_or_full
 
 #include "../ao_t_is_int.h"
