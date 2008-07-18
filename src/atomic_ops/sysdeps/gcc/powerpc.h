@@ -66,7 +66,7 @@ AO_lwsync()
 /* ppc64 uses ld not lwz */
 #if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
 AO_INLINE AO_t
-AO_load_acquire(volatile AO_t *addr)
+AO_load_acquire(const volatile AO_t *addr)
 {
   AO_t result;
 
@@ -84,7 +84,7 @@ AO_load_acquire(volatile AO_t *addr)
 }
 #else
 AO_INLINE AO_t
-AO_load_acquire(volatile AO_t *addr)
+AO_load_acquire(const volatile AO_t *addr)
 {
   AO_t result;
 

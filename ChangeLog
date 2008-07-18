@@ -1,4 +1,8 @@
 2008-07-18 Hans Boehm <Hans.Boehm@hp.com>
+	* src/atomic_ops/sysdeps/gcc/powerpc.h:
+	Add const to first parameter of load calls (forgot one).
+
+2008-07-18 Hans Boehm <Hans.Boehm@hp.com>
 	* doc/README.txt, src/atomic_ops/generalize.h,
 	src/atomic_ops/generalize-small.template,
 	src/atomic_ops/generalize-small.h,
