@@ -26,7 +26,7 @@
  */
 
 AO_INLINE unsigned short
-AO_short_load(volatile unsigned short *addr)
+AO_short_load(const volatile unsigned short *addr)
 {
   assert(((size_t)addr & (sizeof(unsigned short) - 1)) == 0);
   /* Cast away the volatile for architectures like IA64 where	*/

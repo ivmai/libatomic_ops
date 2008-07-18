@@ -34,7 +34,7 @@
 #endif
 
 AO_INLINE unsigned char
-AO_char_load_acquire(volatile unsigned char *p)
+AO_char_load_acquire(const volatile unsigned char *p)
 {
   unsigned char result = *p;
   /* A normal volatile load generates an ld.acq		*/

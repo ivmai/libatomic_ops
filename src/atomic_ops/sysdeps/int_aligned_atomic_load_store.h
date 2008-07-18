@@ -26,7 +26,7 @@
  */
 
 AO_INLINE unsigned int
-AO_int_load(volatile unsigned int *addr)
+AO_int_load(const volatile unsigned int *addr)
 {
   assert(((size_t)addr & (sizeof(unsigned int) - 1)) == 0);
   /* Cast away the volatile for architectures like IA64 where	*/

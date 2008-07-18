@@ -26,11 +26,11 @@
  */
 
 AO_INLINE unsigned short
-AO_short_load(volatile unsigned short *addr)
+AO_short_load(const volatile unsigned short *addr)
 {
   /* Cast away the volatile for architectures like IA64 where	*/
   /* volatile adds barrier semantics.				*/
-  return (*(unsigned short *)addr);
+  return (*(const unsigned short *)addr);
 }
 
 #define AO_HAVE_short_load

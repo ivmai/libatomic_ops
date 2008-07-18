@@ -52,10 +52,10 @@ AO_nop_full()
 #define AO_HAVE_nop_full
 
 AO_INLINE AO_t
-AO_load(volatile AO_t *addr)
+AO_load(const volatile AO_t *addr)
 {
   /* Cast away the volatile in case it adds fence semantics.		*/
-  return (*(AO_t *)addr);
+  return (*(const AO_t *)addr);
 }
 #define AO_HAVE_load
 

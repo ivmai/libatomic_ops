@@ -22,7 +22,7 @@
 #if defined(AO_HAVE_XSIZE_load) && defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_XSIZE_load_acquire)
    AO_INLINE unsigned XCTYPE
-   AO_XSIZE_load_acquire(volatile unsigned XCTYPE *addr)
+   AO_XSIZE_load_acquire(const volatile unsigned XCTYPE *addr)
    {
      unsigned XCTYPE result = AO_XSIZE_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */
@@ -36,7 +36,7 @@
 #if defined(AO_HAVE_XSIZE_load) && defined(AO_HAVE_nop_read) && \
     !defined(AO_HAVE_XSIZE_load_read)
    AO_INLINE unsigned XCTYPE
-   AO_XSIZE_load_read(volatile unsigned XCTYPE *addr)
+   AO_XSIZE_load_read(const volatile unsigned XCTYPE *addr)
    {
      unsigned XCTYPE result = AO_XSIZE_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */

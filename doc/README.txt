@@ -80,7 +80,7 @@ are also specified:
 
 void nop()
 	No atomic operation.  The barrier may still be useful.
-AO_t load(volatile AO_t * addr)
+AO_t load(const volatile AO_t * addr)
 	Atomic load of *addr.
 void store(volatile AO_t * addr, AO_t new_val)
 	Atomically store new_val to *addr.

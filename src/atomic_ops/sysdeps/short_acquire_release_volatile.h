@@ -34,7 +34,7 @@
 #endif
 
 AO_INLINE unsigned short
-AO_short_load_acquire(volatile unsigned short *p)
+AO_short_load_acquire(const volatile unsigned short *p)
 {
   unsigned short result = *p;
   /* A normal volatile load generates an ld.acq		*/

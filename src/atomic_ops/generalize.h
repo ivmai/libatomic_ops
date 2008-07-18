@@ -198,7 +198,7 @@
 #if defined(AO_HAVE_load) && defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_load_acquire)
    AO_INLINE AO_t
-   AO_load_acquire(volatile AO_t *addr)
+   AO_load_acquire(const volatile AO_t *addr)
    {
      AO_t result = AO_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */
@@ -212,7 +212,7 @@
 #if defined(AO_HAVE_load) && defined(AO_HAVE_nop_read) && \
     !defined(AO_HAVE_load_read)
    AO_INLINE AO_t
-   AO_load_read(volatile AO_t *addr)
+   AO_load_read(const volatile AO_t *addr)
    {
      AO_t result = AO_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */

@@ -34,7 +34,7 @@
 #endif
 
 AO_INLINE unsigned int
-AO_int_load_acquire(volatile unsigned int *p)
+AO_int_load_acquire(const volatile unsigned int *p)
 {
   unsigned int result = *p;
   /* A normal volatile load generates an ld.acq		*/

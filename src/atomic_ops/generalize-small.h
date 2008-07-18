@@ -22,7 +22,7 @@
 #if defined(AO_HAVE_char_load) && defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_char_load_acquire)
    AO_INLINE unsigned char
-   AO_char_load_acquire(volatile unsigned char *addr)
+   AO_char_load_acquire(const volatile unsigned char *addr)
    {
      unsigned char result = AO_char_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */
@@ -36,7 +36,7 @@
 #if defined(AO_HAVE_char_load) && defined(AO_HAVE_nop_read) && \
     !defined(AO_HAVE_char_load_read)
    AO_INLINE unsigned char
-   AO_char_load_read(volatile unsigned char *addr)
+   AO_char_load_read(const volatile unsigned char *addr)
    {
      unsigned char result = AO_char_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */
@@ -597,7 +597,7 @@
 #if defined(AO_HAVE_short_load) && defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_short_load_acquire)
    AO_INLINE unsigned short
-   AO_short_load_acquire(volatile unsigned short *addr)
+   AO_short_load_acquire(const volatile unsigned short *addr)
    {
      unsigned short result = AO_short_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */
@@ -611,7 +611,7 @@
 #if defined(AO_HAVE_short_load) && defined(AO_HAVE_nop_read) && \
     !defined(AO_HAVE_short_load_read)
    AO_INLINE unsigned short
-   AO_short_load_read(volatile unsigned short *addr)
+   AO_short_load_read(const volatile unsigned short *addr)
    {
      unsigned short result = AO_short_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */
@@ -1172,7 +1172,7 @@
 #if defined(AO_HAVE_int_load) && defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_int_load_acquire)
    AO_INLINE unsigned int
-   AO_int_load_acquire(volatile unsigned int *addr)
+   AO_int_load_acquire(const volatile unsigned int *addr)
    {
      unsigned int result = AO_int_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */
@@ -1186,7 +1186,7 @@
 #if defined(AO_HAVE_int_load) && defined(AO_HAVE_nop_read) && \
     !defined(AO_HAVE_int_load_read)
    AO_INLINE unsigned int
-   AO_int_load_read(volatile unsigned int *addr)
+   AO_int_load_read(const volatile unsigned int *addr)
    {
      unsigned int result = AO_int_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */

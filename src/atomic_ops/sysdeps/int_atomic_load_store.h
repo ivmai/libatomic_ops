@@ -26,11 +26,11 @@
  */
 
 AO_INLINE unsigned int
-AO_int_load(volatile unsigned int *addr)
+AO_int_load(const volatile unsigned int *addr)
 {
   /* Cast away the volatile for architectures like IA64 where	*/
   /* volatile adds barrier semantics.				*/
-  return (*(unsigned int *)addr);
+  return (*(const unsigned int *)addr);
 }
 
 #define AO_HAVE_int_load

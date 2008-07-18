@@ -49,11 +49,11 @@ AO_nop_full()
 
 /* NEC LE-IT: AO_t load is simple reading */
 AO_INLINE AO_t
-AO_load(volatile AO_t *addr)
+AO_load(const volatile AO_t *addr)
 {
   /* Cast away the volatile for architectures like IA64 where	*/
   /* volatile adds barrier semantics.				*/
-  return (*(AO_t *)addr);
+  return (*(const AO_t *)addr);
 }
 #define AO_HAVE_load
 

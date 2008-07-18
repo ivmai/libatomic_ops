@@ -43,7 +43,7 @@
 #endif
 
 AO_INLINE AO_t
-AO_load_acquire(volatile AO_t *p)
+AO_load_acquire(const volatile AO_t *p)
 {
   AO_t result = *p;
   /* A normal volatile load generates an ld.acq		*/

@@ -26,7 +26,7 @@
  */
 
 AO_INLINE AO_t
-AO_load(volatile AO_t *addr)
+AO_load(const volatile AO_t *addr)
 {
   assert(((size_t)addr & (sizeof(AO_t) - 1)) == 0);
   /* Cast away the volatile for architectures where		*/

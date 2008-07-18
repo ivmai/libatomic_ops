@@ -78,7 +78,8 @@
 
 #if defined(AO_HAVE_load_acquire) && \
     !defined(AO_HAVE_int_load_acquire)
-#  define AO_int_load_acquire(addr) (int)AO_load_acquire((volatile AO_t *)addr)
+#  define AO_int_load_acquire(addr) \
+	(int)AO_load_acquire((const volatile AO_t *)addr)
 #  define AO_HAVE_int_load_acquire
 # endif
 

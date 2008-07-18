@@ -47,7 +47,7 @@ AO_nop_full()
 #define AO_HAVE_nop_full
 
 AO_INLINE AO_t
-AO_load_full(volatile AO_t *addr)
+AO_load_full(const volatile AO_t *addr)
 {
   AO_t result;
   pthread_mutex_lock(&AO_pt_lock);
@@ -69,7 +69,7 @@ AO_store_full(volatile AO_t *addr, AO_t val)
 #define AO_HAVE_store_full
 
 AO_INLINE unsigned char
-AO_char_load_full(volatile unsigned char *addr)
+AO_char_load_full(const volatile unsigned char *addr)
 {
   unsigned char result;
   pthread_mutex_lock(&AO_pt_lock);
@@ -91,7 +91,7 @@ AO_char_store_full(volatile unsigned char *addr, unsigned char val)
 #define AO_HAVE_char_store_full
 
 AO_INLINE unsigned short
-AO_short_load_full(volatile unsigned short *addr)
+AO_short_load_full(const volatile unsigned short *addr)
 {
   unsigned short result;
   pthread_mutex_lock(&AO_pt_lock);
@@ -113,7 +113,7 @@ AO_short_store_full(volatile unsigned short *addr, unsigned short val)
 #define AO_HAVE_short_store_full
 
 AO_INLINE unsigned int
-AO_int_load_full(volatile unsigned int *addr)
+AO_int_load_full(const volatile unsigned int *addr)
 {
   unsigned int result;
   pthread_mutex_lock(&AO_pt_lock);

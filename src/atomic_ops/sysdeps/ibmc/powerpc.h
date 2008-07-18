@@ -31,7 +31,7 @@ void AO_lwsync(void);
 /* We explicitly specify load_acquire and store_release, since these	*/
 /* rely on the fact that lwsync is also a LoadStore barrier.		*/
 AO_INLINE AO_t
-AO_load_acquire(volatile AO_t *addr)
+AO_load_acquire(const volatile AO_t *addr)
 {
   AO_t result = *addr;
   AO_lwsync();

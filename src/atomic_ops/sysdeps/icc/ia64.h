@@ -39,7 +39,7 @@
 #define AO_INTEL_PTR_t void *
 
 AO_INLINE AO_t
-AO_load_acquire(volatile AO_t *p)
+AO_load_acquire(const volatile AO_t *p)
 {
   return (AO_t)(__ld8_acq((AO_INTEL_PTR_t)p));
 }
@@ -53,7 +53,7 @@ AO_store_release(volatile AO_t *p, AO_t val)
 #define AO_HAVE_store_release
 
 AO_INLINE unsigned char
-AO_char_load_acquire(volatile unsigned char *p)
+AO_char_load_acquire(const volatile unsigned char *p)
 {
   /* A normal volatile load generates an ld.acq		*/
   return (__ld1_acq((AO_INTEL_PTR_t)p));
@@ -68,7 +68,7 @@ AO_char_store_release(volatile unsigned char *p, unsigned char val)
 #define AO_HAVE_char_store_release
 
 AO_INLINE unsigned short
-AO_short_load_acquire(volatile unsigned short *p)
+AO_short_load_acquire(const volatile unsigned short *p)
 {
   /* A normal volatile load generates an ld.acq		*/
   return (__ld2_acq((AO_INTEL_PTR_t)p));
@@ -83,7 +83,7 @@ AO_short_store_release(volatile unsigned short *p, unsigned short val)
 #define AO_HAVE_short_store_release
 
 AO_INLINE unsigned int
-AO_int_load_acquire(volatile unsigned int *p)
+AO_int_load_acquire(const volatile unsigned int *p)
 {
   /* A normal volatile load generates an ld.acq		*/
   return (__ld4_acq((AO_INTEL_PTR_t)p));

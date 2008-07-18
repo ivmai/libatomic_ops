@@ -38,7 +38,7 @@ AO_nop_read()
 #ifdef AO_HAVE_load
 
 AO_INLINE AO_t
-AO_load_read(volatile AO_t *addr)
+AO_load_read(const volatile AO_t *addr)
 {
   AO_t result = AO_load(addr);
   AO_compiler_barrier();
@@ -54,7 +54,7 @@ AO_load_read(volatile AO_t *addr)
 #ifdef AO_HAVE_char_load
 
 AO_INLINE AO_t
-AO_char_load_read(volatile unsigned char *addr)
+AO_char_load_read(const volatile unsigned char *addr)
 {
   AO_t result = AO_char_load(addr);
   AO_compiler_barrier();
@@ -70,7 +70,7 @@ AO_char_load_read(volatile unsigned char *addr)
 #ifdef AO_HAVE_short_load
 
 AO_INLINE AO_t
-AO_short_load_read(volatile unsigned short *addr)
+AO_short_load_read(const volatile unsigned short *addr)
 {
   AO_t result = AO_short_load(addr);
   AO_compiler_barrier();
@@ -86,7 +86,7 @@ AO_short_load_read(volatile unsigned short *addr)
 #ifdef AO_HAVE_int_load
 
 AO_INLINE AO_t
-AO_int_load_read(volatile unsigned int *addr)
+AO_int_load_read(const volatile unsigned int *addr)
 {
   AO_t result = AO_int_load(addr);
   AO_compiler_barrier();
