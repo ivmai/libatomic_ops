@@ -1,3 +1,7 @@
+2008-07-24 Hans Boehm <Hans.Boehm@hp.com> (really Ivan Maidanski)
+	* src/atomic_ops/sysdeps/ao_t_is_int.h, src/atomic_ops.h:
+	Add parentheses around addr arg for various functions.
+
 2008-07-18 Hans Boehm <Hans.Boehm@hp.com>
 	* src/atomic_ops/sysdeps/gcc/powerpc.h:
 	Add const to first parameter of load calls (forgot one).
