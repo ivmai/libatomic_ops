@@ -48,7 +48,11 @@ AO_nop_full()
 AO_INLINE void
 AO_lwsync()
 {
+#ifdef __NO_LWSYNC__
+  __asm__ __volatile__("sync" : : : "memory");
+#else
   __asm__ __volatile__("lwsync" : : : "memory");
+#endif
 }
 
 #define AO_nop_write() AO_lwsync()
@@ -92,7 +96,7 @@ AO_load_acquire(const volatile AO_t *addr)
   /* registers.  I always got "impossible constraint" when I	*/
   /* tried the "y" constraint.					*/
   __asm__ __volatile__ (
-    "lwz%X1 %0,%1\n"
+    "lwz%U1%X1 %0,%1\n"
     "cmpw cr7,%0,%0\n"
     "bne- cr7,1f\n"
     "1: isync\n"
