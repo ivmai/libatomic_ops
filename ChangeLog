@@ -1,8 +1,8 @@
-2008-08-18 Hans Boehm <Hans.Boehm@hp.com> (really Thiemo Seufer)
+2008-08-19 Hans Boehm <Hans.Boehm@hp.com> (really Thiemo Seufer)
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Add %U1 (update) to lwz
 	instruction.
 
-2008-08-18 Hans Boehm <Hans.Boehm@hp.com> (really Sebastian Siewior)
+2008-08-19 Hans Boehm <Hans.Boehm@hp.com> (really Sebastian Siewior)
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Consider __NO_LWSYNC__.
 
 2008-07-24 Hans Boehm <Hans.Boehm@hp.com> (really Ivan Maidanski)
