@@ -1,3 +1,7 @@
+2008-08-21 Hans Boehm <Hans.Boehm@hp.com>
+	* config.guess, config.sub, configure: Regenerate/replace.
+	Use autoconf 2.61, automake 1.9.6.
+	
 2008-08-19 Hans Boehm <Hans.Boehm@hp.com> (really Thiemo Seufer)
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Add %U1 (update) to lwz
 	instruction.
