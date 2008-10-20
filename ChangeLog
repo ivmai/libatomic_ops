@@ -1,3 +1,7 @@
+2008-10-20 Hans Boehm <Hans.Boehm@hp.com>  (really Andrew Agno)
+	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_int_fetch_and_add_full):
+	fix return type.
+
 2008-08-21 Hans Boehm <Hans.Boehm@hp.com>
 	* config.guess, config.sub, configure: Regenerate/replace.
 	Use autoconf 2.61, automake 1.9.6.

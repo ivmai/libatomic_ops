@@ -96,7 +96,7 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
 
 #define AO_HAVE_short_fetch_and_add_full
 
-AO_INLINE unsigned short
+AO_INLINE unsigned int
 AO_int_fetch_and_add_full (volatile unsigned int *p, unsigned int incr)
 {
   unsigned int result;
