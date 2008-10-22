@@ -21,8 +21,8 @@
  */ 
 
 /*
- * Definitions for architecturs on which loads and stores of AO_t are
- * atomic fo all legal alignments.
+ * Definitions for architectures on which loads and stores of AO_t are
+ * atomic for all legal alignments.
  */
 
 AO_INLINE AO_t

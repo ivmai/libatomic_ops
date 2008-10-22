@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  * 
- * Derived from the corresponsing header file for gcc.
+ * Derived from the corresponding header file for gcc.
  * 
  */ 
 

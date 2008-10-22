@@ -21,7 +21,7 @@
  */ 
 
 /*
- * Definitions for architecturs on which loads and stores of unsigned char are
+ * Definitions for architectures on which loads and stores of unsigned char are
  * atomic for all legal alignments.
  */
 

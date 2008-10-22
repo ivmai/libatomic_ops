@@ -1,3 +1,23 @@
+2008-10-21 Hans Boehm <Hans.Boehm@hp.com>  (really Ivan Maidanski)
+	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h: Fix comments.
+	* src/atomic_ops/sysdeps/all_aligned_atomic_load_store.h: Fix comments.
+	* src/atomic_ops/sysdeps/all_atomic_load_store.h: Fix comments.
+	* src/atomic_ops/sysdeps/atomic_load_store.h: Fix comments.
+	* src/atomic_ops/sysdeps/char_atomic_load_store.h: Fix comments.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Fix comments.
+	* src/atomic_ops/sysdeps/gcc/x86.h: Fix comments.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h: Fix comments.
+	* src/atomic_ops/sysdeps/hpc/hppa.h: Fix comments.
+	* src/atomic_ops/sysdeps/hpc/ia64.h: Fix comments.
+	* src/atomic_ops/sysdeps/int_aligned_atomic_load_store.h: Fix comments.
+	* src/atomic_ops/sysdeps/int_atomic_load_store.h: Fix comments.
+	* src/atomic_ops/sysdeps/short_aligned_atomic_load_store.h: Fix comments.
+	* src/atomic_ops/sysdeps/short_atomic_load_store.h: Fix comments.
+	* src/atomic_ops.c: Fix comments.
+	* src/atomic_ops.h: Fix comments.
+	* src/atomic_ops_stack.c: Fix comments.
+	* src/atomic_ops_stack.h: Fix comments.
+	
 2008-10-20 Hans Boehm <Hans.Boehm@hp.com>  (really Andrew Agno)
 	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_int_fetch_and_add_full):
 	fix return type.

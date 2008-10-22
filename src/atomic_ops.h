@@ -58,7 +58,7 @@
 /* 	  later writes.						*/
 /* _full: Ordered with respect to both earlier and later memops.*/
 /* _release_write: Ordered with respect to earlier writes.	*/
-/* _acquire_read: Ordered with repsect to later reads.		*/
+/* _acquire_read: Ordered with respect to later reads.		*/
 /*								*/
 /* Currently we try to define the following atomic memory 	*/
 /* operations, in combination with the above barriers:		*/
@@ -122,7 +122,7 @@
 /*								*/
 /* The architecture dependent section:				*/
 /* This defines atomic operations that have direct hardware	*/
-/* support on a particular platform, mostly by uncluding the	*/
+/* support on a particular platform, mostly by including the	*/
 /* appropriate compiler- and hardware-dependent file.  		*/
 /*								*/
 /* The synthesis section:					*/
@@ -132,7 +132,7 @@
 /* We make no attempt to synthesize operations in ways that	*/
 /* effectively introduce locks, except for the debugging/demo	*/
 /* pthread-based implementation at the beginning.  A more 	*/
-/* relistic implementation that falls back to locks could be	*/
+/* realistic implementation that falls back to locks could be	*/
 /* added as a higher layer.  But that would sacrifice		*/
 /* usability from signal handlers.				*/
 /* The synthesis section is implemented almost entirely in	*/

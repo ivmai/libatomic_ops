@@ -174,7 +174,7 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 #else
 /* this one provides spinlock based emulation of CAS implemented in	*/
 /* atomic_ops.c.  We probably do not want to do this here, since it is  */
-/* not attomic with respect to other kinds of updates of *addr.  On the */
+/* not atomic with respect to other kinds of updates of *addr.  On the  */
 /* other hand, this may be a useful facility on occasion.  		*/
 #ifdef AO_WEAK_DOUBLE_CAS_EMULATION
 int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,

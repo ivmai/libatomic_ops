@@ -94,7 +94,7 @@ typedef struct AO__stack_aux {
   volatile AO_t AO_stack_bl[AO_BL_SIZE];
 } AO_stack_aux;
 
-/* The stack implementation knows only about the lecation of 	*/
+/* The stack implementation knows only about the location of 	*/
 /* link fields in nodes, and nothing about the rest of the 	*/
 /* stack elements.  Link fields hold an AO_t, which is not	*/
 /* necessarily a real pointer.  This converts the AO_t to a 	*/

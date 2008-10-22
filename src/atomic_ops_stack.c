@@ -69,7 +69,7 @@ extern void AO_pause(int);
 #ifdef AO_USE_ALMOST_LOCK_FREE
 
 /* LIFO linked lists based on compare-and-swap.  We need to avoid	*/
-/* the case of a node deleton and reinsertion while I'm deleting	*/
+/* the case of a node deletion and reinsertion while I'm deleting	*/
 /* it, since that may cause my CAS to succeed eventhough the next	*/
 /* pointer is now wrong.  Our solution is not fully lock-free, but it	*/
 /* is good enough for signal handlers, provided we have a suitably low	*/
@@ -143,7 +143,7 @@ AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
  * I concluded experimentally that checking a value first before
  * performing a compare-and-swap is usually beneficial on X86, but
  * slows things down appreciably with contention on Itanium.
- * ince the Itanium behavior makes more sense to me (more cache line
+ * Since the Itanium behavior makes more sense to me (more cache line
  * movement unless we're mostly reading, but back-off should guard
  * against that), we take Itanium as the default.  Measurements on
  * other multiprocessor architectures would be useful.  (On a uniprocessor,
@@ -234,8 +234,8 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 		    ( &(list -> ptr), next, (AO_t) element));
     /* This uses a narrow CAS here, an old optimization suggested	*/
     /* by Treiber.  Pop is still safe, since we run into the ABA 	*/
-    /* problem only if there were both interveining "pop"s and "push"es.*/
-    /* Inthat case we still see a change inthe version number.		*/
+    /* problem only if there were both intervening "pop"s and "push"es.	*/
+    /* In that case we still see a change in the version number.	*/
 }
 
 AO_t *AO_stack_pop_acquire(AO_stack_t *list)

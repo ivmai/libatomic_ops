@@ -59,12 +59,12 @@ pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
  * Out of line compare-and-swap emulation based on test and set.
  * 
  * We use a small table of locks for different compare_and_swap locations.
- * Before we update perform a compare-and-swap, we grap the corresponding
+ * Before we update perform a compare-and-swap, we grab the corresponding
  * lock.  Different locations may hash to the same lock, but since we
  * never acquire more than one lock at a time, this can't deadlock.
  * We explicitly disable signals while we perform this operation.
  *
- * FIXME: We should probably also suppport emulation based on Lamport
+ * FIXME: We should probably also support emulation based on Lamport
  * locks, since we may not have test_and_set either.
  */
 #define AO_HASH_SIZE 16

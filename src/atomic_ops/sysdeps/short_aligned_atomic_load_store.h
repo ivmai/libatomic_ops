@@ -21,8 +21,8 @@
  */ 
 
 /*
- * Definitions for architecturs on which loads and stores of unsigned short are
- * atomic fo all legal alignments.
+ * Definitions for architectures on which loads and stores of unsigned short
+ * are atomic for all legal alignments.
  */
 
 AO_INLINE unsigned short

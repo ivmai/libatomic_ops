@@ -21,7 +21,7 @@
  */ 
 
 /*
- * Definitions for architecturs on which loads and stores of unsigned int are
+ * Definitions for architectures on which loads and stores of unsigned int are
  * atomic for all legal alignments.
  */
 

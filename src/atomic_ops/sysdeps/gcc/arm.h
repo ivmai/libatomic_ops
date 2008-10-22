@@ -236,7 +236,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
   /* to be stored.  Both registers must be different from addr.	*/
   /* Make the address operand an early clobber output so it     */
   /* doesn't overlap with the other operands.  The early clobber*/
-  /* on oldval is neccessary to prevent the compiler allocating */
+  /* on oldval is necessary to prevent the compiler allocating  */
   /* them to the same register if they are both unused.  	*/
   __asm__ __volatile__("swp %0, %2, [%3]"
                         : "=&r"(oldval), "=&r"(addr)

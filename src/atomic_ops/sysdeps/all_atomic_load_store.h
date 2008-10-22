@@ -22,7 +22,7 @@
 
 /*
  * Describes architectures on which AO_t, unsigned char, unsigned short,
- * and unsigned int loads and strores are atomic for all normally legal
+ * and unsigned int loads and stores are atomic for all normally legal
  * alignments.
  */
 #include "atomic_load_store.h"
