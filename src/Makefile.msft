@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2003-2005 Hewlett-Packard Developlment Company, L.P.
+# Copyright (c) 2003-2005 Hewlett-Packard Development Company, L.P.
 # 
 # The really trivial win32/VC++ Makefile.  Note that atomic_ops.c isn't useful.
 # And we rely on a pre-built test_atomic_include.h and generalize-small.h,

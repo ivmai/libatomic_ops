@@ -12,3 +12,12 @@ However two small libraries are built and installed:
 - libatomic_ops_gpl.a contains some higher level facilities.  This code is
   currently covered by the GPL.  The contents currently correspond to
   the headers atomic_ops_stack.h and atomic_ops_malloc.h.
+
+Platform specific notes:
+
+Win32/64: src/Makefile.msft contains a very simple Makefile for building
+and running tests and building the gpl library.  The core atomic_ops
+implementation is entirely in header files.
+
+HP-UX/PA-RISC: aCC -Ae won't work as a C compiler, since it doesn't support
+inline assembly code.  Use cc.

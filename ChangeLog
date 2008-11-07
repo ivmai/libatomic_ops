@@ -1,3 +1,7 @@
+2008-11-06 Hans Boehm <Hans.Boehm@hp.com>
+	* INSTALL: Add some platform-specific documentation.
+	* src/Makefile.msft: Fix copyright notice.
+
 2008-10-21 Hans Boehm <Hans.Boehm@hp.com>  (really Ivan Maidanski)
 	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h: Fix comments.
 	* src/atomic_ops/sysdeps/all_aligned_atomic_load_store.h: Fix comments.
