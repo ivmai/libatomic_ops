@@ -1,3 +1,10 @@
+2008-11-10 Hans Boehm <Hans.Boehm@hp.com> (Really Joerg Wagner)
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h: Compute
+	AO_compare_and_swap value differently, add
+	AO_compare_double_and_swap_double, some indentation fixes.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Make gcc asm code more
+	robust and minimize clobbers, Add AO_compare_double_and_swap_double.
+
 2008-11-06 Hans Boehm <Hans.Boehm@hp.com>
 	* INSTALL: Add some platform-specific documentation.
 	* src/Makefile.msft: Fix copyright notice.

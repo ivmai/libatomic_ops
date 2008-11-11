@@ -24,15 +24,17 @@
 
 #if __TARGET_ARCH_ARM < 6
 Dont use with ARM instruction sets lower than v6
-#endif
+#else
+
+#include "../standard_ao_double_t.h"
 
 /* NEC LE-IT: ARMv6 is the first architecture providing support for simple LL/SC
  * A data memory barrier must be raised via CP15 command (see documentation).	
- * 											
+ *
  * ARMv7 is compatible to ARMv6 but has a simpler command for issuing a 		
  * memory barrier (DMB). Raising it via CP15 should still work as told me by the
  * support engineers. If it turns out to be much quicker than we should implement
- * custom code for ARMv7 using the asm { dmb } command.					
+ * custom code for ARMv7 using the asm { dmb } command.
  *
  * If only a single processor is used, we can define AO_UNIPROCESSOR
  * and do not need to access CP15 for ensuring a DMB at all.
@@ -41,12 +43,12 @@ Dont use with ARM instruction sets lower than v6
 AO_INLINE void
 AO_nop_full()
 {
-# ifndef AO_UNIPROCESSOR
-    unsigned int dest=0;
-    /* issue an data memory barrier (keeps ordering of memory transactions	*/
-    /* before and after this operation)						*/
+#ifndef AO_UNIPROCESSOR
+	unsigned int dest=0;
+	/* issue an data memory barrier (keeps ordering of memory transactions	*/
+	/* before and after this operation)						*/
 	__asm { mcr p15,0,dest,c7,c10,5 } ;
-# endif
+#endif
 }
 
 #define AO_HAVE_nop_full
@@ -54,8 +56,8 @@ AO_nop_full()
 AO_INLINE AO_t
 AO_load(const volatile AO_t *addr)
 {
-  /* Cast away the volatile in case it adds fence semantics.		*/
-  return (*(const AO_t *)addr);
+	/* Cast away the volatile in case it adds fence semantics */
+	return (*(const AO_t *)addr);
 }
 #define AO_HAVE_load
 
@@ -184,16 +186,49 @@ AO_compare_and_swap(volatile AO_t *addr,
 
 retry:
 __asm__ {
-	ldrex	tmp, [addr]
 	mov		result, #2
+	ldrex	tmp, [addr]
 	teq		tmp, old_val
 	strexeq	result, new_val, [addr]
 	teq		result, #1
 	beq		retry
 	}
 	
-	return (result^2)>>1;
+	return !(result&2);
 }
 #define AO_HAVE_compare_and_swap
+
+/* helper functions for the Realview compiler: LDREXD is not usable
+ * with inline assembler, so use the "embedded" assembler as 
+ * suggested by ARM Dev. support (June 2008). */
+__asm inline double_ptr_storage load_ex(volatile AO_double_t *addr) {
+	LDREXD r0,r1,[r0]
+}
+
+__asm inline int store_ex(AO_t val1, AO_t val2, volatile AO_double_t *addr) {
+	STREXD r3,r0,r1,[r2]
+	MOV	   r0,r3
+}
+
+AO_INLINE int
+AO_compare_double_and_swap_double(volatile AO_double_t *addr,
+					  	          AO_t old_val1, AO_t old_val2,
+						          AO_t new_val1, AO_t new_val2) 
+{
+	double_ptr_storage old_val = ((double_ptr_storage)old_val2 << 32) | old_val1;
+	
+    double_ptr_storage tmp;
+	int result;
+	
+	while(1) {
+		tmp = load_ex(addr);
+		if(tmp != old_val)	return false;
+		result = store_ex(new_val1, new_val2, addr);
+		if(!result)	return true;
+	}
+}
+
+#define AO_HAVE_compare_double_and_swap_double
+
 
 #endif // __TARGET_ARCH_ARM

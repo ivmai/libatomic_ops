@@ -34,6 +34,9 @@
 /* NEC LE-IT: gcc has no way to easily check the arm architecture
  * but defines only one of __ARM_ARCH_x__ to be true			*/
 #if defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_7__)  
+
+#include "../standard_ao_double_t.h"
+
 AO_INLINE void
 AO_nop_full()
 {
@@ -75,7 +78,7 @@ AO_load(const volatile AO_t *addr)
    STR(x)
    STREX(x)                    Yes
    -----------------------------------
-   
+
  * ARMv7 behaves similar, see documentation CortexA8 TRM, point 8.5  
  *
  * HB: I think this is only a problem if interrupt handlers do not clear
@@ -84,16 +87,16 @@ AO_load(const volatile AO_t *addr)
 */
 AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
 {
-	unsigned long tmp;
-
+	AO_t	flag;
+	
 	__asm__ __volatile__("@AO_store\n"
-"1:	ldrex	%0, [%1]\n"
-"	strex	%0, %2, [%1]\n"
+"1:	ldrex	%0, [%2]\n"
+"	strex	%0, %3, [%2]\n"
 "	teq	%0, #0\n"
 "	bne	1b"
-	: "=&r"(tmp)
+	: "=&r"(flag), "+m"(*addr)
 	: "r" (addr), "r"(value)
-	: "cc","memory");
+	: "cc");
 }
 #define AO_HAVE_store
 
@@ -113,16 +116,16 @@ AO_INLINE AO_TS_t
 AO_test_and_set(volatile AO_TS_t *addr) {
 	
 	AO_TS_t oldval;
-	unsigned long tmp;
+	unsigned long flag;
 
 	__asm__ __volatile__("@AO_test_and_set\n"
-"1:	ldrex	%0, [%2]\n"
-"	strex	%1, %3, [%2]\n"
-"	teq	%1, #0\n"
-"	bne	1b\n"
-	: "=&r"(oldval),"=&r"(tmp)
+"1:	ldrex	%0, [%3]\n"
+"	strex	%1, %4, [%3]\n"
+"	teq		%1, #0\n"
+"	bne		1b\n"
+	: "=&r"(oldval),"=&r"(flag), "+m"(*addr)
 	: "r"(addr), "r"(1)
-	: "memory","cc");
+	: "cc");
 
 	return oldval;
 }
@@ -133,18 +136,18 @@ AO_test_and_set(volatile AO_TS_t *addr) {
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 {
-	unsigned long tmp,tmp2;
+	unsigned long flag,tmp;
 	AO_t result;
 
 	__asm__ __volatile__("@AO_fetch_and_add\n"
-"1:	ldrex	%0, [%4]\n"			/* get original			  */
-"	add     %2, %3, %0\n"		/* sum up */
-"	strex	%1, %2, [%4]\n"		/* store them */
-"	teq	%1, #0\n"
-"	bne	1b\n"
-	: "=&r"(result),"=&r"(tmp),"=&r"(tmp2)
-	: "r"(incr), "r"(p)
-	: "cc","memory");
+"1:	ldrex	%0, [%5]\n"			/* get original		*/
+"	add     %2, %0, %4\n"		/* sum up in incr	*/
+"	strex	%1, %2, [%5]\n"		/* store them 		*/
+"	teq		%1, #0\n"
+"	bne		1b\n"
+	: "=&r"(result),"=&r"(flag),"=&r"(tmp),"+m"(*p)	/* 0..3 */
+	: "r"(incr), "r"(p)								/* 4..5 */
+	: "cc");
 
 	return result;
 }
@@ -155,18 +158,18 @@ AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 AO_INLINE AO_t
 AO_fetch_and_add1(volatile AO_t *p)
 {
-	unsigned long tmp,tmp2;
+	unsigned long flag,tmp;
 	AO_t result;
 
 	__asm__ __volatile__("@AO_fetch_and_add1\n"
-"1:	ldrex	%0, [%3]\n"			/* get original	  */
+"1:	ldrex	%0, [%4]\n"			/* get original	  */
 "	add     %1, %0, #1\n"		/* increment */
-"	strex	%2, %1, [%3]\n"		/* store them */
-"	teq	%2, #0\n"
-"	bne	1b\n"
-	: "=&r"(result), "=&r"(tmp), "=&r"(tmp2)
+"	strex	%2, %1, [%4]\n"		/* store them */
+"	teq		%2, #0\n"
+"	bne		1b\n"
+	: "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
 	: "r"(p)
-	: "cc","memory");
+	: "cc");
 
 	return result;
 }
@@ -177,18 +180,18 @@ AO_fetch_and_add1(volatile AO_t *p)
 AO_INLINE AO_t
 AO_fetch_and_sub1(volatile AO_t *p)
 {
-	unsigned long tmp,tmp2;
+	unsigned long flag,tmp;
 	AO_t result;
 
-	__asm__ __volatile__("@ AO_fetch_and_sub1\n"
-"1:	ldrex	%0, [%3]\n"			/* get original	  */
-"	sub     %1, %0, #1\n"		/* increment */
-"	strex	%2, %1, [%3]\n"		/* store them */
-"	teq	%2, #0\n"
-"	bne	1b\n"
-	: "=&r"(result), "=&r"(tmp), "=&r"(tmp2)
+	__asm__ __volatile__("@AO_fetch_and_sub1\n"
+"1:	ldrex	%0, [%4]\n"			/* get original	  */
+"	sub     %1, %0, #1\n"		/* decrement */
+"	strex	%2, %1, [%4]\n"		/* store them */
+"	teq		%2, #0\n"
+"	bne		1b\n"
+	: "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
 	: "r"(p)
-	: "cc","memory");
+	: "cc");
 
 	return result;
 }
@@ -204,20 +207,48 @@ AO_compare_and_swap(volatile AO_t *addr,
   	 AO_t result,tmp;
 
 	__asm__ __volatile__("@ AO_compare_and_swap\n"
-"1:	ldrex	%1, [%2]\n"			/* get original	*/
-"	mov		%0, #2\n"			/* store a flag */
-"	teq		%1, %3\n"			/* see if match */
-"	strexeq	%0, %4, [%2]\n"		/* store new one if matched */
+"1:	mov		%0, #2\n"			/* store a flag */
+"	ldrex	%1, [%3]\n"			/* get original	*/
+"	teq		%1, %4\n"			/* see if match */
+"	strexeq	%0, %5, [%3]\n"		/* store new one if matched */
 "	teq		%0, #1\n"
 "	beq		1b\n"				/* if update failed, repeat */
-"	eor		%0, %0, #2\n"		/* if succeded, return 2, else 0 */
-	: "=&r"(result), "=&r"(tmp)
+	: "=&r"(result), "=&r"(tmp), "+m"(*addr)
 	: "r"(addr), "r"(old_val), "r"(new_val)
-	: "cc","memory");
+	: "cc");
 
-	return (result>>1);
+	return !(result&2);			/* if succeded, return 1, else 0 */
 }
 #define AO_HAVE_compare_and_swap
+
+AO_INLINE int
+AO_compare_double_and_swap_double(volatile AO_double_t *addr,
+					  	          AO_t old_val1, AO_t old_val2,
+						          AO_t new_val1, AO_t new_val2) 
+{
+	double_ptr_storage old_val = ((double_ptr_storage)old_val2 << 32) | old_val1;
+	double_ptr_storage new_val = ((double_ptr_storage)new_val2 << 32) | new_val1;
+	
+    double_ptr_storage tmp;
+	int result;
+	
+	while(1) {
+		__asm__ __volatile__("@ AO_compare_and_swap_double\n"
+		"	ldrexd	%0, [%1]\n"			/* get original	to r1&r2*/
+			: "=&r"(tmp)
+			: "r"(addr)
+			: );
+		if(tmp != old_val)	return false;
+		__asm__ __volatile__(
+		"	strexd  %0, %2, [%3]\n"	/* store new one if matched */
+			: "=&r"(result),"+m"(*addr) 
+			: "r"(new_val), "r"(addr) 
+			: );
+		if(!result)	return true;
+	}
+}
+
+#define AO_HAVE_compare_double_and_swap_double
 
 #else
 /* pre ARMv6 architecures ... */
