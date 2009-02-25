@@ -15,7 +15,6 @@
  *
  */
 
-/* FIXME.  Incomplete.  No support for 64 bits.				*/
 /* Memory model documented at http://www-106.ibm.com/developerworks/	*/
 /* eserver/articles/archguide.html and (clearer)			*/
 /* http://www-106.ibm.com/developerworks/eserver/articles/powerpc.html. */
@@ -29,6 +28,7 @@
 /* from cached memory.							*/
 /* Thanks to Maged Michael, Doug Lea, and Roger Hoover for helping to 	*/
 /* track some of this down and correcting my misunderstandings. -HB	*/
+/* Earl Chew subsequently contributed further fixes & additions.	*/
 
 #include "../all_aligned_atomic_load_store.h"
 
@@ -74,16 +74,13 @@ AO_load_acquire(const volatile AO_t *addr)
 {
   AO_t result;
 
-  /* FIXME: We should get gcc to allocate one of the condition	*/
-  /* registers.  I always got "impossible constraint" when I	*/
-  /* tried the "y" constraint.					*/
-  __asm__ __volatile__ (
-    "ld %0,%1\n"
-    "cmpw cr7,%0,%0\n"
-    "bne- cr7,1f\n"
+   __asm__ __volatile__ (
+    "ld%U1%X1 %0,%1\n"
+    "cmpw %0,%0\n"
+    "bne- 1f\n"
     "1: isync\n"
     : "=r" (result)
-    : "m"(*addr) : "memory", "cc");
+    : "m"(*addr) : "memory", "cr0");
   return result;
 }
 #else
@@ -97,8 +94,8 @@ AO_load_acquire(const volatile AO_t *addr)
   /* tried the "y" constraint.					*/
   __asm__ __volatile__ (
     "lwz%U1%X1 %0,%1\n"
-    "cmpw cr7,%0,%0\n"
-    "bne- cr7,1f\n"
+    "cmpw %0,%0\n"
+    "bne- 1f\n"
     "1: isync\n"
     : "=r" (result)
     : "m"(*addr) : "memory", "cc");
@@ -137,7 +134,7 @@ AO_test_and_set(volatile AO_TS_t *addr) {
                "2:\n"                /* oldval is zero if we set       */
               : "=&r"(oldval)
               : "r"(addr), "r"(temp)
-              : "memory", "cc");
+              : "memory", "cr0");
 
   return (AO_TS_VAL_t)oldval;
 }
@@ -158,7 +155,7 @@ AO_test_and_set(volatile AO_TS_t *addr) {
                "2:\n"                /* oldval is zero if we set       */
               : "=&r"(oldval)
               : "r"(addr), "r"(temp)
-              : "memory", "cc");
+              : "memory", "cr0");
 
   return (AO_TS_VAL_t)oldval;
 }
@@ -212,7 +209,7 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
                "2:\n"
               : "=&r"(oldval), "=&r"(result)
               : "r"(addr), "r"(new_val), "r"(old), "1"(result)
-              : "memory", "cc");
+              : "memory", "cr0");
 
   return result;
 }
@@ -234,7 +231,7 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
                "2:\n"
               : "=&r"(oldval), "=&r"(result)
               : "r"(addr), "r"(new_val), "r"(old), "1"(result)
-              : "memory", "cc");
+              : "memory", "cr0");
 
   return result;
 }
@@ -270,5 +267,81 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
 
 #define AO_HAVE_compare_and_swap_full
 
-/* FIXME: We should also implement fetch_and_add and or primitives	*/
-/* directly.								*/
+#if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
+/* FIXME: Completely untested.						*/
+
+AO_INLINE AO_t
+AO_fetch_and_add(volatile AO_t *addr, AO_t incr) {
+  AO_t oldval;
+  AO_t newval;
+
+  __asm__ __volatile__(
+               "1:ldarx %0,0,%2\n"   /* load and reserve		*/
+               "add %1,%0,%3\n"      /* increment			*/
+               "stdcx. %1,0,%2\n"    /* store conditional		*/
+               "bne- 1b\n"           /* retry if lost reservation	*/
+              : "=&r"(oldval), "=&r"(newval)
+               : "r"(addr), "r"(incr)
+              : "memory", "cr0");
+
+  return oldval;
+}
+
+#define AO_HAVE_fetch_and_add
+
+#else
+
+AO_INLINE AO_t
+AO_fetch_and_add(volatile AO_t *addr, AO_t incr) {
+  AO_t oldval;
+  AO_t newval;
+
+  __asm__ __volatile__(
+               "1:lwarx %0,0,%2\n"   /* load and reserve		*/
+               "add %1,%0,%3\n"      /* increment			*/
+               "stwcx. %1,0,%2\n"    /* store conditional		*/
+               "bne- 1b\n"           /* retry if lost reservation	*/
+              : "=&r"(oldval), "=&r"(newval)
+               : "r"(addr), "r"(incr)
+              : "memory", "cr0");
+
+  return oldval;
+}
+
+#define AO_HAVE_fetch_and_add
+
+#endif
+
+AO_INLINE AO_t
+AO_fetch_and_add_acquire(volatile AO_t *addr, AO_t incr) {
+  AO_t result = AO_fetch_and_add(addr, incr);
+  AO_lwsync();
+  return result;
+}
+
+#define AO_HAVE_fetch_and_add_acquire
+
+AO_INLINE AO_t
+AO_fetch_and_add_release(volatile AO_t *addr, AO_t incr) {
+  AO_lwsync();
+  return AO_fetch_and_add(addr, incr);
+}
+
+#define AO_HAVE_fetch_and_add_release
+
+AO_INLINE AO_t
+AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr) {
+  AO_t result;
+  AO_lwsync();
+  result = AO_fetch_and_add(addr, incr);
+  AO_lwsync();
+  return result;
+}
+
+#define AO_HAVE_fetch_and_add_full
+
+#if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
+#else
+# include "../ao_t_is_int.h"
+#endif
+

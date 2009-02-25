@@ -1,3 +1,9 @@
+2009-02-24 Hans Boehm <Hans.Boehm@hp.com> (Really primarily Earl Chew)
+	* src/atomic_ops/sysdeps/gcc/powerpc.h: Add index,
+	update modifiers to asms, refine clobbers to "cr0", use
+	cr0 instead of cr7, add explicit AO_fetch_and_add,
+	add UNTESTED 64 bit support.
+
 2008-11-10 Hans Boehm <Hans.Boehm@hp.com> (Really Joerg Wagner)
 	* src/atomic_ops/sysdeps/armcc/arm_v6.h: Compute
 	AO_compare_and_swap value differently, add
