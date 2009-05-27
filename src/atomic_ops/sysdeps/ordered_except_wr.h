@@ -30,7 +30,7 @@
 #include "read_ordered.h"
 
 AO_INLINE void
-AO_nop_write()
+AO_nop_write(void)
 {
   AO_compiler_barrier();
   /* sfence according to Intel docs.  Pentium 3 and up.	*/

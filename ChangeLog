@@ -1,3 +1,25 @@
+2009-05-27 Hans Boehm <Hans.Boehm@hp.com> (Really Ivan Maidanski)
+	(diff87_cvs, resembling diff29, diff68, diff78 partly)
+	* doc/README.txt: Remove outdated info about Windows support.
+	* src/atomic_ops/generalize.h (AO_nop_full): Replace
+	K&R-style function definition with ANSI C one.
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/gcc/alpha.h (AO_nop_full, AO_nop_write):
+	Ditto.
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/gcc/ia64.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/gcc/mips.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/gcc/powerpc.h (AO_nop_full, AO_lwsync): Ditto.
+	* src/atomic_ops/sysdeps/gcc/x86.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/generic_pthread.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/hpc/ia64.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/icc/ia64.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/ordered.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/ordered_except_wr.h (AO_nop_write): Ditto.
+	* src/atomic_ops/sysdeps/read_ordered.h (AO_nop_read): Ditto.
+	* src/atomic_ops/sysdeps/test_and_set_t_is_ao_t.h (AO_TS_val): Fix
+	comment.
+	
 2009-02-24 Hans Boehm <Hans.Boehm@hp.com> (Really primarily Earl Chew)
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Add index,
 	update modifiers to asms, refine clobbers to "cr0", use

@@ -37,7 +37,7 @@
 	/* may really be what we want, at least in the 32-bit case.	*/
 
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
   __asm__ __volatile__("sync" : : : "memory");
 }
@@ -46,7 +46,7 @@ AO_nop_full()
 
 /* lwsync apparently works for everything but a StoreLoad barrier.	*/
 AO_INLINE void
-AO_lwsync()
+AO_lwsync(void)
 {
 #ifdef __NO_LWSYNC__
   __asm__ __volatile__("sync" : : : "memory");

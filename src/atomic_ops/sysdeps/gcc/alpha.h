@@ -23,7 +23,7 @@
 	/* Data dependence does not imply read ordering.	*/
 
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
   __asm__ __volatile__("mb" : : : "memory");
 }
@@ -31,7 +31,7 @@ AO_nop_full()
 #define AO_HAVE_nop_full
 
 AO_INLINE void
-AO_nop_write()
+AO_nop_write(void)
 {
   __asm__ __volatile__("wmb" : : : "memory");
 }

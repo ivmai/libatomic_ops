@@ -28,7 +28,7 @@
 #include "ordered_except_wr.h"
 
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
   AO_compiler_barrier();
 }

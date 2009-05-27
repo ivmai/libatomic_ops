@@ -98,7 +98,7 @@ AO_int_store_release(volatile unsigned int *p, unsigned int val)
 #define AO_HAVE_int_store_release
 
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
   __mf();
 }

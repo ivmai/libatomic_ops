@@ -38,7 +38,7 @@
 #include "../standard_ao_double_t.h"
 
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
 #ifndef AO_UNIPROCESSOR
 	/* issue an data memory barrier (keeps ordering of memory transactions 	*/

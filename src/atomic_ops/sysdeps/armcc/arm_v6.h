@@ -41,7 +41,7 @@ Dont use with ARM instruction sets lower than v6
 */
 
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
 #ifndef AO_UNIPROCESSOR
 	unsigned int dest=0;

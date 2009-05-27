@@ -38,7 +38,7 @@
 
 #if defined(AO_USE_PENTIUM4_INSTRS)
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
   __asm__ __volatile__("mfence" : : : "memory");
 }

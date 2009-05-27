@@ -28,7 +28,7 @@
  */
 
 AO_INLINE void
-AO_nop_read()
+AO_nop_read(void)
 {
   AO_compiler_barrier();
 }

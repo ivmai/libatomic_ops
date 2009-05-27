@@ -23,7 +23,7 @@
 /*
  * These are common definitions for architectures on which test_and_set
  * operates on pointer-sized quantities, the "clear" value contains
- * all zeroes, and the "set" value contains all ones.
+ * all zeroes, and the "set" value contains only one lowest bit set.
  * This can be used if test_and_set is synthesized from compare_and_swap.
  */
 typedef enum {AO_TS_clear = 0, AO_TS_set = 1} AO_TS_val; 

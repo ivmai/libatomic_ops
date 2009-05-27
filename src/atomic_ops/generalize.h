@@ -149,7 +149,7 @@
 
 #if defined(AO_HAVE_test_and_set_full) && !defined(AO_HAVE_nop_full)
    AO_INLINE void
-   AO_nop_full()
+   AO_nop_full(void)
    {
      AO_TS_t dummy = AO_TS_INITIALIZER;
      AO_test_and_set_full(&dummy);

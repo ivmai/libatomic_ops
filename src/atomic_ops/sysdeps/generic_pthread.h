@@ -38,7 +38,7 @@
 extern pthread_mutex_t AO_pt_lock;
 
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
   pthread_mutex_lock(&AO_pt_lock);
   pthread_mutex_unlock(&AO_pt_lock);

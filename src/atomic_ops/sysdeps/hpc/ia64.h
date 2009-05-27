@@ -43,7 +43,7 @@
 #endif
 
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
   _Asm_mf();
 }
