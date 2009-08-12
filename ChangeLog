@@ -1,3 +1,20 @@
+2009-08-12 Hans Boehm <Hans.Boehm@hp.com> (Really Ivan Maidanski)
+	(diff107_cvs)
+
+	* src/atomic_ops/sysdeps/sunc/x86.h: New file.
+        * src/atomic_ops/sysdeps/sunc/x86_64.h: Ditto.
+        * src/atomic_ops.h (AO_INLINE): Support inlining for DigitalMars,
+        Watcom, Sun C.
+        * src/atomic_ops.h (AO_compiler_barrier): Use intrinsic-based
+        implementation for VC++ v8+ (include <intrin.h> before it unless
+        WinCE target); use asm-based barrier implementation for Borland,
+        DigitalMars and Watcom.
+        * src/atomic_ops.h: Fix comment (for x86_64).
+        * src/atomic_ops.h: Include specialized x86.h and x86_64.h arch
+        headers for Sun C (if not AO_USE_PTHREAD_DEFS).
+        * src/atomic_ops.h: Include VC-specific arch headers for Borland,
+        DigitalMars and Watcom (Win32 target only).
+
 2009-05-27 Hans Boehm <Hans.Boehm@hp.com> (Really Ivan Maidanski)
 	(diff87_cvs, resembling diff29, diff68, diff78 partly)
 	* doc/README.txt: Remove outdated info about Windows support.

@@ -147,16 +147,25 @@
 #define AO_TS_INITIALIZER (AO_t)AO_TS_CLEAR
 
 /* Platform-dependent stuff:					*/
-#if defined(__GNUC__) || defined(_MSC_VER) || defined(__INTEL_COMPILER)
+#if defined(__GNUC__) || defined(_MSC_VER) || defined(__INTEL_COMPILER) \
+	|| defined(__DMC__) || defined(__WATCOMC__)
 # define AO_INLINE static __inline
+#elif defined(__sun)
+# define AO_INLINE static inline
 #else
 # define AO_INLINE static
 #endif
 
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER)
 # define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")
-#elif defined(_MSC_VER)
-# if defined(_AMD64_)
+#elif defined(_MSC_VER) || defined(__DMC__) || defined(__BORLANDC__) \
+	|| defined(__WATCOMC__)
+# if defined(_AMD64_) || _MSC_VER >= 1400
+#   if defined(_WIN32_WCE)
+/* #     include <cmnintrin.h> */
+#   elif defined(_MSC_VER)
+#     include <intrin.h>
+#   endif
 #   pragma intrinsic(_ReadWriteBarrier)
 #   define AO_compiler_barrier() _ReadWriteBarrier()
 	/* We assume this does not generate a fence instruction.	*/
@@ -195,7 +204,7 @@
 # endif /* __i386__ */
 # if defined(__x86_64__)
 #   include "atomic_ops/sysdeps/gcc/x86_64.h"
-# endif /* __i386__ */
+# endif /* __x86_64__ */
 # if defined(__ia64__)
 #   include "atomic_ops/sysdeps/gcc/ia64.h"
 #   define AO_GENERALIZE_TWICE
@@ -251,13 +260,24 @@
 # endif
 #endif
 
+#if defined(__sun) && !defined(__GNUC__) && !defined(AO_USE_PTHREAD_DEFS)
+  /* Note: use -DAO_USE_PTHREAD_DEFS if Sun CC does not handle inline asm. */
+# if defined(__i386)
+#   include "atomic_ops/sysdeps/sunc/x86.h"
+# endif /* __i386 */
+# if defined(__x86_64) || defined(__amd64)
+#   include "atomic_ops/sysdeps/sunc/x86_64.h"
+# endif /* __x86_64 */
+#endif
+
 #if !defined(__GNUC__) && (defined(sparc) || defined(__sparc)) \
     && !defined(AO_USE_PTHREAD_DEFS)
 #   include "atomic_ops/sysdeps/sunc/sparc.h"
 #   define AO_CAN_EMUL_CAS
 #endif
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__DMC__) || defined(__BORLANDC__) \
+	|| (defined(__WATCOMC__) && defined(__NT__))
 # if defined(_AMD64_)
 #   include "atomic_ops/sysdeps/msftc/x86_64.h"
 # elif _M_IX86 >= 400
