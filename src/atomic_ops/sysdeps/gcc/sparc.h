@@ -39,7 +39,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
 
 #define AO_HAVE_test_and_set_full
 
-#ifndef NO_SPARC_V9
+#ifndef AO_NO_SPARC_V9
 /* Returns nonzero if the comparison succeeded. */
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
@@ -63,7 +63,7 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
 }
 
 #define AO_HAVE_compare_and_swap_full
-#endif /* NO_SPARC_V9 */
+#endif /* AO_NO_SPARC_V9 */
 
 /* FIXME: This needs to be extended for SPARC v8 and v9.	*/
 /* SPARC V8 also has swap.  V9 has CAS.				*/

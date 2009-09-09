@@ -1,3 +1,7 @@
+2009-09-09 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Patrick Marlier)
+	* src/atomic_ops/sysdeps/gcc/sparc.h (NO_SPARC_V9):
+	Renamed to AO_NO_SPARC_V9.
+
 2009-09-01 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Patrick Marlier)
 	* src/atomic_ops/sysdeps/gcc/sparc.h (AO_test_and_set_full): Use
 	AO_TS_VAL_t for "oldval" (for 64-bit support).
