@@ -1,4 +1,33 @@
 2009-09-10 Ivan Maidanski <ivmai@mail.ru>
+	(ivmai122.diff)
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h
+	(AO_compare_double_and_swap_double): Replace false/true with 0/1.
+	* src/atomic_ops/sysdeps/gcc/arm.h
+	(AO_compare_double_and_swap_double): Ditto.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Recognize more ARMv6+
+	predefined macros (6J, 6ZK, 7A, 7M, 7R).
+	* src/atomic_ops/sysdeps/gcc/arm.h
+	(AO_compare_double_and_swap_double): Add "cc" clobber to asm.
+	* src/atomic_ops/sysdeps/gcc/powerpc.h (AO_HAVE_load_acquire):
+	Correct the name (convert from the lower case).
+	* src/atomic_ops/sysdeps/ibmc/powerpc.h (AO_HAVE_load_acquire):
+	Ditto.
+	* src/atomic_ops/sysdeps/ibmc/powerpc.h (AO_test_and_set,
+	AO_compare_and_swap): Comment out unimplemented code (and the
+	corresponding macros); add FIXME.
+	* src/atomic_ops.c: Recognize AO_USE_WIN32_PTHREADS overriding
+	_MSC_VER and __MINGW32__ predefined macros (useful for WinCE with
+	pthreads-w32 library); don't include signal.h, sys/time.h,
+	sys/select.h in this case; include windows.h instead.
+	* src/atomic_ops.c (AO_pause): Use Sleep() in case of
+	AO_USE_WIN32_PTHREADS (instead of select()).
+	* src/atomic_ops.c (all_sigs, initialized): Don't define in case
+	of AO_USE_WIN32_PTHREADS.
+	* src/atomic_ops.c (AO_compare_and_swap_emulation,
+	AO_compare_double_and_swap_double_emulation): Don't deal with
+	signals in case of AO_USE_WIN32_PTHREADS.
+
+2009-09-10 Ivan Maidanski <ivmai@mail.ru>
 	(diff110)
 	* src/atomic_ops/sysdeps/msftc/arm.h: New file (initial support
 	for ARM family).

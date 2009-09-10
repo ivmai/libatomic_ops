@@ -33,7 +33,10 @@
 
 /* NEC LE-IT: gcc has no way to easily check the arm architecture
  * but defines only one of __ARM_ARCH_x__ to be true			*/
-#if defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_7__)  
+#if defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6J__) \
+	|| defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_6ZK__) \
+	|| defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) \
+	|| defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7R__)
 
 #include "../standard_ao_double_t.h"
 
@@ -237,14 +240,14 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
 		"	ldrexd	%0, [%1]\n"			/* get original	to r1&r2*/
 			: "=&r"(tmp)
 			: "r"(addr)
-			: );
-		if(tmp != old_val)	return false;
+			: "cc");
+		if(tmp != old_val)	return 0;
 		__asm__ __volatile__(
 		"	strexd  %0, %2, [%3]\n"	/* store new one if matched */
 			: "=&r"(result),"+m"(*addr) 
 			: "r"(new_val), "r"(addr) 
-			: );
-		if(!result)	return true;
+			: "cc");
+		if(!result)	return 1;
 	}
 }
 

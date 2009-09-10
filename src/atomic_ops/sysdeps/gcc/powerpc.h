@@ -162,7 +162,7 @@ AO_test_and_set(volatile AO_TS_t *addr) {
 
 #endif
 
-#define AO_have_test_and_set
+#define AO_HAVE_test_and_set
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_acquire(volatile AO_TS_t *addr) {

@@ -52,12 +52,12 @@ AO_store_release(volatile AO_t *addr, AO_t value)
 /* This is similar to the code in the garbage collector.  Deleting 	*/
 /* this and having it synthesized from compare_and_swap would probably	*/
 /* only cost us a load immediate instruction.				*/
-AO_INLINE AO_TS_VAL_t
+/*AO_INLINE AO_TS_VAL_t
 AO_test_and_set(volatile AO_TS_t *addr) {
-# error Implement me
+# error FIXME Implement me
 }
 
-#define AO_have_test_and_set
+#define AO_HAVE_test_and_set*/
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_acquire(volatile AO_TS_t *addr) {
@@ -87,12 +87,12 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
 
 #define AO_HAVE_test_and_set_full
 
-AO_INLINE AO_t
+/*AO_INLINE AO_t
 AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
-# error Implement me
+# error FIXME Implement me
 }
 
-#define AO_HAVE_compare_and_swap
+#define AO_HAVE_compare_and_swap*/
 
 AO_INLINE AO_t
 AO_compare_and_swap_acquire(volatile AO_t *addr, AO_t old, AO_t new_val) {

@@ -32,17 +32,24 @@
 # include "config.h"
 #endif
 
-#if !defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__BORLANDC__)
+#if !defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__BORLANDC__) \
+    || defined(AO_USE_WIN32_PTHREADS)
 
 #undef AO_REQUIRE_CAS
 
 #include <pthread.h>
-#include <signal.h>
-#ifdef _HPUX_SOURCE
-# include <sys/time.h>
+
+#ifdef AO_USE_WIN32_PTHREADS
+# include <windows.h> /* for Sleep() */
 #else
-# include <sys/select.h>
+# include <signal.h>
+# ifdef _HPUX_SOURCE
+#   include <sys/time.h>
+# else
+#   include <sys/select.h>
+# endif
 #endif
+
 #include "atomic_ops.h"  /* Without cas emulation! */
 
 #ifndef AO_HAVE_double_t
@@ -104,12 +111,16 @@ void AO_pause(int n)
       AO_spin(n);
     else
       {
+#     ifdef AO_USE_WIN32_PTHREADS
+        Sleep(n > 28 ? 100 : 1 << (n - 22)); /* in millis */
+#     else
         struct timeval tv;
 
 	/* Short async-signal-safe sleep. */
 	tv.tv_sec = 0;
 	tv.tv_usec = (n > 28? 100000 : (1 << (n - 12)));
 	select(0, 0, 0, 0, &tv);
+#     endif
       }
 }
 
@@ -132,9 +143,10 @@ AO_INLINE void unlock(volatile AO_TS_t *l)
   AO_CLEAR(l);
 }
 
-static sigset_t all_sigs;
-
-static volatile AO_t initialized = 0;
+#ifndef AO_USE_WIN32_PTHREADS
+  static sigset_t all_sigs;
+  static volatile AO_t initialized = 0;
+#endif
 
 static volatile AO_TS_t init_lock = AO_TS_INITIALIZER;
 
@@ -142,17 +154,18 @@ int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
 				  AO_t new_val)
 {
   AO_TS_t *my_lock = AO_locks + AO_HASH(addr);
-  sigset_t old_sigs;
   int result;
 
-  if (!AO_load_acquire(&initialized))
+# ifndef AO_USE_WIN32_PTHREADS
+    sigset_t old_sigs;
+    if (!AO_load_acquire(&initialized))
     {
       lock(&init_lock);
       if (!initialized) sigfillset(&all_sigs);
       unlock(&init_lock);
       AO_store_release(&initialized, 1);
     }
-  sigprocmask(SIG_BLOCK, &all_sigs, &old_sigs);
+    sigprocmask(SIG_BLOCK, &all_sigs, &old_sigs);
   	/* Neither sigprocmask nor pthread_sigmask is 100%	*/
   	/* guaranteed to work here.  Sigprocmask is not 	*/
   	/* guaranteed be thread safe, and pthread_sigmask	*/
@@ -160,6 +173,7 @@ int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
   	/* sigprocmask may block some pthreads-internal		*/
   	/* signals.  So long as we do that for short periods,	*/
   	/* we should be OK.					*/
+# endif
   lock(my_lock);
   if (*addr == old)
     {
@@ -169,7 +183,9 @@ int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
   else
     result = 0;
   unlock(my_lock);
-  sigprocmask(SIG_SETMASK, &old_sigs, NULL);
+# ifndef AO_USE_WIN32_PTHREADS
+    sigprocmask(SIG_SETMASK, &old_sigs, NULL);
+# endif
   return result;
 }
 
@@ -178,17 +194,18 @@ int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
 				                AO_t new_val1, AO_t new_val2)
 {
   AO_TS_t *my_lock = AO_locks + AO_HASH(addr);
-  sigset_t old_sigs;
   int result;
 
-  if (!AO_load_acquire(&initialized))
+# ifndef AO_USE_WIN32_PTHREADS
+    sigset_t old_sigs;
+    if (!AO_load_acquire(&initialized))
     {
       lock(&init_lock);
       if (!initialized) sigfillset(&all_sigs);
       unlock(&init_lock);
       AO_store_release(&initialized, 1);
     }
-  sigprocmask(SIG_BLOCK, &all_sigs, &old_sigs);
+    sigprocmask(SIG_BLOCK, &all_sigs, &old_sigs);
   	/* Neither sigprocmask nor pthread_sigmask is 100%	*/
   	/* guaranteed to work here.  Sigprocmask is not 	*/
   	/* guaranteed be thread safe, and pthread_sigmask	*/
@@ -196,6 +213,7 @@ int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
   	/* sigprocmask may block some pthreads-internal		*/
   	/* signals.  So long as we do that for short periods,	*/
   	/* we should be OK.					*/
+# endif
   lock(my_lock);
   if (addr -> AO_val1 == old_val1 && addr -> AO_val2 == old_val2)
     {
@@ -206,7 +224,9 @@ int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
   else
     result = 0;
   unlock(my_lock);
-  sigprocmask(SIG_SETMASK, &old_sigs, NULL);
+# ifndef AO_USE_WIN32_PTHREADS
+    sigprocmask(SIG_SETMASK, &old_sigs, NULL);
+# endif
   return result;
 }
 

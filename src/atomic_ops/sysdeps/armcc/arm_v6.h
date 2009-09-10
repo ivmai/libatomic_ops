@@ -222,9 +222,9 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
 	
 	while(1) {
 		tmp = load_ex(addr);
-		if(tmp != old_val)	return false;
+		if(tmp != old_val)	return 0;
 		result = store_ex(new_val1, new_val2, addr);
-		if(!result)	return true;
+		if(!result)	return 1;
 	}
 }
 
