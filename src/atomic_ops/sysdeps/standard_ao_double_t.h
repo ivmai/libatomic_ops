@@ -4,27 +4,16 @@
 *   	   to align	it on 16 byte boundary (as required by cmpxchg16.
 * Similar things could be done for PowerPC 64bit using a VMX data type...	*/
 
-#if defined(__GNUC__)
-# if defined(__x86_64__)
-# include<xmmintrin.h>
-   typedef __m128 double_ptr_storage;
-#  define AO_HAVE_DOUBLE_PTR_STORAGE
-# endif /* __x86_64__ */
+#if (defined(__x86_64__) && defined(__GNUC__)) || defined(_WIN64)
+# include <xmmintrin.h>
+  typedef __m128 double_ptr_storage;
+#elif defined(_WIN32) && !defined(__GNUC__)
+  typedef unsigned __int64 double_ptr_storage;
+#else
+  typedef unsigned long long double_ptr_storage;
 #endif
 
-#ifdef _MSC_VER
-# ifdef _WIN64
-   typedef __m128 double_ptr_storage;
-#  define AO_HAVE_DOUBLE_PTR_STORAGE
-# elif _WIN32
-   typedef unsigned __int64 double_ptr_storage;
-#  define AO_HAVE_DOUBLE_PTR_STORAGE
-# endif
-#endif
-
-#ifndef AO_HAVE_DOUBLE_PTR_STORAGE
-   typedef unsigned long long double_ptr_storage;
-#endif
+# define AO_HAVE_DOUBLE_PTR_STORAGE
 
 typedef union {
     double_ptr_storage AO_whole;

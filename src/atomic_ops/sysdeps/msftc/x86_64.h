@@ -20,88 +20,39 @@
  * SOFTWARE. 
  */
 
-/* The following really assume we have a 486 or better. */
-/* If ASSUME_WINDOWS98 is defined, we assume Windows 98 or newer.	*/
-
 #include "../all_aligned_atomic_load_store.h"
 
-/* Real X86 implementations, except for some old WinChips, appear	*/
+/* Real X86 implementations appear					*/
 /* to enforce ordering between memory operations, EXCEPT that a later	*/
 /* read can pass earlier writes, presumably due to the visible		*/
 /* presence of store buffers.						*/
-/* We ignore both the WinChips, and the fact that the official specs	*/
+/* We ignore the fact that the official specs				*/
 /* seem to be much weaker (and arguably too weak to be usable).		*/
 
 #include "../ordered_except_wr.h"
 
-#if 0
-FIXME: Need to reimplement testandset
-
-#include "../test_and_set_t_is_char.h"
-
+#ifdef AO_ASM_X64_AVAILABLE
+# include "../test_and_set_t_is_char.h"
 #else
-
-#include "../test_and_set_t_is_ao_t.h"
-
+# include "../test_and_set_t_is_ao_t.h"
 #endif
+
+#include "../standard_ao_double_t.h"
 
 #include <windows.h>
 	/* Seems like over-kill, but that's what MSDN recommends.	*/
 	/* And apparently winbase.h is not always self-contained.	*/
 
-
+/* Assume _MSC_VER >= 1400 */
 #include <intrin.h>
 
 #pragma intrinsic (_ReadWriteBarrier)
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-LONGLONG __cdecl _InterlockedIncrement64(LONGLONG volatile *Addend);
-LONGLONG __cdecl _InterlockedDecrement64(LONGLONG volatile *Addend);
-LONGLONG __cdecl _InterlockedExchangeAdd64(LONGLONG volatile* Target,
-					   LONGLONG Addend);
-LONGLONG __cdecl _InterlockedExchange64(LONGLONG volatile* Target,
-				        LONGLONG Value);
-LONGLONG __cdecl _InterlockedCompareExchange64(LONGLONG volatile* Dest,
-                                               LONGLONG Exchange,
-					       LONGLONG Comp);
-
-#ifdef __cplusplus
-}
-#endif
 
 #pragma intrinsic (_InterlockedIncrement64)
 #pragma intrinsic (_InterlockedDecrement64)
 #pragma intrinsic (_InterlockedExchange64)
 #pragma intrinsic (_InterlockedExchangeAdd64)
 #pragma intrinsic (_InterlockedCompareExchange64)
-
-/* As far as we can tell, the lfence and sfence instructions are not	*/
-/* currently needed or useful for cached memory accesses.		*/
-
-/* Unfortunately mfence doesn't exist everywhere. 		*/
-/* IsProcessorFeaturePresent(PF_COMPARE_EXCHANGE128) is		*/
-/* probably a conservative test for it?				*/
-
-#if defined(AO_USE_PENTIUM4_INSTRS)
-
-AO_INLINE void
-AO_nop_full()
-{
-  __asm { mfence }
-}
-
-#define AO_HAVE_nop_full
-
-#else
-
-/* We could use the cpuid instruction.  But that seems to be slower 	*/
-/* than the default implementation based on test_and_set_full.  Thus	*/
-/* we omit that bit of misinformation here.				*/
-
-#endif
 
 AO_INLINE AO_t
 AO_fetch_and_add_full (volatile AO_t *p, AO_t incr)
@@ -138,49 +89,96 @@ AO_compare_and_swap_full(volatile AO_t *addr,
 
 #define AO_HAVE_compare_and_swap_full
 
-#if 0
-FIXME: (__asm not supported)
+/* As far as we can tell, the lfence and sfence instructions are not	*/
+/* currently needed or useful for cached memory accesses.		*/
+
+/* Unfortunately mfence doesn't exist everywhere. 		*/
+/* IsProcessorFeaturePresent(PF_COMPARE_EXCHANGE128) is		*/
+/* probably a conservative test for it?				*/
+
+#if defined(AO_USE_PENTIUM4_INSTRS)
+
+AO_INLINE void
+AO_nop_full(void)
+{
+  __asm { mfence }
+}
+
+#define AO_HAVE_nop_full
+
+#else
+
+/* We could use the cpuid instruction.  But that seems to be slower 	*/
+/* than the default implementation based on test_and_set_full.  Thus	*/
+/* we omit that bit of misinformation here.				*/
+
+#endif
+
+#ifdef AO_ASM_X64_AVAILABLE
+
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
 {
     __asm
     {
-	mov	eax,AO_TS_SET		;
-	mov	ebx,addr		;
-	xchg	byte ptr [ebx],al	;
+	mov	rax,AO_TS_SET		;
+	mov	rbx,addr		;
+	xchg	byte ptr [rbx],al	;
     }
 }
 
 #define AO_HAVE_test_and_set_full
 
-FIXME: (__asm not supported)
-NEC LE-IT: Don't have a working Win64 environment here at the moment.
-AO_compare_double_and_swap_double_full needs implementation for Win64
-But there is no _InterlockedCompareExchange128 in the WinAPI, so we
-need basically whats given below.
-Also see gcc/x86_64.h for partial old opteron workaround:
+#endif /* AO_ASM_X64_AVAILABLE */
 
-#ifndef AO_CASDOUBLE_MISSING
+#ifdef AO_CMPXCHG16B_AVAILABLE
+
+/* AO_compare_double_and_swap_double_full needs implementation for Win64.
+ * Also see ../gcc/x86_64.h for partial old Opteron workaround.
+ */
+
+# if _MSC_VER >= 1500
+
+#pragma intrinsic (_InterlockedCompareExchange128)
 
 AO_INLINE int
 AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 				       AO_t old_val1, AO_t old_val2,
 		                       AO_t new_val1, AO_t new_val2)
 {
-	char result;
+   __int64 comparandResult[2];
+   comparandResult[0] = old_val1; /* low */
+   comparandResult[1] = old_val2; /* high */
+   return _InterlockedCompareExchange128((volatile __int64 *)addr,
+		new_val2 /* high */, new_val1 /* low */, comparandResult);
+}
+
+#   define AO_HAVE_compare_double_and_swap_double_full
+
+# elif defined(AO_ASM_X64_AVAILABLE)
+
+ /* If there is no intrinsic _InterlockedCompareExchange128 then we
+  * need basically what's given below.
+  */
+
+AO_INLINE int
+AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
+				       AO_t old_val1, AO_t old_val2,
+		                       AO_t new_val1, AO_t new_val2)
+{
 	__asm
 	{
-		mov	rdx,QWORD PTR [old_val]
-		mov	rax,QWORD PTR [old_val + 8]
-		mov	rcx,QWORD PTR [new_val]
-		mov	rbx,QWORD PTR [new_val + 8]
-		lock cmpxchg16b	[addr]
-		setz result;
+		mov	rdx,QWORD PTR [old_val2]	;
+		mov	rax,QWORD PTR [old_val1]	;
+		mov	rcx,QWORD PTR [new_val2]	;
+		mov	rbx,QWORD PTR [new_val1]	;
+		lock cmpxchg16b	[addr]			;
+		setz	rax				;
 	}
-	return result;
 }
-#endif // AO_CASDOUBLE_MISSING
-#define AO_HAVE_compare_double_and_swap_double_full
 
-#endif /* 0 */
+#   define AO_HAVE_compare_double_and_swap_double_full
 
+# endif /* _MSC_VER >= 1500 || AO_ASM_X64_AVAILABLE */
+
+#endif /* AO_CMPXCHG16B_AVAILABLE */

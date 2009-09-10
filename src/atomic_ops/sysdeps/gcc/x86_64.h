@@ -16,18 +16,13 @@
  * Some of the machine specific code was borrowed from our GC distribution.
  */
 
-/* The following really assume we have a 486 or better.  Unfortunately	*/
-/* gcc doesn't define a suitable feature test macro based on command 	*/
-/* line options.							*/
-/* We should perhaps test dynamically.					*/
-
 #include "../all_aligned_atomic_load_store.h"
 
-/* Real X86 implementations, except for some old WinChips, appear	*/
+/* Real X86 implementations appear					*/
 /* to enforce ordering between memory operations, EXCEPT that a later	*/
 /* read can pass earlier writes, presumably due to the visible		*/
 /* presence of store buffers.						*/
-/* We ignore both the WinChips, and the fact that the official specs	*/
+/* We ignore the fact that the official specs				*/
 /* seem to be much weaker (and arguably too weak to be usable).		*/
 
 #include "../ordered_except_wr.h"
@@ -38,7 +33,7 @@
 
 #if defined(AO_USE_PENTIUM4_INSTRS)
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
   __asm__ __volatile__("mfence" : : : "memory");
 }
@@ -56,7 +51,6 @@ AO_nop_full()
 /* As far as we can tell, the lfence and sfence instructions are not	*/
 /* currently needed or useful for cached memory accesses.		*/
 
-/* Really only works for 486 and later */
 AO_INLINE AO_t
 AO_fetch_and_add_full (volatile AO_t *p, AO_t incr)
 {
@@ -109,7 +103,6 @@ AO_int_fetch_and_add_full (volatile unsigned int *p, unsigned int incr)
 
 #define AO_HAVE_int_fetch_and_add_full
 
-/* Really only works for 486 and later */
 AO_INLINE void
 AO_or_full (volatile AO_t *p, AO_t incr)
 {
@@ -148,8 +141,9 @@ AO_compare_and_swap_full(volatile AO_t *addr,
 
 #ifdef AO_CMPXCHG16B_AVAILABLE
 /* NEC LE-IT: older AMD Opterons are missing this instruction.
- * On these machines SIGILL will be thrown. Define AO_CASDOUBLE_MISSING
- * to have an emulated (lock based) version available */ 
+ * On these machines SIGILL will be thrown.
+ * Define AO_WEAK_DOUBLE_CAS_EMULATION to have an emulated
+ * (lock based) version available */ 
 /* HB: Changed this to not define either by default.  There are
  * enough machines and tool chains around on which cmpxchg16b
  * doesn't work.  And the emulation is unsafe by our usual rules.
@@ -164,10 +158,10 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
   __asm__ __volatile__("lock; cmpxchg16b %0; setz %1"
 	    	       		: "=m"(*addr), "=q"(result)
 		       			: "m"(*addr),
-		       			  "d" (old_val1),
-		       			  "a" (old_val2),
-		         		  "c" (new_val1),
-		         		  "b" (new_val2)  : "memory");
+		       			  "d" (old_val2),
+		       			  "a" (old_val1),
+		         		  "c" (new_val2),
+		         		  "b" (new_val1)  : "memory");
   return (int) result;
 }
 #define AO_HAVE_compare_double_and_swap_double_full

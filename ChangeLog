@@ -1,3 +1,46 @@
+2009-08-06 Ivan Maidanski <ivmai@mail.ru>
+	* src/atomic_ops/sysdeps/gcc/x86_64.h: Remove comments about i486
+	and 32-bit WinChips.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_nop_full): Replace
+	K&R-style function definition with ANSI C one.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h
+	(AO_compare_double_and_swap_double_full): Fix comment.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h
+	(AO_compare_double_and_swap_double_full): Swap all "val1" and "val2"
+	variables ("val1" is the lowest part of AO_double_t).
+	* src/atomic_ops/sysdeps/msftc/x86_64.h
+	(AO_compare_double_and_swap_double_full): Ditto.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: Remove comment about
+	ASSUME_WINDOWS98.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h (AO_ASM_X64_AVAILABLE): New
+	macro.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: Include
+	"test_and_set_t_is_char.h" if AO_ASM_X64_AVAILABLE (same as in
+	x86_64.h for gcc); remove FIXME (for re-implement test-and-set).
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: Include
+	"standard_ao_double_t.h" (same as in x86_64.h for gcc).
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: Add comment for include
+	<intrin.h> assuming at least VC++ v8.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: Remove _Interlocked
+	prototypes (since they are always declared in intrin.h).
+	* src/atomic_ops/sysdeps/msftc/x86_64.h (AO_nop_full): Move its
+	definition below CAS primitive (to textually group all asm-based
+	primitives together).
+	* src/atomic_ops/sysdeps/msftc/x86_64.h (AO_test_and_set_full):
+	Implement for AO_ASM_X64_AVAILABLE case.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: Remove AO_CASDOUBLE_MISSING
+	macro (replaced with AO_ASM_X64_AVAILABLE).
+	* src/atomic_ops/sysdeps/msftc/x86_64.h
+	(AO_compare_double_and_swap_double_full): Add intrinsic-based
+	implementation for VC++ v9+.
+	* src/atomic_ops/sysdeps/standard_ao_double_t.h: Include
+	<xmmintrin.h> (and use "__m128" type) if _WIN64.
+	* src/atomic_ops/sysdeps/standard_ao_double_t.h
+	(AO_HAVE_DOUBLE_PTR_STORAGE): Define it always (as
+	"double_ptr_storage" is defined for all cases).
+
 2009-09-09 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Patrick Marlier)
 	* src/atomic_ops/sysdeps/gcc/sparc.h (NO_SPARC_V9):
 	Renamed to AO_NO_SPARC_V9.
