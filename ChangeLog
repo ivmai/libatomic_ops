@@ -1,4 +1,32 @@
-2009-08-06 Ivan Maidanski <ivmai@mail.ru>
+2009-09-10 Ivan Maidanski <ivmai@mail.ru>
+	(diff109_cvs)
+	* src/atomic_ops/sysdeps/msftc/x86.h: Fix comments (prefix
+	ASSUME_WINDOWS98 with "AO_").
+	* src/atomic_ops/sysdeps/msftc/x86.h: Prefix ASSUME_VISTA macro with
+	"AO_".
+	* src/atomic_ops/sysdeps/msftc/x86.h (AO_nop_full): Replace
+	K&R-style function definition with ANSI C one.
+	* src/atomic_ops/sysdeps/msftc/x86.h (AO_test_and_set_full):
+	Replace AO_TS_SET with its value 0xff (some compilers does not like
+	C enum consts inside inline assembler).
+	* src/atomic_ops/sysdeps/msftc/x86.h (AO_test_and_set_full): Add
+	comment about "missing return value" warning.
+	* src/atomic_ops/sysdeps/msftc/x86.h
+	(AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE): New macro.
+	* src/atomic_ops/sysdeps/msftc/x86.h (AO_compare_and_swap_full): Use
+	_InterlockedCompareExchange() with args and result of PVOID type
+	if AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE is defined (mostly for
+	DigitalMars compiler support).
+	* src/atomic_ops/sysdeps/msftc/x86.h
+	(AO_compare_double_and_swap_double_full): Swap all "val1" and "val2"
+	variables ("val1" is the lowest part of AO_double_t).
+	* src/atomic_ops/sysdeps/msftc/x86.h
+	(AO_compare_double_and_swap_double_full): Rename to
+	AO_double_compare_and_swap_full (as it has 3 args).
+	* src/atomic_ops/sysdeps/msftc/x86.h: Replace C++ style comment
+	with ANSI C one.
+
+2009-09-10 Ivan Maidanski <ivmai@mail.ru>
 	* src/atomic_ops/sysdeps/gcc/x86_64.h: Remove comments about i486
 	and 32-bit WinChips.
 	* src/atomic_ops/sysdeps/msftc/x86_64.h: Ditto.

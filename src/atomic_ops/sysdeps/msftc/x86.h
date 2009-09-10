@@ -21,8 +21,8 @@
  */
 
 /* The following really assume we have a 486 or better. 		*/
-/* If ASSUME_WINDOWS98 is defined, we assume Windows 98 or newer.	*/
-/* If ASSUME_VISTA is defined, we assume Windows Server 2003, Vista	*/
+/* If AO_ASSUME_WINDOWS98 is defined, we assume Windows 98 or newer.	*/
+/* If AO_ASSUME_VISTA is defined, we assume Windows Server 2003, Vista	*/
 /* or later.								*/
 
 #include "../all_aligned_atomic_load_store.h"
@@ -92,7 +92,7 @@ LONG __cdecl _InterlockedCompareExchange(LONG volatile* Dest,
 #if defined(AO_USE_PENTIUM4_INSTRS)
 
 AO_INLINE void
-AO_nop_full()
+AO_nop_full(void)
 {
   __asm { mfence }
 }
@@ -136,10 +136,11 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 {
     __asm
     {
-	mov	eax,AO_TS_SET		;
+	mov	eax,0xff		; /* AO_TS_SET */
 	mov	ebx,addr		;
 	xchg	byte ptr [ebx],al	;
     }
+    /* Ignore possible "missing return value" warning here. */
 }
 
 #define AO_HAVE_test_and_set_full
@@ -150,19 +151,25 @@ AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr,
 		  	 AO_t old, AO_t new_val) 
 {
+# ifdef AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE
+    return _InterlockedCompareExchange((PVOID volatile *)addr,
+                                       (PVOID)new_val, (PVOID)old)
+	   == (PVOID)old;
+# else
     return _InterlockedCompareExchange((LONG volatile *)addr,
                                        (LONG)new_val, (LONG)old)
 	   == (LONG)old;
+# endif
 }
 
 #define AO_HAVE_compare_and_swap_full
-#endif /* ASSUME_WINDOWS98 */
+#endif /* AO_ASSUME_WINDOWS98 */
 
 #ifdef _WIN64
 #  error wrong architecture
 #endif
 
-#ifdef ASSUME_VISTA
+#ifdef AO_ASSUME_VISTA
 /* NEC LE-IT: whenever we run on a pentium class machine we have that
  * certain function */
 
@@ -174,8 +181,8 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
         			       AO_t old_val1, AO_t old_val2,
                			       AO_t new_val1, AO_t new_val2) 
 {
-    __int64 oldv = (__int64)old_val2 | ((__int64)old_val1 << 32);
-    __int64 newv = (__int64)new_val2 | ((__int64)new_val1 << 32);
+    __int64 oldv = (__int64)old_val1 | ((__int64)old_val2 << 32);
+    __int64 newv = (__int64)new_val1 | ((__int64)new_val2 << 32);
     return _InterlockedCompareExchange64((__int64 volatile *)addr,
                                        newv, oldv) == oldv;
 }
@@ -183,15 +190,14 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 
 #ifdef __cplusplus
 AO_INLINE int
-AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
-		  		       AO_double_t old_val,
-				       AO_double_t new_val) 
+AO_double_compare_and_swap_full(volatile AO_double_t *addr,
+				AO_double_t old_val, AO_double_t new_val)
 {
     return _InterlockedCompareExchange64((__int64 volatile *)addr,
 		new_val.AO_whole, old_val.AO_whole) == old_val.AO_whole;
 }
 #define AO_HAVE_double_compare_and_swap_full
-#endif // __cplusplus
-#endif /* ASSUME_VISTA */
+#endif /* __cplusplus */
+#endif /* AO_ASSUME_VISTA */
 
 #include "../ao_t_is_int.h"
