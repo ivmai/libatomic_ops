@@ -1,4 +1,20 @@
 2009-09-10 Ivan Maidanski <ivmai@mail.ru>
+	(ivmai123.diff)
+	* src/atomic_ops/sysdeps/msftc/arm.h: Add FIXME for InterlockedOps
+	(regarding memory barrier).
+	* src/atomic_ops/sysdeps/msftc/arm.h: Don't recognize
+	AO_ASSUME_ARM_ARCH6 anymore; check for _M_ARM >= 6 instead.
+	* src/atomic_ops/sysdeps/msftc/arm.h (AO_nop_full,
+	AO_test_and_set): Replace FIXME with the comment saying it is
+	emulated (in generalize.h); include test_and_set_t_is_ao_t.h.
+	* src/atomic_ops/sysdeps/msftc/arm.h (AO_store_full): Implement
+	using InterlockedCompareExchange() (assuming the latter has a full
+	mbar) for ARMv6+.
+	* src/atomic_ops/sysdeps/msftc/arm.h: Include
+	all_atomic_load_store.h and test_and_set_t_is_ao_t.h for the case
+	of pre-ARMv6; add the comment.
+
+2009-09-10 Ivan Maidanski <ivmai@mail.ru>
 	(ivmai122.diff)
 	* src/atomic_ops/sysdeps/armcc/arm_v6.h
 	(AO_compare_double_and_swap_double): Replace false/true with 0/1.
