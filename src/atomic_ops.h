@@ -280,8 +280,10 @@
 	|| (defined(__WATCOMC__) && defined(__NT__))
 # if defined(_AMD64_)
 #   include "atomic_ops/sysdeps/msftc/x86_64.h"
-# elif _M_IX86 >= 400
+# elif defined(_M_IX86) || defined(x86)
 #   include "atomic_ops/sysdeps/msftc/x86.h"
+# elif defined(_M_ARM) || defined(ARM) || defined(_ARM_)
+#   include "atomic_ops/sysdeps/msftc/arm.h"
 # endif
 #endif
 
