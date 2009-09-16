@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2005,2007  Thiemo Seufer <ths@networkno.de>
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
@@ -68,8 +68,8 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
 
 #define AO_HAVE_compare_and_swap
 
-/* FIXME: I think the implementations below should be automatically	*/
-/* generated if we omit them.  - HB					*/
+/* FIXME: I think the implementations below should be automatically     */
+/* generated if we omit them.  - HB                                     */
 
 AO_INLINE int
 AO_compare_and_swap_acquire(volatile AO_t *addr, AO_t old, AO_t new_val) {

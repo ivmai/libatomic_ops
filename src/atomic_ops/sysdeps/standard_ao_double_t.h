@@ -1,8 +1,8 @@
 /* NEC LE-IT: For 64Bit OS we extend the double type to hold two int64's
-*	
+*
 *  x86-64: __m128 serves as placeholder which also requires the compiler
-*   	   to align	it on 16 byte boundary (as required by cmpxchg16.
-* Similar things could be done for PowerPC 64bit using a VMX data type...	*/
+*          to align     it on 16 byte boundary (as required by cmpxchg16.
+* Similar things could be done for PowerPC 64bit using a VMX data type...       */
 
 #if (defined(__x86_64__) && defined(__GNUC__)) || defined(_WIN64)
 # include <xmmintrin.h>

@@ -1,23 +1,23 @@
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE. 
+ * SOFTWARE.
  */
 
 /*
@@ -32,9 +32,9 @@
 
 #include <ia64intrin.h>
 
-/* The acquire release semantics of volatile can be turned off.  And volatile	*/
-/* operations in icc9 don't imply ordering with respect to other nonvolatile	*/
-/* operations.									*/
+/* The acquire release semantics of volatile can be turned off.  And volatile   */
+/* operations in icc9 don't imply ordering with respect to other nonvolatile    */
+/* operations.                                                                  */
 
 #define AO_INTEL_PTR_t void *
 
@@ -55,7 +55,7 @@ AO_store_release(volatile AO_t *p, AO_t val)
 AO_INLINE unsigned char
 AO_char_load_acquire(const volatile unsigned char *p)
 {
-  /* A normal volatile load generates an ld.acq		*/
+  /* A normal volatile load generates an ld.acq         */
   return (__ld1_acq((AO_INTEL_PTR_t)p));
 }
 #define AO_HAVE_char_load_acquire
@@ -70,7 +70,7 @@ AO_char_store_release(volatile unsigned char *p, unsigned char val)
 AO_INLINE unsigned short
 AO_short_load_acquire(const volatile unsigned short *p)
 {
-  /* A normal volatile load generates an ld.acq		*/
+  /* A normal volatile load generates an ld.acq         */
   return (__ld2_acq((AO_INTEL_PTR_t)p));
 }
 #define AO_HAVE_short_load_acquire
@@ -85,7 +85,7 @@ AO_short_store_release(volatile unsigned short *p, unsigned short val)
 AO_INLINE unsigned int
 AO_int_load_acquire(const volatile unsigned int *p)
 {
-  /* A normal volatile load generates an ld.acq		*/
+  /* A normal volatile load generates an ld.acq         */
   return (__ld4_acq((AO_INTEL_PTR_t)p));
 }
 #define AO_HAVE_int_load_acquire
@@ -137,7 +137,7 @@ AO_fetch_and_sub1_release (volatile AO_t *p)
 
 AO_INLINE int
 AO_compare_and_swap_acquire(volatile AO_t *addr,
-		             AO_t old, AO_t new_val) 
+                             AO_t old, AO_t new_val)
 {
   AO_t oldval;
   oldval = _InterlockedCompareExchange64_acq(addr, new_val, old);
@@ -148,7 +148,7 @@ AO_compare_and_swap_acquire(volatile AO_t *addr,
 
 AO_INLINE int
 AO_compare_and_swap_release(volatile AO_t *addr,
-		             AO_t old, AO_t new_val) 
+                             AO_t old, AO_t new_val)
 {
   AO_t oldval;
   oldval = _InterlockedCompareExchange64_rel(addr, new_val, old);
@@ -159,7 +159,7 @@ AO_compare_and_swap_release(volatile AO_t *addr,
 
 AO_INLINE int
 AO_char_compare_and_swap_acquire(volatile unsigned char *addr,
-		                 unsigned char old, unsigned char new_val) 
+                                 unsigned char old, unsigned char new_val)
 {
   unsigned char oldval;
   oldval = _InterlockedCompareExchange8_acq(addr, new_val, old);
@@ -170,7 +170,7 @@ AO_char_compare_and_swap_acquire(volatile unsigned char *addr,
 
 AO_INLINE int
 AO_char_compare_and_swap_release(volatile unsigned char *addr,
-		            unsigned char old, unsigned char new_val) 
+                            unsigned char old, unsigned char new_val)
 {
   unsigned char oldval;
   oldval = _InterlockedCompareExchange8_rel(addr, new_val, old);
@@ -181,7 +181,7 @@ AO_char_compare_and_swap_release(volatile unsigned char *addr,
 
 AO_INLINE int
 AO_short_compare_and_swap_acquire(volatile unsigned short *addr,
-		                 unsigned short old, unsigned short new_val) 
+                                 unsigned short old, unsigned short new_val)
 {
   unsigned short oldval;
   oldval = _InterlockedCompareExchange16_acq(addr, new_val, old);
@@ -192,7 +192,7 @@ AO_short_compare_and_swap_acquire(volatile unsigned short *addr,
 
 AO_INLINE int
 AO_short_compare_and_swap_release(volatile unsigned short *addr,
-		            unsigned short old, unsigned short new_val) 
+                            unsigned short old, unsigned short new_val)
 {
   unsigned short oldval;
   oldval = _InterlockedCompareExchange16_rel(addr, new_val, old);
@@ -203,7 +203,7 @@ AO_short_compare_and_swap_release(volatile unsigned short *addr,
 
 AO_INLINE int
 AO_int_compare_and_swap_acquire(volatile unsigned int *addr,
-		                 unsigned int old, unsigned int new_val) 
+                                 unsigned int old, unsigned int new_val)
 {
   unsigned int oldval;
   oldval = _InterlockedCompareExchange_acq(addr, new_val, old);
@@ -214,7 +214,7 @@ AO_int_compare_and_swap_acquire(volatile unsigned int *addr,
 
 AO_INLINE int
 AO_int_compare_and_swap_release(volatile unsigned int *addr,
-		            unsigned int old, unsigned int new_val) 
+                            unsigned int old, unsigned int new_val)
 {
   unsigned int oldval;
   oldval = _InterlockedCompareExchange_rel(addr, new_val, old);
@@ -222,4 +222,3 @@ AO_int_compare_and_swap_release(volatile unsigned int *addr,
 }
 
 #define AO_HAVE_int_compare_and_swap_release
-

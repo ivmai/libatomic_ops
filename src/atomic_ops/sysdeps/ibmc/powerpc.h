@@ -1,18 +1,18 @@
-/* FIXME.  This is only a placeholder for the AIX compiler.  		*/
-/* It doesn't work.  Please send a patch.				*/
-/* Memory model documented at http://www-106.ibm.com/developerworks/	*/
-/* eserver/articles/archguide.html and (clearer)			*/
+/* FIXME.  This is only a placeholder for the AIX compiler.             */
+/* It doesn't work.  Please send a patch.                               */
+/* Memory model documented at http://www-106.ibm.com/developerworks/    */
+/* eserver/articles/archguide.html and (clearer)                        */
 /* http://www-106.ibm.com/developerworks/eserver/articles/powerpc.html. */
-/* There appears to be no implicit ordering between any kind of		*/
-/* independent memory references.					*/
-/* Architecture enforces some ordering based on control dependence.	*/
-/* I don't know if that could help. 					*/
-/* Data-dependent loads are always ordered.				*/
-/* Based on the above references, eieio is intended for use on		*/
-/* uncached memory, which we don't support.  It does not order loads	*/
-/* from cached memory.							*/
-/* Thanks to Maged Michael, Doug Lea, and Roger Hoover for helping to 	*/
-/* track some of this down and correcting my misunderstandings. -HB	*/
+/* There appears to be no implicit ordering between any kind of         */
+/* independent memory references.                                       */
+/* Architecture enforces some ordering based on control dependence.     */
+/* I don't know if that could help.                                     */
+/* Data-dependent loads are always ordered.                             */
+/* Based on the above references, eieio is intended for use on          */
+/* uncached memory, which we don't support.  It does not order loads    */
+/* from cached memory.                                                  */
+/* Thanks to Maged Michael, Doug Lea, and Roger Hoover for helping to   */
+/* track some of this down and correcting my misunderstandings. -HB     */
 
 #include "../all_aligned_atomic_load_store.h"
 
@@ -28,8 +28,8 @@ void AO_lwsync(void);
 #define AO_nop_read() AO_lwsync()
 #define AO_HAVE_nop_read
 
-/* We explicitly specify load_acquire and store_release, since these	*/
-/* rely on the fact that lwsync is also a LoadStore barrier.		*/
+/* We explicitly specify load_acquire and store_release, since these    */
+/* rely on the fact that lwsync is also a LoadStore barrier.            */
 AO_INLINE AO_t
 AO_load_acquire(const volatile AO_t *addr)
 {
@@ -49,9 +49,9 @@ AO_store_release(volatile AO_t *addr, AO_t value)
 
 #define AO_HAVE_load_acquire
 
-/* This is similar to the code in the garbage collector.  Deleting 	*/
-/* this and having it synthesized from compare_and_swap would probably	*/
-/* only cost us a load immediate instruction.				*/
+/* This is similar to the code in the garbage collector.  Deleting      */
+/* this and having it synthesized from compare_and_swap would probably  */
+/* only cost us a load immediate instruction.                           */
 /*AO_INLINE AO_TS_VAL_t
 AO_test_and_set(volatile AO_TS_t *addr) {
 # error FIXME Implement me
@@ -122,5 +122,5 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
 
 #define AO_HAVE_compare_and_swap_full
 
-/* FIXME: We should also implement fetch_and_add and or primitives	*/
-/* directly.								*/
+/* FIXME: We should also implement fetch_and_add and or primitives      */
+/* directly.                                                            */

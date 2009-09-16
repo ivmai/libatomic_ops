@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 1999-2004 Hewlett-Packard Development Company, L.P.
@@ -15,26 +15,26 @@
  *
  */
 
-/* Memory model documented at http://www-106.ibm.com/developerworks/	*/
-/* eserver/articles/archguide.html and (clearer)			*/
+/* Memory model documented at http://www-106.ibm.com/developerworks/    */
+/* eserver/articles/archguide.html and (clearer)                        */
 /* http://www-106.ibm.com/developerworks/eserver/articles/powerpc.html. */
-/* There appears to be no implicit ordering between any kind of		*/
-/* independent memory references.					*/
-/* Architecture enforces some ordering based on control dependence.	*/
-/* I don't know if that could help. 					*/
-/* Data-dependent loads are always ordered.				*/
-/* Based on the above references, eieio is intended for use on		*/
-/* uncached memory, which we don't support.  It does not order loads	*/
-/* from cached memory.							*/
-/* Thanks to Maged Michael, Doug Lea, and Roger Hoover for helping to 	*/
-/* track some of this down and correcting my misunderstandings. -HB	*/
-/* Earl Chew subsequently contributed further fixes & additions.	*/
+/* There appears to be no implicit ordering between any kind of         */
+/* independent memory references.                                       */
+/* Architecture enforces some ordering based on control dependence.     */
+/* I don't know if that could help.                                     */
+/* Data-dependent loads are always ordered.                             */
+/* Based on the above references, eieio is intended for use on          */
+/* uncached memory, which we don't support.  It does not order loads    */
+/* from cached memory.                                                  */
+/* Thanks to Maged Michael, Doug Lea, and Roger Hoover for helping to   */
+/* track some of this down and correcting my misunderstandings. -HB     */
+/* Earl Chew subsequently contributed further fixes & additions.        */
 
 #include "../all_aligned_atomic_load_store.h"
 
 #include "../test_and_set_t_is_ao_t.h"
-	/* There seems to be no byte equivalent of lwarx, so this	*/
-	/* may really be what we want, at least in the 32-bit case.	*/
+        /* There seems to be no byte equivalent of lwarx, so this       */
+        /* may really be what we want, at least in the 32-bit case.     */
 
 AO_INLINE void
 AO_nop_full(void)
@@ -44,7 +44,7 @@ AO_nop_full(void)
 
 #define AO_HAVE_nop_full
 
-/* lwsync apparently works for everything but a StoreLoad barrier.	*/
+/* lwsync apparently works for everything but a StoreLoad barrier.      */
 AO_INLINE void
 AO_lwsync(void)
 {
@@ -61,12 +61,12 @@ AO_lwsync(void)
 #define AO_nop_read() AO_lwsync()
 #define AO_HAVE_nop_read
 
-/* We explicitly specify load_acquire, since it is important, and can 	*/
-/* be implemented relatively cheaply.  It could be implemented		*/
-/* with an ordinary load followed by a lwsync.  But the general wisdom	*/
-/* seems to be that a data dependent branch followed by an isync is 	*/
-/* cheaper.  And the documentation is fairly explicit that this also 	*/
-/* has acquire semantics.						*/
+/* We explicitly specify load_acquire, since it is important, and can   */
+/* be implemented relatively cheaply.  It could be implemented          */
+/* with an ordinary load followed by a lwsync.  But the general wisdom  */
+/* seems to be that a data dependent branch followed by an isync is     */
+/* cheaper.  And the documentation is fairly explicit that this also    */
+/* has acquire semantics.                                               */
 /* ppc64 uses ld not lwz */
 #if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
 AO_INLINE AO_t
@@ -89,9 +89,9 @@ AO_load_acquire(const volatile AO_t *addr)
 {
   AO_t result;
 
-  /* FIXME: We should get gcc to allocate one of the condition	*/
-  /* registers.  I always got "impossible constraint" when I	*/
-  /* tried the "y" constraint.					*/
+  /* FIXME: We should get gcc to allocate one of the condition  */
+  /* registers.  I always got "impossible constraint" when I    */
+  /* tried the "y" constraint.                                  */
   __asm__ __volatile__ (
     "lwz%U1%X1 %0,%1\n"
     "cmpw %0,%0\n"
@@ -104,8 +104,8 @@ AO_load_acquire(const volatile AO_t *addr)
 #endif
 #define AO_HAVE_load_acquire
 
-/* We explicitly specify store_release, since it relies 	*/
-/* on the fact that lwsync is also a LoadStore barrier.		*/
+/* We explicitly specify store_release, since it relies         */
+/* on the fact that lwsync is also a LoadStore barrier.         */
 AO_INLINE void
 AO_store_release(volatile AO_t *addr, AO_t value)
 {
@@ -115,9 +115,9 @@ AO_store_release(volatile AO_t *addr, AO_t value)
 
 #define AO_HAVE_load_acquire
 
-/* This is similar to the code in the garbage collector.  Deleting 	*/
-/* this and having it synthesized from compare_and_swap would probably	*/
-/* only cost us a load immediate instruction.				*/
+/* This is similar to the code in the garbage collector.  Deleting      */
+/* this and having it synthesized from compare_and_swap would probably  */
+/* only cost us a load immediate instruction.                           */
 #if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
 /* Completely untested.  And we should be using smaller objects anyway. */
 AO_INLINE AO_TS_VAL_t
@@ -193,7 +193,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
 #define AO_HAVE_test_and_set_full
 
 #if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
-/* FIXME: Completely untested.	*/
+/* FIXME: Completely untested.  */
 AO_INLINE int
 AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
   AO_t oldval;
@@ -201,11 +201,11 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
 
   __asm__ __volatile__(
                "1:ldarx %0,0,%2\n"   /* load and reserve              */
-               "cmpd %0, %4\n"      /* if load is not equal to 	*/
-               "bne 2f\n"            /*   old, fail			*/
+               "cmpd %0, %4\n"      /* if load is not equal to  */
+               "bne 2f\n"            /*   old, fail                     */
                "stdcx. %3,0,%2\n"    /* else store conditional         */
                "bne- 1b\n"           /* retry if lost reservation      */
-	       "li %1,1\n"	     /* result = 1;			*/
+               "li %1,1\n"           /* result = 1;                     */
                "2:\n"
               : "=&r"(oldval), "=&r"(result)
               : "r"(addr), "r"(new_val), "r"(old), "1"(result)
@@ -223,11 +223,11 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
 
   __asm__ __volatile__(
                "1:lwarx %0,0,%2\n"   /* load and reserve              */
-               "cmpw %0, %4\n"      /* if load is not equal to 	*/
-               "bne 2f\n"            /*   old, fail			*/
+               "cmpw %0, %4\n"      /* if load is not equal to  */
+               "bne 2f\n"            /*   old, fail                     */
                "stwcx. %3,0,%2\n"    /* else store conditional         */
                "bne- 1b\n"           /* retry if lost reservation      */
-	       "li %1,1\n"	     /* result = 1;			*/
+               "li %1,1\n"           /* result = 1;                     */
                "2:\n"
               : "=&r"(oldval), "=&r"(result)
               : "r"(addr), "r"(new_val), "r"(old), "1"(result)
@@ -268,7 +268,7 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
 #define AO_HAVE_compare_and_swap_full
 
 #if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
-/* FIXME: Completely untested.						*/
+/* FIXME: Completely untested.                                          */
 
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *addr, AO_t incr) {
@@ -276,10 +276,10 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr) {
   AO_t newval;
 
   __asm__ __volatile__(
-               "1:ldarx %0,0,%2\n"   /* load and reserve		*/
-               "add %1,%0,%3\n"      /* increment			*/
-               "stdcx. %1,0,%2\n"    /* store conditional		*/
-               "bne- 1b\n"           /* retry if lost reservation	*/
+               "1:ldarx %0,0,%2\n"   /* load and reserve                */
+               "add %1,%0,%3\n"      /* increment                       */
+               "stdcx. %1,0,%2\n"    /* store conditional               */
+               "bne- 1b\n"           /* retry if lost reservation       */
               : "=&r"(oldval), "=&r"(newval)
                : "r"(addr), "r"(incr)
               : "memory", "cr0");
@@ -297,10 +297,10 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr) {
   AO_t newval;
 
   __asm__ __volatile__(
-               "1:lwarx %0,0,%2\n"   /* load and reserve		*/
-               "add %1,%0,%3\n"      /* increment			*/
-               "stwcx. %1,0,%2\n"    /* store conditional		*/
-               "bne- 1b\n"           /* retry if lost reservation	*/
+               "1:lwarx %0,0,%2\n"   /* load and reserve                */
+               "add %1,%0,%3\n"      /* increment                       */
+               "stwcx. %1,0,%2\n"    /* store conditional               */
+               "bne- 1b\n"           /* retry if lost reservation       */
               : "=&r"(oldval), "=&r"(newval)
                : "r"(addr), "r"(incr)
               : "memory", "cr0");
@@ -344,4 +344,3 @@ AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr) {
 #else
 # include "../ao_t_is_int.h"
 #endif
-

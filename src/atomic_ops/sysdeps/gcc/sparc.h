@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 1999-2003 by Hewlett-Packard Company. All rights reserved.
@@ -15,13 +15,13 @@
  *
  */
 
-/* FIXME.  Very incomplete.  No support for sparc64.	*/
-/* Non-ancient SPARCs provide compare-and-swap (casa).	*/
-/* We should make that available.			*/
+/* FIXME.  Very incomplete.  No support for sparc64.    */
+/* Non-ancient SPARCs provide compare-and-swap (casa).  */
+/* We should make that available.                       */
 
 #include "../all_atomic_load_store.h"
 
-/* Real SPARC code uses TSO:				*/
+/* Real SPARC code uses TSO:                            */
 #include "../ordered_except_wr.h"
 
 /* Test_and_set location is just a byte.                */
@@ -32,8 +32,8 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
    AO_TS_VAL_t oldval;
 
    __asm__ __volatile__("ldstub %1,%0"
-	                : "=r"(oldval), "=m"(*addr)
-	                : "m"(*addr) : "memory");
+                        : "=r"(oldval), "=m"(*addr)
+                        : "m"(*addr) : "memory");
    return oldval;
 }
 
@@ -45,28 +45,28 @@ AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
   char ret;
   __asm__ __volatile__ ("membar #StoreLoad | #LoadLoad\n\t"
-#			if defined(__arch64__)
-			  "casx [%2],%0,%1\n\t"
-#			else
-			  "cas [%2],%0,%1\n\t" /* 32-bit version */
-#			endif
-			"membar #StoreLoad | #StoreStore\n\t"
-			"cmp %0,%1\n\t"
-			"be,a 0f\n\t"
-			"mov 1,%0\n\t"/* one insn after branch always executed */
-			"clr %0\n\t"
-			"0:\n\t"
-			: "=r" (ret), "+r" (new_val)
-			: "r" (addr), "0" (old)
-			: "memory", "cc");
+#                       if defined(__arch64__)
+                          "casx [%2],%0,%1\n\t"
+#                       else
+                          "cas [%2],%0,%1\n\t" /* 32-bit version */
+#                       endif
+                        "membar #StoreLoad | #StoreStore\n\t"
+                        "cmp %0,%1\n\t"
+                        "be,a 0f\n\t"
+                        "mov 1,%0\n\t"/* one insn after branch always executed */
+                        "clr %0\n\t"
+                        "0:\n\t"
+                        : "=r" (ret), "+r" (new_val)
+                        : "r" (addr), "0" (old)
+                        : "memory", "cc");
   return (int)ret;
 }
 
 #define AO_HAVE_compare_and_swap_full
 #endif /* AO_NO_SPARC_V9 */
 
-/* FIXME: This needs to be extended for SPARC v8 and v9.	*/
-/* SPARC V8 also has swap.  V9 has CAS.				*/
-/* There are barriers like membar #LoadStore.			*/
-/* CASA (32-bit) and CASXA(64-bit) instructions were		*/
-/* added in V9.							*/
+/* FIXME: This needs to be extended for SPARC v8 and v9.        */
+/* SPARC V8 also has swap.  V9 has CAS.                         */
+/* There are barriers like membar #LoadStore.                   */
+/* CASA (32-bit) and CASXA(64-bit) instructions were            */
+/* added in V9.                                                 */

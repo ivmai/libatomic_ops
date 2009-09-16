@@ -1,4 +1,60 @@
 
+2009-09-16 Ivan Maidanski <ivmai@mail.ru>
+	* ChangeLog: Remove trailing spaces at EOLn.
+	* doc/README.txt: Expand all tabs to spaces; remove trailing
+	spaces at EOLn; remove multiple trailing blank lines.
+	* src/atomic_ops.c: Ditto.
+	* src/atomic_ops.h: Ditto.
+	* src/atomic_ops/generalize-small.h: Ditto.
+	* src/atomic_ops/generalize.h: Ditto.
+	* src/atomic_ops/sysdeps/acquire_release_volatile.h: Ditto.
+	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/all_aligned_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/all_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/ao_t_is_int.h: Ditto.
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h: Ditto.
+	* src/atomic_ops/sysdeps/atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/char_acquire_release_volatile.h: Ditto.
+	* src/atomic_ops/sysdeps/char_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/alpha.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/hppa.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/ia64.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/m68k.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/mips.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/powerpc.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/s390.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/sparc.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/x86.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h: Ditto.
+	* src/atomic_ops/sysdeps/generic_pthread.h: Ditto.
+	* src/atomic_ops/sysdeps/hpc/hppa.h: Ditto.
+	* src/atomic_ops/sysdeps/hpc/ia64.h: Ditto.
+	* src/atomic_ops/sysdeps/ibmc/powerpc.h: Ditto.
+	* src/atomic_ops/sysdeps/icc/ia64.h: Ditto.
+	* src/atomic_ops/sysdeps/int_acquire_release_volatile.h: Ditto.
+	* src/atomic_ops/sysdeps/int_aligned_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/int_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/msftc/arm.h: Ditto.
+	* src/atomic_ops/sysdeps/msftc/common32_defs.h: Ditto.
+	* src/atomic_ops/sysdeps/msftc/x86.h: Ditto.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: Ditto.
+	* src/atomic_ops/sysdeps/ordered.h: Ditto.
+	* src/atomic_ops/sysdeps/ordered_except_wr.h: Ditto.
+	* src/atomic_ops/sysdeps/read_ordered.h: Ditto.
+	* src/atomic_ops/sysdeps/short_acquire_release_volatile.h: Ditto.
+	* src/atomic_ops/sysdeps/short_aligned_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/short_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/standard_ao_double_t.h: Ditto.
+	* src/atomic_ops/sysdeps/sunc/x86.h: Ditto.
+	* src/atomic_ops/sysdeps/sunc/x86_64.h: Ditto.
+	* src/atomic_ops/sysdeps/test_and_set_t_is_ao_t.h: Ditto.
+	* src/atomic_ops_stack.c: Ditto.
+	* src/atomic_ops_stack.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Replace non-ASCII quotes in a
+	comment.
+	* src/atomic_ops/sysdeps/gcc/mips.h: Use Unix-style EOLn.
+
 2009-09-10 Ivan Maidanski <ivmai@mail.ru>
 	(ivmai123.diff)
 	* src/atomic_ops/sysdeps/msftc/arm.h: Add FIXME for InterlockedOps
@@ -156,23 +212,23 @@
 	AO_TS_VAL_t for "oldval" (for 64-bit support).
 	* src/atomic_ops/sysdeps/gcc/sparc.h (AO_compare_and_swap_full):
 	New function implemented.
-	
+
 2009-08-12 Hans Boehm <Hans.Boehm@hp.com> (Really Ivan Maidanski)
 	(diff107_cvs, resembling diff78 and diff88_cvs)
 
 	* src/atomic_ops/sysdeps/sunc/x86.h: New file.
-        * src/atomic_ops/sysdeps/sunc/x86_64.h: Ditto.
-        * src/atomic_ops.h (AO_INLINE): Support inlining for DigitalMars,
-        Watcom, Sun C.
-        * src/atomic_ops.h (AO_compiler_barrier): Use intrinsic-based
-        implementation for VC++ v8+ (include <intrin.h> before it unless
-        WinCE target); use asm-based barrier implementation for Borland,
-        DigitalMars and Watcom.
-        * src/atomic_ops.h: Fix comment (for x86_64).
-        * src/atomic_ops.h: Include specialized x86.h and x86_64.h arch
-        headers for Sun C (if not AO_USE_PTHREAD_DEFS).
-        * src/atomic_ops.h: Include VC-specific arch headers for Borland,
-        DigitalMars and Watcom (Win32 target only).
+	* src/atomic_ops/sysdeps/sunc/x86_64.h: Ditto.
+	* src/atomic_ops.h (AO_INLINE): Support inlining for DigitalMars,
+	Watcom, Sun C.
+	* src/atomic_ops.h (AO_compiler_barrier): Use intrinsic-based
+	implementation for VC++ v8+ (include <intrin.h> before it unless
+	WinCE target); use asm-based barrier implementation for Borland,
+	DigitalMars and Watcom.
+	* src/atomic_ops.h: Fix comment (for x86_64).
+	* src/atomic_ops.h: Include specialized x86.h and x86_64.h arch
+	headers for Sun C (if not AO_USE_PTHREAD_DEFS).
+	* src/atomic_ops.h: Include VC-specific arch headers for Borland,
+	DigitalMars and Watcom (Win32 target only).
 
 2009-05-27 Hans Boehm <Hans.Boehm@hp.com> (Really Ivan Maidanski)
 	(diff87_cvs, resembling diff29, diff68, diff78 partly)
@@ -195,7 +251,7 @@
 	* src/atomic_ops/sysdeps/read_ordered.h (AO_nop_read): Ditto.
 	* src/atomic_ops/sysdeps/test_and_set_t_is_ao_t.h (AO_TS_val): Fix
 	comment.
-	
+
 2009-02-24 Hans Boehm <Hans.Boehm@hp.com> (Really primarily Earl Chew)
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Add index,
 	update modifiers to asms, refine clobbers to "cr0", use
@@ -232,7 +288,7 @@
 	* src/atomic_ops.h: Fix comments.
 	* src/atomic_ops_stack.c: Fix comments.
 	* src/atomic_ops_stack.h: Fix comments.
-	
+
 2008-10-20 Hans Boehm <Hans.Boehm@hp.com>  (really Andrew Agno)
 	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_int_fetch_and_add_full):
 	fix return type.
@@ -240,7 +296,7 @@
 2008-08-21 Hans Boehm <Hans.Boehm@hp.com>
 	* config.guess, config.sub, configure: Regenerate/replace.
 	Use autoconf 2.61, automake 1.9.6.
-	
+
 2008-08-19 Hans Boehm <Hans.Boehm@hp.com> (really Thiemo Seufer)
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Add %U1 (update) to lwz
 	instruction.
@@ -283,7 +339,7 @@
 2008-07-10 Hans Boehm <Hans.Boehm@hp.com>
 	* src/atomic_ops/sysdeps/gcc/m68k.h: Remove SMP-unsafe
 	AO_or_full, and let it be autogenerated instead.
-	
+
 2008-07-03 Hans Boehm <Hans.Boehm@hp.com> (Really Thiemo Seufer)
 	* src/atomic_ops/sysdeps/gcc/mips.h: Really add mips support,
 	fixing a merge accident.
@@ -349,11 +405,11 @@
 	powerpc.h.
 
 2007-06-26 Hans Boehm <Hans.Boehm@hp.com> (really Luca Barbato)
-        * src/atomic_ops/sysdeps/gcc/powerpc.h (AO_load_acquire): Add
+	* src/atomic_ops/sysdeps/gcc/powerpc.h (AO_load_acquire): Add
 	64-bit version.
 
 2007-06-13 Hans Boehm <Hans.Boehm@hp.com>
-        * src/atomic_ops.h: include stddef.h
+	* src/atomic_ops.h: include stddef.h
 
 2007-06-06 Hans Boehm <Hans.Boehm@hp.com>
 	* src/atomic_ops/sysdeps/msftc/x86_64.h: New file.
@@ -387,7 +443,7 @@
 
 2006-07-11 Hans Boehm <Hans.Boehm@hp.com>
 	* src/atomic_ops/sysdeps/hpc/ia64.h: Fix typos.
-	
+
 2006-03-28 Earl Chew (Agilent)
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Remove unused variable cr.
 	* src/atomic_ops/sysdeps/msftc/x86.h:
@@ -395,7 +451,7 @@
 	Use inline assembler to generate mfence and byte sized xchg
 	Use correct prototype for InterlockedCompareExchange.
 	* src/atomic_ops.h: Add test for __PPC__ .
-	* tests/run_parallel.inc: Add simple VxWorks support. 
+	* tests/run_parallel.inc: Add simple VxWorks support.
 	* tests/test_atomic.c, tests/test_atomic_include.h: Add prototypes
 	to silence compiler warnings.
 
@@ -442,7 +498,7 @@
 2005-03	Hans Boehm <Hans.Boehm@hp.com>
 	Fixes for recently introduced bugs.  Update x86 and x86-64 assembly
 	syntax to deal with complaints by some recent gcc versions.
-	
+
 2005-02	Hans Boehm <Hans.Boehm@hp.com>
 	Added libatomic_ops_gpl library with support for mostly
 	lock-free stack and malloc().
@@ -455,7 +511,7 @@
 2005-01	Hans Boehm <Hans.Boehm@hp.com>
 	* test_and_set_t_is_ao_t.h, test_and_set_t_is_char.h, others:
 	Change most platforms to use byte-wide test-and-set locations.
-	
+
 2005-01	Hans Boehm <Hans.Boehm@hp.com>
 	* ao_t_is_int.h: Add to trivially support int-wide operations
 	on platforms with int-sized pointers.
@@ -503,7 +559,7 @@
 
 2003-12-08  Carlos O'Donell  <carlos@baldric.uwo.ca>
 
-	* ao_sysdeps/gcc/hppa.h: Define AO_CLEAR macro. Change 
+	* ao_sysdeps/gcc/hppa.h: Define AO_CLEAR macro. Change
 	AO_pa_clearable_loc type. Add __ldcw, and __ldcw_align
 	helper macros. AO_test_and_set_full uses helper macros.
 

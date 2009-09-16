@@ -1,12 +1,12 @@
-/* 
- * Copyright (c) 2007 by NEC LE-IT:		  All rights reserved.
+/*
+ * Copyright (c) 2007 by NEC LE-IT:               All rights reserved.
  * A transcription of ARMv6 atomic operations for the ARM Realview Toolchain.
  * This code works with armcc from RVDS 3.1
  * This is based on work in gcc/arm.h by
  *   Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  *   Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  *   Copyright (c) 1999-2003 by Hewlett-Packard Company. All rights reserved.
- * 
+ *
  *
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
@@ -29,9 +29,9 @@ Dont use with ARM instruction sets lower than v6
 #include "../standard_ao_double_t.h"
 
 /* NEC LE-IT: ARMv6 is the first architecture providing support for simple LL/SC
- * A data memory barrier must be raised via CP15 command (see documentation).	
+ * A data memory barrier must be raised via CP15 command (see documentation).
  *
- * ARMv7 is compatible to ARMv6 but has a simpler command for issuing a 		
+ * ARMv7 is compatible to ARMv6 but has a simpler command for issuing a
  * memory barrier (DMB). Raising it via CP15 should still work as told me by the
  * support engineers. If it turns out to be much quicker than we should implement
  * custom code for ARMv7 using the asm { dmb } command.
@@ -44,10 +44,10 @@ AO_INLINE void
 AO_nop_full(void)
 {
 #ifndef AO_UNIPROCESSOR
-	unsigned int dest=0;
-	/* issue an data memory barrier (keeps ordering of memory transactions	*/
-	/* before and after this operation)						*/
-	__asm { mcr p15,0,dest,c7,c10,5 } ;
+        unsigned int dest=0;
+        /* issue an data memory barrier (keeps ordering of memory transactions  */
+        /* before and after this operation)                                             */
+        __asm { mcr p15,0,dest,c7,c10,5 } ;
 #endif
 }
 
@@ -56,8 +56,8 @@ AO_nop_full(void)
 AO_INLINE AO_t
 AO_load(const volatile AO_t *addr)
 {
-	/* Cast away the volatile in case it adds fence semantics */
-	return (*(const AO_t *)addr);
+        /* Cast away the volatile in case it adds fence semantics */
+        return (*(const AO_t *)addr);
 }
 #define AO_HAVE_load
 
@@ -72,44 +72,44 @@ AO_load(const volatile AO_t *addr)
 */
 AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
 {
-	unsigned long tmp;
-	
+        unsigned long tmp;
+
 retry:
-__asm {	
-		ldrex	tmp, [addr]
-		strex	tmp, value, [addr]
-		teq	tmp, #0
-		bne	retry
-	  };
+__asm {
+                ldrex   tmp, [addr]
+                strex   tmp, value, [addr]
+                teq     tmp, #0
+                bne     retry
+          };
 }
 #define AO_HAVE_store
 
 /* NEC LE-IT: replace the SWAP as recommended by ARM:
 
    "Applies to: ARM11 Cores
-	Though the SWP instruction will still work with ARM V6 cores, it is recommended
-	to use the new V6 synchronization instructions. The SWP instruction produces
-	locked read and write accesses which are atomic, i.e. another operation cannot
-	be done between these locked accesses which ties up external bus (AHB,AXI)
-	bandwidth and can increase worst case interrupt latencies. LDREX,STREX are
-	more flexible, other instructions can be done between the LDREX and STREX accesses. 
+        Though the SWP instruction will still work with ARM V6 cores, it is recommended
+        to use the new V6 synchronization instructions. The SWP instruction produces
+        locked read and write accesses which are atomic, i.e. another operation cannot
+        be done between these locked accesses which ties up external bus (AHB,AXI)
+        bandwidth and can increase worst case interrupt latencies. LDREX,STREX are
+        more flexible, other instructions can be done between the LDREX and STREX accesses.
    "
 */
 AO_INLINE AO_TS_t
 AO_test_and_set(volatile AO_TS_t *addr) {
-	
-	AO_TS_t oldval;
-	unsigned long tmp;
-	unsigned long one = 1;
-retry:
-__asm {	
-		ldrex	oldval, [addr]
-		strex	tmp, one, [addr]
-		teq		tmp, #0
-		bne	retry
-	  }
 
-	return oldval;
+        AO_TS_t oldval;
+        unsigned long tmp;
+        unsigned long one = 1;
+retry:
+__asm {
+                ldrex   oldval, [addr]
+                strex   tmp, one, [addr]
+                teq             tmp, #0
+                bne     retry
+          }
+
+        return oldval;
 }
 
 #define AO_HAVE_test_and_set
@@ -118,18 +118,18 @@ __asm {
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 {
-	unsigned long tmp,tmp2;
-	AO_t result;
+        unsigned long tmp,tmp2;
+        AO_t result;
 
 retry:
 __asm {
-	ldrex	result, [p]
-	add     tmp, incr, result
-	strex	tmp2, tmp, [p]
-	teq	tmp2, #0
-	bne	retry }
+        ldrex   result, [p]
+        add     tmp, incr, result
+        strex   tmp2, tmp, [p]
+        teq     tmp2, #0
+        bne     retry }
 
-	return result;
+        return result;
 }
 
 #define AO_HAVE_fetch_and_add
@@ -138,19 +138,19 @@ __asm {
 AO_INLINE AO_t
 AO_fetch_and_add1(volatile AO_t *p)
 {
-	unsigned long tmp,tmp2;
-	AO_t result;
+        unsigned long tmp,tmp2;
+        AO_t result;
 
 retry:
 __asm {
-	ldrex	result, [p]
-	add     tmp, result, #1
-	strex	tmp2, tmp, [p]
-	teq		tmp2, #0
-	bne	retry
-	}
+        ldrex   result, [p]
+        add     tmp, result, #1
+        strex   tmp2, tmp, [p]
+        teq             tmp2, #0
+        bne     retry
+        }
 
-	return result;
+        return result;
 }
 
 #define AO_HAVE_fetch_and_add1
@@ -159,19 +159,19 @@ __asm {
 AO_INLINE AO_t
 AO_fetch_and_sub1(volatile AO_t *p)
 {
-	unsigned long tmp,tmp2;
-	AO_t result;
+        unsigned long tmp,tmp2;
+        AO_t result;
 
 retry:
 __asm {
-	ldrex	result, [p]
-	sub     tmp, result, #1
-	strex	tmp2, tmp, [p]
-	teq		tmp2, #0
-	bne	retry
-	}
+        ldrex   result, [p]
+        sub     tmp, result, #1
+        strex   tmp2, tmp, [p]
+        teq             tmp2, #0
+        bne     retry
+        }
 
-	return result;
+        return result;
 }
 
 #define AO_HAVE_fetch_and_sub1
@@ -180,52 +180,52 @@ __asm {
 /* Returns nonzero if the comparison succeeded. */
 AO_INLINE int
 AO_compare_and_swap(volatile AO_t *addr,
-		  	     	AO_t old_val, AO_t new_val) 
+                                AO_t old_val, AO_t new_val)
 {
-  	 AO_t result,tmp;
+         AO_t result,tmp;
 
 retry:
 __asm__ {
-	mov		result, #2
-	ldrex	tmp, [addr]
-	teq		tmp, old_val
-	strexeq	result, new_val, [addr]
-	teq		result, #1
-	beq		retry
-	}
-	
-	return !(result&2);
+        mov             result, #2
+        ldrex   tmp, [addr]
+        teq             tmp, old_val
+        strexeq result, new_val, [addr]
+        teq             result, #1
+        beq             retry
+        }
+
+        return !(result&2);
 }
 #define AO_HAVE_compare_and_swap
 
 /* helper functions for the Realview compiler: LDREXD is not usable
- * with inline assembler, so use the "embedded" assembler as 
+ * with inline assembler, so use the "embedded" assembler as
  * suggested by ARM Dev. support (June 2008). */
 __asm inline double_ptr_storage load_ex(volatile AO_double_t *addr) {
-	LDREXD r0,r1,[r0]
+        LDREXD r0,r1,[r0]
 }
 
 __asm inline int store_ex(AO_t val1, AO_t val2, volatile AO_double_t *addr) {
-	STREXD r3,r0,r1,[r2]
-	MOV	   r0,r3
+        STREXD r3,r0,r1,[r2]
+        MOV        r0,r3
 }
 
 AO_INLINE int
 AO_compare_double_and_swap_double(volatile AO_double_t *addr,
-					  	          AO_t old_val1, AO_t old_val2,
-						          AO_t new_val1, AO_t new_val2) 
+                                                          AO_t old_val1, AO_t old_val2,
+                                                          AO_t new_val1, AO_t new_val2)
 {
-	double_ptr_storage old_val = ((double_ptr_storage)old_val2 << 32) | old_val1;
-	
+        double_ptr_storage old_val = ((double_ptr_storage)old_val2 << 32) | old_val1;
+
     double_ptr_storage tmp;
-	int result;
-	
-	while(1) {
-		tmp = load_ex(addr);
-		if(tmp != old_val)	return 0;
-		result = store_ex(new_val1, new_val2, addr);
-		if(!result)	return 1;
-	}
+        int result;
+
+        while(1) {
+                tmp = load_ex(addr);
+                if(tmp != old_val)      return 0;
+                result = store_ex(new_val1, new_val2, addr);
+                if(!result)     return 1;
+        }
 }
 
 #define AO_HAVE_compare_double_and_swap_double

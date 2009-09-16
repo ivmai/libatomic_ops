@@ -1,33 +1,33 @@
 /*
  * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE. 
+ * SOFTWARE.
  */
 
 #include "../all_aligned_atomic_load_store.h"
 
-/* Real X86 implementations appear					*/
-/* to enforce ordering between memory operations, EXCEPT that a later	*/
-/* read can pass earlier writes, presumably due to the visible		*/
-/* presence of store buffers.						*/
-/* We ignore the fact that the official specs				*/
-/* seem to be much weaker (and arguably too weak to be usable).		*/
+/* Real X86 implementations appear                                      */
+/* to enforce ordering between memory operations, EXCEPT that a later   */
+/* read can pass earlier writes, presumably due to the visible          */
+/* presence of store buffers.                                           */
+/* We ignore the fact that the official specs                           */
+/* seem to be much weaker (and arguably too weak to be usable).         */
 
 #include "../ordered_except_wr.h"
 
@@ -40,8 +40,8 @@
 #include "../standard_ao_double_t.h"
 
 #include <windows.h>
-	/* Seems like over-kill, but that's what MSDN recommends.	*/
-	/* And apparently winbase.h is not always self-contained.	*/
+        /* Seems like over-kill, but that's what MSDN recommends.       */
+        /* And apparently winbase.h is not always self-contained.       */
 
 /* Assume _MSC_VER >= 1400 */
 #include <intrin.h>
@@ -80,21 +80,21 @@ AO_fetch_and_sub1_full (volatile AO_t *p)
 
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr,
-		  	 AO_t old, AO_t new_val) 
+                         AO_t old, AO_t new_val)
 {
     return _InterlockedCompareExchange64((LONGLONG volatile *)addr,
                                          (LONGLONG)new_val, (LONGLONG)old)
-	   == (LONGLONG)old;
+           == (LONGLONG)old;
 }
 
 #define AO_HAVE_compare_and_swap_full
 
-/* As far as we can tell, the lfence and sfence instructions are not	*/
-/* currently needed or useful for cached memory accesses.		*/
+/* As far as we can tell, the lfence and sfence instructions are not    */
+/* currently needed or useful for cached memory accesses.               */
 
-/* Unfortunately mfence doesn't exist everywhere. 		*/
-/* IsProcessorFeaturePresent(PF_COMPARE_EXCHANGE128) is		*/
-/* probably a conservative test for it?				*/
+/* Unfortunately mfence doesn't exist everywhere.               */
+/* IsProcessorFeaturePresent(PF_COMPARE_EXCHANGE128) is         */
+/* probably a conservative test for it?                         */
 
 #if defined(AO_USE_PENTIUM4_INSTRS)
 
@@ -108,9 +108,9 @@ AO_nop_full(void)
 
 #else
 
-/* We could use the cpuid instruction.  But that seems to be slower 	*/
-/* than the default implementation based on test_and_set_full.  Thus	*/
-/* we omit that bit of misinformation here.				*/
+/* We could use the cpuid instruction.  But that seems to be slower     */
+/* than the default implementation based on test_and_set_full.  Thus    */
+/* we omit that bit of misinformation here.                             */
 
 #endif
 
@@ -121,9 +121,9 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 {
     __asm
     {
-	mov	rax,AO_TS_SET		;
-	mov	rbx,addr		;
-	xchg	byte ptr [rbx],al	;
+        mov     rax,AO_TS_SET           ;
+        mov     rbx,addr                ;
+        xchg    byte ptr [rbx],al       ;
     }
 }
 
@@ -143,14 +143,14 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 
 AO_INLINE int
 AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
-				       AO_t old_val1, AO_t old_val2,
-		                       AO_t new_val1, AO_t new_val2)
+                                       AO_t old_val1, AO_t old_val2,
+                                       AO_t new_val1, AO_t new_val2)
 {
    __int64 comparandResult[2];
    comparandResult[0] = old_val1; /* low */
    comparandResult[1] = old_val2; /* high */
    return _InterlockedCompareExchange128((volatile __int64 *)addr,
-		new_val2 /* high */, new_val1 /* low */, comparandResult);
+                new_val2 /* high */, new_val1 /* low */, comparandResult);
 }
 
 #   define AO_HAVE_compare_double_and_swap_double_full
@@ -163,18 +163,18 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 
 AO_INLINE int
 AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
-				       AO_t old_val1, AO_t old_val2,
-		                       AO_t new_val1, AO_t new_val2)
+                                       AO_t old_val1, AO_t old_val2,
+                                       AO_t new_val1, AO_t new_val2)
 {
-	__asm
-	{
-		mov	rdx,QWORD PTR [old_val2]	;
-		mov	rax,QWORD PTR [old_val1]	;
-		mov	rcx,QWORD PTR [new_val2]	;
-		mov	rbx,QWORD PTR [new_val1]	;
-		lock cmpxchg16b	[addr]			;
-		setz	rax				;
-	}
+        __asm
+        {
+                mov     rdx,QWORD PTR [old_val2]        ;
+                mov     rax,QWORD PTR [old_val1]        ;
+                mov     rcx,QWORD PTR [new_val2]        ;
+                mov     rbx,QWORD PTR [new_val1]        ;
+                lock cmpxchg16b [addr]                  ;
+                setz    rax                             ;
+        }
 }
 
 #   define AO_HAVE_compare_double_and_swap_double_full

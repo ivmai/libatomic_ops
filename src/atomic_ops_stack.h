@@ -5,27 +5,27 @@
 
 /*
  * Copyright (c) 2005 Hewlett-Packard Development Company, L.P.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE. 
+ * SOFTWARE.
  */
 
-/* Almost lock-free LIFO linked lists (linked stacks).	*/
+/* Almost lock-free LIFO linked lists (linked stacks).  */
 #ifndef AO_STACK_H
 #define AO_STACK_H
 
@@ -36,9 +36,9 @@
     && defined(AO_HAVE_compare_and_swap)
 # define AO_USE_ALMOST_LOCK_FREE
 #else
-  /* If we have no compare-and-swap operation defined, we assume	*/
-  /* that we will actually be using CAS emulation.  If we do that,	*/
-  /* it's cheaper to use the version-based implementation.		*/
+  /* If we have no compare-and-swap operation defined, we assume        */
+  /* that we will actually be using CAS emulation.  If we do that,      */
+  /* it's cheaper to use the version-based implementation.              */
 # define AO_STACK_IS_LOCK_FREE
 #endif
 
@@ -46,7 +46,7 @@
  * These are not guaranteed to be completely lock-free.
  * List insertion may spin under extremely unlikely conditions.
  * It cannot deadlock due to recursive reentry unless AO_list_remove
- * is called while at least AO_BL_SIZE activations of 
+ * is called while at least AO_BL_SIZE activations of
  * AO_list_remove are currently active in the same thread, i.e.
  * we must have at least AO_BL_SIZE recursive signal handler
  * invocations.
@@ -67,10 +67,10 @@
  */
 
 #ifdef AO_USE_ALMOST_LOCK_FREE
-/* The number of low order pointer bits we can use for a small	*/
-/* version number.						*/
+/* The number of low order pointer bits we can use for a small  */
+/* version number.                                              */
 # if defined(__LP64__) || defined(_LP64) || defined(_WIN64)
-   /* WIN64 isn't really supported yet.	*/
+   /* WIN64 isn't really supported yet. */
 #  define AO_N_BITS 3
 # else
 #  define AO_N_BITS 2
@@ -94,25 +94,25 @@ typedef struct AO__stack_aux {
   volatile AO_t AO_stack_bl[AO_BL_SIZE];
 } AO_stack_aux;
 
-/* The stack implementation knows only about the location of 	*/
-/* link fields in nodes, and nothing about the rest of the 	*/
-/* stack elements.  Link fields hold an AO_t, which is not	*/
-/* necessarily a real pointer.  This converts the AO_t to a 	*/
-/* real (AO_t *) which is either o, or points at the link	*/
-/* field in the next node.					*/
+/* The stack implementation knows only about the location of    */
+/* link fields in nodes, and nothing about the rest of the      */
+/* stack elements.  Link fields hold an AO_t, which is not      */
+/* necessarily a real pointer.  This converts the AO_t to a     */
+/* real (AO_t *) which is either o, or points at the link       */
+/* field in the next node.                                      */
 #define AO_REAL_NEXT_PTR(x) (AO_t *)((x) & ~AO_BIT_MASK)
 
-/* The following two routines should not normally be used directly.	*/
-/* We make them visible here for the rare cases in which it makes sense	*/
-/* to share the an AO_stack_aux between stacks.				*/
+/* The following two routines should not normally be used directly.     */
+/* We make them visible here for the rare cases in which it makes sense */
+/* to share the an AO_stack_aux between stacks.                         */
 void
 AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
-	       		          AO_stack_aux *);
+                                  AO_stack_aux *);
 
 AO_t *
 AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux *);
 
-/* And now AO_stack_t for the real interface:				*/
+/* And now AO_stack_t for the real interface:                           */
 
 typedef struct AO__stack {
   volatile AO_t AO_ptr;
@@ -134,28 +134,28 @@ AO_INLINE void AO_stack_init(AO_stack_t *list)
   list -> AO_ptr = 0;
 }
 
-/* Convert an AO_stack_t to a pointer to the link field in	*/
-/* the first element.						*/
+/* Convert an AO_stack_t to a pointer to the link field in      */
+/* the first element.                                           */
 #define AO_REAL_HEAD_PTR(x) AO_REAL_NEXT_PTR((x).AO_ptr)
 
 #define AO_stack_push_release(l, e) \
-	AO_stack_push_explicit_aux_release(&((l)->AO_ptr), e, &((l)->AO_aux))
+        AO_stack_push_explicit_aux_release(&((l)->AO_ptr), e, &((l)->AO_aux))
 #define AO_HAVE_stack_push_release
 
 #define AO_stack_pop_acquire(l) \
-	AO_stack_pop_explicit_aux_acquire(&((l)->AO_ptr), &((l)->AO_aux))
+        AO_stack_pop_explicit_aux_acquire(&((l)->AO_ptr), &((l)->AO_aux))
 #define AO_HAVE_stack_pop_acquire
 
-# else /* Use fully non-blocking data structure, wide CAS	*/
+# else /* Use fully non-blocking data structure, wide CAS       */
 
 #ifndef AO_HAVE_double_t
-  /* Can happen if we're using CAS emulation, since we don't want to	*/
-  /* force that here, in case other atomic_ops clients don't want it.	*/
+  /* Can happen if we're using CAS emulation, since we don't want to    */
+  /* force that here, in case other atomic_ops clients don't want it.   */
 # include "atomic_ops/sysdeps/standard_ao_double_t.h"
 #endif
 
 typedef volatile AO_double_t AO_stack_t;
-/* AO_val1 is version, AO_val2 is pointer.	*/
+/* AO_val1 is version, AO_val2 is pointer.      */
 
 #define AO_STACK_INITIALIZER {0}
 

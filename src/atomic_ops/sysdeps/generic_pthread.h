@@ -1,40 +1,40 @@
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE. 
+ * SOFTWARE.
  */
 
-/* The following is useful primarily for debugging and documentation.	*/
-/* We define various atomic operations by acquiring a global pthread 	*/
-/* lock.  The resulting implementation will perform poorly, but should	*/
-/* be correct unless it is used from signal handlers.			*/
-/* We assume that all pthread operations act like full memory barriers.	*/
-/* (We believe that is the intent of the specification.)		*/
+/* The following is useful primarily for debugging and documentation.   */
+/* We define various atomic operations by acquiring a global pthread    */
+/* lock.  The resulting implementation will perform poorly, but should  */
+/* be correct unless it is used from signal handlers.                   */
+/* We assume that all pthread operations act like full memory barriers. */
+/* (We believe that is the intent of the specification.)                */
 
 #include <pthread.h>
 
 #include "test_and_set_t_is_ao_t.h"
-	/* This is not necessarily compatible with the native		*/
-	/* implementation.  But those can't be safely mixed anyway.	*/
+        /* This is not necessarily compatible with the native           */
+        /* implementation.  But those can't be safely mixed anyway.     */
 
-/* We define only the full barrier variants, and count on the 		*/
-/* generalization section below to fill in the rest.			*/
+/* We define only the full barrier variants, and count on the           */
+/* generalization section below to fill in the rest.                    */
 extern pthread_mutex_t AO_pt_lock;
 
 AO_INLINE void
@@ -219,7 +219,7 @@ AO_or_full(volatile AO_t *p, AO_t incr)
 
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr,
-		             AO_t old, AO_t new_val) 
+                             AO_t old, AO_t new_val)
 {
   pthread_mutex_lock(&AO_pt_lock);
   if (*addr == old)
@@ -238,16 +238,16 @@ AO_compare_and_swap_full(volatile AO_t *addr,
 /* Unlike real architectures, we define both double-width CAS variants. */
 
 typedef struct {
-	AO_t AO_val1;
-	AO_t AO_val2;
+        AO_t AO_val1;
+        AO_t AO_val2;
 } AO_double_t;
 
 #define AO_HAVE_double_t
 
 AO_INLINE int
 AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
-		             	       AO_t old1, AO_t old2,
-				       AO_t new1, AO_t new2) 
+                                       AO_t old1, AO_t old2,
+                                       AO_t new1, AO_t new2)
 {
   pthread_mutex_lock(&AO_pt_lock);
   if (addr -> AO_val1 == old1 && addr -> AO_val2 == old2)
@@ -266,8 +266,8 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 
 AO_INLINE int
 AO_compare_and_swap_double_full(volatile AO_double_t *addr,
-		             	AO_t old1,
-				AO_t new1, AO_t new2) 
+                                AO_t old1,
+                                AO_t new1, AO_t new2)
 {
   pthread_mutex_lock(&AO_pt_lock);
   if (addr -> AO_val1 == old1)
@@ -284,6 +284,5 @@ AO_compare_and_swap_double_full(volatile AO_double_t *addr,
 
 #define AO_HAVE_compare_and_swap_double_full
 
-/* We can't use hardware loads and stores, since they don't	*/
-/* interact correctly with atomic updates.			*/
-
+/* We can't use hardware loads and stores, since they don't     */
+/* interact correctly with atomic updates.                      */

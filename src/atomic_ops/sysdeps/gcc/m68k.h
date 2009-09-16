@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 1999-2003 by Hewlett-Packard Company. All rights reserved.
@@ -15,16 +15,16 @@
  *
  */
 
-/* The cas instruction causes an emulation trap for the	*/
-/* 060 with a misaligned pointer, so let's avoid this.	*/
+/* The cas instruction causes an emulation trap for the */
+/* 060 with a misaligned pointer, so let's avoid this.  */
 #undef AO_t
 typedef unsigned long AO_t __attribute__ ((aligned (4)));
 
 /* FIXME.  Very incomplete.  */
 #include "../all_aligned_atomic_load_store.h"
 
-/* Are there any m68k multiprocessors still around?  	*/
-/* AFAIK, Alliants were sequentially consistent.	*/
+/* Are there any m68k multiprocessors still around?     */
+/* AFAIK, Alliants were sequentially consistent.        */
 #include "../ordered.h"
 
 #include "../test_and_set_t_is_char.h"
@@ -34,15 +34,15 @@ AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr) {
   AO_TS_t oldval;
 
-  /* The value at addr is semi-phony.	*/
-  /* 'tas' sets bit 7 while the return	*/
-  /* value pretends all bits were set,	*/
-  /* which at least matches AO_TS_SET.	*/
+  /* The value at addr is semi-phony.   */
+  /* 'tas' sets bit 7 while the return  */
+  /* value pretends all bits were set,  */
+  /* which at least matches AO_TS_SET.  */
   __asm__ __volatile__(
-		"tas %1; sne %0"
-		: "=d" (oldval), "=m" (*addr)
-		: "m" (*addr)
-		: "memory");
+                "tas %1; sne %0"
+                : "=d" (oldval), "=m" (*addr)
+                : "m" (*addr)
+                : "memory");
    return oldval;
 }
 
@@ -51,15 +51,15 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
 /* Returns nonzero if the comparison succeeded. */
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr,
-			 AO_t old, AO_t new_val)
+                         AO_t old, AO_t new_val)
 {
   char result;
 
   __asm__ __volatile__(
-		"cas.l %3,%4,%1; seq %0"
-		: "=d" (result), "=m" (*addr)
-		: "m" (*addr), "d" (old), "d" (new_val)
-		: "memory");
+                "cas.l %3,%4,%1; seq %0"
+                : "=d" (result), "=m" (*addr)
+                : "m" (*addr), "d" (old), "d" (new_val)
+                : "memory");
   return -result;
 }
 

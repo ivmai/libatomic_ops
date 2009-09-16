@@ -79,33 +79,33 @@ one of the following, where the corresponding argument and result types
 are also specified:
 
 void nop()
-	No atomic operation.  The barrier may still be useful.
+        No atomic operation.  The barrier may still be useful.
 AO_t load(const volatile AO_t * addr)
-	Atomic load of *addr.
+        Atomic load of *addr.
 void store(volatile AO_t * addr, AO_t new_val)
-	Atomically store new_val to *addr.
+        Atomically store new_val to *addr.
 AO_t fetch_and_add(volatile AO_t *addr, AO_t incr)
-	Atomically add incr to *addr, and return the original value of *addr.
+        Atomically add incr to *addr, and return the original value of *addr.
 AO_t fetch_and_add1(volatile AO_t *addr)
-	Equivalent to AO_fetch_and_add(addr, 1).
+        Equivalent to AO_fetch_and_add(addr, 1).
 AO_t fetch_and_sub1(volatile AO_t *addr)
-	Equivalent to AO_fetch_and_add(addr, (AO_t)(-1)).
+        Equivalent to AO_fetch_and_add(addr, (AO_t)(-1)).
 void or(volatile AO_t *addr, AO_t incr)
-	Atomically or incr into *addr.
+        Atomically or incr into *addr.
 int compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
-	Atomically compare *addr to old_val, and replace *addr by new_val
-	if the first comparison succeeds.  Returns nonzero if the comparison
-	succeeded and *addr was updated.
+        Atomically compare *addr to old_val, and replace *addr by new_val
+        if the first comparison succeeds.  Returns nonzero if the comparison
+        succeeded and *addr was updated.
 AO_TS_VAL_t test_and_set(volatile AO_TS_t * addr)
-	Atomically read the binary value at *addr, and set it.  AO_TS_VAL_t
-	is an enumeration type which includes the two values AO_TS_SET and
-	and AO_TS_CLEAR.  An AO_TS_t location is capable of holding an
-	AO_TS_VAL_t, but may be much larger, as dictated by hardware
-	constraints.  Test_and_set logically sets the value to AO_TS_SET.
-	It may be reset to AO_TS_CLEAR with the AO_CLEAR(AO_TS_t *) macro.
-	AO_TS_t locations should be initialized to AO_TS_INITIALIZER.
-	The values of AO_TS_SET and AO_TS_CLEAR are hardware dependent.
-	(On PA-RISC, AO_TS_SET is zero!)
+        Atomically read the binary value at *addr, and set it.  AO_TS_VAL_t
+        is an enumeration type which includes the two values AO_TS_SET and
+        and AO_TS_CLEAR.  An AO_TS_t location is capable of holding an
+        AO_TS_VAL_t, but may be much larger, as dictated by hardware
+        constraints.  Test_and_set logically sets the value to AO_TS_SET.
+        It may be reset to AO_TS_CLEAR with the AO_CLEAR(AO_TS_t *) macro.
+        AO_TS_t locations should be initialized to AO_TS_INITIALIZER.
+        The values of AO_TS_SET and AO_TS_CLEAR are hardware dependent.
+        (On PA-RISC, AO_TS_SET is zero!)
 
 Test_and_set is a more limited version of compare_and_swap.  Its only
 advantage is that it is more easily implementable on some hardware.  It
@@ -121,12 +121,12 @@ where the second replaces a double-width replacement, but performs
 a single-width comparison:
 
 int compare_double_and_swap_double(volatile AO_double_t * addr,
-				   AO_t old_val1, AO_t old_val2,
-				   AO_t new_val1, AO_t new_val2);
+                                   AO_t old_val1, AO_t old_val2,
+                                   AO_t new_val1, AO_t new_val2);
 
 int compare_and_swap_double(volatile AO_double_t * addr,
-			    AO_t old_val1,
-			    AO_t new_val1, AO_t new_val2);
+                            AO_t old_val1,
+                            AO_t new_val1, AO_t new_val2);
 
 where AO_double_t is a structure containing AO_val1 and AO_val2 fields,
 both of type AO_t.  For compare_and_swap_double, we compare against
@@ -147,7 +147,7 @@ Ordering suffixes are one of the following:
 
 <none>: No memory barrier.  A plain AO_nop() really does nothing.
 _release: Earlier operations must become visible to other threads
-	  before the atomic operation.
+          before the atomic operation.
 _acquire: Later operations must become visible after this operation.
 _read: Subsequent reads must become visible after reads included in
        the atomic operation or preceding it.  Rarely useful for clients?
@@ -157,23 +157,23 @@ _full: Ordered with respect to both earlier and later memops.
        AO_store_full or AO_nop_full are the normal ways to force a store
        to be ordered with respect to a later load.
 _release_write: Ordered with respect to earlier writes.  This is
-	        normally implemented as either a _write or _release
-		barrier.
+                normally implemented as either a _write or _release
+                barrier.
 _dd_acquire_read: Ordered with respect to later reads that are data
-	       dependent on this one.  This is needed on
-	       a pointer read, which is later dereferenced to read a
-	       second value, with the expectation that the second
-	       read is ordered after the first one.  On most architectures,
-	       this is equivalent to no barrier.  (This is very
-	       hard to define precisely.  It should probably be avoided.
-	       A major problem is that optimizers tend to try to
-	       eliminate dependencies from the generated code, since
-	       dependencies force the hardware to execute the code
-	       serially.)
+               dependent on this one.  This is needed on
+               a pointer read, which is later dereferenced to read a
+               second value, with the expectation that the second
+               read is ordered after the first one.  On most architectures,
+               this is equivalent to no barrier.  (This is very
+               hard to define precisely.  It should probably be avoided.
+               A major problem is that optimizers tend to try to
+               eliminate dependencies from the generated code, since
+               dependencies force the hardware to execute the code
+               serially.)
 _release_read: Ordered with respect to earlier reads.  Useful for
-	       implementing read locks.  Can be implemented as _release,
-	       but not as _read, since _read groups the current operation
-	       with the earlier ones.
+               implementing read locks.  Can be implemented as _release,
+               but not as _read, since _read groups the current operation
+               with the earlier ones.
 
 We assume that if a store is data-dependent on an a previous load, then
 the two are always implicitly ordered.
