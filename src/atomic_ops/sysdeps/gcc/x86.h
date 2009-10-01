@@ -141,7 +141,7 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                        AO_t new_val1, AO_t new_val2)
 {
   char result;
-  #if __PIC__
+#if __PIC__
   /* If PIC is turned on, we can't use %ebx as it is reserved for the
      GOT pointer.  We can save and restore %ebx because GCC won't be
      using it for anything else (such as any of the m operands) */
@@ -152,7 +152,7 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                        : "=m"(*addr), "=q"(result)
                        : "m"(*addr), "d" (old_val2), "a" (old_val1),
                          "c" (new_val2), "m" (new_val1) : "memory");
-  #else
+#else
   /* We can't just do the same thing in non-PIC mode, because GCC
    * might be using %ebx as the memory operand.  We could have ifdef'd
    * in a clobber, but there's no point doing the push/pop if we don't
@@ -161,7 +161,7 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                        : "=m"(*addr), "=q"(result)
                        : "m"(*addr), "d" (old_val2), "a" (old_val1),
                          "c" (new_val2), "b" (new_val1) : "memory");
-  #endif
+#endif
   return (int) result;
 }
 
