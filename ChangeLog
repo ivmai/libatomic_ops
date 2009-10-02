@@ -1,3 +1,10 @@
+2009-10-02  Ivan Maidanski <ivmai@mail.ru>
+
+	* Makefile.am: Add armcc/arm_v6.h, msftc/arm.h,
+	msftc/common32_defs.h, sunc/x86.h sunc/x86_64.h entries; order all
+	entries alphabetically.
+	* Makefile.in: Regenerate.
+
 2009-10-01  Ivan Maidanski <ivmai@mail.ru>
 
 	* aclocal.m4: Regenerate (by autoreconf -vif using libtool-2.2,
@@ -30,7 +37,7 @@
 	* README: Move notes from the hand-edited part of INSTALL which
 	was overwritten by Automake recently.
 
-2009-09-26 Ivan Maidanski <ivmai@mail.ru>
+2009-09-26  Ivan Maidanski <ivmai@mail.ru>
 
 	* aclocal.m4: Regenerate (by autoreconf -vif).
 	* config.guess: Ditto.
@@ -45,11 +52,12 @@
 	* src/atomic_ops/sysdeps/Makefile.in: Ditto.
 	* tests/Makefile.in: Ditto.
 
-2009-09-25 Ivan Maidanski <ivmai@mail.ru> (really Petter Urkedal)
+2009-09-25  Ivan Maidanski <ivmai@mail.ru> (really Petter Urkedal)
 
 	* configure.ac: Replace AC_PROG_CC with AM_PROG_CC_C_O.
 
-2009-09-16 Ivan Maidanski <ivmai@mail.ru>
+2009-09-16  Ivan Maidanski <ivmai@mail.ru>
+
 	* ChangeLog: Remove trailing spaces at EOLn.
 	* doc/README.txt: Expand all tabs to spaces; remove trailing
 	spaces at EOLn; remove multiple trailing blank lines.
@@ -105,8 +113,9 @@
 	comment.
 	* src/atomic_ops/sysdeps/gcc/mips.h: Use Unix-style EOLn.
 
-2009-09-10 Ivan Maidanski <ivmai@mail.ru>
+2009-09-10  Ivan Maidanski <ivmai@mail.ru>
 	(ivmai123.diff)
+
 	* src/atomic_ops/sysdeps/msftc/arm.h: Add FIXME for InterlockedOps
 	(regarding memory barrier).
 	* src/atomic_ops/sysdeps/msftc/arm.h: Don't recognize
@@ -121,8 +130,9 @@
 	all_atomic_load_store.h and test_and_set_t_is_ao_t.h for the case
 	of pre-ARMv6; add the comment.
 
-2009-09-10 Ivan Maidanski <ivmai@mail.ru>
+2009-09-10  Ivan Maidanski <ivmai@mail.ru>
 	(ivmai122.diff)
+
 	* src/atomic_ops/sysdeps/armcc/arm_v6.h
 	(AO_compare_double_and_swap_double): Replace false/true with 0/1.
 	* src/atomic_ops/sysdeps/gcc/arm.h
@@ -150,8 +160,9 @@
 	AO_compare_double_and_swap_double_emulation): Don't deal with
 	signals in case of AO_USE_WIN32_PTHREADS.
 
-2009-09-10 Ivan Maidanski <ivmai@mail.ru>
+2009-09-10  Ivan Maidanski <ivmai@mail.ru>
 	(diff110)
+
 	* src/atomic_ops/sysdeps/msftc/arm.h: New file (initial support
 	for ARM family).
 	* src/atomic_ops/sysdeps/msftc/common32_defs.h: New file.
@@ -181,8 +192,9 @@
 	on x86).
 	* src/atomic_ops.h: Include msftc/arm.h if ARM target (for WinCE).
 
-2009-09-10 Ivan Maidanski <ivmai@mail.ru>
+2009-09-10  Ivan Maidanski <ivmai@mail.ru>
 	(diff109_cvs)
+
 	* src/atomic_ops/sysdeps/msftc/x86.h: Fix comments (prefix
 	ASSUME_WINDOWS98 with "AO_").
 	* src/atomic_ops/sysdeps/msftc/x86.h: Prefix ASSUME_VISTA macro with
@@ -209,8 +221,9 @@
 	* src/atomic_ops/sysdeps/msftc/x86.h: Replace C++ style comment
 	with ANSI C one.
 
-2009-09-10 Ivan Maidanski <ivmai@mail.ru>
+2009-09-10  Ivan Maidanski <ivmai@mail.ru>
 	(diff108_cvs)
+
 	* src/atomic_ops/sysdeps/gcc/x86_64.h: Remove comments about i486
 	and 32-bit WinChips.
 	* src/atomic_ops/sysdeps/msftc/x86_64.h: Ditto.
@@ -253,17 +266,19 @@
 	(AO_HAVE_DOUBLE_PTR_STORAGE): Define it always (as
 	"double_ptr_storage" is defined for all cases).
 
-2009-09-09 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Patrick Marlier)
+2009-09-09  Hans Boehm <Hans.Boehm@hp.com> (Really mostly Patrick Marlier)
+
 	* src/atomic_ops/sysdeps/gcc/sparc.h (NO_SPARC_V9):
 	Renamed to AO_NO_SPARC_V9.
 
-2009-09-01 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Patrick Marlier)
+2009-09-01  Hans Boehm <Hans.Boehm@hp.com> (Really mostly Patrick Marlier)
+
 	* src/atomic_ops/sysdeps/gcc/sparc.h (AO_test_and_set_full): Use
 	AO_TS_VAL_t for "oldval" (for 64-bit support).
 	* src/atomic_ops/sysdeps/gcc/sparc.h (AO_compare_and_swap_full):
 	New function implemented.
 
-2009-08-12 Hans Boehm <Hans.Boehm@hp.com> (Really Ivan Maidanski)
+2009-08-12  Hans Boehm <Hans.Boehm@hp.com> (Really Ivan Maidanski)
 	(diff107_cvs, resembling diff78 and diff88_cvs)
 
 	* src/atomic_ops/sysdeps/sunc/x86.h: New file.
@@ -280,8 +295,9 @@
 	* src/atomic_ops.h: Include VC-specific arch headers for Borland,
 	DigitalMars and Watcom (Win32 target only).
 
-2009-05-27 Hans Boehm <Hans.Boehm@hp.com> (Really Ivan Maidanski)
+2009-05-27  Hans Boehm <Hans.Boehm@hp.com> (Really Ivan Maidanski)
 	(diff87_cvs, resembling diff29, diff68, diff78 partly)
+
 	* doc/README.txt: Remove outdated info about Windows support.
 	* src/atomic_ops/generalize.h (AO_nop_full): Replace
 	K&R-style function definition with ANSI C one.
@@ -302,24 +318,28 @@
 	* src/atomic_ops/sysdeps/test_and_set_t_is_ao_t.h (AO_TS_val): Fix
 	comment.
 
-2009-02-24 Hans Boehm <Hans.Boehm@hp.com> (Really primarily Earl Chew)
+2009-02-24  Hans Boehm <Hans.Boehm@hp.com> (Really primarily Earl Chew)
+
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Add index,
 	update modifiers to asms, refine clobbers to "cr0", use
 	cr0 instead of cr7, add explicit AO_fetch_and_add,
 	add UNTESTED 64 bit support.
 
-2008-11-10 Hans Boehm <Hans.Boehm@hp.com> (Really Joerg Wagner)
+2008-11-10  Hans Boehm <Hans.Boehm@hp.com> (Really Joerg Wagner)
+
 	* src/atomic_ops/sysdeps/armcc/arm_v6.h: Compute
 	AO_compare_and_swap value differently, add
 	AO_compare_double_and_swap_double, some indentation fixes.
 	* src/atomic_ops/sysdeps/gcc/arm.h: Make gcc asm code more
 	robust and minimize clobbers, Add AO_compare_double_and_swap_double.
 
-2008-11-06 Hans Boehm <Hans.Boehm@hp.com>
+2008-11-06  Hans Boehm <Hans.Boehm@hp.com>
+
 	* INSTALL: Add some platform-specific documentation.
 	* src/Makefile.msft: Fix copyright notice.
 
-2008-10-21 Hans Boehm <Hans.Boehm@hp.com>  (really Ivan Maidanski)
+2008-10-21  Hans Boehm <Hans.Boehm@hp.com>  (really Ivan Maidanski)
+
 	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h: Fix comments.
 	* src/atomic_ops/sysdeps/all_aligned_atomic_load_store.h: Fix comments.
 	* src/atomic_ops/sysdeps/all_atomic_load_store.h: Fix comments.
@@ -339,30 +359,37 @@
 	* src/atomic_ops_stack.c: Fix comments.
 	* src/atomic_ops_stack.h: Fix comments.
 
-2008-10-20 Hans Boehm <Hans.Boehm@hp.com>  (really Andrew Agno)
+2008-10-20  Hans Boehm <Hans.Boehm@hp.com>  (really Andrew Agno)
+
 	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_int_fetch_and_add_full):
 	fix return type.
 
-2008-08-21 Hans Boehm <Hans.Boehm@hp.com>
+2008-08-21  Hans Boehm <Hans.Boehm@hp.com>
+
 	* config.guess, config.sub, configure: Regenerate/replace.
 	Use autoconf 2.61, automake 1.9.6.
 
-2008-08-19 Hans Boehm <Hans.Boehm@hp.com> (really Thiemo Seufer)
+2008-08-19  Hans Boehm <Hans.Boehm@hp.com> (really Thiemo Seufer)
+
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Add %U1 (update) to lwz
 	instruction.
 
-2008-08-19 Hans Boehm <Hans.Boehm@hp.com> (really Sebastian Siewior)
+2008-08-19  Hans Boehm <Hans.Boehm@hp.com> (really Sebastian Siewior)
+
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Consider __NO_LWSYNC__.
 
-2008-07-24 Hans Boehm <Hans.Boehm@hp.com> (really Ivan Maidanski)
+2008-07-24  Hans Boehm <Hans.Boehm@hp.com> (really Ivan Maidanski)
+
 	* src/atomic_ops/sysdeps/ao_t_is_int.h, src/atomic_ops.h:
 	Add parentheses around addr arg for various functions.
 
-2008-07-18 Hans Boehm <Hans.Boehm@hp.com>
+2008-07-18  Hans Boehm <Hans.Boehm@hp.com>
+
 	* src/atomic_ops/sysdeps/gcc/powerpc.h:
 	Add const to first parameter of load calls (forgot one).
 
-2008-07-18 Hans Boehm <Hans.Boehm@hp.com>
+2008-07-18  Hans Boehm <Hans.Boehm@hp.com>
+
 	* doc/README.txt, src/atomic_ops/generalize.h,
 	src/atomic_ops/generalize-small.template,
 	src/atomic_ops/generalize-small.h,
@@ -386,21 +413,25 @@
 	src/atomic_ops/sysdeps/ibmc/powerpc.h:
 	Add const to first parameter of load calls.
 
-2008-07-10 Hans Boehm <Hans.Boehm@hp.com>
+2008-07-10  Hans Boehm <Hans.Boehm@hp.com>
+
 	* src/atomic_ops/sysdeps/gcc/m68k.h: Remove SMP-unsafe
 	AO_or_full, and let it be autogenerated instead.
 
-2008-07-03 Hans Boehm <Hans.Boehm@hp.com> (Really Thiemo Seufer)
+2008-07-03  Hans Boehm <Hans.Boehm@hp.com> (Really Thiemo Seufer)
+
 	* src/atomic_ops/sysdeps/gcc/mips.h: Really add mips support,
 	fixing a merge accident.
 
-2008-05-30 Hans Boehm <Hans.Boehm@hp.com> (Really from various Debian
+2008-05-30  Hans Boehm <Hans.Boehm@hp.com> (Really from various Debian
 	contributors)
+
 	* doc/Makefile.in, src/Makefile.in, src/atomic_ops/Makefile.in:
 	Regenerate.
 
-2008-05-30 Hans Boehm <Hans.Boehm@hp.com> (Really from various Debian
+2008-05-30  Hans Boehm <Hans.Boehm@hp.com> (Really from various Debian
 	contributors)
+
 	* src/atomic_ops.h, src/atomic_ops/sysdeps/Makefile.am,
 	src/atomic_ops/sysdeps/gcc/mips.h: Add mips support.
 	* src/atomic_ops/sysdeps/gcc/m68k.h: Make test_and_set work
@@ -410,21 +441,25 @@
 	* Makefile.in, aclocal.m4, src/atomic_ops/sysdeps/Makefile.in,
 	tests/Makefile.in: Regenerate.
 
-2008-02-11 Hans Boehm <Hans.Boehm@hp.com>
+2008-02-11  Hans Boehm <Hans.Boehm@hp.com>
 	   (Really Ian Wienand & Debian maintainers)
+
 	* src/atomic_ops/sysdeps/gcc/x86.h
 	(AO_compare_double_and_swap_double_full): Correctly account for
 	ebx usage with PIC.
 
-2008-01-09 Hans Boehm <Hans.Boehm@hp.com>
+2008-01-09  Hans Boehm <Hans.Boehm@hp.com>
+
 	* src/atomic_ops/sysdeps/standard_ao_double_t.h: Let
 	double_ptr_storage default to long long; define everywhere.
 
-2008-01-08 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Joerg Wagner)
+2008-01-08  Hans Boehm <Hans.Boehm@hp.com> (Really mostly Joerg Wagner)
+
 	* src/atomic_ops/sysdeps/msftc/x86.h: Conditionally add
 	compare_double_and_swap_double.
 
-2008-01-06 Hans Boehm <Hans.Boehm@hp.com> (Really mostly Joerg Wagner)
+2008-01-06  Hans Boehm <Hans.Boehm@hp.com> (Really mostly Joerg Wagner)
+
 	* src/atomic_ops/generalize.h: Add test_and_set generalizations,
 	Add AO_double_compare_and_swap generalizations.
 	* src/atomic_ops/sysdeps/armcc/arm_v6.h: New file.
@@ -435,66 +470,79 @@
 	* src/atomic_ops/sysdeps/standard_ao_double_t.h:  Add
 	double_ptr_storage field.
 
-2008-01-03 Hans Boehm <Hans.Boehm@hp.com>
+2008-01-03  Hans Boehm <Hans.Boehm@hp.com>
 	(Merge from separate atomic_ops tree)
+
 	* src/atomic_ops/sysdeps/gcc/x86.h: Define correct macro for
 	double-width cas, and fix its implementation.
 	* doc/README.txt: Clarify use of _full.  Add more warnings about
 	data dependencies.
 
-2008-01-02 Hans Boehm <Hans.Boehm@hp.com>
+2008-01-02  Hans Boehm <Hans.Boehm@hp.com>
+
 	* src/atomic_ops/sysdeps/gcc/powerpc.h (AO_load_acquire): Add
 	%X1 modifier to support indexed addressing.
 
-2007-07-23 Hans Boehm <Hans.Boehm@hp.com> (really Jim Marshall)
+2007-07-23  Hans Boehm <Hans.Boehm@hp.com> (really Jim Marshall)
+
 	* src/atomic_ops/sysdeps/msftc/x86.h (_InterlockedExchangeAdd): Define
 	for VC++6.
 
 2007-07-05  Andreas Tobler  <a.tobler@schweiz.org>
+
 	* src/atomic_ops.h: Check for __powerpc64__ and __ppc64__ to include
 	powerpc.h.
 
-2007-06-26 Hans Boehm <Hans.Boehm@hp.com> (really Luca Barbato)
+2007-06-26  Hans Boehm <Hans.Boehm@hp.com> (really Luca Barbato)
+
 	* src/atomic_ops/sysdeps/gcc/powerpc.h (AO_load_acquire): Add
 	64-bit version.
 
-2007-06-13 Hans Boehm <Hans.Boehm@hp.com>
+2007-06-13  Hans Boehm <Hans.Boehm@hp.com>
+
 	* src/atomic_ops.h: include stddef.h
 
-2007-06-06 Hans Boehm <Hans.Boehm@hp.com>
+2007-06-06  Hans Boehm <Hans.Boehm@hp.com>
+
 	* src/atomic_ops/sysdeps/msftc/x86_64.h: New file.
 	* src/atomic_ops.h: Add test for msftc/x86_64.h.
 	* src/atomic_ops/sysdeps/msftc/x86.h: Complain for _WIN64.
 	* src/atomic_ops/sysdeps/Makefile.am: Add x86_64.h.
 	* src/atomic_ops/sysdeps/Makefile.in: Regenerate.
 	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h,
-	  src/atomic_ops/sysdeps/int_aligned_atomic_load_store.h,
-	  src/atomic_ops/sysdeps/short_aligned_atomic_load_store.h:
-	  Replace unsigned long cast with size_t.
+	src/atomic_ops/sysdeps/int_aligned_atomic_load_store.h,
+	src/atomic_ops/sysdeps/short_aligned_atomic_load_store.h:
+	Replace unsigned long cast with size_t.
 
-2007-05-17 Hans Boehm <Hans.Boehm@hp.com>
+2007-05-17  Hans Boehm <Hans.Boehm@hp.com>
+
 	* src/atomic_ops/sysdeps/gcc/hppa.h (AO_test_and_set_full):
 	Add cast for return.
 
-2007-05-14 Hans Boehm <Hans.Boehm@hp.com>
-	doc/README.txt: Update to reflect C++0x effort.
+2007-05-14  Hans Boehm <Hans.Boehm@hp.com>
+
+	* doc/README.txt: Update to reflect C++0x effort.
 
 2007-05-07  Hans Boehm <Hans.Boehm@hp.com> (with help from Philipp Zambelli)
+
 	* src/atomic_ops/sysdeps/msftc/x86.h: Don't just assume that mfence
 	is present.
 	* src/atomic_ops/sysdeps/gcc/arm.h (AO_test_and_set_full): Correct
 	oldval type.
 
-2006-11-09 Earl Chew (Agilent)
+2006-11-09  Earl Chew (Agilent)
+
 	* msftc/x86.h: Follow Microsoft documentation and include
 	windows.h.
 
 [1.2 release]
 
-2006-07-11 Hans Boehm <Hans.Boehm@hp.com>
+2006-07-11  Hans Boehm <Hans.Boehm@hp.com>
+
 	* src/atomic_ops/sysdeps/hpc/ia64.h: Fix typos.
 
-2006-03-28 Earl Chew (Agilent)
+2006-03-28  Earl Chew (Agilent)
+
 	* src/atomic_ops/sysdeps/gcc/powerpc.h: Remove unused variable cr.
 	* src/atomic_ops/sysdeps/msftc/x86.h:
 	Use new intrinsics available in MSVC 2003 and MSVC 2005.
@@ -505,40 +553,45 @@
 	* tests/test_atomic.c, tests/test_atomic_include.h: Add prototypes
 	to silence compiler warnings.
 
-2006-1-13 Hans Boehm <Hans.Boehm@hp.com>
-	*src/atomic_ops/sysdeps/gcc/powerpc.h: Beginnings of 64 bit support.
-	*src/atomic_ops/sysdeps/gcc/x86.h: Use "=q" for AO_test_and_set_full.
+2006-11-13  Hans Boehm <Hans.Boehm@hp.com>
 
-2005-11-4 Hans Boehm <Hans.Boehm@hp.com>
-	*src/atomic_ops/sysdeps/gcc/ia64.h: Include
+	* src/atomic_ops/sysdeps/gcc/powerpc.h: Beginnings of 64 bit support.
+	* src/atomic_ops/sysdeps/gcc/x86.h: Use "=q" for AO_test_and_set_full.
+
+2005-11-04  Hans Boehm <Hans.Boehm@hp.com>
+
+	* src/atomic_ops/sysdeps/gcc/ia64.h: Include
 	all_acquire_release_volatile.h, instead of just the pointer-sized
 	version.
-	*src/atomic_ops/sysdeps/gcc/ia64.h: Include
+	* src/atomic_ops/sysdeps/gcc/ia64.h: Include
 	all_acquire_release_volatile.h and all_atomic_load_store.h,
 	instead of just the pointer-sized versions.
 
 [1.1 release]
 
-2005-09-27 Hans Boehm <Hans.Boehm@hp.com>
-	*src/atomic_ops.h: Define AO_CAN_EMUL_CAS for arm.
-	*src/atomic_ops/sysdeps/read_ordered.h: New file, extracted from
-	ordered_except_wr.h.
-	*src/atomic_ops/sysdeps/ordered_except_wr.h: include read_ordered.h
-	instead of duplicating it.
-	*src/atomic_ops/sysdeps/gcc/arm.h: Include read_ordered.h.
+2005-09-27  Hans Boehm <Hans.Boehm@hp.com>
 
-2005-09-16 Hans Boehm <Hans.Boehm@hp.com>
-	*src/atomic_ops/sysdeps/gcc/arm.h: Replace the AO_test_and_set
+	* src/atomic_ops.h: Define AO_CAN_EMUL_CAS for arm.
+	* src/atomic_ops/sysdeps/read_ordered.h: New file, extracted from
+	ordered_except_wr.h.
+	* src/atomic_ops/sysdeps/ordered_except_wr.h: include read_ordered.h
+	instead of duplicating it.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Include read_ordered.h.
+
+2005-09-16  Hans Boehm <Hans.Boehm@hp.com>
+
+	* src/atomic_ops/sysdeps/gcc/arm.h: Replace the AO_test_and_set
 	definition with one that might actually work.  (Thanks to Kazu
 	Hirata and Paul Brook.)
 
-2005-08-01 Hans Boehm <Hans.Boehm@hp.com>
-	*src/atomic_ops/Makefile.am: Change function naming from "byte" to
+2005-08-01  Hans Boehm <Hans.Boehm@hp.com>
+
+	* src/atomic_ops/Makefile.am: Change function naming from "byte" to
 	"char" (again).
 
 [1.0 release]
 
-2005-03-21 Hans Boehm <Hans.Boehm@hp.com>
+2005-03-21  Hans Boehm <Hans.Boehm@hp.com>
 	Fix various acquire_release_volatile.h files to reflect the fact
 	that both icc and gcc seem to reorder ordinary memory accesses around
 	volatile accesses early in the compilation. Modify the acquire
@@ -580,18 +633,20 @@
 	compare_double_and_swap_double and compare_and_swap_double.
 	Typically each platform will provide at most one of these.
 
-2004-07-02 Ranko Zivojnovic
+2004-07-02  Ranko Zivojnovic
 	Replace both instances of AO_HAVE_NOP_FULL with AO_HAVE_nop_full.
 
 2004-06 Hans Boehm <Hans.Boehm@hp.com>
 	Start to add atomic_ops primitives for different sized data.
 
 2003-12-18  Hans Boehm  <Hans.Boehm@hp.com>
+
 	* atomic_ops/sysdeps/acquire_release_volatile.h, atomic_ops.h:
 	Fix support for ecc on IA64.  Remove compiler_barrier workaround
 	for gcc 3.4 and later.
 
 2003-12-17  Hans Boehm  <Hans.Boehm@hp.com>
+
 	* atomic_ops/sysdeps/hpc/{ia64.h,hppa.h},
 	atomic_ops/sysdeps/msftc/x86.h, Makefile, Makefile.atomic_ops,
 	Makefile.atomic_ops.msft, atomic_ops.h: Add initial support

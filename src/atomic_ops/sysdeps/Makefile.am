@@ -24,22 +24,23 @@ nobase_sysdep_HEADERS= generic_pthread.h \
 	  standard_ao_double_t.h \
 	  README \
 	\
-	  gcc/alpha.h gcc/arm.h gcc/x86.h \
-	  gcc/hppa.h gcc/ia64.h \
-	  gcc/powerpc.h gcc/sparc.h \
-	  gcc/hppa.h gcc/m68k.h gcc/mips.h gcc/s390.h \
-	  gcc/ia64.h gcc/x86_64.h gcc/cris.h \
+	  armcc/arm_v6.h \
+	\
+	  gcc/alpha.h gcc/arm.h gcc/cris.h \
+	  gcc/hppa.h gcc/ia64.h gcc/m68k.h \
+	  gcc/mips.h gcc/powerpc.h gcc/s390.h \
+	  gcc/sparc.h gcc/x86.h gcc/x86_64.h \
+	\
+	  hpc/hppa.h hpc/ia64.h \
+	\
+	  ibmc/powerpc.h \
 	\
 	  icc/ia64.h \
 	\
-	  msftc/x86.h \
+	  msftc/arm.h msftc/common32_defs.h msftc/x86.h \
 	  msftc/x86_64.h \
 	\
-	  hpc/ia64.h hpc/hppa.h \
-	\
-	  sunc/sparc.h \
-	\
-	  ibmc/powerpc.h
+	  sunc/sparc.h sunc/x86.h sunc/x86_64.h
 
 sysdepdir= ${includedir}/atomic_ops/sysdeps
 
