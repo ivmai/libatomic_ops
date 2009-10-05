@@ -29,7 +29,7 @@ nobase_sysdep_HEADERS= generic_pthread.h \
 	  gcc/alpha.h gcc/arm.h gcc/cris.h \
 	  gcc/hppa.h gcc/ia64.h gcc/m68k.h \
 	  gcc/mips.h gcc/powerpc.h gcc/s390.h \
-	  gcc/sparc.h gcc/x86.h gcc/x86_64.h \
+	  gcc/sh.h gcc/sparc.h gcc/x86.h gcc/x86_64.h \
 	\
 	  hpc/hppa.h hpc/ia64.h \
 	\

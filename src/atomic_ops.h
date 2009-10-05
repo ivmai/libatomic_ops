@@ -241,6 +241,10 @@
 # if defined(__mips__)
 #   include "atomic_ops/sysdeps/gcc/mips.h"
 # endif /* __mips__ */
+# if defined(__sh__) || defined(SH4)
+#   include "atomic_ops/sysdeps/gcc/sh.h"
+#   define AO_CAN_EMUL_CAS
+# endif /* __sh__ */
 #endif /* __GNUC__ && !AO_USE_PTHREAD_DEFS */
 
 #if defined(__INTEL_COMPILER) && !defined(AO_USE_PTHREAD_DEFS)

@@ -1,8 +1,14 @@
+2009-10-05  Ivan Maidanski <ivmai@mail.ru> (really Takashi YOSHII)
+
+	* src/atomic_ops/sysdeps/gcc/sh.h: New file.
+	* src/atomic_ops.h: Include gcc/sh.h if __arm__.
+	* src/atomic_ops/sysdeps/Makefile.am: Add gcc/sh.h entry.
+
 2009-10-02  Ivan Maidanski <ivmai@mail.ru>
 
-	* Makefile.am: Add armcc/arm_v6.h, msftc/arm.h,
-	msftc/common32_defs.h, sunc/x86.h sunc/x86_64.h entries; order all
-	entries alphabetically.
+	* src/atomic_ops/sysdeps/Makefile.am: Add armcc/arm_v6.h,
+	msftc/arm.h, msftc/common32_defs.h, sunc/x86.h sunc/x86_64.h
+	entries; order all entries alphabetically.
 	* Makefile.in: Regenerate.
 
 2009-10-01  Ivan Maidanski <ivmai@mail.ru>
