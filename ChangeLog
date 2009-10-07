@@ -1,3 +1,8 @@
+2009-10-06  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/sh.h: Remove commented out AO_TS_SET
+	redefinition.
+
 2009-10-05  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/Makefile.in: Regenerate.

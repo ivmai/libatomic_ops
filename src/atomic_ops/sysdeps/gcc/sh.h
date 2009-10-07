@@ -18,20 +18,15 @@
 /* sh has tas.b(byte) only */
 #include "../test_and_set_t_is_char.h"
 
-/* FIXME: Is AO_TS_SET redefining needed? */
-/* #undef AO_TS_SET */
-/* #define AO_TS_SET (1<<7) */
-
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
 {
   int oldval;
-
   __asm__ __volatile__(
-       "tas.b @%1; movt %0"
-       : "=r" (oldval)
-       : "r" (addr)
-       : "t", "memory");
-   return oldval? AO_TS_CLEAR : AO_TS_SET;
+        "tas.b @%1; movt %0"
+        : "=r" (oldval)
+        : "r" (addr)
+        : "t", "memory");
+  return oldval? AO_TS_CLEAR : AO_TS_SET;
 }
 #define AO_HAVE_test_and_set_full
