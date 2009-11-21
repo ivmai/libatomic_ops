@@ -5433,9 +5433,11 @@ cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
 # INIT-COMMANDS
 #
 AMDEP_TRUE="$AMDEP_TRUE" ac_aux_dir="$ac_aux_dir"
-PICFLAG=${PICFLAG}
-CC=${CC}
-DEFS=${DEFS}
+
+PICFLAG="${PICFLAG}"
+CC="${CC}"
+DEFS="${DEFS}"
+
 
 _ACEOF
 
