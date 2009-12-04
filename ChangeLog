@@ -1,3 +1,8 @@
+2009-12-04  Ivan Maidanski <ivmai@mail.ru>
+
+	* configure.ac, README: Change to version 7.2alpha5.
+	* configure: Regenerate.
+
 [7.2alpha4]
 
 2009-12-02  Ivan Maidanski <ivmai@mail.ru>
