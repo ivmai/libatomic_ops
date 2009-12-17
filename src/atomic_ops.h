@@ -160,7 +160,7 @@
 # define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")
 #elif defined(_MSC_VER) || defined(__DMC__) || defined(__BORLANDC__) \
         || defined(__WATCOMC__)
-# if defined(_AMD64_) || _MSC_VER >= 1400
+# if defined(_AMD64_) || defined(_M_X64) || _MSC_VER >= 1400
 #   if defined(_WIN32_WCE)
 /* #     include <cmnintrin.h> */
 #   elif defined(_MSC_VER)
@@ -282,7 +282,7 @@
 
 #if defined(_MSC_VER) || defined(__DMC__) || defined(__BORLANDC__) \
         || (defined(__WATCOMC__) && defined(__NT__))
-# if defined(_AMD64_)
+# if defined(_AMD64_) || defined(_M_X64)
 #   include "atomic_ops/sysdeps/msftc/x86_64.h"
 # elif defined(_M_IX86) || defined(x86)
 #   include "atomic_ops/sysdeps/msftc/x86.h"
