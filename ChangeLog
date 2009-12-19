@@ -1,4 +1,9 @@
-2009-12-07  Ivan Maidanski <ivmai@mail.ru> (really Emmanuel Stapf)
+2009-12-19  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/ibmc/powerpc.h (AO_lwsync): Redirect to
+	AO_sync() if __NO_LWSYNC__ (same as for gcc/powerpc.h).
+
+2009-12-17  Ivan Maidanski <ivmai@mail.ru> (really Emmanuel Stapf)
 
 	* src/atomic_ops.h: Recognize _M_X64 (as an alias for _AMD64_).
 

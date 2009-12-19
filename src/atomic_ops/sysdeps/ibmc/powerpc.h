@@ -19,8 +19,12 @@
 void AO_sync(void);
 #pragma mc_func AO_sync { "7c0004ac" }
 
-void AO_lwsync(void);
+#ifdef __NO_LWSYNC__
+# define AO_lwsync AO_sync
+#else
+  void AO_lwsync(void);
 #pragma mc_func AO_lwsync { "7c2004ac" }
+#endif
 
 #define AO_nop_write() AO_lwsync()
 #define AO_HAVE_nop_write
