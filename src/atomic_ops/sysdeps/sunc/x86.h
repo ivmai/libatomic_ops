@@ -109,8 +109,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 {
   AO_TS_t oldval;
   /* Note: the "xchg" instruction does not need a "lock" prefix */
-  /* Note 2: "xchgb" is not recognized by Sun CC assembler yet. */
-  __asm__ __volatile__("xchgl %0, %1"
+  __asm__ __volatile__("xchg %0, %1"
                 : "=q"(oldval), "=m"(*addr)
                 : "0"(0xff) /* , "m"(*addr) */
                 : "memory");
@@ -133,6 +132,9 @@ AO_compare_and_swap_full(volatile AO_t *addr,
 
 #define AO_HAVE_compare_and_swap_full
 
+#if 0
+/* FIXME: not tested (and probably wrong). Besides,     */
+/* it tickles a bug in Sun C 5.10 (when optimizing).    */
 /* Returns nonzero if the comparison succeeded. */
 /* Really requires at least a Pentium.          */
 AO_INLINE int
@@ -141,7 +143,6 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                        AO_t new_val1, AO_t new_val2)
 {
   char result;
-  /* FIXME: not tested */
 #if __PIC__
   /* If PIC is turned on, we can't use %ebx as it is reserved for the
      GOT pointer.  We can save and restore %ebx because GCC won't be
@@ -167,5 +168,6 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 }
 
 #define AO_HAVE_compare_double_and_swap_double_full
+#endif
 
 #include "../ao_t_is_int.h"

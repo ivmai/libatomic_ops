@@ -108,10 +108,9 @@ AO_or_full (volatile AO_t *p, AO_t incr)
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
 {
-  unsigned int oldval;
+  AO_TS_t oldval;
   /* Note: the "xchg" instruction does not need a "lock" prefix */
-  /* Note 2: "xchgb" is not recognized by Sun CC assembler yet. */
-  __asm__ __volatile__("xchgl %0, %1"
+  __asm__ __volatile__("xchg %0, %1"
                 : "=q"(oldval), "=m"(*addr)
                 : "0"(0xff) /* , "m"(*addr) */
                 : "memory");

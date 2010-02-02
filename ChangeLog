@@ -1,3 +1,17 @@
+2010-02-02  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/sunc/x86.h (AO_test_and_set_full): Fix
+	"xchg" data size (remove "l" suffix).
+	* src/atomic_ops/sysdeps/sunc/x86_64.h (AO_test_and_set_full):
+	Ditto.
+	* src/atomic_ops/sysdeps/sunc/x86_64.h (AO_test_and_set_full): Use
+	AO_TS_t for oldval.
+	* src/atomic_ops/sysdeps/sunc/x86.h
+	(AO_compare_double_and_swap_double_full,
+	AO_HAVE_compare_double_and_swap_double_full): Comment out (since
+	not tested, might be wrong, and tickles a bug in some Sun CC
+	versions; besides, __PIC__ macro is never predefined by Sun CC).
+
 2010-01-29  Ivan Maidanski <ivmai@mail.ru>
 
 	* INSTALL: Regenerate (by autoreconf -vif using libtool-2.2.6b,
