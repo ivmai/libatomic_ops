@@ -1,5 +1,9 @@
 2010-02-03  Ivan Maidanski <ivmai@mail.ru>
 
+	* ChangeLog: Fix some typos.
+
+2010-02-03  Ivan Maidanski <ivmai@mail.ru>
+
 	* src/atomic_ops_stack.c (AO_stack_push_explicit_aux_release):
 	Define "i" variable only if used (to suppress a compiler warning).
 
@@ -682,7 +686,7 @@
 	Fix various acquire_release_volatile.h files to reflect the fact
 	that both icc and gcc seem to reorder ordinary memory accesses around
 	volatile accesses early in the compilation. Modify the acquire
-	release test to catch this problem (with high probablity, and only on
+	release test to catch this problem (with high probability, and only on
 	a multiprocessor).
 
 2005-03	Hans Boehm <Hans.Boehm@hp.com>
@@ -711,9 +715,9 @@
 	help from Maged Michael and others).
 
 2004-12	Hans Boehm <Hans.Boehm@hp.com>
-	* sunc/sparc.[hS]: Added minimal supprt for the Sun SPARC compiler.
+	* sunc/sparc.[hS]: Added minimal support for the Sun SPARC compiler.
 	* atomic_ops_sysdeps.S: Add support for platforms that require
-	out-of-line assmebly code.
+	out-of-line assembly code.
 
 2004-10 Hans Boehm <Hans.Boehm@hp.com>
 	More work on char, short, int sized data.  Add both
