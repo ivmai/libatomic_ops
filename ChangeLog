@@ -1,3 +1,8 @@
+2010-02-03  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_stack.c (AO_stack_push_explicit_aux_release):
+	Define "i" variable only if used (to suppress a compiler warning).
+
 2010-02-02  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/sunc/x86.h (AO_test_and_set_full): Fix
