@@ -1,3 +1,7 @@
+2010-02-04  Ivan Maidanski <ivmai@mail.ru>
+
+	* doc/Makefile.in: Regenerate.
+
 2010-02-04  Ivan Maidanski <ivmai@mail.ru> (really Ian Wienand)
 
 	* doc/Makefile.am: Remove duplicate file in the list.
