@@ -126,7 +126,7 @@ AO_compare_and_swap_full(volatile AO_t *addr,
 {
   char result;
   __asm__ __volatile__("lock; cmpxchgq %2, %0; setz %1"
-                       : "=m"(*addr), "=q"(result)
+                       : "=m"(*addr), "=a"(result)
                        : "r" (new_val), "a"(old) : "memory");
   return (int) result;
 }
@@ -150,12 +150,9 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 {
   char result;
   __asm__ __volatile__("lock; cmpxchg16b %0; setz %1"
-                                : "=m"(*addr), "=q"(result)
-                                        : "m"(*addr),
-                                          "d" (old_val2),
-                                          "a" (old_val1),
-                                          "c" (new_val2),
-                                          "b" (new_val1)  : "memory");
+                       : "=m"(*addr), "=a"(result)
+                       : "m"(*addr), "d" (old_val2), "a" (old_val1),
+                         "c" (new_val2), "b" (new_val1) : "memory");
   return (int) result;
 }
 #define AO_HAVE_compare_double_and_swap_double_full

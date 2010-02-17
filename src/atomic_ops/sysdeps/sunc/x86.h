@@ -125,7 +125,7 @@ AO_compare_and_swap_full(volatile AO_t *addr,
 {
   char result;
   __asm__ __volatile__("lock; cmpxchgl %2, %0; setz %1"
-                       : "=m"(*addr), "=q"(result)
+                       : "=m"(*addr), "=a"(result)
                        : "r" (new_val), "a"(old) : "memory");
   return (int) result;
 }
@@ -151,7 +151,7 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                        "movl %6,%%ebx;" /* move new_val2 to %ebx */
                        "lock; cmpxchg8b %0; setz %1;"
                        "pop %%ebx;"     /* restore %ebx */
-                       : "=m"(*addr), "=q"(result)
+                       : "=m"(*addr), "=a"(result)
                        : "m"(*addr), "d" (old_val2), "a" (old_val1),
                          "c" (new_val2), "m" (new_val1) : "memory");
 #else
@@ -160,7 +160,7 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
    * in a clobber, but there's no point doing the push/pop if we don't
    * have to. */
   __asm__ __volatile__("lock; cmpxchg8b %0; setz %1;"
-                       : "=m"(*addr), "=q"(result)
+                       : "=m"(*addr), "=a"(result)
                        : /* "m"(*addr), */ "d" (old_val2), "a" (old_val1),
                          "c" (new_val2), "b" (new_val1) : "memory");
 #endif

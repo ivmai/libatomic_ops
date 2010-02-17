@@ -1,3 +1,15 @@
+2010-02-17  Ivan Maidanski <ivmai@mail.ru> (really Patrick Marlier)
+
+	* src/atomic_ops/sysdeps/gcc/x86.h (AO_compare_and_swap_full,
+	AO_compare_double_and_swap_double_full): Use EAX for the result
+	since cmpxchg clobbers it.
+	* src/atomic_ops/sysdeps/sunc/x86.h (AO_compare_and_swap_full,
+	AO_compare_double_and_swap_double_full): Ditto.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_compare_and_swap_full,
+	AO_compare_double_and_swap_double_full): Ditto.
+	* src/atomic_ops/sysdeps/sunc/x86_64.h (AO_compare_and_swap_full,
+	AO_compare_double_and_swap_double_full): Ditto.
+
 2010-02-04  Ivan Maidanski <ivmai@mail.ru>
 
 	* doc/Makefile.in: Regenerate.
