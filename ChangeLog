@@ -1,3 +1,14 @@
+2010-02-18  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_nop_full): Don't check
+	for AO_USE_PENTIUM4_INSTRS (since "mfence" (SSE2) is supported on
+	all x86_64/amd64 chips); remove the comment.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h (AO_nop_full): Ditto.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h (AO_nop_full): Define only
+	if AO_ASM_X64_AVAILABLE.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_compare_and_swap_full):
+	Use built-in __sync_bool_compare_and_swap() if GCC v4.2+.
+
 2010-02-17  Ivan Maidanski <ivmai@mail.ru> (really Patrick Marlier)
 
 	* src/atomic_ops/sysdeps/gcc/x86.h (AO_compare_and_swap_full,

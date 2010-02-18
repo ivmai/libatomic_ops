@@ -31,22 +31,14 @@
 
 #include "../standard_ao_double_t.h"
 
-#if defined(AO_USE_PENTIUM4_INSTRS)
 AO_INLINE void
 AO_nop_full(void)
 {
+  /* Note: "mfence" (SSE2) is supported on all x86_64/amd64 chips.      */
   __asm__ __volatile__("mfence" : : : "memory");
 }
 
 #define AO_HAVE_nop_full
-
-#else
-
-/* We could use the cpuid instruction.  But that seems to be slower     */
-/* than the default implementation based on test_and_set_full.  Thus    */
-/* we omit that bit of misinformation here.                             */
-
-#endif
 
 /* As far as we can tell, the lfence and sfence instructions are not    */
 /* currently needed or useful for cached memory accesses.               */
@@ -127,14 +119,17 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 
 /* Returns nonzero if the comparison succeeded. */
 AO_INLINE int
-AO_compare_and_swap_full(volatile AO_t *addr,
-                         AO_t old, AO_t new_val)
+AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
 {
-  char result;
-  __asm__ __volatile__("lock; cmpxchgq %3, %0; setz %1"
-                       : "=m"(*addr), "=a"(result)
-                       : "m"(*addr), "r" (new_val), "a"(old) : "memory");
-  return (int) result;
+# if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2)
+    return (int)__sync_bool_compare_and_swap(addr, old, new_val);
+# else
+    char result;
+    __asm__ __volatile__("lock; cmpxchgq %3, %0; setz %1"
+                         : "=m" (*addr), "=a" (result)
+                         : "m" (*addr), "r" (new_val), "a" (old) : "memory");
+    return (int) result;
+# endif
 }
 
 #define AO_HAVE_compare_and_swap_full
