@@ -121,7 +121,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
 {
-# if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2)
+# ifdef AO_USE_SYNC_CAS_BUILTIN
     return (int)__sync_bool_compare_and_swap(addr, old, new_val);
 # else
     char result;

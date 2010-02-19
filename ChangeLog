@@ -1,3 +1,14 @@
+2010-02-19  Ivan Maidanski <ivmai@mail.ru> (mostly really Patrick Marlier)
+
+	* src/atomic_ops/sysdeps/gcc/x86.h (AO_compare_and_swap_full):
+	Use __sync_bool_compare_and_swap() if AO_USE_SYNC_CAS_BUILTIN.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_compare_and_swap_full):
+	Ditto.
+	* src/atomic_ops.h (AO_USE_SYNC_CAS_BUILTIN): New macro defined
+	if GCC v4.2+ or Intel compiler v11.1+ (only for amd64).
+	* src/atomic_ops.h: Include GCC-specific sysdeps files for Intel
+	compiler in GCC compatible mode (only for x86 and amd64).
+
 2010-02-18  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_nop_full): Don't check
