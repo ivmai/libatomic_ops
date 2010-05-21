@@ -252,6 +252,9 @@
 #   include "atomic_ops/sysdeps/gcc/sh.h"
 #   define AO_CAN_EMUL_CAS
 # endif /* __sh__ */
+# if defined(__avr32__)
+#   include "atomic_ops/sysdeps/gcc/avr32.h"
+# endif
 #endif /* __GNUC__ && !AO_USE_PTHREAD_DEFS */
 
 #if defined(__INTEL_COMPILER) && !defined(AO_USE_PTHREAD_DEFS)
