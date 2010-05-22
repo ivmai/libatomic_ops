@@ -1,3 +1,9 @@
+2010-05-22  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/Makefile.am (nobase_sysdep_HEADERS):
+	Add "gcc/avr32.h".
+	* src/atomic_ops/sysdeps/Makefile.in: Regenerate.
+
 2010-05-21  Ivan Maidanski <ivmai@mail.ru> (really Bradley Smith)
 
 	* src/atomic_ops.h: Recognize __avr32__ (include gcc/avr32.h).
