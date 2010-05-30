@@ -1,3 +1,12 @@
+2010-05-30  Ivan Maidanski <ivmai@mail.ru> (really Bradley Smith)
+
+	* src/atomic_ops/sysdeps/gcc/avr32.h (AO_test_and_set): Use
+	"register long" (instead of "int") for "ret" variable.
+	* src/atomic_ops/sysdeps/gcc/avr32.h (AO_test_and_set): Replace
+	with AO_test_and_set_full (same for AO_HAVE_test_and_set).
+	* src/atomic_ops/sysdeps/gcc/avr32.h (AO_compare_and_swap_full):
+	New function implemented.
+
 2010-05-22  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/Makefile.am (nobase_sysdep_HEADERS):
