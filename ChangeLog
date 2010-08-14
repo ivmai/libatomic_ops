@@ -1,3 +1,8 @@
+2010-08-14  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/arm.h: Replace C++ style comment
+	with ANSI C one.
+
 2010-05-30  Ivan Maidanski <ivmai@mail.ru> (really Bradley Smith)
 
 	* src/atomic_ops/sysdeps/gcc/avr32.h (AO_test_and_set): Use

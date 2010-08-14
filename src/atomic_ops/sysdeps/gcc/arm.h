@@ -281,4 +281,4 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
 
 #define AO_HAVE_test_and_set_full
 
-#endif // __ARM_ARCH_x
+#endif /* __ARM_ARCH_x */
