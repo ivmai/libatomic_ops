@@ -116,7 +116,8 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
    "
 */
 AO_INLINE AO_TS_t
-AO_test_and_set(volatile AO_TS_t *addr) {
+AO_test_and_set(volatile AO_TS_t *addr)
+{
 
         AO_TS_t oldval;
         unsigned long flag;
@@ -254,7 +255,7 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
 #define AO_HAVE_compare_double_and_swap_double
 
 #else
-/* pre ARMv6 architecures ... */
+/* pre ARMv6 architectures ... */
 
 /* I found a slide set that, if I read it correctly, claims that        */
 /* Loads followed by either a Load or Store are ordered, but nothing    */
@@ -263,7 +264,8 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
 #include "../all_atomic_load_store.h"
 
 AO_INLINE AO_TS_VAL_t
-AO_test_and_set_full(volatile AO_TS_t *addr) {
+AO_test_and_set_full(volatile AO_TS_t *addr)
+{
   AO_TS_VAL_t oldval;
   /* SWP on ARM is very similar to XCHG on x86.                 */
   /* The first operand is the result, the second the value      */

@@ -197,6 +197,12 @@
 # include "atomic_ops/sysdeps/generic_pthread.h"
 #endif /* AO_USE_PTHREAD_DEFS */
 
+#if (defined(__CC_ARM) || defined(__ARMCC__)) && !defined(__GNUC__) \
+    && !defined(AO_USE_PTHREAD_DEFS)
+# include "atomic_ops/sysdeps/armcc/arm_v6.h"
+# define AO_GENERALIZE_TWICE
+#endif
+
 #if defined(__GNUC__) && !defined(AO_USE_PTHREAD_DEFS) \
     && !defined(__INTEL_COMPILER)
 # if defined(__i386__)
@@ -244,6 +250,7 @@
 # endif /* __arm__ */
 # if defined(__cris__) || defined(CRIS)
 #   include "atomic_ops/sysdeps/gcc/cris.h"
+#   define AO_GENERALIZE_TWICE
 # endif
 # if defined(__mips__)
 #   include "atomic_ops/sysdeps/gcc/mips.h"
@@ -256,6 +263,16 @@
 #   include "atomic_ops/sysdeps/gcc/avr32.h"
 # endif
 #endif /* __GNUC__ && !AO_USE_PTHREAD_DEFS */
+
+#if (defined(__IBMC__) || defined(__IBMCPP__)) && !defined(__GNUC__) \
+    && !defined(AO_USE_PTHREAD_DEFS)
+# if defined(__powerpc__) || defined(__powerpc) || defined(__ppc__) \
+     || defined(__PPC__) || defined(_M_PPC) || defined(_ARCH_PPC) \
+     || defined(_ARCH_PWR)
+#   include "atomic_ops/sysdeps/ibmc/powerpc.h"
+#   define AO_GENERALIZE_TWICE
+# endif
+#endif
 
 #if defined(__INTEL_COMPILER) && !defined(AO_USE_PTHREAD_DEFS)
 # if defined(__ia64__)
@@ -286,6 +303,18 @@
 # endif
 #endif
 
+#if defined(_MSC_VER) || defined(__DMC__) || defined(__BORLANDC__) \
+        || (defined(__WATCOMC__) && defined(__NT__))
+# if defined(_AMD64_) || defined(_M_X64)
+#   include "atomic_ops/sysdeps/msftc/x86_64.h"
+# elif defined(_M_IX86) || defined(x86)
+#   include "atomic_ops/sysdeps/msftc/x86.h"
+# elif defined(_M_ARM) || defined(ARM) || defined(_ARM_)
+#   include "atomic_ops/sysdeps/msftc/arm.h"
+#   define AO_GENERALIZE_TWICE
+# endif
+#endif
+
 #if defined(__sun) && !defined(__GNUC__) && !defined(AO_USE_PTHREAD_DEFS)
   /* Note: use -DAO_USE_PTHREAD_DEFS if Sun CC does not handle inline asm. */
 # if defined(__i386)
@@ -298,19 +327,8 @@
 
 #if !defined(__GNUC__) && (defined(sparc) || defined(__sparc)) \
     && !defined(AO_USE_PTHREAD_DEFS)
-#   include "atomic_ops/sysdeps/sunc/sparc.h"
-#   define AO_CAN_EMUL_CAS
-#endif
-
-#if defined(_MSC_VER) || defined(__DMC__) || defined(__BORLANDC__) \
-        || (defined(__WATCOMC__) && defined(__NT__))
-# if defined(_AMD64_) || defined(_M_X64)
-#   include "atomic_ops/sysdeps/msftc/x86_64.h"
-# elif defined(_M_IX86) || defined(x86)
-#   include "atomic_ops/sysdeps/msftc/x86.h"
-# elif defined(_M_ARM) || defined(ARM) || defined(_ARM_)
-#   include "atomic_ops/sysdeps/msftc/arm.h"
-# endif
+# include "atomic_ops/sysdeps/sunc/sparc.h"
+# define AO_CAN_EMUL_CAS
 #endif
 
 #if defined(AO_REQUIRE_CAS) && !defined(AO_HAVE_compare_and_swap) \
@@ -321,7 +339,7 @@
 # else
 #  error Cannot implement AO_compare_and_swap_full on this architecture.
 # endif
-#endif  /* AO_REQUIRE_CAS && !AO_HAVE_compare_and_swap ... */
+#endif /* AO_REQUIRE_CAS && !AO_HAVE_compare_and_swap ... */
 
 /* The most common way to clear a test-and-set location         */
 /* at the end of a critical section.                            */
@@ -332,12 +350,15 @@
 # define AO_CLEAR(addr) AO_char_store_release((AO_TS_t *)(addr), AO_TS_CLEAR)
 #endif
 
-/*
- * The generalization section.
- * Theoretically this should repeatedly include atomic_ops_generalize.h.
- * In fact, we observe that this converges after a small fixed number
- * of iterations, usually one.
- */
+/* The generalization section.  */
+#if !defined(AO_GENERALIZE_TWICE) && defined(AO_CAN_EMUL_CAS) \
+    && !defined(AO_HAVE_compare_and_swap_full)
+# define AO_GENERALIZE_TWICE
+#endif
+
+/* Theoretically we should repeatedly include atomic_ops_generalize.h.  */
+/* In fact, we observe that this converges after a small fixed number   */
+/* of iterations, usually one.                                          */
 #include "atomic_ops/generalize.h"
 #ifdef AO_GENERALIZE_TWICE
 # include "atomic_ops/generalize.h"

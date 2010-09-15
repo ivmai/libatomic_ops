@@ -1,3 +1,13 @@
+2010-09-15  Ivan Maidanski <ivmai@mail.ru> (with input from Gregory Farnum)
+
+	* src/atomic_ops.h: Include armcc/arm_v6.h if __ARMCC__.
+	* src/atomic_ops.h: Include ibmc/powerpc.h if __IBMC__.
+	* src/atomic_ops.h: Define AO_GENERALIZE_TWICE if msftc/arm.h is
+	included.
+	* src/atomic_ops.h: Define AO_GENERALIZE_TWICE if AO_CAN_EMUL_CAS
+	is defined but emul_cas.h has not been included.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Fix a typo.
+
 2010-08-14  Ivan Maidanski <ivmai@mail.ru>
 
 	* aclocal.m4: Regenerate (by autoreconf -vif using autoconf-2.67,
