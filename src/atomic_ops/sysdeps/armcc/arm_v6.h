@@ -189,6 +189,7 @@ __asm__ {
         mov             result, #2
         ldrex   tmp, [addr]
         teq             tmp, old_val
+        it              eq
         strexeq result, new_val, [addr]
         teq             result, #1
         beq             retry

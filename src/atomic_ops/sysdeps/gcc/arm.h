@@ -144,7 +144,7 @@ AO_fetch_and_add(volatile AO_t *p, AO_t incr)
         AO_t result;
 
         __asm__ __volatile__("@AO_fetch_and_add\n"
-"1:     ldrex   %0, [%5]\n"                     /* get original         */
+"1:     ldrex   %0, [%5]\n"             /* get original         */
 "       add     %2, %0, %4\n"           /* sum up in incr       */
 "       strex   %1, %2, [%5]\n"         /* store them           */
 "       teq             %1, #0\n"
@@ -166,7 +166,7 @@ AO_fetch_and_add1(volatile AO_t *p)
         AO_t result;
 
         __asm__ __volatile__("@AO_fetch_and_add1\n"
-"1:     ldrex   %0, [%4]\n"                     /* get original   */
+"1:     ldrex   %0, [%4]\n"             /* get original */
 "       add     %1, %0, #1\n"           /* increment */
 "       strex   %2, %1, [%4]\n"         /* store them */
 "       teq             %2, #0\n"
@@ -188,7 +188,7 @@ AO_fetch_and_sub1(volatile AO_t *p)
         AO_t result;
 
         __asm__ __volatile__("@AO_fetch_and_sub1\n"
-"1:     ldrex   %0, [%4]\n"                     /* get original   */
+"1:     ldrex   %0, [%4]\n"             /* get original */
 "       sub     %1, %0, #1\n"           /* decrement */
 "       strex   %2, %1, [%4]\n"         /* store them */
 "       teq             %2, #0\n"
@@ -211,24 +211,25 @@ AO_compare_and_swap(volatile AO_t *addr,
          AO_t result,tmp;
 
         __asm__ __volatile__("@ AO_compare_and_swap\n"
-"1:     mov             %0, #2\n"                       /* store a flag */
-"       ldrex   %1, [%3]\n"                     /* get original */
-"       teq             %1, %4\n"                       /* see if match */
+"1:     mov             %0, #2\n"       /* store a flag */
+"       ldrex   %1, [%3]\n"             /* get original */
+"       teq             %1, %4\n"       /* see if match */
+"       it              eq\n"
 "       strexeq %0, %5, [%3]\n"         /* store new one if matched */
 "       teq             %0, #1\n"
-"       beq             1b\n"                           /* if update failed, repeat */
+"       beq             1b\n"           /* if update failed, repeat */
         : "=&r"(result), "=&r"(tmp), "+m"(*addr)
         : "r"(addr), "r"(old_val), "r"(new_val)
         : "cc");
 
-        return !(result&2);                     /* if succeded, return 1, else 0 */
+        return !(result&2);             /* if succeded, return 1, else 0 */
 }
 #define AO_HAVE_compare_and_swap
 
 AO_INLINE int
 AO_compare_double_and_swap_double(volatile AO_double_t *addr,
-                                                          AO_t old_val1, AO_t old_val2,
-                                                          AO_t new_val1, AO_t new_val2)
+                                  AO_t old_val1, AO_t old_val2,
+                                  AO_t new_val1, AO_t new_val2)
 {
         double_ptr_storage old_val = ((double_ptr_storage)old_val2 << 32) | old_val1;
         double_ptr_storage new_val = ((double_ptr_storage)new_val2 << 32) | new_val1;
@@ -238,7 +239,7 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
 
         while(1) {
                 __asm__ __volatile__("@ AO_compare_and_swap_double\n"
-                "       ldrexd  %0, [%1]\n"                     /* get original to r1&r2*/
+                "       ldrexd  %0, [%1]\n" /* get original to r1 & r2 */
                         : "=&r"(tmp)
                         : "r"(addr)
                         : "cc");
