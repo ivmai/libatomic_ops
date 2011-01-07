@@ -47,7 +47,8 @@ AO_nop_full(void)
         /* issue an data memory barrier (keeps ordering of memory transactions  */
         /* before and after this operation)                                     */
         unsigned int dest=0;
-        __asm__ __volatile__("mcr p15,0,%0,c7,c10,5" :"=&r"(dest) : : "memory");
+        __asm__ __volatile__("mcr p15,0,%0,c7,c10,5"
+                              : "=&r"(dest) : : "memory");
 #endif
 }
 
@@ -214,7 +215,9 @@ AO_compare_and_swap(volatile AO_t *addr,
 "1:     mov             %0, #2\n"       /* store a flag */
 "       ldrex   %1, [%3]\n"             /* get original */
 "       teq             %1, %4\n"       /* see if match */
-"       it              eq\n"
+#       ifdef __thumb__
+  "       it            eq\n"
+#       endif
 "       strexeq %0, %5, [%3]\n"         /* store new one if matched */
 "       teq             %0, #1\n"
 "       beq             1b\n"           /* if update failed, repeat */
@@ -231,10 +234,11 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
                                   AO_t old_val1, AO_t old_val2,
                                   AO_t new_val1, AO_t new_val2)
 {
-        double_ptr_storage old_val = ((double_ptr_storage)old_val2 << 32) | old_val1;
-        double_ptr_storage new_val = ((double_ptr_storage)new_val2 << 32) | new_val1;
-
-    double_ptr_storage tmp;
+        double_ptr_storage old_val =
+                        ((double_ptr_storage)old_val2 << 32) | old_val1;
+        double_ptr_storage new_val =
+                        ((double_ptr_storage)new_val2 << 32) | new_val1;
+        double_ptr_storage tmp;
         int result;
 
         while(1) {

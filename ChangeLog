@@ -1,3 +1,15 @@
+2011-01-07  Ivan Maidanski  <ivmai@mail.ru>
+
+	* src/.cvsignore: Add more auto-generated files.
+	* tests/.cvsignore: Ditto.
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h (AO_nop_full, AO_store,
+	AO_compare_double_and_swap_double): Reformat code.
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_nop_full,
+	AO_compare_double_and_swap_double): Ditto.
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h (AO_compare_and_swap):
+	Produce "it eq" instruction only for Thumb mode.
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_compare_and_swap): Ditto.
+
 2010-11-23  Ivan Maidanski <ivmai@mail.ru> (really Michael Hope)
 
 	* src/atomic_ops/sysdeps/armcc/arm_v6.h (AO_compare_and_swap):

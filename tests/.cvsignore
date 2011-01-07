@@ -1,1 +1,7 @@
+*.o
 Makefile
+list_atomic.i
+test_atomic
+test_atomic_pthreads
+test_malloc
+test_stack
