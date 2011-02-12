@@ -32,22 +32,30 @@
 # include "config.h"
 #endif
 
+#if defined(AO_USE_WIN32_PTHREADS) && !defined(AO_USE_NO_SIGNALS)
+# define AO_USE_NO_SIGNALS
+#endif
+
 #if !defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__BORLANDC__) \
-    || defined(AO_USE_WIN32_PTHREADS)
+    || defined(AO_USE_NO_SIGNALS)
 
 #undef AO_REQUIRE_CAS
 
 #include <pthread.h>
 
-#ifdef AO_USE_WIN32_PTHREADS
-# include <windows.h> /* for Sleep() */
-#else
+#ifndef AO_USE_NO_SIGNALS
 # include <signal.h>
-# ifdef _HPUX_SOURCE
-#   include <sys/time.h>
-# else
-#   include <sys/select.h>
-# endif
+#endif
+
+#ifdef AO_USE_NANOSLEEP
+  /* This requires _POSIX_TIMERS feature. */
+# include <time.h>
+#elif defined(AO_USE_WIN32_PTHREADS)
+# include <windows.h> /* for Sleep() */
+#elif defined(_HPUX_SOURCE)
+# include <sys/time.h>
+#else
+# include <sys/select.h>
 #endif
 
 #include "atomic_ops.h"  /* Without cas emulation! */
@@ -79,14 +87,10 @@ pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
 #define AO_HASH(x) (((unsigned long)(x) >> 12) & (AO_HASH_SIZE-1))
 
 AO_TS_t AO_locks[AO_HASH_SIZE] = {
-        AO_TS_INITIALIZER, AO_TS_INITIALIZER,
-        AO_TS_INITIALIZER, AO_TS_INITIALIZER,
-        AO_TS_INITIALIZER, AO_TS_INITIALIZER,
-        AO_TS_INITIALIZER, AO_TS_INITIALIZER,
-        AO_TS_INITIALIZER, AO_TS_INITIALIZER,
-        AO_TS_INITIALIZER, AO_TS_INITIALIZER,
-        AO_TS_INITIALIZER, AO_TS_INITIALIZER,
-        AO_TS_INITIALIZER, AO_TS_INITIALIZER,
+  AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER,
+  AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER,
+  AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER,
+  AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER,
 };
 
 static AO_T dummy = 1;
@@ -107,21 +111,25 @@ void AO_spin(int n)
 
 void AO_pause(int n)
 {
-    if (n < 12)
-      AO_spin(n);
-    else
-      {
-#     ifdef AO_USE_WIN32_PTHREADS
+  if (n < 12)
+    AO_spin(n);
+  else
+    {
+#     ifdef AO_USE_NANOSLEEP
+        struct timespec ts;
+        ts.tv_sec = 0;
+        ts.tv_nsec = (n > 28 ? 100000 * 1000 : 1 << (n - 2));
+        nanosleep(&ts, 0);
+#     elif defined(AO_USE_WIN32_PTHREADS)
         Sleep(n > 28 ? 100 : 1 << (n - 22)); /* in millis */
 #     else
         struct timeval tv;
-
         /* Short async-signal-safe sleep. */
         tv.tv_sec = 0;
-        tv.tv_usec = (n > 28? 100000 : (1 << (n - 12)));
+        tv.tv_usec = n > 28 ? 100000 : 1 << (n - 12);
         select(0, 0, 0, 0, &tv);
 #     endif
-      }
+    }
 }
 
 static void lock_ool(volatile AO_TS_t *l)
@@ -143,7 +151,7 @@ AO_INLINE void unlock(volatile AO_TS_t *l)
   AO_CLEAR(l);
 }
 
-#ifndef AO_USE_WIN32_PTHREADS
+#ifndef AO_USE_NO_SIGNALS
   static sigset_t all_sigs;
   static volatile AO_t initialized = 0;
 #endif
@@ -156,7 +164,7 @@ int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
   AO_TS_t *my_lock = AO_locks + AO_HASH(addr);
   int result;
 
-# ifndef AO_USE_WIN32_PTHREADS
+# ifndef AO_USE_NO_SIGNALS
     sigset_t old_sigs;
     if (!AO_load_acquire(&initialized))
     {
@@ -183,7 +191,7 @@ int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
   else
     result = 0;
   unlock(my_lock);
-# ifndef AO_USE_WIN32_PTHREADS
+# ifndef AO_USE_NO_SIGNALS
     sigprocmask(SIG_SETMASK, &old_sigs, NULL);
 # endif
   return result;
@@ -196,7 +204,7 @@ int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
   AO_TS_t *my_lock = AO_locks + AO_HASH(addr);
   int result;
 
-# ifndef AO_USE_WIN32_PTHREADS
+# ifndef AO_USE_NO_SIGNALS
     sigset_t old_sigs;
     if (!AO_load_acquire(&initialized))
     {
@@ -224,7 +232,7 @@ int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
   else
     result = 0;
   unlock(my_lock);
-# ifndef AO_USE_WIN32_PTHREADS
+# ifndef AO_USE_NO_SIGNALS
     sigprocmask(SIG_SETMASK, &old_sigs, NULL);
 # endif
   return result;

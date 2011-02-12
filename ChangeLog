@@ -1,3 +1,19 @@
+2011-02-09  Ivan Maidanski  <ivmai@mail.ru>
+
+	* src/atomic_ops.c (AO_USE_NO_SIGNALS, AO_USE_NANOSLEEP): New
+	macros.
+	* src/atomic_ops.c (AO_USE_WIN32_PTHREADS): Imply
+	AO_USE_NO_SIGNALS.
+	* src/atomic_ops.c: Don't include signal.h if AO_USE_NO_SIGNALS.
+	* src/atomic_ops.c: Include time.h if AO_USE_NANOSLEEP.
+	* src/atomic_ops.c (AO_locks, AO_pause): Reformat the code.
+	* src/atomic_ops.c (AO_pause): Use nanosleep() if
+	AO_USE_NANOSLEEP.
+	* src/atomic_ops.c (all_sigs, initialized,
+	AO_compare_and_swap_emulation,
+	AO_compare_double_and_swap_double_emulation): Use
+	AO_USE_NO_SIGNALS instead of AO_USE_WIN32_PTHREADS.
+
 2011-01-07  Ivan Maidanski  <ivmai@mail.ru>
 
 	* src/.cvsignore: Add more auto-generated files.
