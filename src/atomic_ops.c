@@ -32,6 +32,13 @@
 # include "config.h"
 #endif
 
+#if defined(__native_client__) && !defined(AO_USE_NO_SIGNALS) \
+    && !defined(AO_USE_NANOSLEEP)
+  /* Since NaCl is not recognized by configure yet, we do it here.      */
+# define AO_USE_NO_SIGNALS
+# define AO_USE_NANOSLEEP
+#endif
+
 #if defined(AO_USE_WIN32_PTHREADS) && !defined(AO_USE_NO_SIGNALS)
 # define AO_USE_NO_SIGNALS
 #endif
