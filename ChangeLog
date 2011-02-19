@@ -1,3 +1,9 @@
+2011-02-19  Ivan Maidanski  <ivmai@mail.ru>
+
+	* aclocal.m4: Regenerate (by autoreconf -vif using autoconf-2.68,
+	automake-1.11.1 and libtool-2.4).
+	* configure: Ditto.
+
 2011-02-09  Ivan Maidanski  <ivmai@mail.ru>
 
 	* src/atomic_ops.c (AO_USE_NO_SIGNALS, AO_USE_NANOSLEEP): New
