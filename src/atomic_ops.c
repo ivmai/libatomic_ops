@@ -56,6 +56,7 @@
 
 #ifdef AO_USE_NANOSLEEP
   /* This requires _POSIX_TIMERS feature. */
+# include <sys/time.h>
 # include <time.h>
 #elif defined(AO_USE_WIN32_PTHREADS)
 # include <windows.h> /* for Sleep() */
