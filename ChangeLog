@@ -1,3 +1,12 @@
+2011-03-13  Ivan Maidanski  <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/emul_cas.h: Fix a typo in a comment;
+	expand all tabs to spaces.
+	* src/atomic_ops/sysdeps/gcc/x86.h (AO_test_and_set_full):
+	Recognize AO_XCHGB_RET_WORD new macro (to workaround a bug).
+	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_test_and_set_full):
+	Ditto.
+
 2011-02-19  Ivan Maidanski  <ivmai@mail.ru>
 
 	* src/atomic_ops.c: Include sys/time.h (to get timespec) for NaCl.

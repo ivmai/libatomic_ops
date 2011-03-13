@@ -107,7 +107,12 @@ AO_or_full (volatile AO_t *p, AO_t incr)
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
 {
-  unsigned char oldval;
+# ifdef AO_XCHGB_RET_WORD
+    /* Workaround for a bug in LLVM v2.7 GAS.   */
+    unsigned oldval;
+# else
+    unsigned char oldval;
+# endif
   /* Note: the "xchg" instruction does not need a "lock" prefix */
   __asm__ __volatile__("xchgb %0, %1"
                 : "=q"(oldval), "=m"(*addr)
