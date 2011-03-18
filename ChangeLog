@@ -1,3 +1,8 @@
+2011-03-18  Ivan Maidanski  <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/arm.h: Test for all the known pre-v6
+	ARM chips instead of all the currently existing v6+ ones.
+
 2011-03-13  Ivan Maidanski  <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/emul_cas.h: Fix a typo in a comment;

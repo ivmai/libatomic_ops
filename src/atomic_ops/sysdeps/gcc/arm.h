@@ -31,12 +31,13 @@
  * and do not need to access CP15 for ensuring a DMB
 */
 
-/* NEC LE-IT: gcc has no way to easily check the arm architecture
- * but defines only one of __ARM_ARCH_x__ to be true                    */
-#if defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6J__) \
-        || defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_6ZK__) \
-        || defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) \
-        || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7R__)
+/* NEC LE-IT: gcc has no way to easily check the arm architecture       */
+/* but it defines only one of __ARM_ARCH_x__ to be true.                */
+#if !defined(__ARM_ARCH_2__) && !defined(__ARM_ARCH_3__) \
+    && !defined(__ARM_ARCH_3M__) && !defined(__ARM_ARCH_4__) \
+    && !defined(__ARM_ARCH_4T__) && !defined(__ARM_ARCH_5__) \
+    && !defined(__ARM_ARCH_5E__) && !defined(__ARM_ARCH_5T__) \
+    && !defined(__ARM_ARCH_5TE__) && !defined(__ARM_ARCH_5TEJ__)
 
 #include "../standard_ao_double_t.h"
 
@@ -44,8 +45,8 @@ AO_INLINE void
 AO_nop_full(void)
 {
 #ifndef AO_UNIPROCESSOR
-        /* issue an data memory barrier (keeps ordering of memory transactions  */
-        /* before and after this operation)                                     */
+        /* Issue a data memory barrier (keeps ordering of memory        */
+        /* transactions before and after this operation).               */
         unsigned int dest=0;
         __asm__ __volatile__("mcr p15,0,%0,c7,c10,5"
                               : "=&r"(dest) : : "memory");
