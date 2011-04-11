@@ -98,8 +98,8 @@ int compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
         succeeded and *addr was updated.
 AO_TS_VAL_t test_and_set(volatile AO_TS_t * addr)
         Atomically read the binary value at *addr, and set it.  AO_TS_VAL_t
-        is an enumeration type which includes the two values AO_TS_SET and
-        and AO_TS_CLEAR.  An AO_TS_t location is capable of holding an
+        is an enumeration type which includes two values AO_TS_SET and
+        AO_TS_CLEAR.  An AO_TS_t location is capable of holding an
         AO_TS_VAL_t, but may be much larger, as dictated by hardware
         constraints.  Test_and_set logically sets the value to AO_TS_SET.
         It may be reset to AO_TS_CLEAR with the AO_CLEAR(AO_TS_t *) macro.
