@@ -1,3 +1,8 @@
+2011-04-22  Ivan Maidanski  <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/ia64.h (AO_MASK): Add "volatile" for
+	asm; remove redundant trailing ';'.
+
 2011-04-11  Ivan Maidanski  <ivmai@mail.ru> (really Jim Meyering)
 
 	* doc/README.txt: Remove doubled words in comments.

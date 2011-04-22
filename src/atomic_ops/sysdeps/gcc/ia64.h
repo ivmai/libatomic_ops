@@ -45,13 +45,13 @@
 # define AO_IN_ADDR "1"(addr)
 # define AO_OUT_ADDR , "=r"(addr)
 # define AO_SWIZZLE "addp4 %1=0,%1;;\n"
-# define AO_MASK(ptr) __asm__("zxt4 %1=%1": "=r"(ptr) : "0"(ptr));
+# define AO_MASK(ptr) __asm__ __volatile__("zxt4 %1=%1": "=r"(ptr) : "0"(ptr))
 #else
 # define AO_LEN "8"
 # define AO_IN_ADDR "r"(addr)
 # define AO_OUT_ADDR
 # define AO_SWIZZLE
-# define AO_MASK(ptr)
+# define AO_MASK(ptr) /* empty */
 #endif
 
 AO_INLINE void
