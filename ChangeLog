@@ -1,3 +1,15 @@
+2011-05-10  Ivan Maidanski  <ivmai@mail.ru>
+
+	* tests/test_stack.c (MAX_NTHREADS, N_EXPERIMENTS): Do not define
+	unless undefined.
+	* tests/test_stack.c: Expand all tabs to spaces.
+	* tests/test_atomic_include.h: Ditto.
+	* tests/test_stack.c (main): Free pop'ed elements.
+	* tests/test_atomic_include.h (test_atomic, test_atomic_release,
+	test_atomic_acquire, test_atomic_read, test_atomic_write,
+	test_atomic_full, test_atomic_release_write,
+	test_atomic_acquire_read): Remove prototype.
+
 2011-04-22  Ivan Maidanski  <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/gcc/ia64.h (AO_MASK): Add "volatile" for
