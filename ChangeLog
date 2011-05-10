@@ -1,5 +1,14 @@
 2011-05-10  Ivan Maidanski  <ivmai@mail.ru>
 
+	* tests/Makefile.am (EXTRA_DIST): Add list_atomic.c; update
+	comment.
+	* tests/Makefile.am (CLEANFILES): Remove test_atomic_include.h,
+	list_atomic.c.
+	* tests/Makefile.am: Remove trailing spaces at EOLn.
+	* tests/Makefile.in: Regenerate.
+
+2011-05-10  Ivan Maidanski  <ivmai@mail.ru>
+
 	* tests/test_stack.c (MAX_NTHREADS, N_EXPERIMENTS): Do not define
 	unless undefined.
 	* tests/test_stack.c: Expand all tabs to spaces.
