@@ -67,6 +67,28 @@ static volatile char *initial_heap_lim = AO_initial_heap + AO_INITIAL_HEAP_SIZE;
 #include <fcntl.h>
 #include <sys/mman.h>
 
+#if defined(MAP_ANONYMOUS) || defined(MAP_ANON)
+# define USE_MMAP_ANON
+#endif
+
+#ifdef USE_MMAP_FIXED
+# define GC_MMAP_FLAGS MAP_FIXED | MAP_PRIVATE
+        /* Seems to yield better performance on Solaris 2, but can      */
+        /* be unreliable if something is already mapped at the address. */
+#else
+# define GC_MMAP_FLAGS MAP_PRIVATE
+#endif
+
+#ifdef USE_MMAP_ANON
+# ifdef MAP_ANONYMOUS
+#   define OPT_MAP_ANON MAP_ANONYMOUS
+# else
+#   define OPT_MAP_ANON MAP_ANON
+# endif
+#else
+# define OPT_MAP_ANON 0
+#endif
+
 static volatile AO_t mmap_enabled = 0;
 
 void
@@ -78,24 +100,28 @@ AO_malloc_enable_mmap(void)
 static char *get_mmaped(size_t sz)
 {
   char * result;
+# ifdef USE_MMAP_ANON
+#   define zero_fd -1
+# else
+    int zero_fd;
+# endif
 
   assert(!(sz & (CHUNK_SIZE - 1)));
-  if (!mmap_enabled) return 0;
-# if defined(MAP_ANONYMOUS)
-    result = mmap(0, sz, PROT_READ | PROT_WRITE,
-                  MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
-# elif defined(MAP_ANON)
-    result = mmap(0, sz, PROT_READ | PROT_WRITE,
-                  MAP_PRIVATE | MAP_ANON, -1, 0);
-# else
-    {
-      int zero_fd = open("/dev/zero", O_RDONLY);
-      result = mmap(0, sz, PROT_READ | PROT_WRITE,
-                    MAP_PRIVATE, zero_fd, 0);
-      close(zero_fd);
-    }
+  if (!mmap_enabled)
+    return 0;
+
+# ifndef USE_MMAP_ANON
+    zero_fd = open("/dev/zero", O_RDONLY);
+    if (zero_fd == -1)
+      return 0;
 # endif
-  if (result == MAP_FAILED) result = 0;
+  result = mmap(0, sz, PROT_READ | PROT_WRITE,
+                GC_MMAP_FLAGS | OPT_MAP_ANON, zero_fd, 0/* offset */);
+# ifndef USE_MMAP_ANON
+    close(zero_fd);
+# endif
+  if (result == MAP_FAILED)
+    result = 0;
   return result;
 }
 
@@ -281,8 +307,7 @@ AO_free(void *p)
   log_sz = *(AO_t *)base;
 # ifdef AO_TRACE_MALLOC
     fprintf(stderr, "%x: AO_free(%p sz:%lu)\n", (int)pthread_self(), p,
-                    (unsigned long)
-                      (log_sz > LOG_MAX_SIZE? log_sz : (1 << log_sz)));
+            (unsigned long)(log_sz > LOG_MAX_SIZE? log_sz : (1 << log_sz)));
 # endif
   if (log_sz > LOG_MAX_SIZE)
     AO_free_large(p);

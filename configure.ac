@@ -25,22 +25,24 @@ AC_MSG_CHECKING(Determining PIC compiler flag)
 if test "$GCC" = yes; then
   AC_MSG_RESULT(-fPIC)
   PICFLAG=-fPIC
+  case "$host" in
+    *-*-solaris*)
+      # Workaround: at least GCC 3.4.6 does not define this macro.
+      CFLAGS="$CFLAGS -D__PIC__=1"
+      ;;
+  esac
 else
   case "$host" in
     *-*-hpux*)
       AC_MSG_RESULT("+Z")
       PICFLAG="+Z"
-      if test "$GCC" != yes; then
-        CFLAGS="$CFLAGS +O2 -mt"
-      fi
+      CFLAGS="$CFLAGS +O2 -mt"
       ;;
     *-*-solaris*)
       AC_MSG_RESULT(-Kpic)
       PICFLAG=-Kpic
-      if test "$GCC" != yes; then
-        CFLAGS="$CFLAGS -O"
-        need_asm=true
-      fi
+      CFLAGS="$CFLAGS -O"
+      need_asm=true
       ;;
     *-*-linux*)
       AC_MSG_RESULT(-fPIC)

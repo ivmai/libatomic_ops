@@ -4730,24 +4730,26 @@ if test "$GCC" = yes; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: -fPIC" >&5
 $as_echo "-fPIC" >&6; }
   PICFLAG=-fPIC
+  case "$host" in
+    *-*-solaris*)
+      # Workaround: at least GCC 3.4.6 does not define this macro.
+      CFLAGS="$CFLAGS -D__PIC__=1"
+      ;;
+  esac
 else
   case "$host" in
     *-*-hpux*)
       { $as_echo "$as_me:${as_lineno-$LINENO}: result: \"+Z\"" >&5
 $as_echo "\"+Z\"" >&6; }
       PICFLAG="+Z"
-      if test "$GCC" != yes; then
-        CFLAGS="$CFLAGS +O2 -mt"
-      fi
+      CFLAGS="$CFLAGS +O2 -mt"
       ;;
     *-*-solaris*)
       { $as_echo "$as_me:${as_lineno-$LINENO}: result: -Kpic" >&5
 $as_echo "-Kpic" >&6; }
       PICFLAG=-Kpic
-      if test "$GCC" != yes; then
-        CFLAGS="$CFLAGS -O"
-        need_asm=true
-      fi
+      CFLAGS="$CFLAGS -O"
+      need_asm=true
       ;;
     *-*-linux*)
       { $as_echo "$as_me:${as_lineno-$LINENO}: result: -fPIC" >&5

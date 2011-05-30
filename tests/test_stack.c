@@ -213,7 +213,7 @@ int main(int argc, char **argv)
           print_list();
   #     endif
         check_list(list_length);
-        while ((le = AO_stack_pop(&the_list)) != 0)
+        while ((le = (list_element *)AO_stack_pop(&the_list)) != 0)
           free(le);
       }
 # ifndef NO_TIMES

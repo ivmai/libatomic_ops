@@ -1,3 +1,22 @@
+2011-05-30  Ivan Maidanski  <ivmai@mail.ru>
+
+	* configure.ac (PIC): Add workaround for GCC v3.4.6 which does not
+	define the corresponding macro.
+	* configure.ac: Don't check for GCC twice.
+	* configure: Regenerate.
+	* tests/test_malloc.c (DEFAULT_NTHREADS): New macro.
+	* tests/test_malloc.c (run_one_test): Refine printed message (in
+	case of HAVE_MMAP).
+	* tests/test_malloc.c (main): Use DEFAULT_NTHREADS.
+	* tests/test_stack.c (main): Cast AO_stack_pop() returned pointer.
+	* src/atomic_ops_malloc.c (USE_MMAP_ANON, GC_MMAP_FLAGS,
+	OPT_MAP_ANON): New macro.
+	* src/atomic_ops_malloc.c (get_mmaped): Pass -1 (instead of 0) as
+	file descriptor to mmap() if MAP_ANONYMOUS (same as for MAP_ANON).
+	* src/atomic_ops_malloc.c (get_mmaped): Use USE_MMAP_ANON,
+	GC_MMAP_FLAGS and OPT_MAP_ANON macros; reformat code; check open()
+	returned value.
+
 2011-05-11  Ivan Maidanski  <ivmai@mail.ru>
 
 	* tests/test_malloc.c: Expand all tabs to spaces; remove trailing

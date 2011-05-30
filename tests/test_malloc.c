@@ -25,12 +25,23 @@
 #ifndef MAX_NTHREADS
 # define MAX_NTHREADS 100
 #endif
+
+#ifndef DEFAULT_NTHREADS
+# ifdef HAVE_MMAP
+#   define DEFAULT_NTHREADS 10
+# else
+#   define DEFAULT_NTHREADS 3
+# endif
+#endif
+
 #ifndef N_REVERSALS
 # define N_REVERSALS 1000 /* must be even */
 #endif
+
 #ifndef LIST_LENGTH
 # define LIST_LENGTH 1000
 #endif
+
 #ifndef LARGE_OBJ_SIZE
 # define LARGE_OBJ_SIZE 200000
 #endif
@@ -130,9 +141,12 @@ void * run_one_test(void * arg) {
   char *q;
 
   if (0 == p) {
-    fprintf(stderr, "AO_malloc(%d) failed: This is normal without mmap\n",
-            LARGE_OBJ_SIZE);
-    AO_free(p);
+#   ifdef HAVE_MMAP
+      fprintf(stderr, "AO_malloc(%d) failed\n", LARGE_OBJ_SIZE);
+#   else
+      fprintf(stderr, "AO_malloc(%d) failed: This is normal without mmap\n",
+              LARGE_OBJ_SIZE);
+#   endif
   } else {
     p[0] = p[LARGE_OBJ_SIZE/2] = p[LARGE_OBJ_SIZE-1] = 'a';
     q = AO_malloc(LARGE_OBJ_SIZE);
@@ -168,11 +182,7 @@ int main(int argc, char **argv) {
     int exper_n;
 
     if (1 == argc) {
-#     if !defined(HAVE_MMAP)
-        nthreads = 3;
-#     else
-        nthreads = 10;
-#     endif
+      nthreads = DEFAULT_NTHREADS;
     } else if (2 == argc) {
       nthreads = atoi(argv[1]);
       if (nthreads < 1 || nthreads > MAX_NTHREADS) {
