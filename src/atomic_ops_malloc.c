@@ -94,7 +94,12 @@ static volatile AO_t mmap_enabled = 0;
 void
 AO_malloc_enable_mmap(void)
 {
-  AO_store(&mmap_enabled, 1);
+# if defined(__sun)
+    AO_store_release(&mmap_enabled, 1);
+            /* Workaround for Sun CC */
+# else
+    AO_store(&mmap_enabled, 1);
+# endif
 }
 
 static char *get_mmaped(size_t sz)

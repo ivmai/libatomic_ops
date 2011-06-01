@@ -1,5 +1,10 @@
 2011-06-01  Ivan Maidanski  <ivmai@mail.ru>
 
+	* src/atomic_ops_malloc.c (AO_malloc_enable_mmap): Workaround for
+	Sun C compiler (call "release" variant of AO_store).
+
+2011-06-01  Ivan Maidanski  <ivmai@mail.ru>
+
 	* configure.ac (_PTHREADS): New template (used for NetBSD).
 	* configure.ac (THREADDLLIBS): New macro.
 	* tests/Makefile.am (test_atomic_LDADD, test_stack_LDADD,
