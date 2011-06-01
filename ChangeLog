@@ -1,5 +1,13 @@
 2011-06-01  Ivan Maidanski  <ivmai@mail.ru>
 
+	* src/atomic_ops/sysdeps/sunc/x86.h (AO_test_and_set_full):
+	Specify "%b0" (instead of "%0") in "xchg" instruction (to
+	workaround a bug in Sun C 5.11).
+	* src/atomic_ops/sysdeps/sunc/x86_64.h (AO_test_and_set_full):
+	Ditto.
+
+2011-06-01  Ivan Maidanski  <ivmai@mail.ru>
+
 	* src/atomic_ops_malloc.c (AO_malloc_enable_mmap): Workaround for
 	Sun C compiler (call "release" variant of AO_store).
 
