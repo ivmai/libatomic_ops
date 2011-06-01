@@ -207,12 +207,11 @@ AO_fetch_and_sub1(volatile AO_t *p)
 /* NEC LE-IT: compare and swap */
 /* Returns nonzero if the comparison succeeded. */
 AO_INLINE int
-AO_compare_and_swap(volatile AO_t *addr,
-                                AO_t old_val, AO_t new_val)
+AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 {
-         AO_t result,tmp;
+         AO_t result, tmp;
 
-        __asm__ __volatile__("@ AO_compare_and_swap\n"
+        __asm__ __volatile__("@AO_compare_and_swap\n"
 "1:     mov             %0, #2\n"       /* store a flag */
 "       ldrex   %1, [%3]\n"             /* get original */
 "       teq             %1, %4\n"       /* see if match */
@@ -230,11 +229,15 @@ AO_compare_and_swap(volatile AO_t *addr,
 }
 #define AO_HAVE_compare_and_swap
 
-AO_INLINE int
-AO_compare_double_and_swap_double(volatile AO_double_t *addr,
-                                  AO_t old_val1, AO_t old_val2,
-                                  AO_t new_val1, AO_t new_val2)
-{
+#if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
+    && !defined(__ARM_ARCH_6T2__) && !defined(__ARM_ARCH_6Z__) \
+    && !defined(__ARM_ARCH_6ZT2__)
+  /* ldrexd/strexd present in ARMv6K/M+ (see gas/config/tc-arm.c) */
+  AO_INLINE int
+  AO_compare_double_and_swap_double(volatile AO_double_t *addr,
+                                    AO_t old_val1, AO_t old_val2,
+                                    AO_t new_val1, AO_t new_val2)
+  {
         double_ptr_storage old_val =
                         ((double_ptr_storage)old_val2 << 32) | old_val1;
         double_ptr_storage new_val =
@@ -242,23 +245,24 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
         double_ptr_storage tmp;
         int result;
 
-        while(1) {
-                __asm__ __volatile__("@ AO_compare_and_swap_double\n"
+        do {
+                __asm__ __volatile__("@AO_compare_double_and_swap_double\n"
                 "       ldrexd  %0, [%1]\n" /* get original to r1 & r2 */
                         : "=&r"(tmp)
                         : "r"(addr)
                         : "cc");
-                if(tmp != old_val)      return 0;
+                if (tmp != old_val)
+                  return 0;
                 __asm__ __volatile__(
                 "       strexd  %0, %2, [%3]\n" /* store new one if matched */
                         : "=&r"(result),"+m"(*addr)
                         : "r"(new_val), "r"(addr)
                         : "cc");
-                if(!result)     return 1;
-        }
-}
-
-#define AO_HAVE_compare_double_and_swap_double
+        } while (result);
+        return 1;
+  }
+# define AO_HAVE_compare_double_and_swap_double
+#endif
 
 #else
 /* pre ARMv6 architectures ... */
@@ -286,7 +290,6 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
                         : "memory");
   return oldval;
 }
-
 #define AO_HAVE_test_and_set_full
 
 #endif /* __ARM_ARCH_x */

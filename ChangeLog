@@ -1,5 +1,15 @@
 2011-06-01  Ivan Maidanski  <ivmai@mail.ru>
 
+	* src/atomic_ops/sysdeps/gcc/arm.h
+	(AO_compare_double_and_swap_double,
+	AO_HAVE_compare_double_and_swap_double): Define only starting from
+	ARMv6K.
+	* src/atomic_ops/sysdeps/gcc/arm.h
+	(AO_compare_double_and_swap_double): Fix function name in
+	assembler code; replace while (1) loop with "do-while".
+
+2011-06-01  Ivan Maidanski  <ivmai@mail.ru>
+
 	* src/atomic_ops/sysdeps/sunc/x86.h (AO_test_and_set_full):
 	Specify "%b0" (instead of "%0") in "xchg" instruction (to
 	workaround a bug in Sun C 5.11).
