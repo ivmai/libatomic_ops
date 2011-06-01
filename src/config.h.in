@@ -65,3 +65,9 @@
 
 /* Version number of package */
 #undef VERSION
+
+/* Indicates the use of pthreads (NetBSD). */
+#undef _PTHREADS
+
+/* Required define if using POSIX threads. */
+#undef _REENTRANT

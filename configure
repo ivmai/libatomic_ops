@@ -606,6 +606,7 @@ LTLIBOBJS
 LIBOBJS
 NEED_ASM_FALSE
 NEED_ASM_TRUE
+THREADDLLIBS
 PICFLAG
 EGREP
 GREP
@@ -4766,6 +4767,66 @@ fi
 CFLAGS="$CFLAGS -DNDEBUG"
 
 
+
+
+
+THREADDLLIBS=
+## Libraries needed to support threads.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_self in -lpthread" >&5
+$as_echo_n "checking for pthread_self in -lpthread... " >&6; }
+if ${ac_cv_lib_pthread_pthread_self+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpthread  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char pthread_self ();
+int
+main ()
+{
+return pthread_self ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_pthread_pthread_self=yes
+else
+  ac_cv_lib_pthread_pthread_self=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pthread_pthread_self" >&5
+$as_echo "$ac_cv_lib_pthread_pthread_self" >&6; }
+if test "x$ac_cv_lib_pthread_pthread_self" = xyes; then :
+  THREADDLLIBS="-lpthread"
+fi
+
+
+$as_echo "#define _REENTRANT 1" >>confdefs.h
+
+case "$host" in
+    *-*-netbsd*)
+      $as_echo "#define _PTHREADS 1" >>confdefs.h
+
+      ;;
+    *-*-openbsd* | *-*-kfreebsd*-gnu | *-*-dgux*)
+      THREADDLLIBS=-pthread
+      ;;
+    *-*-cygwin* | *-*-darwin*)
+      THREADDLLIBS=
+      ;;
+esac
 
 
  if test x$need_asm = xtrue; then

@@ -55,13 +55,32 @@ else
   esac
 fi
 CFLAGS="$CFLAGS -DNDEBUG"
-
 AC_SUBST(PICFLAG)
 AC_SUBST(DEFS)
 
+AH_TEMPLATE([_PTHREADS], [Indicates the use of pthreads (NetBSD).])
+
+THREADDLLIBS=
+## Libraries needed to support threads.
+AC_CHECK_LIB(pthread, pthread_self, THREADDLLIBS="-lpthread",,)
+AC_DEFINE(_REENTRANT, 1, [Required define if using POSIX threads.])
+case "$host" in
+    *-*-netbsd*)
+      AC_DEFINE(_PTHREADS)
+      ;;
+    *-*-openbsd* | *-*-kfreebsd*-gnu | *-*-dgux*)
+      THREADDLLIBS=-pthread
+      ;;
+    *-*-cygwin* | *-*-darwin*)
+      THREADDLLIBS=
+      ;;
+esac
+AC_SUBST(THREADDLLIBS)
+
 AM_CONDITIONAL(NEED_ASM, test x$need_asm = xtrue)
 
-AC_CONFIG_FILES([Makefile src/Makefile src/atomic_ops/Makefile src/atomic_ops/sysdeps/Makefile doc/Makefile tests/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile src/atomic_ops/Makefile \
+    src/atomic_ops/sysdeps/Makefile doc/Makefile tests/Makefile])
 AC_CONFIG_COMMANDS([default],[[]],[[
 PICFLAG="${PICFLAG}"
 CC="${CC}"
