@@ -112,7 +112,6 @@ volatile AO_t ops_performed = 0;
 void * run_one_test(void * arg)
 {
   list_element * t[MAX_NTHREADS + 1];
-  list_element * aux;
   long index = (long)arg;
   int i;
   int j = 0;

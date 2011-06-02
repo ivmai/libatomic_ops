@@ -179,7 +179,6 @@ void * run_one_test(void * arg) {
 
 int main(int argc, char **argv) {
     int nthreads;
-    int exper_n;
 
     if (1 == argc) {
       nthreads = DEFAULT_NTHREADS;
