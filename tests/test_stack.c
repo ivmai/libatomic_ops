@@ -54,6 +54,11 @@ void add_elements(int n)
   if (n == 0) return;
   add_elements(n-1);
   le = malloc(sizeof(list_element));
+  if (le == 0)
+    {
+      fprintf(stderr, "Out of memory\n");
+      abort();
+    }
   le -> data = n;
   AO_stack_push(&the_list, (AO_t *)le);
 }

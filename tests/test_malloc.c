@@ -150,6 +150,12 @@ void * run_one_test(void * arg) {
   } else {
     p[0] = p[LARGE_OBJ_SIZE/2] = p[LARGE_OBJ_SIZE-1] = 'a';
     q = AO_malloc(LARGE_OBJ_SIZE);
+    if (q == 0)
+      {
+        fprintf(stderr, "Out of memory\n");
+          /* Normal for more than about 10 threads without mmap? */
+        abort();
+      }
     q[0] = q[LARGE_OBJ_SIZE/2] = q[LARGE_OBJ_SIZE-1] = 'b';
     if (p[0] != 'a' || p[LARGE_OBJ_SIZE/2] != 'a'
         || p[LARGE_OBJ_SIZE-1] != 'a') {
