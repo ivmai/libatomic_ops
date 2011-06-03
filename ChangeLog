@@ -1,5 +1,12 @@
 2011-06-03  Ivan Maidanski  <ivmai@mail.ru>
 
+	* src/atomic_ops/generalize-small.template
+	(AO_HAVE_XSIZE_fetch_and_add_full): Add missing definition.
+	* src/atomic_ops/generalize-small.template: Reformat code.
+	* src/atomic_ops/generalize-small.h: Regenerate.
+
+2011-06-03  Ivan Maidanski  <ivmai@mail.ru>
+
 	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h: Remove
 	blank line between AO_func and AO_HAVE_func definitions.
 	* src/atomic_ops/sysdeps/atomic_load_store.h: Ditto.
