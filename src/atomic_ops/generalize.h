@@ -143,8 +143,8 @@
 
 /* Nop */
 #if !defined(AO_HAVE_nop)
-   AO_INLINE void AO_nop(void) {}
-#  define AO_HAVE_nop
+  AO_INLINE void AO_nop(void) {}
+# define AO_HAVE_nop
 #endif
 
 #if defined(AO_HAVE_test_and_set_full) && !defined(AO_HAVE_nop_full)
@@ -165,34 +165,34 @@
 #endif
 
 #if defined(AO_HAVE_nop_full) && !defined(AO_HAVE_nop_read)
-#  define AO_nop_read() AO_nop_full()
-#  define AO_HAVE_nop_read
+# define AO_nop_read() AO_nop_full()
+# define AO_HAVE_nop_read
 #endif
 
 #if defined(AO_HAVE_nop_full) && !defined(AO_HAVE_nop_write)
-#  define AO_nop_write() AO_nop_full()
-#  define AO_HAVE_nop_write
+# define AO_nop_write() AO_nop_full()
+# define AO_HAVE_nop_write
 #endif
 
 /* Load */
 #if defined(AO_HAVE_load_full) && !defined(AO_HAVE_load_acquire)
-#  define AO_load_acquire(addr) AO_load_full(addr)
-#  define AO_HAVE_load_acquire
+# define AO_load_acquire(addr) AO_load_full(addr)
+# define AO_HAVE_load_acquire
 #endif
 
 #if defined(AO_HAVE_load_acquire) && !defined(AO_HAVE_load)
-#  define AO_load(addr) AO_load_acquire(addr)
-#  define AO_HAVE_load
+# define AO_load(addr) AO_load_acquire(addr)
+# define AO_HAVE_load
 #endif
 
 #if defined(AO_HAVE_load_full) && !defined(AO_HAVE_load_read)
-#  define AO_load_read(addr) AO_load_full(addr)
-#  define AO_HAVE_load_read
+# define AO_load_read(addr) AO_load_full(addr)
+# define AO_HAVE_load_read
 #endif
 
 #if !defined(AO_HAVE_load_acquire_read) && defined(AO_HAVE_load_acquire)
-#  define AO_load_acquire_read(addr) AO_load_acquire(addr)
-#  define AO_HAVE_load_acquire_read
+# define AO_load_acquire_read(addr) AO_load_acquire(addr)
+# define AO_HAVE_load_acquire_read
 #endif
 
 #if defined(AO_HAVE_load) && defined(AO_HAVE_nop_full) && \
@@ -225,18 +225,18 @@
 
 #if defined(AO_HAVE_load_acquire) && defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_load_full)
-#  define AO_load_full(addr) (AO_nop_full(), AO_load_acquire(addr))
-#  define AO_HAVE_load_full
+# define AO_load_full(addr) (AO_nop_full(), AO_load_acquire(addr))
+# define AO_HAVE_load_full
 #endif
 
 #if !defined(AO_HAVE_load_acquire_read) && defined(AO_HAVE_load_read)
-#  define AO_load_acquire_read(addr) AO_load_read(addr)
-#  define AO_HAVE_load_acquire_read
+# define AO_load_acquire_read(addr) AO_load_read(addr)
+# define AO_HAVE_load_acquire_read
 #endif
 
 #if defined(AO_HAVE_load_acquire_read) && !defined(AO_HAVE_load)
-#  define AO_load(addr) AO_load_acquire_read(addr)
-#  define AO_HAVE_load
+# define AO_load(addr) AO_load_acquire_read(addr)
+# define AO_HAVE_load
 #endif
 
 #ifdef AO_NO_DD_ORDERING
@@ -255,51 +255,51 @@
 /* Store */
 
 #if defined(AO_HAVE_store_full) && !defined(AO_HAVE_store_release)
-#  define AO_store_release(addr,val) AO_store_full(addr,val)
-#  define AO_HAVE_store_release
+# define AO_store_release(addr,val) AO_store_full(addr,val)
+# define AO_HAVE_store_release
 #endif
 
 #if defined(AO_HAVE_store_release) && !defined(AO_HAVE_store)
-#  define AO_store(addr, val) AO_store_release(addr,val)
-#  define AO_HAVE_store
+# define AO_store(addr, val) AO_store_release(addr,val)
+# define AO_HAVE_store
 #endif
 
 #if defined(AO_HAVE_store_full) && !defined(AO_HAVE_store_write)
-#  define AO_store_write(addr,val) AO_store_full(addr,val)
-#  define AO_HAVE_store_write
+# define AO_store_write(addr,val) AO_store_full(addr,val)
+# define AO_HAVE_store_write
 #endif
 
 #if defined(AO_HAVE_store_release) && !defined(AO_HAVE_store_release_write)
-#  define AO_store_release_write(addr, val) AO_store_release(addr,val)
-#  define AO_HAVE_store_release_write
+# define AO_store_release_write(addr, val) AO_store_release(addr,val)
+# define AO_HAVE_store_release_write
 #endif
 
 #if defined(AO_HAVE_store_write) && !defined(AO_HAVE_store)
-#  define AO_store(addr, val) AO_store_write(addr,val)
-#  define AO_HAVE_store
+# define AO_store(addr, val) AO_store_write(addr,val)
+# define AO_HAVE_store
 #endif
 
 #if defined(AO_HAVE_store) && defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_store_release)
-#  define AO_store_release(addr,val) (AO_nop_full(), AO_store(addr,val))
-#  define AO_HAVE_store_release
+# define AO_store_release(addr,val) (AO_nop_full(), AO_store(addr,val))
+# define AO_HAVE_store_release
 #endif
 
 #if defined(AO_HAVE_nop_write) && defined(AO_HAVE_store) && \
      !defined(AO_HAVE_store_write)
-#  define AO_store_write(addr, val) (AO_nop_write(), AO_store(addr,val))
-#  define AO_HAVE_store_write
+# define AO_store_write(addr, val) (AO_nop_write(), AO_store(addr,val))
+# define AO_HAVE_store_write
 #endif
 
 #if defined(AO_HAVE_store_write) && !defined(AO_HAVE_store_release_write)
-#  define AO_store_release_write(addr, val) AO_store_write(addr,val)
-#  define AO_HAVE_store_release_write
+# define AO_store_release_write(addr, val) AO_store_write(addr,val)
+# define AO_HAVE_store_release_write
 #endif
 
 #if defined(AO_HAVE_store_release) && defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_store_full)
-#  define AO_store_full(addr, val) (AO_store_release(addr, val), AO_nop_full())
-#  define AO_HAVE_store_full
+# define AO_store_full(addr, val) (AO_store_release(addr, val), AO_nop_full())
+# define AO_HAVE_store_full
 #endif
 
 /* NEC LE-IT: Test and set */
@@ -308,7 +308,7 @@
     !defined(AO_HAVE_test_and_set_release)
 #       define AO_test_and_set_release(addr) \
         (AO_nop_full(), AO_test_and_set(addr))
-#  define AO_HAVE_test_and_set_release
+# define AO_HAVE_test_and_set_release
 #endif
 
 #if defined(AO_HAVE_test_and_set) && \
@@ -418,60 +418,60 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 #if !defined(AO_HAVE_fetch_and_add) && \
     defined(AO_HAVE_fetch_and_add_release)
-#  define AO_fetch_and_add(addr, val) \
+# define AO_fetch_and_add(addr, val) \
         AO_fetch_and_add_release(addr, val)
-#  define AO_HAVE_fetch_and_add
+# define AO_HAVE_fetch_and_add
 #endif
 #if !defined(AO_HAVE_fetch_and_add) && \
     defined(AO_HAVE_fetch_and_add_acquire)
-#  define AO_fetch_and_add(addr, val) \
+# define AO_fetch_and_add(addr, val) \
         AO_fetch_and_add_acquire(addr, val)
-#  define AO_HAVE_fetch_and_add
+# define AO_HAVE_fetch_and_add
 #endif
 #if !defined(AO_HAVE_fetch_and_add) && \
     defined(AO_HAVE_fetch_and_add_write)
-#  define AO_fetch_and_add(addr, val) \
+# define AO_fetch_and_add(addr, val) \
         AO_fetch_and_add_write(addr, val)
-#  define AO_HAVE_fetch_and_add
+# define AO_HAVE_fetch_and_add
 #endif
 #if !defined(AO_HAVE_fetch_and_add) && \
     defined(AO_HAVE_fetch_and_add_read)
-#  define AO_fetch_and_add(addr, val) \
+# define AO_fetch_and_add(addr, val) \
         AO_fetch_and_add_read(addr, val)
-#  define AO_HAVE_fetch_and_add
+# define AO_HAVE_fetch_and_add
 #endif
 
-#if defined(AO_HAVE_fetch_and_add_acquire) &&\
+#if defined(AO_HAVE_fetch_and_add_acquire) && \
     defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_fetch_and_add_full)
-#  define AO_fetch_and_add_full(addr, val) \
+# define AO_fetch_and_add_full(addr, val) \
         (AO_nop_full(), AO_fetch_and_add_acquire(addr, val))
-#  define AO_HAVE_fetch_and_add_full
+# define AO_HAVE_fetch_and_add_full
 #endif
 
 #if !defined(AO_HAVE_fetch_and_add_release_write) && \
     defined(AO_HAVE_fetch_and_add_write)
-#  define AO_fetch_and_add_release_write(addr, val) \
+# define AO_fetch_and_add_release_write(addr, val) \
         AO_fetch_and_add_write(addr, val)
-#  define AO_HAVE_fetch_and_add_release_write
+# define AO_HAVE_fetch_and_add_release_write
 #endif
 #if !defined(AO_HAVE_fetch_and_add_release_write) && \
     defined(AO_HAVE_fetch_and_add_release)
-#  define AO_fetch_and_add_release_write(addr, val) \
+# define AO_fetch_and_add_release_write(addr, val) \
         AO_fetch_and_add_release(addr, val)
-#  define AO_HAVE_fetch_and_add_release_write
+# define AO_HAVE_fetch_and_add_release_write
 #endif
 #if !defined(AO_HAVE_fetch_and_add_acquire_read) && \
     defined(AO_HAVE_fetch_and_add_read)
-#  define AO_fetch_and_add_acquire_read(addr, val) \
+# define AO_fetch_and_add_acquire_read(addr, val) \
         AO_fetch_and_add_read(addr, val)
-#  define AO_HAVE_fetch_and_add_acquire_read
+# define AO_HAVE_fetch_and_add_acquire_read
 #endif
 #if !defined(AO_HAVE_fetch_and_add_acquire_read) && \
     defined(AO_HAVE_fetch_and_add_acquire)
-#  define AO_fetch_and_add_acquire_read(addr, val) \
+# define AO_fetch_and_add_acquire_read(addr, val) \
         AO_fetch_and_add_acquire(addr, val)
-#  define AO_HAVE_fetch_and_add_acquire_read
+# define AO_HAVE_fetch_and_add_acquire_read
 #endif
 
 #ifdef AO_NO_DD_ORDERING
@@ -490,48 +490,48 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 /* Fetch_and_add1 */
 
-#if defined(AO_HAVE_fetch_and_add_full) &&\
+#if defined(AO_HAVE_fetch_and_add_full) && \
     !defined(AO_HAVE_fetch_and_add1_full)
-#  define AO_fetch_and_add1_full(addr) AO_fetch_and_add_full(addr,1)
-#  define AO_HAVE_fetch_and_add1_full
+# define AO_fetch_and_add1_full(addr) AO_fetch_and_add_full(addr,1)
+# define AO_HAVE_fetch_and_add1_full
 #endif
-#if defined(AO_HAVE_fetch_and_add_release) &&\
+#if defined(AO_HAVE_fetch_and_add_release) && \
     !defined(AO_HAVE_fetch_and_add1_release)
-#  define AO_fetch_and_add1_release(addr) AO_fetch_and_add_release(addr,1)
-#  define AO_HAVE_fetch_and_add1_release
+# define AO_fetch_and_add1_release(addr) AO_fetch_and_add_release(addr,1)
+# define AO_HAVE_fetch_and_add1_release
 #endif
-#if defined(AO_HAVE_fetch_and_add_acquire) &&\
+#if defined(AO_HAVE_fetch_and_add_acquire) && \
     !defined(AO_HAVE_fetch_and_add1_acquire)
-#  define AO_fetch_and_add1_acquire(addr) AO_fetch_and_add_acquire(addr,1)
-#  define AO_HAVE_fetch_and_add1_acquire
+# define AO_fetch_and_add1_acquire(addr) AO_fetch_and_add_acquire(addr,1)
+# define AO_HAVE_fetch_and_add1_acquire
 #endif
-#if defined(AO_HAVE_fetch_and_add_write) &&\
+#if defined(AO_HAVE_fetch_and_add_write) && \
     !defined(AO_HAVE_fetch_and_add1_write)
-#  define AO_fetch_and_add1_write(addr) AO_fetch_and_add_write(addr,1)
-#  define AO_HAVE_fetch_and_add1_write
+# define AO_fetch_and_add1_write(addr) AO_fetch_and_add_write(addr,1)
+# define AO_HAVE_fetch_and_add1_write
 #endif
-#if defined(AO_HAVE_fetch_and_add_read) &&\
+#if defined(AO_HAVE_fetch_and_add_read) && \
     !defined(AO_HAVE_fetch_and_add1_read)
-#  define AO_fetch_and_add1_read(addr) AO_fetch_and_add_read(addr,1)
-#  define AO_HAVE_fetch_and_add1_read
+# define AO_fetch_and_add1_read(addr) AO_fetch_and_add_read(addr,1)
+# define AO_HAVE_fetch_and_add1_read
 #endif
-#if defined(AO_HAVE_fetch_and_add_release_write) &&\
+#if defined(AO_HAVE_fetch_and_add_release_write) && \
     !defined(AO_HAVE_fetch_and_add1_release_write)
-#  define AO_fetch_and_add1_release_write(addr) \
+# define AO_fetch_and_add1_release_write(addr) \
         AO_fetch_and_add_release_write(addr,1)
-#  define AO_HAVE_fetch_and_add1_release_write
+# define AO_HAVE_fetch_and_add1_release_write
 #endif
-#if defined(AO_HAVE_fetch_and_add_acquire_read) &&\
+#if defined(AO_HAVE_fetch_and_add_acquire_read) && \
     !defined(AO_HAVE_fetch_and_add1_acquire_read)
-#  define AO_fetch_and_add1_acquire_read(addr) \
+# define AO_fetch_and_add1_acquire_read(addr) \
         AO_fetch_and_add_acquire_read(addr,1)
-#  define AO_HAVE_fetch_and_add1_acquire_read
+# define AO_HAVE_fetch_and_add1_acquire_read
 #endif
-#if defined(AO_HAVE_fetch_and_add) &&\
+#if defined(AO_HAVE_fetch_and_add) && \
     !defined(AO_HAVE_fetch_and_add1)
-#  define AO_fetch_and_add1(addr) \
+# define AO_fetch_and_add1(addr) \
         AO_fetch_and_add(addr,1)
-#  define AO_HAVE_fetch_and_add1
+# define AO_HAVE_fetch_and_add1
 #endif
 
 #if defined(AO_HAVE_fetch_and_add1_full)
@@ -559,60 +559,60 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 #if !defined(AO_HAVE_fetch_and_add1) && \
     defined(AO_HAVE_fetch_and_add1_release)
-#  define AO_fetch_and_add1(addr) \
+# define AO_fetch_and_add1(addr) \
         AO_fetch_and_add1_release(addr)
-#  define AO_HAVE_fetch_and_add1
+# define AO_HAVE_fetch_and_add1
 #endif
 #if !defined(AO_HAVE_fetch_and_add1) && \
     defined(AO_HAVE_fetch_and_add1_acquire)
-#  define AO_fetch_and_add1(addr) \
+# define AO_fetch_and_add1(addr) \
         AO_fetch_and_add1_acquire(addr)
-#  define AO_HAVE_fetch_and_add1
+# define AO_HAVE_fetch_and_add1
 #endif
 #if !defined(AO_HAVE_fetch_and_add1) && \
     defined(AO_HAVE_fetch_and_add1_write)
-#  define AO_fetch_and_add1(addr) \
+# define AO_fetch_and_add1(addr) \
         AO_fetch_and_add1_write(addr)
-#  define AO_HAVE_fetch_and_add1
+# define AO_HAVE_fetch_and_add1
 #endif
 #if !defined(AO_HAVE_fetch_and_add1) && \
     defined(AO_HAVE_fetch_and_add1_read)
-#  define AO_fetch_and_add1(addr) \
+# define AO_fetch_and_add1(addr) \
         AO_fetch_and_add1_read(addr)
-#  define AO_HAVE_fetch_and_add1
+# define AO_HAVE_fetch_and_add1
 #endif
 
-#if defined(AO_HAVE_fetch_and_add1_acquire) &&\
+#if defined(AO_HAVE_fetch_and_add1_acquire) && \
     defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_fetch_and_add1_full)
-#  define AO_fetch_and_add1_full(addr) \
+# define AO_fetch_and_add1_full(addr) \
         (AO_nop_full(), AO_fetch_and_add1_acquire(addr))
-#  define AO_HAVE_fetch_and_add1_full
+# define AO_HAVE_fetch_and_add1_full
 #endif
 
 #if !defined(AO_HAVE_fetch_and_add1_release_write) && \
     defined(AO_HAVE_fetch_and_add1_write)
-#  define AO_fetch_and_add1_release_write(addr) \
+# define AO_fetch_and_add1_release_write(addr) \
         AO_fetch_and_add1_write(addr)
-#  define AO_HAVE_fetch_and_add1_release_write
+# define AO_HAVE_fetch_and_add1_release_write
 #endif
 #if !defined(AO_HAVE_fetch_and_add1_release_write) && \
     defined(AO_HAVE_fetch_and_add1_release)
-#  define AO_fetch_and_add1_release_write(addr) \
+# define AO_fetch_and_add1_release_write(addr) \
         AO_fetch_and_add1_release(addr)
-#  define AO_HAVE_fetch_and_add1_release_write
+# define AO_HAVE_fetch_and_add1_release_write
 #endif
 #if !defined(AO_HAVE_fetch_and_add1_acquire_read) && \
     defined(AO_HAVE_fetch_and_add1_read)
-#  define AO_fetch_and_add1_acquire_read(addr) \
+# define AO_fetch_and_add1_acquire_read(addr) \
         AO_fetch_and_add1_read(addr)
-#  define AO_HAVE_fetch_and_add1_acquire_read
+# define AO_HAVE_fetch_and_add1_acquire_read
 #endif
 #if !defined(AO_HAVE_fetch_and_add1_acquire_read) && \
     defined(AO_HAVE_fetch_and_add1_acquire)
-#  define AO_fetch_and_add1_acquire_read(addr) \
+# define AO_fetch_and_add1_acquire_read(addr) \
         AO_fetch_and_add1_acquire(addr)
-#  define AO_HAVE_fetch_and_add1_acquire_read
+# define AO_HAVE_fetch_and_add1_acquire_read
 #endif
 
 #ifdef AO_NO_DD_ORDERING
@@ -630,52 +630,52 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 /* Fetch_and_sub1 */
 
-#if defined(AO_HAVE_fetch_and_add_full) &&\
+#if defined(AO_HAVE_fetch_and_add_full) && \
     !defined(AO_HAVE_fetch_and_sub1_full)
-#  define AO_fetch_and_sub1_full(addr) AO_fetch_and_add_full(addr,(AO_t)(-1))
-#  define AO_HAVE_fetch_and_sub1_full
+# define AO_fetch_and_sub1_full(addr) AO_fetch_and_add_full(addr,(AO_t)(-1))
+# define AO_HAVE_fetch_and_sub1_full
 #endif
-#if defined(AO_HAVE_fetch_and_add_release) &&\
+#if defined(AO_HAVE_fetch_and_add_release) && \
     !defined(AO_HAVE_fetch_and_sub1_release)
-#  define AO_fetch_and_sub1_release(addr) \
+# define AO_fetch_and_sub1_release(addr) \
         AO_fetch_and_add_release(addr,(AO_t)(-1))
-#  define AO_HAVE_fetch_and_sub1_release
+# define AO_HAVE_fetch_and_sub1_release
 #endif
-#if defined(AO_HAVE_fetch_and_add_acquire) &&\
+#if defined(AO_HAVE_fetch_and_add_acquire) && \
     !defined(AO_HAVE_fetch_and_sub1_acquire)
-#  define AO_fetch_and_sub1_acquire(addr) \
+# define AO_fetch_and_sub1_acquire(addr) \
         AO_fetch_and_add_acquire(addr,(AO_t)(-1))
-#  define AO_HAVE_fetch_and_sub1_acquire
+# define AO_HAVE_fetch_and_sub1_acquire
 #endif
-#if defined(AO_HAVE_fetch_and_add_write) &&\
+#if defined(AO_HAVE_fetch_and_add_write) && \
     !defined(AO_HAVE_fetch_and_sub1_write)
-#  define AO_fetch_and_sub1_write(addr) \
+# define AO_fetch_and_sub1_write(addr) \
         AO_fetch_and_add_write(addr,(AO_t)(-1))
-#  define AO_HAVE_fetch_and_sub1_write
+# define AO_HAVE_fetch_and_sub1_write
 #endif
-#if defined(AO_HAVE_fetch_and_add_read) &&\
+#if defined(AO_HAVE_fetch_and_add_read) && \
     !defined(AO_HAVE_fetch_and_sub1_read)
-#  define AO_fetch_and_sub1_read(addr) \
+# define AO_fetch_and_sub1_read(addr) \
         AO_fetch_and_add_read(addr,(AO_t)(-1))
-#  define AO_HAVE_fetch_and_sub1_read
+# define AO_HAVE_fetch_and_sub1_read
 #endif
-#if defined(AO_HAVE_fetch_and_add_release_write) &&\
+#if defined(AO_HAVE_fetch_and_add_release_write) && \
     !defined(AO_HAVE_fetch_and_sub1_release_write)
-#  define AO_fetch_and_sub1_release_write(addr) \
+# define AO_fetch_and_sub1_release_write(addr) \
         AO_fetch_and_add_release_write(addr,(AO_t)(-1))
-#  define AO_HAVE_fetch_and_sub1_release_write
+# define AO_HAVE_fetch_and_sub1_release_write
 #endif
-#if defined(AO_HAVE_fetch_and_add_acquire_read) &&\
+#if defined(AO_HAVE_fetch_and_add_acquire_read) && \
     !defined(AO_HAVE_fetch_and_sub1_acquire_read)
-#  define AO_fetch_and_sub1_acquire_read(addr) \
+# define AO_fetch_and_sub1_acquire_read(addr) \
         AO_fetch_and_add_acquire_read(addr,(AO_t)(-1))
-#  define AO_HAVE_fetch_and_sub1_acquire_read
+# define AO_HAVE_fetch_and_sub1_acquire_read
 #endif
-#if defined(AO_HAVE_fetch_and_add) &&\
+#if defined(AO_HAVE_fetch_and_add) && \
     !defined(AO_HAVE_fetch_and_sub1)
-#  define AO_fetch_and_sub1(addr) \
+# define AO_fetch_and_sub1(addr) \
         AO_fetch_and_add(addr,(AO_t)(-1))
-#  define AO_HAVE_fetch_and_sub1
+# define AO_HAVE_fetch_and_sub1
 #endif
 
 #if defined(AO_HAVE_fetch_and_sub1_full)
@@ -703,60 +703,60 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 #if !defined(AO_HAVE_fetch_and_sub1) && \
     defined(AO_HAVE_fetch_and_sub1_release)
-#  define AO_fetch_and_sub1(addr) \
+# define AO_fetch_and_sub1(addr) \
         AO_fetch_and_sub1_release(addr)
-#  define AO_HAVE_fetch_and_sub1
+# define AO_HAVE_fetch_and_sub1
 #endif
 #if !defined(AO_HAVE_fetch_and_sub1) && \
     defined(AO_HAVE_fetch_and_sub1_acquire)
-#  define AO_fetch_and_sub1(addr) \
+# define AO_fetch_and_sub1(addr) \
         AO_fetch_and_sub1_acquire(addr)
-#  define AO_HAVE_fetch_and_sub1
+# define AO_HAVE_fetch_and_sub1
 #endif
 #if !defined(AO_HAVE_fetch_and_sub1) && \
     defined(AO_HAVE_fetch_and_sub1_write)
-#  define AO_fetch_and_sub1(addr) \
+# define AO_fetch_and_sub1(addr) \
         AO_fetch_and_sub1_write(addr)
-#  define AO_HAVE_fetch_and_sub1
+# define AO_HAVE_fetch_and_sub1
 #endif
 #if !defined(AO_HAVE_fetch_and_sub1) && \
     defined(AO_HAVE_fetch_and_sub1_read)
-#  define AO_fetch_and_sub1(addr) \
+# define AO_fetch_and_sub1(addr) \
         AO_fetch_and_sub1_read(addr)
-#  define AO_HAVE_fetch_and_sub1
+# define AO_HAVE_fetch_and_sub1
 #endif
 
-#if defined(AO_HAVE_fetch_and_sub1_acquire) &&\
+#if defined(AO_HAVE_fetch_and_sub1_acquire) && \
     defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_fetch_and_sub1_full)
-#  define AO_fetch_and_sub1_full(addr) \
+# define AO_fetch_and_sub1_full(addr) \
         (AO_nop_full(), AO_fetch_and_sub1_acquire(addr))
-#  define AO_HAVE_fetch_and_sub1_full
+# define AO_HAVE_fetch_and_sub1_full
 #endif
 
 #if !defined(AO_HAVE_fetch_and_sub1_release_write) && \
     defined(AO_HAVE_fetch_and_sub1_write)
-#  define AO_fetch_and_sub1_release_write(addr) \
+# define AO_fetch_and_sub1_release_write(addr) \
         AO_fetch_and_sub1_write(addr)
-#  define AO_HAVE_fetch_and_sub1_release_write
+# define AO_HAVE_fetch_and_sub1_release_write
 #endif
 #if !defined(AO_HAVE_fetch_and_sub1_release_write) && \
     defined(AO_HAVE_fetch_and_sub1_release)
-#  define AO_fetch_and_sub1_release_write(addr) \
+# define AO_fetch_and_sub1_release_write(addr) \
         AO_fetch_and_sub1_release(addr)
-#  define AO_HAVE_fetch_and_sub1_release_write
+# define AO_HAVE_fetch_and_sub1_release_write
 #endif
 #if !defined(AO_HAVE_fetch_and_sub1_acquire_read) && \
     defined(AO_HAVE_fetch_and_sub1_read)
-#  define AO_fetch_and_sub1_acquire_read(addr) \
+# define AO_fetch_and_sub1_acquire_read(addr) \
         AO_fetch_and_sub1_read(addr)
-#  define AO_HAVE_fetch_and_sub1_acquire_read
+# define AO_HAVE_fetch_and_sub1_acquire_read
 #endif
 #if !defined(AO_HAVE_fetch_and_sub1_acquire_read) && \
     defined(AO_HAVE_fetch_and_sub1_acquire)
-#  define AO_fetch_and_sub1_acquire_read(addr) \
+# define AO_fetch_and_sub1_acquire_read(addr) \
         AO_fetch_and_sub1_acquire(addr)
-#  define AO_HAVE_fetch_and_sub1_acquire_read
+# define AO_HAVE_fetch_and_sub1_acquire_read
 #endif
 
 #ifdef AO_NO_DD_ORDERING
@@ -785,7 +785,7 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
        }
      while (!AO_compare_and_swap_full(addr, old, (old | incr)));
    }
-#  define AO_HAVE_or_full
+# define AO_HAVE_or_full
 #endif
 
 #if defined(AO_HAVE_or_full)
@@ -813,59 +813,60 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 #if !defined(AO_HAVE_or) && \
     defined(AO_HAVE_or_release)
-#  define AO_or(addr, val) \
+# define AO_or(addr, val) \
         AO_or_release(addr, val)
-#  define AO_HAVE_or
+# define AO_HAVE_or
 #endif
 #if !defined(AO_HAVE_or) && \
     defined(AO_HAVE_or_acquire)
-#  define AO_or(addr, val) \
+# define AO_or(addr, val) \
         AO_or_acquire(addr, val)
-#  define AO_HAVE_or
+# define AO_HAVE_or
 #endif
 #if !defined(AO_HAVE_or) && \
     defined(AO_HAVE_or_write)
-#  define AO_or(addr, val) \
+# define AO_or(addr, val) \
         AO_or_write(addr, val)
-#  define AO_HAVE_or
+# define AO_HAVE_or
 #endif
 #if !defined(AO_HAVE_or) && \
     defined(AO_HAVE_or_read)
-#  define AO_or(addr, val) \
+# define AO_or(addr, val) \
         AO_or_read(addr, val)
-#  define AO_HAVE_or
+# define AO_HAVE_or
 #endif
 
-#if defined(AO_HAVE_or_acquire) &&\
+#if defined(AO_HAVE_or_acquire) && \
     defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_or_full)
-#  define AO_or_full(addr, val) \
+# define AO_or_full(addr, val) \
         (AO_nop_full(), AO_or_acquire(addr, val))
+# define AO_HAVE_or_full
 #endif
 
 #if !defined(AO_HAVE_or_release_write) && \
     defined(AO_HAVE_or_write)
-#  define AO_or_release_write(addr, val) \
+# define AO_or_release_write(addr, val) \
         AO_or_write(addr, val)
-#  define AO_HAVE_or_release_write
+# define AO_HAVE_or_release_write
 #endif
 #if !defined(AO_HAVE_or_release_write) && \
     defined(AO_HAVE_or_release)
-#  define AO_or_release_write(addr, val) \
+# define AO_or_release_write(addr, val) \
         AO_or_release(addr, val)
-#  define AO_HAVE_or_release_write
+# define AO_HAVE_or_release_write
 #endif
 #if !defined(AO_HAVE_or_acquire_read) && \
     defined(AO_HAVE_or_read)
-#  define AO_or_acquire_read(addr, val) \
+# define AO_or_acquire_read(addr, val) \
         AO_or_read(addr, val)
-#  define AO_HAVE_or_acquire_read
+# define AO_HAVE_or_acquire_read
 #endif
 #if !defined(AO_HAVE_or_acquire_read) && \
     defined(AO_HAVE_or_acquire)
-#  define AO_or_acquire_read(addr, val) \
+# define AO_or_acquire_read(addr, val) \
         AO_or_acquire(addr, val)
-#  define AO_HAVE_or_acquire_read
+# define AO_HAVE_or_acquire_read
 #endif
 
 /* dd_aquire_read is meaningless.       */
@@ -897,60 +898,60 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 #if !defined(AO_HAVE_test_and_set) && \
     defined(AO_HAVE_test_and_set_release)
-#  define AO_test_and_set(addr) \
+# define AO_test_and_set(addr) \
         AO_test_and_set_release(addr)
-#  define AO_HAVE_test_and_set
+# define AO_HAVE_test_and_set
 #endif
 #if !defined(AO_HAVE_test_and_set) && \
     defined(AO_HAVE_test_and_set_acquire)
-#  define AO_test_and_set(addr) \
+# define AO_test_and_set(addr) \
         AO_test_and_set_acquire(addr)
-#  define AO_HAVE_test_and_set
+# define AO_HAVE_test_and_set
 #endif
 #if !defined(AO_HAVE_test_and_set) && \
     defined(AO_HAVE_test_and_set_write)
-#  define AO_test_and_set(addr) \
+# define AO_test_and_set(addr) \
         AO_test_and_set_write(addr)
-#  define AO_HAVE_test_and_set
+# define AO_HAVE_test_and_set
 #endif
 #if !defined(AO_HAVE_test_and_set) && \
     defined(AO_HAVE_test_and_set_read)
-#  define AO_test_and_set(addr) \
+# define AO_test_and_set(addr) \
         AO_test_and_set_read(addr)
-#  define AO_HAVE_test_and_set
+# define AO_HAVE_test_and_set
 #endif
 
-#if defined(AO_HAVE_test_and_set_acquire) &&\
+#if defined(AO_HAVE_test_and_set_acquire) && \
     defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_test_and_set_full)
-#  define AO_test_and_set_full(addr) \
+# define AO_test_and_set_full(addr) \
         (AO_nop_full(), AO_test_and_set_acquire(addr))
-#  define AO_HAVE_test_and_set_full
+# define AO_HAVE_test_and_set_full
 #endif
 
 #if !defined(AO_HAVE_test_and_set_release_write) && \
     defined(AO_HAVE_test_and_set_write)
-#  define AO_test_and_set_release_write(addr) \
+# define AO_test_and_set_release_write(addr) \
         AO_test_and_set_write(addr)
-#  define AO_HAVE_test_and_set_release_write
+# define AO_HAVE_test_and_set_release_write
 #endif
 #if !defined(AO_HAVE_test_and_set_release_write) && \
     defined(AO_HAVE_test_and_set_release)
-#  define AO_test_and_set_release_write(addr) \
+# define AO_test_and_set_release_write(addr) \
         AO_test_and_set_release(addr)
-#  define AO_HAVE_test_and_set_release_write
+# define AO_HAVE_test_and_set_release_write
 #endif
 #if !defined(AO_HAVE_test_and_set_acquire_read) && \
     defined(AO_HAVE_test_and_set_read)
-#  define AO_test_and_set_acquire_read(addr) \
+# define AO_test_and_set_acquire_read(addr) \
         AO_test_and_set_read(addr)
-#  define AO_HAVE_test_and_set_acquire_read
+# define AO_HAVE_test_and_set_acquire_read
 #endif
 #if !defined(AO_HAVE_test_and_set_acquire_read) && \
     defined(AO_HAVE_test_and_set_acquire)
-#  define AO_test_and_set_acquire_read(addr) \
+# define AO_test_and_set_acquire_read(addr) \
         AO_test_and_set_acquire(addr)
-#  define AO_HAVE_test_and_set_acquire_read
+# define AO_HAVE_test_and_set_acquire_read
 #endif
 
 #ifdef AO_NO_DD_ORDERING
@@ -967,7 +968,7 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 #endif
 
 /* Compare_and_swap */
-#if defined(AO_HAVE_compare_and_swap) && defined(AO_HAVE_nop_full)\
+#if defined(AO_HAVE_compare_and_swap) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_compare_and_swap_acquire)
    AO_INLINE int
    AO_compare_and_swap_acquire(volatile AO_t *addr, AO_t old, AO_t new_val)
@@ -978,11 +979,11 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
    }
 #  define AO_HAVE_compare_and_swap_acquire
 #endif
-#if defined(AO_HAVE_compare_and_swap) && defined(AO_HAVE_nop_full)\
+#if defined(AO_HAVE_compare_and_swap) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_compare_and_swap_release)
-#  define AO_compare_and_swap_release(addr, old, new_val) \
+# define AO_compare_and_swap_release(addr, old, new_val) \
         (AO_nop_full(), AO_compare_and_swap(addr, old, new_val))
-#  define AO_HAVE_compare_and_swap_release
+# define AO_HAVE_compare_and_swap_release
 #endif
 #if defined(AO_HAVE_compare_and_swap_full)
 #  if !defined(AO_HAVE_compare_and_swap_release)
@@ -1009,60 +1010,60 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 #if !defined(AO_HAVE_compare_and_swap) && \
     defined(AO_HAVE_compare_and_swap_release)
-#  define AO_compare_and_swap(addr, old, new_val) \
+# define AO_compare_and_swap(addr, old, new_val) \
         AO_compare_and_swap_release(addr, old, new_val)
-#  define AO_HAVE_compare_and_swap
+# define AO_HAVE_compare_and_swap
 #endif
 #if !defined(AO_HAVE_compare_and_swap) && \
     defined(AO_HAVE_compare_and_swap_acquire)
-#  define AO_compare_and_swap(addr, old, new_val) \
+# define AO_compare_and_swap(addr, old, new_val) \
         AO_compare_and_swap_acquire(addr, old, new_val)
-#  define AO_HAVE_compare_and_swap
+# define AO_HAVE_compare_and_swap
 #endif
 #if !defined(AO_HAVE_compare_and_swap) && \
     defined(AO_HAVE_compare_and_swap_write)
-#  define AO_compare_and_swap(addr, old, new_val) \
+# define AO_compare_and_swap(addr, old, new_val) \
         AO_compare_and_swap_write(addr, old, new_val)
-#  define AO_HAVE_compare_and_swap
+# define AO_HAVE_compare_and_swap
 #endif
 #if !defined(AO_HAVE_compare_and_swap) && \
     defined(AO_HAVE_compare_and_swap_read)
-#  define AO_compare_and_swap(addr, old, new_val) \
+# define AO_compare_and_swap(addr, old, new_val) \
         AO_compare_and_swap_read(addr, old, new_val)
-#  define AO_HAVE_compare_and_swap
+# define AO_HAVE_compare_and_swap
 #endif
 
-#if defined(AO_HAVE_compare_and_swap_acquire) &&\
+#if defined(AO_HAVE_compare_and_swap_acquire) && \
     defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_compare_and_swap_full)
-#  define AO_compare_and_swap_full(addr, old, new_val) \
+# define AO_compare_and_swap_full(addr, old, new_val) \
         (AO_nop_full(), AO_compare_and_swap_acquire(addr, old, new_val))
-#  define AO_HAVE_compare_and_swap_full
+# define AO_HAVE_compare_and_swap_full
 #endif
 
 #if !defined(AO_HAVE_compare_and_swap_release_write) && \
     defined(AO_HAVE_compare_and_swap_write)
-#  define AO_compare_and_swap_release_write(addr, old, new_val) \
+# define AO_compare_and_swap_release_write(addr, old, new_val) \
         AO_compare_and_swap_write(addr, old, new_val)
-#  define AO_HAVE_compare_and_swap_release_write
+# define AO_HAVE_compare_and_swap_release_write
 #endif
 #if !defined(AO_HAVE_compare_and_swap_release_write) && \
     defined(AO_HAVE_compare_and_swap_release)
-#  define AO_compare_and_swap_release_write(addr, old, new_val) \
+# define AO_compare_and_swap_release_write(addr, old, new_val) \
         AO_compare_and_swap_release(addr, old, new_val)
-#  define AO_HAVE_compare_and_swap_release_write
+# define AO_HAVE_compare_and_swap_release_write
 #endif
 #if !defined(AO_HAVE_compare_and_swap_acquire_read) && \
     defined(AO_HAVE_compare_and_swap_read)
-#  define AO_compare_and_swap_acquire_read(addr, old, new_val) \
+# define AO_compare_and_swap_acquire_read(addr, old, new_val) \
         AO_compare_and_swap_read(addr, old, new_val)
-#  define AO_HAVE_compare_and_swap_acquire_read
+# define AO_HAVE_compare_and_swap_acquire_read
 #endif
 #if !defined(AO_HAVE_compare_and_swap_acquire_read) && \
     defined(AO_HAVE_compare_and_swap_acquire)
-#  define AO_compare_and_swap_acquire_read(addr, old, new_val) \
+# define AO_compare_and_swap_acquire_read(addr, old, new_val) \
         AO_compare_and_swap_acquire(addr, old, new_val)
-#  define AO_HAVE_compare_and_swap_acquire_read
+# define AO_HAVE_compare_and_swap_acquire_read
 #endif
 
 #ifdef AO_NO_DD_ORDERING
@@ -1082,7 +1083,8 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 #include "generalize-small.h"
 
 /* Compare_double_and_swap_double */
-#if defined(AO_HAVE_compare_double_and_swap_double) && defined(AO_HAVE_nop_full)\
+#if defined(AO_HAVE_compare_double_and_swap_double) \
+    && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_compare_double_and_swap_double_acquire)
    AO_INLINE int
    AO_compare_double_and_swap_double_acquire(volatile AO_double_t *addr,
@@ -1096,11 +1098,11 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 #  define AO_HAVE_compare_double_and_swap_double_acquire
 #endif
 #if defined(AO_HAVE_compare_double_and_swap_double) \
-    && defined(AO_HAVE_nop_full)\
+    && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_compare_double_and_swap_double_release)
-#  define AO_compare_double_and_swap_double_release(addr, o1, o2, n1, n2) \
-        (AO_nop_full(), AO_compare_double_and_swap_double(addr, o1, o2, n1, n2))
-#  define AO_HAVE_compare_double_and_swap_double_release
+# define AO_compare_double_and_swap_double_release(addr, o1, o2, n1, n2) \
+      (AO_nop_full(), AO_compare_double_and_swap_double(addr, o1, o2, n1, n2))
+# define AO_HAVE_compare_double_and_swap_double_release
 #endif
 #if defined(AO_HAVE_compare_double_and_swap_double_full)
 #  if !defined(AO_HAVE_compare_double_and_swap_double_release)
@@ -1127,60 +1129,61 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 #if !defined(AO_HAVE_compare_double_and_swap_double) && \
     defined(AO_HAVE_compare_double_and_swap_double_release)
-#  define AO_compare_double_and_swap_double(addr, o1, o2, n1, n2) \
+# define AO_compare_double_and_swap_double(addr, o1, o2, n1, n2) \
         AO_compare_double_and_swap_double_release(addr, o1, o2, n1, n2)
-#  define AO_HAVE_compare_double_and_swap_double
+# define AO_HAVE_compare_double_and_swap_double
 #endif
 #if !defined(AO_HAVE_compare_double_and_swap_double) && \
     defined(AO_HAVE_compare_double_and_swap_double_acquire)
-#  define AO_compare_double_and_swap_double(addr, o1, o2, n1, n2) \
+# define AO_compare_double_and_swap_double(addr, o1, o2, n1, n2) \
         AO_compare_double_and_swap_double_acquire(addr, o1, o2, n1, n2)
-#  define AO_HAVE_compare_double_and_swap_double
+# define AO_HAVE_compare_double_and_swap_double
 #endif
 #if !defined(AO_HAVE_compare_double_and_swap_double) && \
     defined(AO_HAVE_compare_double_and_swap_double_write)
-#  define AO_compare_double_and_swap_double(addr, o1, o2, n1, n2) \
+# define AO_compare_double_and_swap_double(addr, o1, o2, n1, n2) \
         AO_compare_double_and_swap_double_write(addr, o1, o2, n1, n2)
-#  define AO_HAVE_compare_double_and_swap_double
+# define AO_HAVE_compare_double_and_swap_double
 #endif
 #if !defined(AO_HAVE_compare_double_and_swap_double) && \
     defined(AO_HAVE_compare_double_and_swap_double_read)
-#  define AO_compare_double_and_swap_double(addr, o1, o2, n1, n2) \
+# define AO_compare_double_and_swap_double(addr, o1, o2, n1, n2) \
         AO_compare_double_and_swap_double_read(addr, o1, o2, n1, n2)
-#  define AO_HAVE_compare_double_and_swap_double
+# define AO_HAVE_compare_double_and_swap_double
 #endif
 
-#if defined(AO_HAVE_compare_double_and_swap_double_acquire) &&\
+#if defined(AO_HAVE_compare_double_and_swap_double_acquire) && \
     defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_compare_double_and_swap_double_full)
-#  define AO_compare_double_and_swap_double_full(addr, o1, o2, n1, n2) \
-        (AO_nop_full(), AO_compare_double_and_swap_double_acquire(addr, o1, o2, n1, n2))
-#  define AO_HAVE_compare_double_and_swap_double_full
+# define AO_compare_double_and_swap_double_full(addr, o1, o2, n1, n2) \
+        (AO_nop_full(), \
+         AO_compare_double_and_swap_double_acquire(addr, o1, o2, n1, n2))
+# define AO_HAVE_compare_double_and_swap_double_full
 #endif
 
 #if !defined(AO_HAVE_compare_double_and_swap_double_release_write) && \
     defined(AO_HAVE_compare_double_and_swap_double_write)
-#  define AO_compare_double_and_swap_double_release_write(addr, o1, o2, n1, n2) \
+# define AO_compare_double_and_swap_double_release_write(addr, o1, o2, n1, n2) \
         AO_compare_double_and_swap_double_write(addr, o1, o2, n1, n2)
-#  define AO_HAVE_compare_double_and_swap_double_release_write
+# define AO_HAVE_compare_double_and_swap_double_release_write
 #endif
 #if !defined(AO_HAVE_compare_double_and_swap_double_release_write) && \
     defined(AO_HAVE_compare_double_and_swap_double_release)
-#  define AO_compare_double_and_swap_double_release_write(addr, o1, o2, n1, n2) \
+# define AO_compare_double_and_swap_double_release_write(addr, o1, o2, n1, n2) \
         AO_compare_double_and_swap_double_release(addr, o1, o2, n1, n2)
-#  define AO_HAVE_compare_double_and_swap_double_release_write
+# define AO_HAVE_compare_double_and_swap_double_release_write
 #endif
 #if !defined(AO_HAVE_compare_double_and_swap_double_acquire_read) && \
     defined(AO_HAVE_compare_double_and_swap_double_read)
-#  define AO_compare_double_and_swap_double_acquire_read(addr, o1, o2, n1, n2) \
+# define AO_compare_double_and_swap_double_acquire_read(addr, o1, o2, n1, n2) \
         AO_compare_double_and_swap_double_read(addr, o1, o2, n1, n2)
-#  define AO_HAVE_compare_double_and_swap_double_acquire_read
+# define AO_HAVE_compare_double_and_swap_double_acquire_read
 #endif
 #if !defined(AO_HAVE_compare_double_and_swap_double_acquire_read) && \
     defined(AO_HAVE_compare_double_and_swap_double_acquire)
-#  define AO_compare_double_and_swap_double_acquire_read(addr, o1, o2, n1, n2) \
+# define AO_compare_double_and_swap_double_acquire_read(addr, o1, o2, n1, n2) \
         AO_compare_double_and_swap_double_acquire(addr, o1, o2, n1, n2)
-#  define AO_HAVE_compare_double_and_swap_double_acquire_read
+# define AO_HAVE_compare_double_and_swap_double_acquire_read
 #endif
 
 #ifdef AO_NO_DD_ORDERING
@@ -1198,7 +1201,7 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 #endif
 
 /* Compare_and_swap_double */
-#if defined(AO_HAVE_compare_and_swap_double) && defined(AO_HAVE_nop_full)\
+#if defined(AO_HAVE_compare_and_swap_double) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_compare_and_swap_double_acquire)
    AO_INLINE int
    AO_compare_and_swap_double_acquire(volatile AO_double_t *addr,
@@ -1212,11 +1215,11 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 #  define AO_HAVE_compare_and_swap_double_acquire
 #endif
 #if defined(AO_HAVE_compare_and_swap_double) \
-    && defined(AO_HAVE_nop_full)\
+    && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_compare_and_swap_double_release)
-#  define AO_compare_and_swap_double_release(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double_release(addr, o1, n1, n2) \
         (AO_nop_full(), AO_compare_and_swap_double(addr, o1, n1, n2))
-#  define AO_HAVE_compare_and_swap_double_release
+# define AO_HAVE_compare_and_swap_double_release
 #endif
 #if defined(AO_HAVE_compare_and_swap_double_full)
 #  if !defined(AO_HAVE_compare_and_swap_double_release)
@@ -1243,60 +1246,60 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 
 #if !defined(AO_HAVE_compare_and_swap_double) && \
     defined(AO_HAVE_compare_and_swap_double_release)
-#  define AO_compare_and_swap_double(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double(addr, o1, n1, n2) \
         AO_compare_and_swap_double_release(addr, o1, n1, n2)
-#  define AO_HAVE_compare_and_swap_double
+# define AO_HAVE_compare_and_swap_double
 #endif
 #if !defined(AO_HAVE_compare_and_swap_double) && \
     defined(AO_HAVE_compare_and_swap_double_acquire)
-#  define AO_compare_and_swap_double(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double(addr, o1, n1, n2) \
         AO_compare_and_swap_double_acquire(addr, o1, n1, n2)
-#  define AO_HAVE_compare_and_swap_double
+# define AO_HAVE_compare_and_swap_double
 #endif
 #if !defined(AO_HAVE_compare_and_swap_double) && \
     defined(AO_HAVE_compare_and_swap_double_write)
-#  define AO_compare_and_swap_double(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double(addr, o1, n1, n2) \
         AO_compare_and_swap_double_write(addr, o1, n1, n2)
-#  define AO_HAVE_compare_and_swap_double
+# define AO_HAVE_compare_and_swap_double
 #endif
 #if !defined(AO_HAVE_compare_and_swap_double) && \
     defined(AO_HAVE_compare_and_swap_double_read)
-#  define AO_compare_and_swap_double(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double(addr, o1, n1, n2) \
         AO_compare_and_swap_double_read(addr, o1, n1, n2)
-#  define AO_HAVE_compare_and_swap_double
+# define AO_HAVE_compare_and_swap_double
 #endif
 
-#if defined(AO_HAVE_compare_and_swap_double_acquire) &&\
+#if defined(AO_HAVE_compare_and_swap_double_acquire) && \
     defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_compare_and_swap_double_full)
-#  define AO_compare_and_swap_double_full(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double_full(addr, o1, n1, n2) \
         (AO_nop_full(), AO_compare_and_swap_double_acquire(addr, o1, n1, n2))
-#  define AO_HAVE_compare_and_swap_double_full
+# define AO_HAVE_compare_and_swap_double_full
 #endif
 
 #if !defined(AO_HAVE_compare_and_swap_double_release_write) && \
     defined(AO_HAVE_compare_and_swap_double_write)
-#  define AO_compare_and_swap_double_release_write(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double_release_write(addr, o1, n1, n2) \
         AO_compare_and_swap_double_write(addr, o1, n1, n2)
-#  define AO_HAVE_compare_and_swap_double_release_write
+# define AO_HAVE_compare_and_swap_double_release_write
 #endif
 #if !defined(AO_HAVE_compare_and_swap_double_release_write) && \
     defined(AO_HAVE_compare_and_swap_double_release)
-#  define AO_compare_and_swap_double_release_write(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double_release_write(addr, o1, n1, n2) \
         AO_compare_and_swap_double_release(addr, o1, n1, n2)
-#  define AO_HAVE_compare_and_swap_double_release_write
+# define AO_HAVE_compare_and_swap_double_release_write
 #endif
 #if !defined(AO_HAVE_compare_and_swap_double_acquire_read) && \
     defined(AO_HAVE_compare_and_swap_double_read)
-#  define AO_compare_and_swap_double_acquire_read(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double_acquire_read(addr, o1, n1, n2) \
         AO_compare_and_swap_double_read(addr, o1, n1, n2)
-#  define AO_HAVE_compare_and_swap_double_acquire_read
+# define AO_HAVE_compare_and_swap_double_acquire_read
 #endif
 #if !defined(AO_HAVE_compare_and_swap_double_acquire_read) && \
     defined(AO_HAVE_compare_and_swap_double_acquire)
-#  define AO_compare_and_swap_double_acquire_read(addr, o1, n1, n2) \
+# define AO_compare_and_swap_double_acquire_read(addr, o1, n1, n2) \
         AO_compare_and_swap_double_acquire(addr, o1, n1, n2)
-#  define AO_HAVE_compare_and_swap_double_acquire_read
+# define AO_HAVE_compare_and_swap_double_acquire_read
 #endif
 
 #ifdef AO_NO_DD_ORDERING
@@ -1317,39 +1320,39 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr)
 /* types and reads easier in code                                        */
 #if defined(AO_HAVE_compare_double_and_swap_double_release) && \
     !defined(AO_HAVE_double_compare_and_swap_release)
-AO_INLINE int
-AO_double_compare_and_swap_release(volatile AO_double_t *addr,
-                                   AO_double_t old_val, AO_double_t new_val)
-{
-        return AO_compare_double_and_swap_double_release(addr,
-                                                         old_val.AO_val1, old_val.AO_val2,
-                                                         new_val.AO_val1, new_val.AO_val2);
-}
-#define AO_HAVE_double_compare_and_swap_release
+  AO_INLINE int
+  AO_double_compare_and_swap_release(volatile AO_double_t *addr,
+                                     AO_double_t old_val, AO_double_t new_val)
+  {
+    return AO_compare_double_and_swap_double_release(addr,
+                                          old_val.AO_val1, old_val.AO_val2,
+                                          new_val.AO_val1, new_val.AO_val2);
+  }
+# define AO_HAVE_double_compare_and_swap_release
 #endif
 
 #if defined(AO_HAVE_compare_double_and_swap_double_acquire) && \
     !defined(AO_HAVE_double_compare_and_swap_acquire)
-AO_INLINE int
-AO_double_compare_and_swap_acquire(volatile AO_double_t *addr,
-                                   AO_double_t old_val, AO_double_t new_val)
-{
-        return AO_compare_double_and_swap_double_acquire(addr,
-                                                         old_val.AO_val1, old_val.AO_val2,
-                                                         new_val.AO_val1, new_val.AO_val2);
-}
-#define AO_HAVE_double_compare_and_swap_acquire
+  AO_INLINE int
+  AO_double_compare_and_swap_acquire(volatile AO_double_t *addr,
+                                     AO_double_t old_val, AO_double_t new_val)
+  {
+    return AO_compare_double_and_swap_double_acquire(addr,
+                                          old_val.AO_val1, old_val.AO_val2,
+                                          new_val.AO_val1, new_val.AO_val2);
+  }
+# define AO_HAVE_double_compare_and_swap_acquire
 #endif
 
 #if defined(AO_HAVE_compare_double_and_swap_double_full) && \
     !defined(AO_HAVE_double_compare_and_swap_full)
-AO_INLINE int
-AO_double_compare_and_swap_full(volatile AO_double_t *addr,
-                                         AO_double_t old_val, AO_double_t new_val)
-{
-        return AO_compare_double_and_swap_double_full(addr,
-                                                      old_val.AO_val1, old_val.AO_val2,
-                                                      new_val.AO_val1, new_val.AO_val2);
-}
-#define AO_HAVE_double_compare_and_swap_full
+  AO_INLINE int
+  AO_double_compare_and_swap_full(volatile AO_double_t *addr,
+                                  AO_double_t old_val, AO_double_t new_val)
+  {
+    return AO_compare_double_and_swap_double_full(addr,
+                                          old_val.AO_val1, old_val.AO_val2,
+                                          new_val.AO_val1, new_val.AO_val2);
+  }
+# define AO_HAVE_double_compare_and_swap_full
 #endif

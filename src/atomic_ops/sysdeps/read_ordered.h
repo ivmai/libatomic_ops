@@ -32,7 +32,7 @@ AO_nop_read(void)
 {
   AO_compiler_barrier();
 }
-#define AO_HAVE_NOP_READ
+#define AO_HAVE_nop_read
 
 #ifdef AO_HAVE_load
   AO_INLINE AO_t

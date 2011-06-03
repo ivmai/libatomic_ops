@@ -36,7 +36,7 @@ AO_nop_write(void)
   /* sfence according to Intel docs.  Pentium 3 and up. */
   /* Unnecessary for cached accesses?                   */
 }
-#define AO_HAVE_NOP_WRITE
+#define AO_HAVE_nop_write
 
 #if defined(AO_HAVE_store)
   AO_INLINE void

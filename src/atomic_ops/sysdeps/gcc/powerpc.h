@@ -103,7 +103,7 @@ AO_store_release(volatile AO_t *addr, AO_t value)
   AO_lwsync();
   *addr = value;
 }
-#define AO_HAVE_load_acquire
+#define AO_HAVE_store_release
 
 /* This is similar to the code in the garbage collector.  Deleting      */
 /* this and having it synthesized from compare_and_swap would probably  */

@@ -1,5 +1,15 @@
 2011-06-03  Ivan Maidanski  <ivmai@mail.ru>
 
+	* src/atomic_ops/generalize.h (AO_HAVE_or_full): Add missing
+	definition.
+	* src/atomic_ops/sysdeps/ordered_except_wr.h (AO_HAVE_nop_write):
+	Fix macro name.
+	* src/atomic_ops/sysdeps/read_ordered.h (AO_HAVE_nop_read): Ditto.
+	* src/atomic_ops/sysdeps/gcc/powerpc.h (AO_HAVE_store_release):
+	Ditto.
+
+2011-06-03  Ivan Maidanski  <ivmai@mail.ru>
+
 	* src/atomic_ops/generalize-small.template
 	(AO_HAVE_XSIZE_fetch_and_add_full): Add missing definition.
 	* src/atomic_ops/generalize-small.template: Reformat code.
