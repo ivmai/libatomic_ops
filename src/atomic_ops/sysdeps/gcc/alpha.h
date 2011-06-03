@@ -27,7 +27,6 @@ AO_nop_full(void)
 {
   __asm__ __volatile__("mb" : : : "memory");
 }
-
 #define AO_HAVE_nop_full
 
 AO_INLINE void
@@ -35,7 +34,6 @@ AO_nop_write(void)
 {
   __asm__ __volatile__("wmb" : : : "memory");
 }
-
 #define AO_HAVE_nop_write
 
 /* mb should be used for AO_nop_read().  That's the default.    */
@@ -62,5 +60,4 @@ AO_compare_and_swap(volatile AO_t *addr,
                      :"memory");
   return was_equal;
 }
-
 #define AO_HAVE_compare_and_swap

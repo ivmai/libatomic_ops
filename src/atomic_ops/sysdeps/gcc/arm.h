@@ -19,17 +19,16 @@
 
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
 
-/* NEC LE-IT: ARMv6 is the first architecture providing support for simple LL/SC
- * A data memory barrier must be raised via CP15 command (see documentation).
- *
- * ARMv7 is compatible to ARMv6 but has a simpler command for issuing a
- * memory barrier (DMB). Raising it via CP15 should still work as told me by the
- * support engineers. If it turns out to be much quicker than we should implement
- * custom code for ARMv7 using the asm { dmb } command.
- *
- * If only a single processor is used, we can define AO_UNIPROCESSOR
- * and do not need to access CP15 for ensuring a DMB
-*/
+/* NEC LE-IT: ARMv6 is the first architecture providing support for     */
+/* simple LL/SC.  A data memory barrier must be raised via CP15 command */
+/* (see documentation).                                                 */
+/* ARMv7 is compatible to ARMv6 but has a simpler command for issuing   */
+/* a memory barrier (DMB). Raising it via CP15 should still work as     */
+/* told me by the support engineers. If it turns out to be much quicker */
+/* than we should implement custom code for ARMv7 using the asm { dmb } */
+/* instruction.                                                         */
+/* If only a single processor is used, we can define AO_UNIPROCESSOR    */
+/* and do not need to access CP15 for ensuring a DMB.                   */
 
 /* NEC LE-IT: gcc has no way to easily check the arm architecture       */
 /* but it defines only one of __ARM_ARCH_x__ to be true.                */
@@ -52,7 +51,6 @@ AO_nop_full(void)
                               : "=&r"(dest) : : "memory");
 #endif
 }
-
 #define AO_HAVE_nop_full
 
 /* NEC LE-IT: AO_t load is simple reading */
@@ -106,16 +104,14 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
 #define AO_HAVE_store
 
 /* NEC LE-IT: replace the SWAP as recommended by ARM:
-
    "Applies to: ARM11 Cores
-        Though the SWP instruction will still work with ARM V6 cores, it is
-        recommended     to use the new V6 synchronization instructions. The SWP
-        instruction produces 'locked' read and write accesses which are atomic,
-        i.e. another operation cannot be done between these locked accesses which
-        ties up external bus (AHB,AXI) bandwidth and can increase worst case
-        interrupt latencies. LDREX,STREX are more flexible, other instructions can
-        be done between the LDREX and STREX accesses.
-   "
+      Though the SWP instruction will still work with ARM V6 cores, it is
+      recommended     to use the new V6 synchronization instructions. The SWP
+      instruction produces 'locked' read and write accesses which are atomic,
+      i.e. another operation cannot be done between these locked accesses which
+      ties up external bus (AHB,AXI) bandwidth and can increase worst case
+      interrupt latencies. LDREX,STREX are more flexible, other instructions
+      can be done between the LDREX and STREX accesses."
 */
 AO_INLINE AO_TS_t
 AO_test_and_set(volatile AO_TS_t *addr)
@@ -135,7 +131,6 @@ AO_test_and_set(volatile AO_TS_t *addr)
 
         return oldval;
 }
-
 #define AO_HAVE_test_and_set
 
 /* NEC LE-IT: fetch and add for ARMv6 */
@@ -157,7 +152,6 @@ AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 
         return result;
 }
-
 #define AO_HAVE_fetch_and_add
 
 /* NEC LE-IT: fetch and add1 for ARMv6 */
@@ -179,7 +173,6 @@ AO_fetch_and_add1(volatile AO_t *p)
 
         return result;
 }
-
 #define AO_HAVE_fetch_and_add1
 
 /* NEC LE-IT: fetch and sub for ARMv6 */
@@ -201,7 +194,6 @@ AO_fetch_and_sub1(volatile AO_t *p)
 
         return result;
 }
-
 #define AO_HAVE_fetch_and_sub1
 
 /* NEC LE-IT: compare and swap */
@@ -273,23 +265,25 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 /* It appears that SWP is the only simple memory barrier.               */
 #include "../all_atomic_load_store.h"
 
-AO_INLINE AO_TS_VAL_t
-AO_test_and_set_full(volatile AO_TS_t *addr)
-{
-  AO_TS_VAL_t oldval;
-  /* SWP on ARM is very similar to XCHG on x86.                 */
-  /* The first operand is the result, the second the value      */
-  /* to be stored.  Both registers must be different from addr. */
-  /* Make the address operand an early clobber output so it     */
-  /* doesn't overlap with the other operands.  The early clobber*/
-  /* on oldval is necessary to prevent the compiler allocating  */
-  /* them to the same register if they are both unused.         */
-  __asm__ __volatile__("swp %0, %2, [%3]"
-                        : "=&r"(oldval), "=&r"(addr)
-                        : "r"(1), "1"(addr)
-                        : "memory");
-  return oldval;
-}
-#define AO_HAVE_test_and_set_full
+#if !defined(__ARM_ARCH_2__)
+  AO_INLINE AO_TS_VAL_t
+  AO_test_and_set_full(volatile AO_TS_t *addr)
+  {
+    AO_TS_VAL_t oldval;
+    /* SWP on ARM is very similar to XCHG on x86.                   */
+    /* The first operand is the result, the second the value        */
+    /* to be stored.  Both registers must be different from addr.   */
+    /* Make the address operand an early clobber output so it       */
+    /* doesn't overlap with the other operands.  The early clobber  */
+    /* on oldval is necessary to prevent the compiler allocating    */
+    /* them to the same register if they are both unused.           */
+    __asm__ __volatile__("swp %0, %2, [%3]"
+                          : "=&r"(oldval), "=&r"(addr)
+                          : "r"(1), "1"(addr)
+                          : "memory");
+    return oldval;
+  }
+# define AO_HAVE_test_and_set_full
+#endif /* !__ARM_ARCH_2__ */
 
 #endif /* __ARM_ARCH_x */

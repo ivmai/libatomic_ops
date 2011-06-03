@@ -1,3 +1,57 @@
+2011-06-03  Ivan Maidanski  <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h: Remove
+	blank line between AO_func and AO_HAVE_func definitions.
+	* src/atomic_ops/sysdeps/atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/char_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/generic_pthread.h: Ditto.
+	* src/atomic_ops/sysdeps/int_aligned_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/int_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/ordered.h: Ditto.
+	* src/atomic_ops/sysdeps/ordered_except_wr.h: Ditto.
+	* src/atomic_ops/sysdeps/read_ordered.h: Ditto.
+	* src/atomic_ops/sysdeps/short_aligned_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/short_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/alpha.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/cris.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/hppa.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/ia64.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/m68k.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/mips.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/powerpc.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/s390.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/sparc.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/x86.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h: Ditto.
+	* src/atomic_ops/sysdeps/hpc/hppa.h: Ditto.
+	* src/atomic_ops/sysdeps/hpc/ia64.h: Ditto.
+	* src/atomic_ops/sysdeps/ibmc/powerpc.h: Ditto.
+	* src/atomic_ops/sysdeps/msftc/common32_defs.h: Ditto.
+	* src/atomic_ops/sysdeps/msftc/x86.h: Ditto.
+	* src/atomic_ops/sysdeps/msftc/x86_64.h: Ditto.
+	* src/atomic_ops/sysdeps/sunc/sparc.h: Ditto.
+	* src/atomic_ops/sysdeps/sunc/x86.h: Ditto.
+	* src/atomic_ops/sysdeps/sunc/x86_64.h: Ditto.
+	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h: Reformat
+	comment.
+	* src/atomic_ops/sysdeps/atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/char_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/int_aligned_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/int_atomic_load_store.h: Ditto.
+	* src/atomic_ops/sysdeps/ordered.h: Ditto.
+	* src/atomic_ops/sysdeps/gcc/arm.h: Ditto.
+	* src/atomic_ops/sysdeps/test_and_set_t_is_char.h: Remove file
+	tail blank lines.
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_test_and_set_full): Don't
+	define for ARMv2.
+	* src/atomic_ops/sysdeps/gcc/powerpc.h (AO_load_acquire,
+	AO_test_and_set, AO_compare_and_swap): Merge adjacent definitions.
+	* src/atomic_ops/sysdeps/ibmc/powerpc.h (AO_HAVE_store_release):
+	Define.
+	* src/atomic_ops/sysdeps/sunc/sparc.h: Expand all tabs to spaces;
+	remove trailing spaces at EOLn.
+
 2011-06-02  Ivan Maidanski  <ivmai@mail.ru>
 
 	* tests/test_malloc.c (main): Remove unused "exper_n" local

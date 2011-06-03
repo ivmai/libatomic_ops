@@ -41,7 +41,6 @@ AO_load_acquire(const volatile AO_t *addr)
   AO_lwsync();
   return result;
 }
-
 #define AO_HAVE_load_acquire
 
 AO_INLINE void
@@ -50,8 +49,7 @@ AO_store_release(volatile AO_t *addr, AO_t value)
   AO_lwsync();
   *addr = value;
 }
-
-#define AO_HAVE_load_acquire
+#define AO_HAVE_store_release
 
 /* This is similar to the code in the garbage collector.  Deleting      */
 /* this and having it synthesized from compare_and_swap would probably  */
@@ -60,7 +58,6 @@ AO_store_release(volatile AO_t *addr, AO_t value)
 AO_test_and_set(volatile AO_TS_t *addr) {
 # error FIXME Implement me
 }
-
 #define AO_HAVE_test_and_set*/
 
 AO_INLINE AO_TS_VAL_t
@@ -69,7 +66,6 @@ AO_test_and_set_acquire(volatile AO_TS_t *addr) {
   AO_lwsync();
   return result;
 }
-
 #define AO_HAVE_test_and_set_acquire
 
 AO_INLINE AO_TS_VAL_t
@@ -77,7 +73,6 @@ AO_test_and_set_release(volatile AO_TS_t *addr) {
   AO_lwsync();
   return AO_test_and_set(addr);
 }
-
 #define AO_HAVE_test_and_set_release
 
 AO_INLINE AO_TS_VAL_t
@@ -88,14 +83,12 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
   AO_lwsync();
   return result;
 }
-
 #define AO_HAVE_test_and_set_full
 
 /*AO_INLINE AO_t
 AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
 # error FIXME Implement me
 }
-
 #define AO_HAVE_compare_and_swap*/
 
 AO_INLINE AO_t
@@ -104,7 +97,6 @@ AO_compare_and_swap_acquire(volatile AO_t *addr, AO_t old, AO_t new_val) {
   AO_lwsync();
   return result;
 }
-
 #define AO_HAVE_compare_and_swap_acquire
 
 AO_INLINE AO_t
@@ -112,7 +104,6 @@ AO_compare_and_swap_release(volatile AO_t *addr, AO_t old, AO_t new_val) {
   AO_lwsync();
   return AO_compare_and_swap(addr, old, new_val);
 }
-
 #define AO_HAVE_compare_and_swap_release
 
 AO_INLINE AO_t
@@ -123,7 +114,6 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
   AO_lwsync();
   return result;
 }
-
 #define AO_HAVE_compare_and_swap_full
 
 /* FIXME: We should also implement fetch_and_add and or primitives      */
