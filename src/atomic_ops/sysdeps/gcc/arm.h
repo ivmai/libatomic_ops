@@ -35,16 +35,16 @@
   /* instructions, so we temporarily switch to ARM mode and go back     */
   /* afterwards (clobbering "r3" register).                             */
 # define AO_THUMB_GO_ARM \
-           "       adr     r3, 101f\n" \
+           "       adr     r3, 4f\n" \
            "       bx      r3\n" \
            "      .align\n" \
            "      .arm\n" \
-           "101:\n"
+           "4:\n"
 # define AO_THUMB_RESTORE_MODE \
-           "       adr     r3, 102f + 1\n" \
+           "       adr     r3, 5f + 1\n" \
            "       bx      r3\n" \
            "       .thumb\n" \
-           "102:\n"
+           "5:\n"
 # define AO_THUMB_SWITCH_CLOBBERS "r3",
 #else
 # define AO_THUMB_GO_ARM /* empty */
@@ -179,7 +179,7 @@ AO_fetch_and_add(volatile AO_t *p, AO_t incr)
     "       bne     1b\n"
     AO_THUMB_RESTORE_MODE
     : "=&r"(result), "=&r"(flag), "=&r"(tmp), "+m"(*p) /* 0..3 */
-    : "r"(incr), "r"(p)                                                             /* 4..5 */
+    : "r"(incr), "r"(p)                                /* 4..5 */
     : AO_THUMB_SWITCH_CLOBBERS "cc");
   return result;
 }
@@ -241,8 +241,8 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     "1:     mov     %0, #2\n"           /* store a flag */
     "       ldrex   %1, [%3]\n"         /* get original */
     "       teq     %1, %4\n"           /* see if match */
-#   ifdef __thumb__
-      "       it      eq\n"             /* for Thumb-2, in fact */
+#   ifdef __thumb2__
+      "       it      eq\n"
 #   endif
     "       strexeq %0, %5, [%3]\n"     /* store new one if matched */
     "       teq     %0, #1\n"

@@ -1,6 +1,15 @@
 2011-06-06  Ivan Maidanski  <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/gcc/arm.h (AO_THUMB_GO_ARM,
+	AO_THUMB_RESTORE_MODE): Use single-digit labels (to workaround
+	a bug in GCC v4.2.1 which reports "garbage following instruction"
+	otherwise).
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_compare_and_swap): Use "IT"
+	instruction only for Thumb-2 mode.
+
+2011-06-06  Ivan Maidanski  <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_THUMB_GO_ARM,
 	AO_THUMB_RESTORE_MODE, AO_THUMB_SWITCH_CLOBBERS): Define as empty
 	for Thumb-2 mode.
 	* src/atomic_ops/sysdeps/gcc/arm.h (AO_store, AO_test_and_set,
