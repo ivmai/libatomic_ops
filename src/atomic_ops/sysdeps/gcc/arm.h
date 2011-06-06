@@ -43,13 +43,17 @@
 AO_INLINE void
 AO_nop_full(void)
 {
-#ifndef AO_UNIPROCESSOR
-        /* Issue a data memory barrier (keeps ordering of memory        */
-        /* transactions before and after this operation).               */
-        unsigned int dest=0;
-        __asm__ __volatile__("mcr p15,0,%0,c7,c10,5"
-                              : "=&r"(dest) : : "memory");
-#endif
+# ifndef AO_UNIPROCESSOR
+    unsigned dest = 0;
+
+    /* Issue a data memory barrier (keeps ordering of memory    */
+    /* transactions before and after this operation).           */
+    __asm__ __volatile__("@AO_nop_full\n"
+      "       mcr p15,0,%0,c7,c10,5\n"
+      : "=&r"(dest)
+      : /* empty */
+      : "memory");
+# endif
 }
 #define AO_HAVE_nop_full
 
@@ -90,16 +94,16 @@ AO_load(const volatile AO_t *addr)
 */
 AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
 {
-        AO_t    flag;
+  AO_t flag;
 
-        __asm__ __volatile__("@AO_store\n"
-"1:     ldrex   %0, [%2]\n"
-"       strex   %0, %3, [%2]\n"
-"       teq     %0, #0\n"
-"       bne     1b"
-        : "=&r"(flag), "+m"(*addr)
-        : "r" (addr), "r"(value)
-        : "cc");
+  __asm__ __volatile__("@AO_store\n"
+    "1:     ldrex   %0, [%2]\n"
+    "       strex   %0, %3, [%2]\n"
+    "       teq     %0, #0\n"
+    "       bne     1b"
+    : "=&r"(flag), "+m"(*addr)
+    : "r" (addr), "r"(value)
+    : "cc");
 }
 #define AO_HAVE_store
 
@@ -116,20 +120,18 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
 AO_INLINE AO_TS_t
 AO_test_and_set(volatile AO_TS_t *addr)
 {
+  AO_TS_t oldval;
+  unsigned long flag;
 
-        AO_TS_t oldval;
-        unsigned long flag;
-
-        __asm__ __volatile__("@AO_test_and_set\n"
-"1:     ldrex   %0, [%3]\n"
-"       strex   %1, %4, [%3]\n"
-"       teq             %1, #0\n"
-"       bne             1b\n"
-        : "=&r"(oldval),"=&r"(flag), "+m"(*addr)
-        : "r"(addr), "r"(1)
-        : "cc");
-
-        return oldval;
+  __asm__ __volatile__("@AO_test_and_set\n"
+    "1:     ldrex   %0, [%3]\n"
+    "       strex   %1, %4, [%3]\n"
+    "       teq     %1, #0\n"
+    "       bne     1b\n"
+    : "=&r"(oldval), "=&r"(flag), "+m"(*addr)
+    : "r"(addr), "r"(1)
+    : "cc");
+  return oldval;
 }
 #define AO_HAVE_test_and_set
 
@@ -137,20 +139,19 @@ AO_test_and_set(volatile AO_TS_t *addr)
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 {
-        unsigned long flag,tmp;
-        AO_t result;
+  unsigned long flag, tmp;
+  AO_t result;
 
-        __asm__ __volatile__("@AO_fetch_and_add\n"
-"1:     ldrex   %0, [%5]\n"             /* get original         */
-"       add     %2, %0, %4\n"           /* sum up in incr       */
-"       strex   %1, %2, [%5]\n"         /* store them           */
-"       teq             %1, #0\n"
-"       bne             1b\n"
-        : "=&r"(result),"=&r"(flag),"=&r"(tmp),"+m"(*p) /* 0..3 */
-        : "r"(incr), "r"(p)                                                             /* 4..5 */
-        : "cc");
-
-        return result;
+  __asm__ __volatile__("@AO_fetch_and_add\n"
+    "1:     ldrex   %0, [%5]\n"         /* get original         */
+    "       add     %2, %0, %4\n"       /* sum up in incr       */
+    "       strex   %1, %2, [%5]\n"     /* store them           */
+    "       teq     %1, #0\n"
+    "       bne     1b\n"
+    : "=&r"(result), "=&r"(flag), "=&r"(tmp), "+m"(*p) /* 0..3 */
+    : "r"(incr), "r"(p)                                                             /* 4..5 */
+    : "cc");
+  return result;
 }
 #define AO_HAVE_fetch_and_add
 
@@ -158,20 +159,19 @@ AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 AO_INLINE AO_t
 AO_fetch_and_add1(volatile AO_t *p)
 {
-        unsigned long flag,tmp;
-        AO_t result;
+  unsigned long flag, tmp;
+  AO_t result;
 
-        __asm__ __volatile__("@AO_fetch_and_add1\n"
-"1:     ldrex   %0, [%4]\n"             /* get original */
-"       add     %1, %0, #1\n"           /* increment */
-"       strex   %2, %1, [%4]\n"         /* store them */
-"       teq             %2, #0\n"
-"       bne             1b\n"
-        : "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
-        : "r"(p)
-        : "cc");
-
-        return result;
+  __asm__ __volatile__("@AO_fetch_and_add1\n"
+    "1:     ldrex   %0, [%4]\n"         /* get original */
+    "       add     %1, %0, #1\n"       /* increment */
+    "       strex   %2, %1, [%4]\n"     /* store them */
+    "       teq     %2, #0\n"
+    "       bne     1b\n"
+    : "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
+    : "r"(p)
+    : "cc");
+  return result;
 }
 #define AO_HAVE_fetch_and_add1
 
@@ -179,20 +179,19 @@ AO_fetch_and_add1(volatile AO_t *p)
 AO_INLINE AO_t
 AO_fetch_and_sub1(volatile AO_t *p)
 {
-        unsigned long flag,tmp;
-        AO_t result;
+  unsigned long flag, tmp;
+  AO_t result;
 
-        __asm__ __volatile__("@AO_fetch_and_sub1\n"
-"1:     ldrex   %0, [%4]\n"             /* get original */
-"       sub     %1, %0, #1\n"           /* decrement */
-"       strex   %2, %1, [%4]\n"         /* store them */
-"       teq             %2, #0\n"
-"       bne             1b\n"
-        : "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
-        : "r"(p)
-        : "cc");
-
-        return result;
+  __asm__ __volatile__("@AO_fetch_and_sub1\n"
+    "1:     ldrex   %0, [%4]\n"         /* get original */
+    "       sub     %1, %0, #1\n"       /* decrement */
+    "       strex   %2, %1, [%4]\n"     /* store them */
+    "       teq     %2, #0\n"
+    "       bne     1b\n"
+    : "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
+    : "r"(p)
+    : "cc");
+  return result;
 }
 #define AO_HAVE_fetch_and_sub1
 
@@ -201,23 +200,22 @@ AO_fetch_and_sub1(volatile AO_t *p)
 AO_INLINE int
 AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 {
-         AO_t result, tmp;
+  AO_t result, tmp;
 
-        __asm__ __volatile__("@AO_compare_and_swap\n"
-"1:     mov             %0, #2\n"       /* store a flag */
-"       ldrex   %1, [%3]\n"             /* get original */
-"       teq             %1, %4\n"       /* see if match */
-#       ifdef __thumb__
-  "       it            eq\n"
-#       endif
-"       strexeq %0, %5, [%3]\n"         /* store new one if matched */
-"       teq             %0, #1\n"
-"       beq             1b\n"           /* if update failed, repeat */
-        : "=&r"(result), "=&r"(tmp), "+m"(*addr)
-        : "r"(addr), "r"(old_val), "r"(new_val)
-        : "cc");
-
-        return !(result&2);             /* if succeded, return 1, else 0 */
+  __asm__ __volatile__("@AO_compare_and_swap\n"
+    "1:     mov     %0, #2\n"           /* store a flag */
+    "       ldrex   %1, [%3]\n"         /* get original */
+    "       teq     %1, %4\n"           /* see if match */
+#   ifdef __thumb__
+      "       it      eq\n"
+#   endif
+    "       strexeq %0, %5, [%3]\n"     /* store new one if matched */
+    "       teq     %0, #1\n"
+    "       beq     1b\n"               /* if update failed, repeat */
+    : "=&r"(result), "=&r"(tmp), "+m"(*addr)
+    : "r"(addr), "r"(old_val), "r"(new_val)
+    : "cc");
+  return !(result&2);   /* if succeded, return 1, else 0 */
 }
 #define AO_HAVE_compare_and_swap
 
@@ -230,28 +228,28 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
                                     AO_t old_val1, AO_t old_val2,
                                     AO_t new_val1, AO_t new_val2)
   {
-        double_ptr_storage old_val =
+    double_ptr_storage old_val =
                         ((double_ptr_storage)old_val2 << 32) | old_val1;
-        double_ptr_storage new_val =
+    double_ptr_storage new_val =
                         ((double_ptr_storage)new_val2 << 32) | new_val1;
-        double_ptr_storage tmp;
-        int result;
+    double_ptr_storage tmp;
+    int result;
 
-        do {
-                __asm__ __volatile__("@AO_compare_double_and_swap_double\n"
-                "       ldrexd  %0, [%1]\n" /* get original to r1 & r2 */
-                        : "=&r"(tmp)
-                        : "r"(addr)
-                        : "cc");
-                if (tmp != old_val)
-                  return 0;
-                __asm__ __volatile__(
-                "       strexd  %0, %2, [%3]\n" /* store new one if matched */
-                        : "=&r"(result),"+m"(*addr)
-                        : "r"(new_val), "r"(addr)
-                        : "cc");
-        } while (result);
-        return 1;
+    do {
+      __asm__ __volatile__("@AO_compare_double_and_swap_double\n"
+        "       ldrexd  %0, [%1]\n"     /* get original to r1 & r2 */
+        : "=&r"(tmp)
+        : "r"(addr)
+        : "cc");
+      if (tmp != old_val)
+        return 0;
+      __asm__ __volatile__(
+        "       strexd  %0, %2, [%3]\n" /* store new one if matched */
+        : "=&r"(result), "+m"(*addr)
+        : "r"(new_val), "r"(addr)
+        : "cc");
+    } while (result);
+    return 1;
   }
 # define AO_HAVE_compare_double_and_swap_double
 #endif
@@ -277,10 +275,12 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     /* doesn't overlap with the other operands.  The early clobber  */
     /* on oldval is necessary to prevent the compiler allocating    */
     /* them to the same register if they are both unused.           */
-    __asm__ __volatile__("swp %0, %2, [%3]"
-                          : "=&r"(oldval), "=&r"(addr)
-                          : "r"(1), "1"(addr)
-                          : "memory");
+
+    __asm__ __volatile__("@AO_test_and_set_full\n"
+      "       swp %0, %2, [%3]\n"
+      : "=&r"(oldval), "=&r"(addr)
+      : "r"(1), "1"(addr)
+      : "memory");
     return oldval;
   }
 # define AO_HAVE_test_and_set_full

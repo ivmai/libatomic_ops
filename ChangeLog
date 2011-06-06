@@ -1,3 +1,10 @@
+2011-06-06  Ivan Maidanski  <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/arm.h: Reformat code.
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_nop_full,
+	AO_test_and_set_full): Add assembler comment containing the
+	function name.
+
 2011-06-03  Ivan Maidanski  <ivmai@mail.ru>
 
 	* tests/test_malloc.c (run_one_test): Test AO_malloc() result
