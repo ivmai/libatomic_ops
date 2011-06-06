@@ -30,6 +30,25 @@
 /* If only a single processor is used, we can define AO_UNIPROCESSOR    */
 /* and do not need to access CP15 for ensuring a DMB.                   */
 
+#ifdef __thumb__
+# define AO_THUMB_GO_ARM \
+           "       adr     r3, 101f\n" \
+           "       bx      r3\n" \
+           "      .align\n" \
+           "      .arm\n" \
+           "101:\n"
+# define AO_THUMB_RESTORE_MODE \
+           "       adr     r3, 102f + 1\n" \
+           "       bx      r3\n" \
+           "       .thumb\n" \
+           "102:\n"
+# define AO_THUMB_SWITCH_CLOBBERS "r3",
+#else
+# define AO_THUMB_GO_ARM /* empty */
+# define AO_THUMB_RESTORE_MODE /* empty */
+# define AO_THUMB_SWITCH_CLOBBERS /* empty */
+#endif /* !__thumb__ */
+
 /* NEC LE-IT: gcc has no way to easily check the arm architecture       */
 /* but it defines only one of __ARM_ARCH_x__ to be true.                */
 #if !defined(__ARM_ARCH_2__) && !defined(__ARM_ARCH_3__) \
@@ -49,10 +68,12 @@ AO_nop_full(void)
     /* Issue a data memory barrier (keeps ordering of memory    */
     /* transactions before and after this operation).           */
     __asm__ __volatile__("@AO_nop_full\n"
+      AO_THUMB_GO_ARM
       "       mcr p15,0,%0,c7,c10,5\n"
+      AO_THUMB_RESTORE_MODE
       : "=&r"(dest)
       : /* empty */
-      : "memory");
+      : AO_THUMB_SWITCH_CLOBBERS "memory");
 # endif
 }
 #define AO_HAVE_nop_full
@@ -97,13 +118,15 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
   AO_t flag;
 
   __asm__ __volatile__("@AO_store\n"
+    AO_THUMB_GO_ARM
     "1:     ldrex   %0, [%2]\n"
     "       strex   %0, %3, [%2]\n"
     "       teq     %0, #0\n"
-    "       bne     1b"
+    "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
     : "=&r"(flag), "+m"(*addr)
     : "r" (addr), "r"(value)
-    : "cc");
+    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
 }
 #define AO_HAVE_store
 
@@ -124,13 +147,15 @@ AO_test_and_set(volatile AO_TS_t *addr)
   unsigned long flag;
 
   __asm__ __volatile__("@AO_test_and_set\n"
+    AO_THUMB_GO_ARM
     "1:     ldrex   %0, [%3]\n"
     "       strex   %1, %4, [%3]\n"
     "       teq     %1, #0\n"
     "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
     : "=&r"(oldval), "=&r"(flag), "+m"(*addr)
     : "r"(addr), "r"(1)
-    : "cc");
+    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
   return oldval;
 }
 #define AO_HAVE_test_and_set
@@ -143,14 +168,16 @@ AO_fetch_and_add(volatile AO_t *p, AO_t incr)
   AO_t result;
 
   __asm__ __volatile__("@AO_fetch_and_add\n"
+    AO_THUMB_GO_ARM
     "1:     ldrex   %0, [%5]\n"         /* get original         */
     "       add     %2, %0, %4\n"       /* sum up in incr       */
     "       strex   %1, %2, [%5]\n"     /* store them           */
     "       teq     %1, #0\n"
     "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
     : "=&r"(result), "=&r"(flag), "=&r"(tmp), "+m"(*p) /* 0..3 */
     : "r"(incr), "r"(p)                                                             /* 4..5 */
-    : "cc");
+    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
   return result;
 }
 #define AO_HAVE_fetch_and_add
@@ -163,14 +190,16 @@ AO_fetch_and_add1(volatile AO_t *p)
   AO_t result;
 
   __asm__ __volatile__("@AO_fetch_and_add1\n"
+    AO_THUMB_GO_ARM
     "1:     ldrex   %0, [%4]\n"         /* get original */
     "       add     %1, %0, #1\n"       /* increment */
     "       strex   %2, %1, [%4]\n"     /* store them */
     "       teq     %2, #0\n"
     "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
     : "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
     : "r"(p)
-    : "cc");
+    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
   return result;
 }
 #define AO_HAVE_fetch_and_add1
@@ -183,14 +212,16 @@ AO_fetch_and_sub1(volatile AO_t *p)
   AO_t result;
 
   __asm__ __volatile__("@AO_fetch_and_sub1\n"
+    AO_THUMB_GO_ARM
     "1:     ldrex   %0, [%4]\n"         /* get original */
     "       sub     %1, %0, #1\n"       /* decrement */
     "       strex   %2, %1, [%4]\n"     /* store them */
     "       teq     %2, #0\n"
     "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
     : "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
     : "r"(p)
-    : "cc");
+    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
   return result;
 }
 #define AO_HAVE_fetch_and_sub1
@@ -203,6 +234,7 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
   AO_t result, tmp;
 
   __asm__ __volatile__("@AO_compare_and_swap\n"
+    AO_THUMB_GO_ARM
     "1:     mov     %0, #2\n"           /* store a flag */
     "       ldrex   %1, [%3]\n"         /* get original */
     "       teq     %1, %4\n"           /* see if match */
@@ -212,9 +244,10 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     "       strexeq %0, %5, [%3]\n"     /* store new one if matched */
     "       teq     %0, #1\n"
     "       beq     1b\n"               /* if update failed, repeat */
+    AO_THUMB_RESTORE_MODE
     : "=&r"(result), "=&r"(tmp), "+m"(*addr)
     : "r"(addr), "r"(old_val), "r"(new_val)
-    : "cc");
+    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
   return !(result&2);   /* if succeded, return 1, else 0 */
 }
 #define AO_HAVE_compare_and_swap
@@ -240,14 +273,14 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
         "       ldrexd  %0, [%1]\n"     /* get original to r1 & r2 */
         : "=&r"(tmp)
         : "r"(addr)
-        : "cc");
+        : "cc", "memory");
       if (tmp != old_val)
         return 0;
       __asm__ __volatile__(
         "       strexd  %0, %2, [%3]\n" /* store new one if matched */
         : "=&r"(result), "+m"(*addr)
         : "r"(new_val), "r"(addr)
-        : "cc");
+        : "cc", "memory");
     } while (result);
     return 1;
   }
@@ -277,10 +310,12 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     /* them to the same register if they are both unused.           */
 
     __asm__ __volatile__("@AO_test_and_set_full\n"
+      AO_THUMB_GO_ARM
       "       swp %0, %2, [%3]\n"
+      AO_THUMB_RESTORE_MODE
       : "=&r"(oldval), "=&r"(addr)
       : "r"(1), "1"(addr)
-      : "memory");
+      : AO_THUMB_SWITCH_CLOBBERS "memory");
     return oldval;
   }
 # define AO_HAVE_test_and_set_full

@@ -1,5 +1,21 @@
 2011-06-06  Ivan Maidanski  <ivmai@mail.ru>
 
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_THUMB_GO_ARM,
+	AO_THUMB_RESTORE_MODE, AO_THUMB_SWITCH_CLOBBERS): Define new
+	macro (to switch temporarily CPU mode to ARM in inline assembler
+	if compiling in the Thumb mode and to restore it back on leave).
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_nop_full, AO_store,
+	AO_test_and_set, AO_fetch_and_add, AO_fetch_and_add1,
+	AO_fetch_and_sub1, AO_compare_and_swap, AO_test_and_set_full):
+	Enable compilation in the Thumb mode (use AO_THUMB_GO_ARM,
+	AO_THUMB_RESTORE_MODE and AO_THUMB_SWITCH_CLOBBERS macros).
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_store, AO_test_and_set,
+	AO_fetch_and_add, AO_fetch_and_add1, AO_fetch_and_sub1,
+	AO_compare_and_swap, AO_compare_double_and_swap_double): Add
+	"memory" to the list of clobbered registers.
+
+2011-06-06  Ivan Maidanski  <ivmai@mail.ru>
+
 	* src/atomic_ops/sysdeps/gcc/arm.h: Reformat code.
 	* src/atomic_ops/sysdeps/gcc/arm.h (AO_nop_full,
 	AO_test_and_set_full): Add assembler comment containing the
