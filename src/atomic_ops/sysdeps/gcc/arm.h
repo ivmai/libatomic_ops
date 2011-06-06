@@ -30,7 +30,10 @@
 /* If only a single processor is used, we can define AO_UNIPROCESSOR    */
 /* and do not need to access CP15 for ensuring a DMB.                   */
 
-#ifdef __thumb__
+#if defined(__thumb__) && !defined(__thumb2__)
+  /* Thumb One mode does not have ARM "mcr", "swp" and some load/store  */
+  /* instructions, so we temporarily switch to ARM mode and go back     */
+  /* afterwards (clobbering "r3" register).                             */
 # define AO_THUMB_GO_ARM \
            "       adr     r3, 101f\n" \
            "       bx      r3\n" \
@@ -126,18 +129,18 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
     AO_THUMB_RESTORE_MODE
     : "=&r"(flag), "+m"(*addr)
     : "r" (addr), "r"(value)
-    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
 }
 #define AO_HAVE_store
 
 /* NEC LE-IT: replace the SWAP as recommended by ARM:
    "Applies to: ARM11 Cores
       Though the SWP instruction will still work with ARM V6 cores, it is
-      recommended     to use the new V6 synchronization instructions. The SWP
+      recommended to use the new V6 synchronization instructions.  The SWP
       instruction produces 'locked' read and write accesses which are atomic,
       i.e. another operation cannot be done between these locked accesses which
-      ties up external bus (AHB,AXI) bandwidth and can increase worst case
-      interrupt latencies. LDREX,STREX are more flexible, other instructions
+      ties up external bus (AHB, AXI) bandwidth and can increase worst case
+      interrupt latencies. LDREX, STREX are more flexible, other instructions
       can be done between the LDREX and STREX accesses."
 */
 AO_INLINE AO_TS_t
@@ -155,7 +158,7 @@ AO_test_and_set(volatile AO_TS_t *addr)
     AO_THUMB_RESTORE_MODE
     : "=&r"(oldval), "=&r"(flag), "+m"(*addr)
     : "r"(addr), "r"(1)
-    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
   return oldval;
 }
 #define AO_HAVE_test_and_set
@@ -177,7 +180,7 @@ AO_fetch_and_add(volatile AO_t *p, AO_t incr)
     AO_THUMB_RESTORE_MODE
     : "=&r"(result), "=&r"(flag), "=&r"(tmp), "+m"(*p) /* 0..3 */
     : "r"(incr), "r"(p)                                                             /* 4..5 */
-    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
   return result;
 }
 #define AO_HAVE_fetch_and_add
@@ -199,7 +202,7 @@ AO_fetch_and_add1(volatile AO_t *p)
     AO_THUMB_RESTORE_MODE
     : "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
     : "r"(p)
-    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
   return result;
 }
 #define AO_HAVE_fetch_and_add1
@@ -221,7 +224,7 @@ AO_fetch_and_sub1(volatile AO_t *p)
     AO_THUMB_RESTORE_MODE
     : "=&r"(result), "=&r"(tmp), "=&r"(flag), "+m"(*p)
     : "r"(p)
-    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
   return result;
 }
 #define AO_HAVE_fetch_and_sub1
@@ -239,7 +242,7 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     "       ldrex   %1, [%3]\n"         /* get original */
     "       teq     %1, %4\n"           /* see if match */
 #   ifdef __thumb__
-      "       it      eq\n"
+      "       it      eq\n"             /* for Thumb-2, in fact */
 #   endif
     "       strexeq %0, %5, [%3]\n"     /* store new one if matched */
     "       teq     %0, #1\n"
@@ -247,15 +250,19 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     AO_THUMB_RESTORE_MODE
     : "=&r"(result), "=&r"(tmp), "+m"(*addr)
     : "r"(addr), "r"(old_val), "r"(new_val)
-    : AO_THUMB_SWITCH_CLOBBERS "cc", "memory");
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
   return !(result&2);   /* if succeded, return 1, else 0 */
 }
 #define AO_HAVE_compare_and_swap
 
 #if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
     && !defined(__ARM_ARCH_6T2__) && !defined(__ARM_ARCH_6Z__) \
-    && !defined(__ARM_ARCH_6ZT2__)
-  /* ldrexd/strexd present in ARMv6K/M+ (see gas/config/tc-arm.c) */
+    && !defined(__ARM_ARCH_6ZT2__) \
+    && (!defined(__thumb__) || (defined(__thumb2__) \
+                && !defined(__ARM_ARCH_7__) && !defined(__ARM_ARCH_7M__)))
+  /* ldrexd/strexd present in ARMv6K/M+ (see gas/config/tc-arm.c)       */
+  /* In the Thumb mode, this works only starting from ARMv7 (except for */
+  /* the base and 'M' models).                                          */
   AO_INLINE int
   AO_compare_double_and_swap_double(volatile AO_double_t *addr,
                                     AO_t old_val1, AO_t old_val2,
@@ -266,23 +273,23 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     double_ptr_storage new_val =
                         ((double_ptr_storage)new_val2 << 32) | new_val1;
     double_ptr_storage tmp;
-    int result;
+    int result = 1;
 
     do {
       __asm__ __volatile__("@AO_compare_double_and_swap_double\n"
         "       ldrexd  %0, [%1]\n"     /* get original to r1 & r2 */
         : "=&r"(tmp)
         : "r"(addr)
-        : "cc", "memory");
+        : "cc");
       if (tmp != old_val)
-        return 0;
+        break;
       __asm__ __volatile__(
         "       strexd  %0, %2, [%3]\n" /* store new one if matched */
         : "=&r"(result), "+m"(*addr)
         : "r"(new_val), "r"(addr)
-        : "cc", "memory");
+        : "cc");
     } while (result);
-    return 1;
+    return !result;   /* if succeded, return 1 else 0 */
   }
 # define AO_HAVE_compare_double_and_swap_double
 #endif

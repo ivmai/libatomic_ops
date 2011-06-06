@@ -1,6 +1,23 @@
 2011-06-06  Ivan Maidanski  <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/gcc/arm.h (AO_THUMB_GO_ARM,
+	AO_THUMB_RESTORE_MODE, AO_THUMB_SWITCH_CLOBBERS): Define as empty
+	for Thumb-2 mode.
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_store, AO_test_and_set,
+	AO_fetch_and_add, AO_fetch_and_add1, AO_fetch_and_sub1,
+	AO_compare_and_swap, AO_compare_double_and_swap_double): Remove
+	unnecessary "memory" keyword from the list of clobbered registers
+	(revert part of the previous commit).
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_compare_and_swap): Add
+	a comment for "IT" instruction.
+	* src/atomic_ops/sysdeps/gcc/arm.h
+	(AO_compare_double_and_swap_double): Don't define on the
+	architectures where unimplemented; add a comment; replace return
+	(in the loop) statement with break.
+
+2011-06-06  Ivan Maidanski  <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_THUMB_GO_ARM,
 	AO_THUMB_RESTORE_MODE, AO_THUMB_SWITCH_CLOBBERS): Define new
 	macro (to switch temporarily CPU mode to ARM in inline assembler
 	if compiling in the Thumb mode and to restore it back on leave).
