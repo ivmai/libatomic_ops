@@ -143,10 +143,11 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
       interrupt latencies. LDREX, STREX are more flexible, other instructions
       can be done between the LDREX and STREX accesses."
 */
-AO_INLINE AO_TS_t
+/* GCC warns SWP is deprecated for this architecture too.       */
+AO_INLINE AO_TS_VAL_t
 AO_test_and_set(volatile AO_TS_t *addr)
 {
-  AO_TS_t oldval;
+  AO_TS_VAL_t oldval;
   unsigned long flag;
 
   __asm__ __volatile__("@AO_test_and_set\n"

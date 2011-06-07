@@ -44,12 +44,12 @@ AO_INLINE void
 AO_nop_full(void)
 {
 # ifndef AO_UNIPROCESSOR
-        unsigned int dest=0;
-        /* issue an data memory barrier (keeps ordering of memory transactions  */
-        /* before and after this operation)                                             */
-        __asm {
-                mcr p15,0,dest,c7,c10,5
-                };
+    unsigned int dest=0;
+    /* issue an data memory barrier (keeps ordering of memory transactions */
+    /* before and after this operation)                                    */
+    __asm {
+            mcr p15,0,dest,c7,c10,5
+            };
 # endif
 }
 #define AO_HAVE_nop_full
@@ -96,10 +96,10 @@ __asm {
         more flexible, other instructions can be done between the LDREX and STREX accesses.
    "
 */
-AO_INLINE AO_TS_t
+AO_INLINE AO_TS_VAL_t
 AO_test_and_set(volatile AO_TS_t *addr) {
 
-        AO_TS_t oldval;
+        AO_TS_VAL_t oldval;
         unsigned long tmp;
         unsigned long one = 1;
 retry:
