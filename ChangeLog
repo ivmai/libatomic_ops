@@ -1,5 +1,20 @@
 2011-06-07  Ivan Maidanski  <ivmai@mail.ru>
 
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_nop_full, AO_load): Do not
+	define for pre-ARMv6 directly (revert part of the previous
+	commit).
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_test_and_set,
+	AO_test_and_set_full): Refine the comment.
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_test_and_set_full): Define
+	SWP-based implementation at the end of file (if none of
+	AO_test_and_set functions are defined previously).
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_test_and_set): Remove
+	SWP-based implementation (revert part of the previous commit).
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_store): Remove redundant
+	definition at the file end (revert part of the previous commit).
+
+2011-06-07  Ivan Maidanski  <ivmai@mail.ru>
+
 	* src/atomic_ops/sysdeps/gcc/arm.h: Handle ARMv6M architecture.
 	* src/atomic_ops/sysdeps/gcc/arm.h (AO_test_and_set): Force "swp"
 	instruction usage (instead of ldrex/strex) if AO_FORCE_USE_SWP;
