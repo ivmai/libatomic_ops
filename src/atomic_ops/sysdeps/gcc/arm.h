@@ -58,38 +58,10 @@
     && !defined(__ARM_ARCH_3M__) && !defined(__ARM_ARCH_4__) \
     && !defined(__ARM_ARCH_4T__) && !defined(__ARM_ARCH_5__) \
     && !defined(__ARM_ARCH_5E__) && !defined(__ARM_ARCH_5T__) \
-    && !defined(__ARM_ARCH_5TE__) && !defined(__ARM_ARCH_5TEJ__)
+    && !defined(__ARM_ARCH_5TE__) && !defined(__ARM_ARCH_5TEJ__) \
+    && !defined(__ARM_ARCH_6M__)
 
 #include "../standard_ao_double_t.h"
-
-AO_INLINE void
-AO_nop_full(void)
-{
-# ifndef AO_UNIPROCESSOR
-    unsigned dest = 0;
-
-    /* Issue a data memory barrier (keeps ordering of memory    */
-    /* transactions before and after this operation).           */
-    __asm__ __volatile__("@AO_nop_full\n"
-      AO_THUMB_GO_ARM
-      "       mcr p15,0,%0,c7,c10,5\n"
-      AO_THUMB_RESTORE_MODE
-      : "=&r"(dest)
-      : /* empty */
-      : AO_THUMB_SWITCH_CLOBBERS "memory");
-# endif
-}
-#define AO_HAVE_nop_full
-
-/* NEC LE-IT: AO_t load is simple reading */
-AO_INLINE AO_t
-AO_load(const volatile AO_t *addr)
-{
-  /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return (*(const AO_t *)addr);
-}
-#define AO_HAVE_load
 
 /* NEC LE-IT: atomic "store" - according to ARM documentation this is
  * the only safe way to set variables also used in LL/SC environment.
@@ -143,26 +115,31 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
       interrupt latencies. LDREX, STREX are more flexible, other instructions
       can be done between the LDREX and STREX accesses."
 */
-/* GCC warns SWP is deprecated for this architecture too.       */
-AO_INLINE AO_TS_VAL_t
-AO_test_and_set(volatile AO_TS_t *addr)
-{
-  AO_TS_VAL_t oldval;
-  unsigned long flag;
+#ifndef AO_FORCE_USE_SWP
+  /* But, on the other hand, there could be a considerable performance  */
+  /* degradation in case of a race.  Eg., test_atomic.c executes        */
+  /* test_and_set test on a dual-core ARMv7 processor using LDREX/STREX */
+  /* around 35 times slower than that using SWP instruction.            */
+  AO_INLINE AO_TS_VAL_t
+  AO_test_and_set(volatile AO_TS_t *addr)
+  {
+    AO_TS_VAL_t oldval;
+    unsigned long flag;
 
-  __asm__ __volatile__("@AO_test_and_set\n"
-    AO_THUMB_GO_ARM
-    "1:     ldrex   %0, [%3]\n"
-    "       strex   %1, %4, [%3]\n"
-    "       teq     %1, #0\n"
-    "       bne     1b\n"
-    AO_THUMB_RESTORE_MODE
-    : "=&r"(oldval), "=&r"(flag), "+m"(*addr)
-    : "r"(addr), "r"(1)
-    : AO_THUMB_SWITCH_CLOBBERS "cc");
-  return oldval;
-}
-#define AO_HAVE_test_and_set
+    __asm__ __volatile__("@AO_test_and_set\n"
+      AO_THUMB_GO_ARM
+      "1:     ldrex   %0, [%3]\n"
+      "       strex   %1, %4, [%3]\n"
+      "       teq     %1, #0\n"
+      "       bne     1b\n"
+      AO_THUMB_RESTORE_MODE
+      : "=&r"(oldval), "=&r"(flag), "+m"(*addr)
+      : "r"(addr), "r"(1)
+      : AO_THUMB_SWITCH_CLOBBERS "cc");
+    return oldval;
+  }
+# define AO_HAVE_test_and_set
+#endif /* !AO_FORCE_USE_SWP */
 
 /* NEC LE-IT: fetch and add for ARMv6 */
 AO_INLINE AO_t
@@ -258,9 +235,9 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 
 #if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
     && !defined(__ARM_ARCH_6T2__) && !defined(__ARM_ARCH_6Z__) \
-    && !defined(__ARM_ARCH_6ZT2__) \
-    && (!defined(__thumb__) || (defined(__thumb2__) \
-                && !defined(__ARM_ARCH_7__) && !defined(__ARM_ARCH_7M__)))
+    && !defined(__ARM_ARCH_6ZT2__) && (!defined(__thumb__) \
+              || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
+                  && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__)))
   /* ldrexd/strexd present in ARMv6K/M+ (see gas/config/tc-arm.c)       */
   /* In the Thumb mode, this works only starting from ARMv7 (except for */
   /* the base and 'M' models).                                          */
@@ -309,13 +286,6 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
   AO_test_and_set_full(volatile AO_TS_t *addr)
   {
     AO_TS_VAL_t oldval;
-    /* SWP on ARM is very similar to XCHG on x86.                   */
-    /* The first operand is the result, the second the value        */
-    /* to be stored.  Both registers must be different from addr.   */
-    /* Make the address operand an early clobber output so it       */
-    /* doesn't overlap with the other operands.  The early clobber  */
-    /* on oldval is necessary to prevent the compiler allocating    */
-    /* them to the same register if they are both unused.           */
 
     __asm__ __volatile__("@AO_test_and_set_full\n"
       AO_THUMB_GO_ARM
@@ -329,4 +299,79 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 # define AO_HAVE_test_and_set_full
 #endif /* !__ARM_ARCH_2__ */
 
+/* ARMv6M does not support ARM mode.    */
+
 #endif /* __ARM_ARCH_x */
+
+#if !defined(AO_HAVE_test_and_set) && !defined(__ARM_ARCH_2__) \
+    && !defined(__ARM_ARCH_6M__)
+  AO_INLINE AO_TS_VAL_t
+  AO_test_and_set(volatile AO_TS_t *addr)
+  {
+    AO_TS_VAL_t oldval;
+    /* SWP on ARM is very similar to XCHG on x86.                       */
+    /* The first operand is the result, the second the value            */
+    /* to be stored.  Both registers must be different from addr.       */
+    /* Make the address operand an early clobber output so it           */
+    /* doesn't overlap with the other operands.  The early clobber      */
+    /* on oldval is necessary to prevent the compiler allocating        */
+    /* them to the same register if they are both unused.               */
+
+    __asm__ __volatile__("@AO_test_and_set\n"
+      AO_THUMB_GO_ARM
+      "       swp %0, %2, [%3]\n"
+      /* Ignore GCC "SWP is deprecated for this architecture" warning.  */
+      AO_THUMB_RESTORE_MODE
+      : "=&r"(oldval), "=&r"(addr)
+      : "r"(1), "1"(addr)
+      : AO_THUMB_SWITCH_CLOBBERS "memory");
+    return oldval;
+  }
+# define AO_HAVE_test_and_set
+#endif /* !__ARM_ARCH_2__ */
+
+#if !defined(AO_HAVE_nop_full) && !defined(__ARM_ARCH_6M__)
+  AO_INLINE void
+  AO_nop_full(void)
+  {
+#   ifndef AO_UNIPROCESSOR
+      unsigned dest = 0;
+
+      /* Issue a data memory barrier (keeps ordering of memory    */
+      /* transactions before and after this operation).           */
+      __asm__ __volatile__("@AO_nop_full\n"
+        AO_THUMB_GO_ARM
+        "       mcr p15,0,%0,c7,c10,5\n"
+        AO_THUMB_RESTORE_MODE
+        : "=&r"(dest)
+        : /* empty */
+        : AO_THUMB_SWITCH_CLOBBERS "memory");
+#   endif
+  }
+# define AO_HAVE_nop_full
+#endif /* !__ARM_ARCH_6M__ */
+
+#ifndef AO_HAVE_load
+  /* NEC LE-IT: AO_t load is simple reading */
+  AO_INLINE AO_t
+  AO_load(const volatile AO_t *addr)
+  {
+    /* Cast away the volatile for architectures like IA64 where   */
+    /* volatile adds barrier semantics.                           */
+    return *(const AO_t *)addr;
+  }
+# define AO_HAVE_load
+#endif
+
+#ifndef AO_HAVE_store
+  /* It seems it would be OK to use an ordinary store here if we knew   */
+  /* that interrupt handlers always cleared the reservation.            */
+  /* They should, but there is some doubt that this is currently always */
+  /* the case for e.g. Linux.                                           */
+  AO_INLINE void
+  AO_store(volatile AO_t *addr, AO_t new_val)
+  {
+    *(AO_t *)addr = new_val;
+  }
+# define AO_HAVE_store
+#endif

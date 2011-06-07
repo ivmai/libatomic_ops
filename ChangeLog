@@ -1,5 +1,18 @@
 2011-06-07  Ivan Maidanski  <ivmai@mail.ru>
 
+	* src/atomic_ops/sysdeps/gcc/arm.h: Handle ARMv6M architecture.
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_test_and_set): Force "swp"
+	instruction usage (instead of ldrex/strex) if AO_FORCE_USE_SWP;
+	add a comment.
+	* src/atomic_ops/sysdeps/gcc/arm.h
+	(AO_compare_double_and_swap_double): Handle ARMv7EM architecture
+	(similar to ARMv7M).
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_test_and_set, AO_nop_full,
+	AO_load, AO_store): Define at the end of file (in case not defined
+	previously).
+
+2011-06-07  Ivan Maidanski  <ivmai@mail.ru>
+
 	* src/atomic_ops/generalize.h: Reformat code.
 	* src/atomic_ops/generalize.h (AO_test_and_set_acquire): Fix
 	return type.
