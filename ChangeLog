@@ -1,3 +1,11 @@
+2011-06-27  Ivan Maidanski <ivmai@mail.ru> (really Jeremy Huddleston)
+
+	* src/atomic_ops/sysdeps/gcc/x86.h (AO_test_and_set_full):
+	Explicitly cast 0xff to unsigned char (otherwise LLVM v2.7 GAS
+	reports an error); don't recognize AO_XCHGB_RET_WORD.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_test_and_set_full):
+	Ditto.
+
 2011-06-15  Ivan Maidanski <ivmai@mail.ru>
 
 	* configure.ac, README: Change to version 7.2alpha7.
