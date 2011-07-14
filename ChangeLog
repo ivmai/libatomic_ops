@@ -1,5 +1,11 @@
 2011-07-14  Ivan Maidanski <ivmai@mail.ru>
 
+	* .cvsignore: Add more auto-generated files.
+	* src/.cvsignore: Ditto.
+	* tests/.cvsignore: Ditto.
+
+2011-07-14  Ivan Maidanski <ivmai@mail.ru>
+
 	* tests/list_atomic.template (list_atomicXX): Remove "addr" local
 	variable (use "&val" instead); initialize "newval" and "oldval"
 	local variables; rename "tsaddr" local variable to "ts" one.
