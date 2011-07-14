@@ -1,3 +1,23 @@
+2011-07-14  Ivan Maidanski <ivmai@mail.ru>
+
+	* tests/list_atomic.template (list_atomicXX): Remove "addr" local
+	variable (use "&val" instead); initialize "newval" and "oldval"
+	local variables; rename "tsaddr" local variable to "ts" one.
+	* tests/list_atomic.template (list_atomicXX): Fix
+	AO_test_and_setXX call (pass address instead of value).
+	* tests/list_atomic.template: Expand all tabs to spaces; remove
+	trailing spaces at EOLn.
+	* tests/run_parallel.inc: Ditto.
+	* tests/test_atomic.c: Ditto.
+	* tests/list_atomic.c: Regenerate.
+	* tests/run_parallel.inc (AO_PTRDIFF_T): New macro.
+	* tests/run_parallel.inc (tramp): Cast between pointer and integer
+	types via casting to AO_PTRDIFF_T.
+	* tests/test_atomic.c (add1sub1_thr, acqrel_thr): Ditto.
+	* tests/run_parallel.inc (run_parallel): Adjust printf format
+	specifiers for DWORD parameters.
+	* tests/test_stack.c: Skip test if no pthreads.
+
 2011-06-27  Ivan Maidanski <ivmai@mail.ru> (really Jeremy Huddleston)
 
 	* src/atomic_ops/sysdeps/gcc/x86.h (AO_test_and_set_full):
