@@ -1,3 +1,9 @@
+2011-07-21  Ivan Maidanski <ivmai@mail.ru>
+
+	* .cvsignore: Don't ignore *.orig and *.rej files (having them
+	ignored turned out to be inconvenient when processing the
+	patches).
+
 2011-07-14  Ivan Maidanski <ivmai@mail.ru>
 
 	* .cvsignore: Add more auto-generated files.
