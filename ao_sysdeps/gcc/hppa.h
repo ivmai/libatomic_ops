@@ -49,7 +49,7 @@ typedef enum {AO_PA_TS_set = 0, AO_PA_TS_clear = 1} AO_PA_TS_val;
 #define AO_TS_CLEAR AO_PA_TS_clear
 #define AO_TS_SET AO_PA_TS_set
 
-static AO_TS_VAL
+AO_INLINE AO_TS_VAL
 AO_test_and_set_full(volatile AO_TS_T * addr)
 {
   int result;
