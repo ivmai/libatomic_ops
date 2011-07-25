@@ -15,20 +15,25 @@
  *
  */
 
-/* FIXME.  Very incomplete.  No support for sparc64.	*/
+/* FIXME.  Very incomplete.	*/
 
-#include "../atomic_load_store.h"
-
-AO_INLINE AO_TS_VAL
-AO_test_and_set_full(volatile AO_TS_T *addr) {
-  int oldval;
-
-   __asm__ __volatile__("ldstub %1,%0"
-	                : "=r"(oldval), "=m"(*addr)
-	                : "m"(*addr) : "memory");
-   return oldval;
+AO_INLINE AO_t AO_compare_and_swap_full(volatile AO_t *addr,
+                                               AO_t old, AO_t new_val)
+{
+  int retval;
+  __asm__ __volatile__ (
+# ifndef __s390x__
+    "     cs  %1,%2,0(%3)\n"
+# else
+    "     csg %1,%2,0(%3)\n"
+# endif
+  "     ipm %0\n"
+  "     srl %0,28\n"
+  : "=&d" (retval), "+d" (old)
+  : "d" (new_val), "a" (addr)
+  : "cc", "memory");
+  return retval == 0;
 }
 
-#define AO_HAVE_test_and_set_full
-
+#define AO_HAVE_compare_and_swap_full
 

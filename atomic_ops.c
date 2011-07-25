@@ -24,13 +24,21 @@
  * Initialized data and out-of-line functions to support atomic_ops.h
  * go here.  Currently this is needed only for pthread-based atomics
  * emulation, or for compare-and-swap emulation.
+ * Pthreads emulation isn't useful on a native Windows platform, and
+ * cas emulation is not needed.  Thus we skip this on Windows.
  */
+
+#if !defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__BORLANDC__)
 
 #undef AO_FORCE_CAS
 
 #include <pthread.h>
 #include <signal.h>
-#include <sys/select.h>
+#ifdef _HPUX_SOURCE
+# include <sys/time.h>
+#else
+# include <sys/select.h>
+#endif
 #include "atomic_ops.h"  /* Without cas emulation! */
 
 /*
@@ -159,3 +167,9 @@ void AO_store_full_emulation(volatile AO_T *addr, AO_T val)
   *addr = val;
   unlock(my_lock);
 }
+
+#else /* Non-posix platform */
+
+int AO_non_posix_implementation_is_entirely_in_headers;
+
+#endif

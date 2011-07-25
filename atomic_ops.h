@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
+ * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -88,12 +88,12 @@
 /* indicates that it succeeded.					*/
 /* Test_and_set takes an address, atomically replaces it by	*/
 /* AO_TS_SET, and returns the prior value.			*/
-/* An AO_TS_T clear location can be reset with the		*/
+/* An AO_TS_t clear location can be reset with the		*/
 /* AO_CLEAR macro, which normally uses AO_store_release.	*/
-/* AO_fetch_and_add takes an address and an AO_T increment 	*/
+/* AO_fetch_and_add takes an address and an AO_t increment 	*/
 /* value.  The AO_fetch_and_add1 and AO_fetch_and_sub1 variants	*/
 /* are provided, since they allow faster implementations on	*/
-/* some hardware. AO_or atomically ors an AO_T value into a	*/
+/* some hardware. AO_or atomically ors an AO_t value into a	*/
 /* memory location, but does not provide access to the original.*/
 /*								*/
 /* We expect this list to grow slowly over time.		*/
@@ -108,7 +108,7 @@
 /* succeeds.  Furthermore, this should generate near-optimal	*/
 /* code on all common platforms.				*/
 /*								*/
-/* All operations operate on unsigned AO_T, which		*/
+/* All operations operate on unsigned AO_t, which		*/
 /* is the natural word size, and usually unsigned long.		*/
 /* It is possible to check whether a particular operation op	*/
 /* is available on a particular platform by checking whether	*/
@@ -138,77 +138,109 @@
 /* atomic_ops_generalize.h.					*/
 
 /* Some common defaults.  Overridden for some architectures.	*/
-#define AO_T unsigned long
+#define AO_t unsigned long
 	/* Could conceivably be redefined below if/when we add	*/
 	/* win64 support.					*/
 
-/* The test_and_set primitive returns an AO_TS_VAL value:	*/
+/* The test_and_set primitive returns an AO_TS_VAL_t value:	*/
 typedef enum {AO_TS_clear = 0, AO_TS_set = 1} AO_TS_val; 
-#define AO_TS_VAL AO_TS_val
+#define AO_TS_VAL_t AO_TS_val
 #define AO_TS_CLEAR AO_TS_clear
 #define AO_TS_SET AO_TS_set
 
-/* AO_TS_T is the type of an in-memory test-and-set location.	*/
-#define AO_TS_T AO_T	/* Make sure this has the right size */
-#define AO_TS_INITIALIZER (AO_T)AO_TS_CLEAR
+/* AO_TS_t is the type of an in-memory test-and-set location.	*/
+#define AO_TS_t AO_t	/* Make sure this has the right size */
+#define AO_TS_INITIALIZER (AO_t)AO_TS_CLEAR
 
 /* The most common way to clear a test-and-set location		*/
 /* at the end of a critical section.				*/
-#define AO_CLEAR(addr) AO_store_release((AO_T *)addr, AO_TS_CLEAR)
+#define AO_CLEAR(addr) AO_store_release((AO_t *)addr, AO_TS_CLEAR)
 
 /* Platform-dependent stuff:					*/
-#ifdef __GNUC__
-/* Currently gcc is much better supported than anything else ... */
-# define AO_INLINE static inline
-# define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")
+#if defined(__GNUC__) || defined(_MSC_VER) || defined(__INTEL_COMPILER)
+# define AO_INLINE static __inline
 #else
 # define AO_INLINE static
+#endif
+
+#if defined(__GNUC__) && !defined(__INTEL_COMPILER)
+# define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")
+#elif defined(_MSC_VER)
+# define AO_compiler_barrier() __asm { }
+#elif defined(__INTEL_COMPILER)
+# define AO_compiler_barrier() __memory_barrier() /* Too strong? IA64-only? */
+#elif defined(_HPUX_SOURCE)
+# if defined(__ia64)
+#   include <machine/sys/inline.h>
+#   define AO_compiler_barrier() _Asm_sched_fence()
+# else
+    /* FIXME - We dont know how to do this.  This is a guess.	*/
+    /* And probably a bad one.					*/
+    static volatile int AO_barrier_dummy;
+#   define AO_compiler_barrier() AO_barrier_dummy = AO_barrier_dummy
+# endif
+#else
   /* We conjecture that the following usually gives us the right 	*/
   /* semantics or an error.						*/
-# define AO_compiler_barrier() asm("");
+# define AO_compiler_barrier() asm("")
 #endif
 
 #if defined(AO_USE_PTHREAD_DEFS)
-# include "ao_sysdeps/generic_pthread.h"
+# include "atomic_ops/sysdeps/generic_pthread.h"
 #endif /* AO_USE_PTHREAD_DEFS */
 
 #if defined(__GNUC__) && !defined(AO_USE_PTHREAD_DEFS)
 # if defined(__i386__)
-#   include "ao_sysdeps/gcc/x86.h"
+#   include "atomic_ops/sysdeps/gcc/x86.h"
 # endif /* __i386__ */
 # if defined(__ia64__)
-#   include "ao_sysdeps/gcc/ia64.h"
+#   include "atomic_ops/sysdeps/gcc/ia64.h"
 #   define AO_GENERALIZE_TWICE
 # endif /* __ia64__ */
 # if defined(__hppa__)
-#   include "ao_sysdeps/gcc/hppa.h"
+#   include "atomic_ops/sysdeps/gcc/hppa.h"
 #   define AO_CAN_EMUL_CAS
 # endif /* __hppa__ */
 # if defined(__alpha__)
-#   include "ao_sysdeps/gcc/alpha.h"
+#   include "atomic_ops/sysdeps/gcc/alpha.h"
 #   define AO_GENERALIZE_TWICE
 # endif /* __alpha__ */
 # if defined(__s390__)
-#   include "ao_sysdeps/gcc/s390.h"
+#   include "atomic_ops/sysdeps/gcc/s390.h"
 # endif /* __s390__ */
 # if defined(__sparc__)
-#   include "ao_sysdeps/gcc/sparc.h"
+#   include "atomic_ops/sysdeps/gcc/sparc.h"
 # endif /* __sparc__ */
 # if defined(__m68k__)
-#   include "ao_sysdeps/gcc/m68k.h"
+#   include "atomic_ops/sysdeps/gcc/m68k.h"
 # endif /* __m68k__ */
 # if defined(__powerpc__)
-#   include "ao_sysdeps/gcc/powerpc.h"
+#   include "atomic_ops/sysdeps/gcc/powerpc.h"
 # endif /* __powerpc__ */
 # if defined(__arm__) && !defined(AO_USE_PTHREAD_DEFS)
-#   include "ao_sysdeps/gcc/arm.h"
+#   include "atomic_ops/sysdeps/gcc/arm.h"
 # endif /* __arm__ */
 #endif /* __GNUC__ && !AO_USE_PTHREAD_DEFS */
 
 #if defined(__INTEL_COMPILER) && !defined(AO_USE_PTHREAD_DEFS)
 # if defined(__ia64__)
-#   include "ao_sysdeps/ecc/ia64.h"
+#   include "atomic_ops/sysdeps/ecc/ia64.h"
 #   define AO_GENERALIZE_TWICE
+# endif
+#endif
+
+#if defined(_HPUX_SOURCE) && !defined(__GNUC__) && !defined(AO_USE_PTHREAD_DEFS)
+# if defined(__ia64)
+#   include "atomic_ops/sysdeps/hpc/ia64.h"
+#   define AO_GENERALIZE_TWICE
+# else
+#   include "atomic_ops/sysdeps/hpc/hppa.h"
+# endif
+#endif
+
+#if defined(_MSC_VER)
+# if _M_IX86 >= 400
+#   include "atomic_ops/sysdeps/msftc/x86.h"
 # endif
 #endif
 
@@ -216,7 +248,7 @@ typedef enum {AO_TS_clear = 0, AO_TS_set = 1} AO_TS_val;
     && !defined(AO_HAVE_compare_and_swap_full) \
     && !defined(AO_HAVE_compare_and_swap_acquire)
 # if defined(AO_CAN_EMUL_CAS)
-#   include "ao_sysdeps/emul_cas.h"
+#   include "atomic_ops/sysdeps/emul_cas.h"
 # else
 #  error Cannot implement AO_compare_and_swap_full on this architecture.
 # endif
@@ -228,9 +260,14 @@ typedef enum {AO_TS_clear = 0, AO_TS_set = 1} AO_TS_val;
  * In fact, we observe that this converges after a small fixed number
  * of iterations, usually one.
  */
-#include "atomic_ops_generalize.h"
+#include "atomic_ops/generalize.h"
 #ifdef AO_GENERALIZE_TWICE
-# include "atomic_ops_generalize.h"
+# include "atomic_ops/generalize.h"
 #endif
+
+/* For compatibility with version 0.4 and earlier	*/
+#define AO_TS_T AO_TS_t
+#define AO_T AO_t
+#define AO_TS_VAL AO_TS_VAL_t
 
 #endif /* ATOMIC_OPS_H */

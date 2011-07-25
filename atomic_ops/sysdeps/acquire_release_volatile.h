@@ -25,8 +25,8 @@
  * volatile load has acquire semantics, and a volatile store has release
  * semantics.  This is true with the standard Itanium ABI.
  */
-AO_INLINE AO_T
-AO_load_acquire(volatile AO_T *p)
+AO_INLINE AO_t
+AO_load_acquire(volatile AO_t *p)
 {
   /* A normal volatile load generates an ld.acq		*/
   return *p;
@@ -34,9 +34,12 @@ AO_load_acquire(volatile AO_T *p)
 #define AO_HAVE_load_acquire
 
 AO_INLINE void
-AO_store_release(volatile AO_T *p, AO_T val)
+AO_store_release(volatile AO_t *p, AO_t val)
 {
-  AO_compiler_barrier();	/* Empirically necessary. Gcc bug? */
+# if defined(__GNUC_MINOR__) && \
+     (__GNUC__ < 3 || __GNUC__ == 3 && __GNUC_MINOR__ < 4)
+    AO_compiler_barrier();	/* Empirically necessary for older gcc versions */
+# endif
   /* A normal volatile store generates an st.rel	*/
   *p = val;
 }

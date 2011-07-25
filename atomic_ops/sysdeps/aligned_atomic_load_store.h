@@ -21,24 +21,26 @@
  */ 
 
 /*
- * Definitions for architecturs on which loads and stores of AO_T are
+ * Definitions for architecturs on which loads and stores of AO_t are
  * atomic fo all legal alignments.
  */
 
-AO_INLINE AO_T
-AO_load(volatile AO_T *addr)
+AO_INLINE AO_t
+AO_load(volatile AO_t *addr)
 {
-  /* Cast away the volatile for architectures like IA64 where	*/
+  assert(((unsigned long)addr & (sizeof(AO_t) - 1)) == 0);
+  /* Cast away the volatile for architectures where		*/
   /* volatile adds barrier semantics.				*/
-  return (*(AO_T *)addr);
+  return *(AO_t *)addr;
 }
 
 #define AO_HAVE_load
 
 AO_INLINE void
-AO_store(volatile AO_T *addr, AO_T new_val)
+AO_store(volatile AO_t *addr, AO_t new_val)
 {
-  (*(AO_T *)addr) = new_val;
+  assert(((unsigned long)addr & (sizeof(AO_t) - 1)) == 0);
+  (*(AO_t *)addr) = new_val;
 }
 
 #define AO_HAVE_store

@@ -25,38 +25,46 @@
 # (somewhat inconvenient) use of the profiler without setting up or accessing
 # a separate installation directory.
 PREFIX=XXPWDXX/installed
-CC= gcc
+CC= cc
 #Add -DHW_EVENT_SUPPORT if you have Itanium perfmon installed
 CFLAGS= -g -O2
 RANLIB=ranlib
 
-VERSION=0.3
-LIBDIR=$(PREFIX)/lib/ao-$(VERSION)
-DOCDIR=$(PREFIX)/doc/ao-$(VERSION)
-INCDIR=$(PREFIX)/include/ao-$(VERSION)
+VERSION=0.5
+DOCDIR=$(PREFIX)/doc/atomic_ops-$(VERSION)
+INCDIR=$(PREFIX)/include/atomic_ops-$(VERSION)
 
 C_SOURCES= test_atomic.c atomic_ops.c
-TOP_LEVEL_HEADERS= atomic_ops.h atomic_ops_generalize.h
+TOP_LEVEL_HEADERS= atomic_ops.h
 DERIVED_HEADERS= test_atomic_include.h
-DOC= doc/COPYING doc/LICENSING.txt doc/README_atomic_ops.txt
-SYSDEP_GCC_HEADERS= ao_sysdeps/gcc/x86.h ao_sysdeps/gcc/ia64.h \
-	ao_sysdeps/gcc/alpha.h ao_sysdeps/gcc/arm.h \
-	ao_sysdeps/gcc/powerpc.h ao_sysdeps/gcc/sparc.h \
-	ao_sysdeps/gcc/hppa.h ao_sysdeps/gcc/m68k.h ao_sysdeps/gcc/s390.h
-SYSDEP_ECC_HEADERS= ao_sysdeps/ecc/ia64.h
-SYSDEP_VENDORC_HEADERS= ao_sysdeps/vendorc/none_yet
-SYSDEP_HEADERS= ao_sysdeps/generic_pthread.h ao_sysdeps/atomic_load_store.h \
-	ao_sysdeps/aligned_atomic_load_store.h ao_sysdeps/ordered_except_wr.h \
-	ao_sysdeps/acquire_release_volatile.h ao_sysdeps/ordered.h \
-	ao_sysdeps/emul_cas.h
+AO_SD_DIR=atomic_ops/sysdeps
+DOC= doc/COPYING doc/LICENSING.txt doc/README_atomic_ops.txt $(AO_SD_DIR)/README
+SYSDEP_GCC_HEADERS= $(AO_SD_DIR)/gcc/x86.h $(AO_SD_DIR)/gcc/ia64.h \
+	$(AO_SD_DIR)/gcc/alpha.h $(AO_SD_DIR)/gcc/arm.h \
+	$(AO_SD_DIR)/gcc/powerpc.h $(AO_SD_DIR)/gcc/sparc.h \
+	$(AO_SD_DIR)/gcc/hppa.h $(AO_SD_DIR)/gcc/m68k.h $(AO_SD_DIR)/gcc/s390.h
+SYSDEP_ECC_HEADERS= $(AO_SD_DIR)/ecc/ia64.h
+SYSDEP_MSFTC_HEADERS= $(AO_SD_DIR)/msftc/x86.h
+SYSDEP_HPC_HEADERS= $(AO_SD_DIR)/hpc/ia64.h $(AO_SD_DIR)/hpc/hppa.h
+SYSDEP_HEADERS= $(AO_SD_DIR)/generic_pthread.h \
+		$(AO_SD_DIR)/atomic_load_store.h \
+		$(AO_SD_DIR)/aligned_atomic_load_store.h \
+		$(AO_SD_DIR)/ordered_except_wr.h \
+		$(AO_SD_DIR)/acquire_release_volatile.h \
+		$(AO_SD_DIR)/ordered.h \
+		$(AO_SD_DIR)/emul_cas.h
 ALL_SYSDEP_HEADERS= $(SYSDEP_GCC_HEADERS) $(SYSDEP_ECC_HEADERS) \
-$(SYSDEP_VENDORC_HEADERS) $(SYSDEP_HEADERS)
-ATOMIC_OPS_HEADERS= atomic_ops.h atomic_ops_generalize.h $(ALL_SYSDEP_HEADERS)
-HEADERS= $(TOP_LEVEL_HEADERS) $(SYSDEP_GCC_HEADERS) $(SYSDEP_HEADERS)
-OTHER_FILES=Makefile README test_atomic.template list_atomic.template
+$(SYSDEP_MSFTC_HEADERS) $(SYSDEP_HEADERS)
+ATOMIC_OPS_PRIV_HEADERS=atomic_ops/generalize.h
+ATOMIC_OPS_HEADERS= atomic_ops.h $(ATOMIC_OPS_PRIV_HEADERS) \
+		    $(ALL_SYSDEP_HEADERS)
+HEADERS= $(TOP_LEVEL_HEADERS) $(SYSDEP_GCC_HEADERS) $(SYSDEP_HEADERS) \
+	 $(ATOMIC_OPS_PRIV_HEADERS) $(SYSDEP_ECC_HEADERS)
+OTHER_FILES=Makefile README test_atomic.template list_atomic.template \
+	    Makefile.msft
 ALL_DIST_FILES= $(DOC) $(C_SOURCES) $(HEADERS) $(OTHER_FILES) 
 
-all: atomic_ops.a Makefile.expanded
+all: libatomic_ops.a Makefile.expanded
 
 Makefile.expanded: Makefile
 	sed -e s:XXPWDXX:`pwd`: Makefile > Makefile.expanded
@@ -64,9 +72,9 @@ Makefile.expanded: Makefile
 atomic_ops.o: atomic_ops.c $(ATOMIC_OPS_HEADERS)
 	$(CC) $(CFLAGS) -c -fPIC atomic_ops.c
 
-atomic_ops.a: atomic_ops.o
-	$(AR) ruc atomic_ops.a atomic_ops.o
-	$(RANLIB) atomic_ops.a
+libatomic_ops.a: atomic_ops.o
+	$(AR) ruc libatomic_ops.a atomic_ops.o
+	$(RANLIB) libatomic_ops.a
 
 test_atomic: test_atomic.c atomic_ops.c test_atomic_include.h $(ATOMIC_OPS_HEADERS)
 	$(CC) $(CFLAGS) test_atomic.c atomic_ops.c -o test_atomic -lpthread
@@ -99,7 +107,7 @@ list_atomic.c: list_atomic.template
 	sed -e s/XX/_acquire_read/ list_atomic.template \
 					>> list_atomic.c
 
-list_atomic.i: list_atomic.c atomic_ops.h atomic_ops_generalize.h \
+list_atomic.i: list_atomic.c atomic_ops.h $(ATOMIC_OPS_PRIV_HEADERS) \
 	       $(SYSDEP_HEADERS) $(SYSDEP_GCC_HEADERS)
 	cc -E list_atomic.c > list_atomic.i
 
@@ -116,21 +124,28 @@ clean:
 	
 
 dist:	$(ALL_DIST_FILES)
-	# The same thing again for the ao distribution.
-	mkdir ao-$(VERSION)
-	ln atomic_ops.h atomic_ops_generalize.h atomic_ops.c ao-$(VERSION)
-	mkdir ao-$(VERSION)/ao_sysdeps
-	ln $(SYSDEP_HEADERS)  ao-$(VERSION)/ao_sysdeps
-	mkdir ao-$(VERSION)/ao_sysdeps/gcc
-	ln $(SYSDEP_GCC_HEADERS)  ao-$(VERSION)/ao_sysdeps/gcc
-	mkdir ao-$(VERSION)/ao_sysdeps/ecc
-	ln $(SYSDEP_ECC_HEADERS)  ao-$(VERSION)/ao_sysdeps/ecc
-	mkdir ao-$(VERSION)/ao_sysdeps/vendorc
-	ln $(SYSDEP_VENDORC_HEADERS)  ao-$(VERSION)/ao_sysdeps/vendorc
-	mkdir ao-$(VERSION)/doc
-	ln doc/README_atomic_ops.txt doc/LICENSING.txt ao-$(VERSION)/doc
-	tar cvfzh ao-$(VERSION).tar.gz ao-$(VERSION)
-	rm -rf ao-$(VERSION)
+	# The same thing again for the atomic_ops distribution.
+	mkdir atomic_ops-$(VERSION)
+	ln Makefile atomic_ops.h $(ATOMIC_OPS_PRIV_HEADERS) atomic_ops.c \
+	   Makefile.msft test_atomic_include.h atomic_ops-$(VERSION)
+	ln test_atomic.c test_atomic.template list_atomic.template \
+	   atomic_ops-$(VERSION)
+	mkdir atomic_ops-$(VERSION)/atomic_ops
+	ln $(ATOMIC_OPS_PRIV_HEADERS) atomic_ops-$(VERSION)/atomic_ops
+	mkdir atomic_ops-$(VERSION)/$(AO_SD_DIR)
+	ln $(SYSDEP_HEADERS) README atomic_ops-$(VERSION)/$(AO_SD_DIR)
+	mkdir atomic_ops-$(VERSION)/$(AO_SD_DIR)/gcc
+	ln $(SYSDEP_GCC_HEADERS)  atomic_ops-$(VERSION)/$(AO_SD_DIR)/gcc
+	mkdir atomic_ops-$(VERSION)/$(AO_SD_DIR)/ecc
+	ln $(SYSDEP_ECC_HEADERS)  atomic_ops-$(VERSION)/$(AO_SD_DIR)/ecc
+	mkdir atomic_ops-$(VERSION)/$(AO_SD_DIR)/msftc
+	ln $(SYSDEP_MSFTC_HEADERS)  atomic_ops-$(VERSION)/$(AO_SD_DIR)/msftc
+	mkdir atomic_ops-$(VERSION)/$(AO_SD_DIR)/hpc
+	ln $(SYSDEP_HPC_HEADERS)  atomic_ops-$(VERSION)/$(AO_SD_DIR)/hpc
+	mkdir atomic_ops-$(VERSION)/doc
+	ln doc/COPYING doc/README_atomic_ops.txt doc/LICENSING.txt atomic_ops-$(VERSION)/doc
+	tar cvfzh atomic_ops-$(VERSION).tar.gz atomic_ops-$(VERSION)
+	rm -rf atomic_ops-$(VERSION)
 
 install: all
 	make -f Makefile.expanded real_install
@@ -140,14 +155,15 @@ install: all
 # of PREFIX.
 
 real_install:
-	install -d $(LIBDIR)
 	install -d $(INCDIR)
 	install -d $(DOCDIR)
-	ln -s -f $(LIBDIR) $(PREFIX)/lib/ao
-	ln -s -f $(DOCDIR) $(PREFIX)/doc/ao
-	ln -s -f $(INCDIR) $(PREFIX)/include/ao
-	/usr/bin/install -c -m 644 $(DOC) $(DOCDIR)
-	/usr/bin/install -c -m 644 atomic_ops.a $(LIBDIR)
-	/usr/bin/install -c -m 644 $(TOP_LEVEL_HEADERS) $(INCDIR)
-	cp -r ao_sysdeps $(INCDIR)
+	install -d $(PREFIX)/include
+	install -d $(PREFIX)/lib
+	/usr/bin/install -m 644 $(DOC) $(DOCDIR)
+	/usr/bin/install -m 644 libatomic_ops.a $(PREFIX)/lib/libatomic_ops-$(VERSION).a
+	/usr/bin/install -m 644 $(TOP_LEVEL_HEADERS) $(PREFIX)/include
+	cp -r atomic_ops atomic_ops.h $(INCDIR)
+	ln -s -f $(PREFIX)/lib/libatomic_ops-$(VERSION).a $(PREFIX)/lib/libatomic_ops.a
+	ln -s -f $(INCDIR)/atomic_ops $(PREFIX)/include/atomic_ops
+	ln -s -f $(INCDIR)/atomic_ops.h $(PREFIX)/include/atomic_ops.h
 

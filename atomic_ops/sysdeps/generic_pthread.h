@@ -42,10 +42,10 @@ AO_nop_full()
 
 #define AO_HAVE_nop_full
 
-AO_INLINE AO_T
-AO_load_full(volatile AO_T *addr)
+AO_INLINE AO_t
+AO_load_full(volatile AO_t *addr)
 {
-  AO_T result;
+  AO_t result;
   pthread_mutex_lock(&AO_pt_lock);
   result = *addr;
   pthread_mutex_unlock(&AO_pt_lock);
@@ -55,7 +55,7 @@ AO_load_full(volatile AO_T *addr)
 #define AO_HAVE_load_full
 
 AO_INLINE void
-AO_store_full(volatile AO_T *addr, AO_T val)
+AO_store_full(volatile AO_t *addr, AO_t val)
 {
   pthread_mutex_lock(&AO_pt_lock);
   *addr = val;
@@ -64,12 +64,12 @@ AO_store_full(volatile AO_T *addr, AO_T val)
 
 #define AO_HAVE_store_full
 
-AO_INLINE AO_TS_VAL
-AO_test_and_set_full(volatile AO_TS_T *addr)
+AO_INLINE AO_TS_VAL_t
+AO_test_and_set_full(volatile AO_TS_t *addr)
 {
-  int result;
+  AO_TS_VAL_t result;
   pthread_mutex_lock(&AO_pt_lock);
-  result = (int)(*addr);
+  result = (AO_TS_VAL_t)(*addr);
   *addr = AO_TS_SET;
   pthread_mutex_unlock(&AO_pt_lock);
   assert(result == AO_TS_SET || result == AO_TS_CLEAR);
@@ -78,10 +78,10 @@ AO_test_and_set_full(volatile AO_TS_T *addr)
 
 #define AO_HAVE_test_and_set_full
 
-AO_INLINE AO_T
-AO_fetch_and_add_full(volatile AO_T *p, AO_T incr)
+AO_INLINE AO_t
+AO_fetch_and_add_full(volatile AO_t *p, AO_t incr)
 {
-  AO_T tmp;
+  AO_t tmp;
 
   pthread_mutex_lock(&AO_pt_lock);
   tmp = *p;
@@ -93,9 +93,9 @@ AO_fetch_and_add_full(volatile AO_T *p, AO_T incr)
 #define AO_HAVE_fetch_and_add_full
 
 AO_INLINE void
-AO_or_full(volatile AO_T *p, AO_T incr)
+AO_or_full(volatile AO_t *p, AO_t incr)
 {
-  AO_T tmp;
+  AO_t tmp;
 
   pthread_mutex_lock(&AO_pt_lock);
   tmp = *p;
@@ -106,8 +106,8 @@ AO_or_full(volatile AO_T *p, AO_T incr)
 #define AO_HAVE_or_full
 
 AO_INLINE int
-AO_compare_and_swap_full(volatile AO_T *addr,
-		             AO_T old, AO_T new_val) 
+AO_compare_and_swap_full(volatile AO_t *addr,
+		             AO_t old, AO_t new_val) 
 {
   pthread_mutex_lock(&AO_pt_lock);
   if (*addr == old)

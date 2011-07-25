@@ -21,28 +21,57 @@
  */ 
 
 /*
- * Definitions for architecturs on which loads and stores of AO_T are
- * atomic fo all legal alignments.
+ * These are common definitions for architectures that provide processor
+ * ordered memory operations except that a later read may pass an
+ * earlier write.  Real x86 implementations seem to be in this category,
+ * except apparently for some IDT WinChips, which we ignore.
  */
 
-AO_INLINE AO_T
-AO_load(volatile AO_T *addr)
+AO_INLINE void
+AO_nop_write()
 {
-  assert(((unsigned long)addr & (sizeof(AO_T) - 1)) == 0);
-  /* Cast away the volatile for architectures where		*/
-  /* volatile adds barrier semantics.				*/
-  return *(AO_T *)addr;
+  AO_compiler_barrier();
+  /* sfence according to Intel docs.  Pentium 3 and up.	*/
+  /* Unnecessary for cached accesses?			*/
 }
 
-#define AO_HAVE_load
+#define AO_HAVE_NOP_WRITE
 
 AO_INLINE void
-AO_store(volatile AO_T *addr, AO_T new_val)
+AO_nop_read()
 {
-  assert(((unsigned long)addr & (sizeof(AO_T) - 1)) == 0);
-  (*(AO_T *)addr) = new_val;
+  AO_compiler_barrier();
 }
 
-#define AO_HAVE_store
+#define AO_HAVE_NOP_READ
 
+#ifdef AO_HAVE_load
 
+AO_INLINE AO_t
+AO_load_read(volatile AO_t *addr)
+{
+  AO_t result = AO_load(addr);
+  AO_compiler_barrier();
+  return result;
+}
+#define AO_HAVE_load_read
+
+#define AO_load_acquire(addr) AO_load_read(addr)
+#define AO_HAVE_load_acquire
+
+#endif /* AO_HAVE_load */
+
+#if defined(AO_HAVE_store)
+
+AO_INLINE void
+AO_store_write(volatile AO_t *addr, AO_t val)
+{
+  AO_compiler_barrier();
+  AO_store(addr, val);
+}
+# define AO_HAVE_store_write
+
+# define AO_store_release(addr, val) AO_store_write(addr, val)
+# define AO_HAVE_store_release
+
+#endif /* AO_HAVE_store */

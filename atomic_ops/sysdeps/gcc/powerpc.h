@@ -35,8 +35,8 @@ AO_nop_write()
 
 #define AO_HAVE_NOP_FULL
 
-AO_INLINE AO_TS_VAL
-AO_test_and_set_full(volatile AO_TS_T *addr) {
+AO_INLINE AO_TS_VAL_t
+AO_test_and_set_full(volatile AO_TS_t *addr) {
   int oldval;
   int temp = 1; /* locked value */
 

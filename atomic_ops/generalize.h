@@ -49,8 +49,8 @@
     !defined(AO_HAVE_test_and_set_read) && \
     !defined(AO_HAVE_test_and_set_full)
 #  if defined(AO_HAVE_compare_and_swap_full)
-     AO_INLINE AO_TS_VAL
-     AO_test_and_set_full(volatile AO_TS_T *addr)
+     AO_INLINE AO_TS_VAL_t
+     AO_test_and_set_full(volatile AO_TS_t *addr)
      {
        if (AO_compare_and_swap_full(addr, AO_TS_CLEAR,
      			             AO_TS_SET))
@@ -62,8 +62,8 @@
 #  endif /* AO_HAVE_compare_and_swap_full */
 
 #  if defined(AO_HAVE_compare_and_swap_acquire)
-     AO_INLINE AO_TS_VAL
-     AO_test_and_set_acquire(volatile AO_TS_T *addr)
+     AO_INLINE AO_TS_VAL_t
+     AO_test_and_set_acquire(volatile AO_TS_t *addr)
      {
        if (AO_compare_and_swap_acquire(addr, AO_TS_CLEAR,
   			             AO_TS_SET))
@@ -75,8 +75,8 @@
 #  endif /* AO_HAVE_compare_and_swap_acquire */
 
 #  if defined(AO_HAVE_compare_and_swap_release)
-     AO_INLINE AO_TS_VAL
-     AO_test_and_set_release(volatile AO_TS_T *addr)
+     AO_INLINE AO_TS_VAL_t
+     AO_test_and_set_release(volatile AO_TS_t *addr)
      {
        if (AO_compare_and_swap_release(addr, AO_TS_CLEAR,
      			             AO_TS_SET))
@@ -88,8 +88,8 @@
 #  endif /* AO_HAVE_compare_and_swap_release */
 
 #  if defined(AO_HAVE_compare_and_swap)
-     AO_INLINE AO_TS_VAL
-     AO_test_and_set(volatile AO_TS_T *addr)
+     AO_INLINE AO_TS_VAL_t
+     AO_test_and_set(volatile AO_TS_t *addr)
      {
        if (AO_compare_and_swap(addr, AO_TS_CLEAR, AO_TS_SET))
          return AO_TS_CLEAR;
@@ -101,10 +101,10 @@
 
 #  if defined(AO_HAVE_test_and_set) && defined(AO_HAVE_nop_full) \
       && !defined(AO_HAVE_test_and_set_acquire)
-     AO_INLINE AO_TS_VAL
-     AO_test_and_set_acquire(volatile AO_TS_T *addr)
+     AO_INLINE AO_TS_VAL_t
+     AO_test_and_set_acquire(volatile AO_TS_t *addr)
      {
-       AO_TS_VAL result = AO_test_and_set(addr);
+       AO_TS_VAL_t result = AO_test_and_set(addr);
        AO_nop_full();
        return result;
      }
@@ -115,7 +115,7 @@
 
 /* Nop */
 #if !defined(AO_HAVE_nop)
-   AO_INLINE void AO_nop(void) {};
+   AO_INLINE void AO_nop(void) {}
 #  define AO_HAVE_nop
 #endif
 
@@ -123,7 +123,7 @@
    AO_INLINE void
    AO_nop_full()
    {
-     AO_TS_T dummy = AO_TS_INITIALIZER;
+     AO_TS_t dummy = AO_TS_INITIALIZER;
      AO_test_and_set_full(&dummy);
    }
 #  define AO_HAVE_nop_full
@@ -169,10 +169,10 @@
 
 #if defined(AO_HAVE_load) && defined(AO_HAVE_nop_full) && \
     !defined(AO_HAVE_load_acquire)
-   AO_INLINE AO_T
-   AO_load_acquire(volatile AO_T *addr)
+   AO_INLINE AO_t
+   AO_load_acquire(volatile AO_t *addr)
    {
-     AO_T result = AO_load(addr);
+     AO_t result = AO_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */
      /* beyond it.							   */
      AO_nop_full();
@@ -183,10 +183,10 @@
 
 #if defined(AO_HAVE_load) && defined(AO_HAVE_nop_read) && \
     !defined(AO_HAVE_load_read)
-   AO_INLINE AO_T
-   AO_load_read(volatile AO_T *addr)
+   AO_INLINE AO_t
+   AO_load_read(volatile AO_t *addr)
    {
-     AO_T result = AO_load(addr);
+     AO_t result = AO_load(addr);
      /* Acquire barrier would be useless, since the load could be delayed  */
      /* beyond it.							   */
      AO_nop_read();
@@ -266,10 +266,10 @@
 /* Fetch_and_add */
 #if defined(AO_HAVE_compare_and_swap_full) && \
     !defined(AO_HAVE_fetch_and_add_full)
-   AO_INLINE AO_T
-   AO_fetch_and_add_full(volatile AO_T *addr, AO_T incr)
+   AO_INLINE AO_t
+   AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr)
    {
-     AO_T old;
+     AO_t old;
      do
        {
          old = *addr;
@@ -487,43 +487,43 @@
 
 #if defined(AO_HAVE_fetch_and_add_full) &&\
     !defined(AO_HAVE_fetch_and_sub1_full)
-#  define AO_fetch_and_sub1_full(addr) AO_fetch_and_add_full(addr,(AO_T)(-1))
+#  define AO_fetch_and_sub1_full(addr) AO_fetch_and_add_full(addr,(AO_t)(-1))
 #  define AO_HAVE_fetch_and_sub1_full
 #endif
 #if defined(AO_HAVE_fetch_and_add_release) &&\
     !defined(AO_HAVE_fetch_and_sub1_release)
 #  define AO_fetch_and_sub1_release(addr) \
-	AO_fetch_and_add_release(addr,(AO_T)(-1))
+	AO_fetch_and_add_release(addr,(AO_t)(-1))
 #  define AO_HAVE_fetch_and_sub1_release
 #endif
 #if defined(AO_HAVE_fetch_and_add_acquire) &&\
     !defined(AO_HAVE_fetch_and_sub1_acquire)
 #  define AO_fetch_and_sub1_acquire(addr) \
-	AO_fetch_and_add_acquire(addr,(AO_T)(-1))
+	AO_fetch_and_add_acquire(addr,(AO_t)(-1))
 #  define AO_HAVE_fetch_and_sub1_acquire
 #endif
 #if defined(AO_HAVE_fetch_and_add_write) &&\
     !defined(AO_HAVE_fetch_and_sub1_write)
 #  define AO_fetch_and_sub1_write(addr) \
-	AO_fetch_and_add_write(addr,(AO_T)(-1))
+	AO_fetch_and_add_write(addr,(AO_t)(-1))
 #  define AO_HAVE_fetch_and_sub1_write
 #endif
 #if defined(AO_HAVE_fetch_and_add_read) &&\
     !defined(AO_HAVE_fetch_and_sub1_read)
 #  define AO_fetch_and_sub1_read(addr) \
-	AO_fetch_and_add_read(addr,(AO_T)(-1))
+	AO_fetch_and_add_read(addr,(AO_t)(-1))
 #  define AO_HAVE_fetch_and_sub1_read
 #endif
 #if defined(AO_HAVE_fetch_and_add_release_write) &&\
     !defined(AO_HAVE_fetch_and_sub1_release_write)
 #  define AO_fetch_and_sub1_release_write(addr) \
-	AO_fetch_and_add_release_write(addr,(AO_T)(-1))
+	AO_fetch_and_add_release_write(addr,(AO_t)(-1))
 #  define AO_HAVE_fetch_and_sub1_release_write
 #endif
 #if defined(AO_HAVE_fetch_and_add_acquire_read) &&\
     !defined(AO_HAVE_fetch_and_sub1_acquire_read)
 #  define AO_fetch_and_sub1_acquire_read(addr) \
-	AO_fetch_and_add_acquire_read(addr,(AO_T)(-1))
+	AO_fetch_and_add_acquire_read(addr,(AO_t)(-1))
 #  define AO_HAVE_fetch_and_sub1_acquire_read
 #endif
 
@@ -612,9 +612,9 @@
 #if defined(AO_HAVE_compare_and_swap_full) && \
     !defined(AO_HAVE_or_full)
    AO_INLINE void
-   AO_or_full(volatile AO_T *addr, AO_T incr)
+   AO_or_full(volatile AO_t *addr, AO_t incr)
    {
-     AO_T old;
+     AO_t old;
      do
        {
          old = *addr;
@@ -792,7 +792,7 @@
 #if defined(AO_HAVE_compare_and_swap) && defined(AO_HAVE_nop_full)\
     && !defined(AO_HAVE_compare_and_swap_acquire)
    AO_INLINE int
-   AO_compare_and_swap_acquire(volatile AO_T *addr, AO_T old, AO_T new_val)
+   AO_compare_and_swap_acquire(volatile AO_t *addr, AO_t old, AO_t new_val)
    {
      int result = AO_compare_and_swap(addr, old, new_val);
      AO_nop_full();

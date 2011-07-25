@@ -32,7 +32,7 @@
 
 #include "../ordered_except_wr.h"
 
-#if defined(USE_PENTIUM4_INSTRS)
+#if defined(AO_USE_PENTIUM4_INSTRS)
 AO_INLINE void
 AO_nop_full()
 {
@@ -53,10 +53,10 @@ AO_nop_full()
 /* currently needed or useful for cached memory accesses.		*/
 
 /* Really only works for 486 and later */
-AO_INLINE AO_T
-AO_fetch_and_add_full (volatile AO_T *p, long incr)
+AO_INLINE AO_t
+AO_fetch_and_add_full (volatile AO_t *p, long incr)
 {
-  AO_T result = incr;
+  AO_t result = incr;
 
   __asm__ __volatile__ ("lock; xaddl %0, %1" :
 			"+r" (result), "+m" (*p) : : "memory");
@@ -67,7 +67,7 @@ AO_fetch_and_add_full (volatile AO_T *p, long incr)
 
 /* Really only works for 486 and later */
 AO_INLINE void
-AO_or_full (volatile AO_T *p, AO_T incr)
+AO_or_full (volatile AO_t *p, AO_t incr)
 {
   __asm__ __volatile__ ("lock; orl %1, %0" :
 			"+m" (*p) : "r" (incr) : "memory");
@@ -75,8 +75,8 @@ AO_or_full (volatile AO_T *p, AO_T incr)
 
 #define AO_HAVE_or_full
 
-AO_INLINE AO_TS_T
-AO_test_and_set_full(volatile AO_T *addr)
+AO_INLINE AO_TS_t
+AO_test_and_set_full(volatile AO_t *addr)
 {
   int oldval;
   /* Note: the "xchg" instruction does not need a "lock" prefix */
@@ -90,8 +90,8 @@ AO_test_and_set_full(volatile AO_T *addr)
 
 /* Returns nonzero if the comparison succeeded. */
 AO_INLINE int
-AO_compare_and_swap_full(volatile AO_T *addr,
-		  	     AO_T old, AO_T new_val) 
+AO_compare_and_swap_full(volatile AO_t *addr,
+		  	     AO_t old, AO_t new_val) 
 {
   char result;
   __asm__ __volatile__("lock; cmpxchgl %2, %0; setz %1"

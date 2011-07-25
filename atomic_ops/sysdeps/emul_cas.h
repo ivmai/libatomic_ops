@@ -39,10 +39,10 @@
 #  error This file should not be included directly.
 #endif
 
-AO_T AO_compare_and_swap_emulation(volatile AO_T *addr, AO_T old,
-				   AO_T new_val);
+AO_t AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
+				   AO_t new_val);
 
-void AO_store_full_emulation(volatile AO_T *addr, AO_T val);
+void AO_store_full_emulation(volatile AO_t *addr, AO_t val);
 
 #define AO_compare_and_swap_full(addr, old, newval) \
 	AO_compare_and_swap_emulation(addr, old, newval)

@@ -45,7 +45,7 @@ greatly appreciated.  It passes rudimentary tests on X86, Itanium, and
 Alpha.
 
 The defined operations are all of the form AO_<op><barrier>(<args>).
-Most operations operate on values of type AO_T, which are unsigned integers
+Most operations operate on values of type AO_t, which are unsigned integers
 whose size matches that of pointers on the given architecture.  We may
 provide more flexibility in operand types in the future, but this seems
 to cover 90+% of common usage.
@@ -56,30 +56,30 @@ are also specified:
 
 void nop()
 	No atomic operation.  The barrier may still be useful.
-AO_T load(volatile AO_T * addr)
+AO_t load(volatile AO_t * addr)
 	Atomic load of *addr.
-void store(volatile AO_T * addr, AO_T new_val)
+void store(volatile AO_t * addr, AO_t new_val)
 	Atomically store new_val to *addr.
-AO_T fetch_and_add(volatile AO_T *addr, AO_T incr)
+AO_t fetch_and_add(volatile AO_t *addr, AO_t incr)
 	Atomically add incr to *addr, and return the original value of *addr.
-AO_T fetch_and_add1(volatile AO_T *addr)
+AO_t fetch_and_add1(volatile AO_t *addr)
 	Equivalent to AO_fetch_and_add(addr, 1).
-AO_T fetch_and_sub1(volatile AO_T *addr)
-	Equivalent to AO_fetch_and_add(addr, (AO_T)(-1)).
-void or(volatile AO_T *addr, AO_T incr)
+AO_t fetch_and_sub1(volatile AO_t *addr)
+	Equivalent to AO_fetch_and_add(addr, (AO_t)(-1)).
+void or(volatile AO_t *addr, AO_t incr)
 	Atomically or incr into *addr.
-int compare_and_swap(volatile AO_T * addr, AO_T old_val, AO_T new_val)
+int compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
 	Atomically compare *addr to old_val, and replace *addr by new_val
 	if the first comparison succeeds.  Returns nonzero if the comparison
 	succeeded and *addr was updated.
-AO_TS_VAL test_and_set(volatile AO_TS_T * addr)
-	Atomically read the binary value at *addr, and set it.  AO_TS_VAL
+AO_TS_VAL_t test_and_set(volatile AO_TS_T * addr)
+	Atomically read the binary value at *addr, and set it.  AO_TS_VAL_t
 	is an enumeration type which includes the two values AO_TS_SET and
 	and AO_TS_CLEAR.  An AO_TS_T location is capable of holding an
-	AO_TS_VAL, but may be much larger, as dictated by hardware
+	AO_TS_VAL_t, but may be much larger, as dictated by hardware
 	constraints.  Test_and_set logically sets the value to AO_TS_SET.
 	It may be reset to AO_TS_CLEAR with the AO_CLEAR(AO_TS_T *) macro.
-	AO_TS_T locations should be initialized to AO_TS_INITIALZER.
+	AO_TS_T locations should be initialized to AO_TS_INITIALIZER.
 	The values of AO_TS_SET and AO_TS_CLEAR are hardware dependent.
 	(On PA-RISC, AO_TS_SET is zero!)
 
@@ -130,8 +130,8 @@ Future directions:
 
 We expect the list of memory barrier types to remain more or less fixed.
 However, it is likely that the list of underlying atomic operations will
-grow.  AO_fetch_and_or is a very likely candidate.  It would also be
-useful to support double-wide operations when available.
+grow.  It would also be useful to support double-wide and narrower operations
+when available.
 
 Example:
 
@@ -140,3 +140,21 @@ in a global location p, such that other threads reading the new value of
 p are guaranteed to see an initialized object, it suffices to use
 AO_release_write(p, ...) to write the pointer to the object, and to
 retrieve it in other threads with AO_acquire_read(p).
+
+Platform notes:
+
+All X86: We quietly assume 486 or better.
+
+Windows:
+Currently AO_REQUIRE_CAS is not supported.
+
+Microsoft compilers:
+Define AO_ASSUME_WINDOWS98 to get access to hardware compare-and-swap
+functionality.  This relies on the InterlockedCompareExchange() function
+which was apparently not supported in Windows95.  (There may be a better
+way to get access to this.)  Currently only X86(32 bit) is supported for
+Windows.
+
+Gcc on x86:
+Define AO_USE_PNETIUM4_INSTRS to use the Pentium 4 mfence instruction.
+Currently this is appears to be of marginal benefit.

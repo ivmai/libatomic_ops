@@ -38,8 +38,8 @@ AO_nop_write()
 /* We believe that ldq_l ... stq_c does not imply any memory barrier. 	*/
 /* We should add an explicit fetch_and_add definition.			*/
 AO_INLINE int
-AO_compare_and_swap(volatile AO_T *addr,
-		    AO_T old, AO_T new_val) 
+AO_compare_and_swap(volatile AO_t *addr,
+		    AO_t old, AO_t new_val) 
 {
   unsigned long was_equal;
   unsigned long temp;

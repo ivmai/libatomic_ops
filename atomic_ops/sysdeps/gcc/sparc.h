@@ -15,26 +15,25 @@
  *
  */
 
-/* FIXME.  Very incomplete.  No support for 64 bits.	*/
+/* FIXME.  Very incomplete.  No support for sparc64.	*/
+/* Non-ancient SPARCs provide compare-and-swap (casa).	*/
+/* We should make that available.			*/
 
 #include "../atomic_load_store.h"
 
-AO_INLINE AO_TS_VAL
-AO_test_and_set_full(volatile AO_TS_T *addr) {
-  int oldval;
-  int temp = 1; /* locked value */
+/* Real SPARC code uses TSO:				*/
+#include "../ordered_except_wr.h"
 
-         __asm__ __volatile__ (
-          "     l     %0,0(%2)\n"
-          "0:   cs    %0,%1,0(%2)\n"
-          "     jl    0b"
-          : "=&d" (ret)
-          : "d" (1), "a" (addr)
-          : "cc", "memory");
-  return oldval;
+AO_INLINE AO_TS_VAL_t
+AO_test_and_set_full(volatile AO_TS_t *addr) {
+  int oldval;
+
+   __asm__ __volatile__("ldstub %1,%0"
+	                : "=r"(oldval), "=m"(*addr)
+	                : "m"(*addr) : "memory");
+   return oldval;
 }
 
 #define AO_HAVE_test_and_set_full
-
 
 

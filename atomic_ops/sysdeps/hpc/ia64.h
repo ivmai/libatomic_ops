@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
+ * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,8 +21,8 @@
  */
 
 /*
- * This file specifies Itanimum primitives for use with the Intel (ecc)
- * compiler.  We use intrinsics instead of the inline assembly code in the
+ * This file specifies Itanimum primitives for use with the HP compiler
+ * unde HP/UX.  We use intrinsics instead of the inline assembly code in the
  * gcc file.
  */
 
@@ -30,63 +30,81 @@
 
 #include "../acquire_release_volatile.h"
 
-#include <ia64intrin.h>
+#include <machine/sys/inline.h>
+
+#ifdef __LP64__
+# define AO_T_FASIZE _FASZ_D
+# define AO_T_SIZE _SZ_D
+#else
+# define AO_T_FASIZE _FASZ_W
+# define AO_T_SIZE _SZ_W
+#endif
 
 AO_INLINE void
 AO_nop_full()
 {
-  __mf();
+  _Asm_mf();
 }
 #define AO_HAVE_nop_full
 
-AO_INLINE AO_T
-AO_fetch_and_add1_acquire (volatile AO_T *p)
+AO_INLINE AO_t
+AO_fetch_and_add1_acquire (volatile AO_t *p)
 {
-  return __fetchadd8_acq((unsigned __int64 *)p, 1);
+  return _Asm_fetchadd(AO_T_FASIZE, _SEM_ACQ, p, 1,
+		       _LDHINT_NONE, _DOWN_MEM_FENCE);
 }
 #define AO_HAVE_fetch_and_add1_acquire
 
-AO_INLINE AO_T
-AO_fetch_and_add1_release (volatile AO_T *p)
+AO_INLINE AO_t
+AO_fetch_and_add1_release (volatile AO_t *p)
 {
-  return __fetchadd8_rel((unsigned __int64 *)p, 1);
+  return _Asm_fetchadd(AO_T_FASIZE, _SEM_REL, p, 1,
+		       _LDHINT_NONE, _UP_MEM_FENCE);
 }
 
 #define AO_HAVE_fetch_and_add1_release
 
-AO_INLINE AO_T
-AO_fetch_and_sub1_acquire (volatile AO_T *p)
+AO_INLINE AO_t
+AO_fetch_and_sub1_acquire (volatile AO_t *p)
 {
-  return __fetchadd8_acq((unsigned __int64 *)p, -1);
+  return _Asm_fetchadd(AO_T_FASIZE, _SEM_ACQ, p, -1,
+		       _LDHINT_NONE, _DOWN_MEM_FENCE);
 }
 
 #define AO_HAVE_fetch_and_sub1_acquire
 
-AO_INLINE AO_T
-AO_fetch_and_sub1_release (volatile AO_T *p)
+AO_INLINE AO_t
+AO_fetch_and_sub1_release (volatile AO_t *p)
 {
-  return __fetchadd8_rel((unsigned __int64 *)p, -1);
+  return _Asm_fetchadd(AO_T_FASIZE, _SEM_REL, p, -1,
+		       _LDHINT_NONE, _UP_MEM_FENCE);
 }
 
 #define AO_HAVE_fetch_and_sub1_release
 
 AO_INLINE int
-AO_compare_and_swap_acquire(volatile AO_T *addr,
-		             AO_T old, AO_T new_val) 
+AO_compare_and_swap_acquire(volatile AO_t *addr,
+		             AO_t old, AO_t new_val) 
 {
-  AO_T oldval;
-  oldval = _InterlockedCompareExchange64_acq(addr, new_val, old);
+  AO_t oldval;
+
+  _Asm_mov_to_ar(_AREG_CCV, old, _DOWN_MEM_FENCE);
+  oldval = _Asm_cmpxchg(AO_T_SIZE, _SEM_ACQ, addr,
+		  	new_val, _LDHINT_NONE, _DOWN_MEM_FENCE);
   return (oldval == old);
 }
 
 #define AO_HAVE_compare_and_swap_acquire
 
 AO_INLINE int
-AO_compare_and_swap_release(volatile AO_T *addr,
-		             AO_T old, AO_T new_val) 
+AO_compare_and_swap_release(volatile AO_t *addr,
+		             AO_t old, AO_t new_val) 
 {
-  AO_T oldval;
-  oldval = _InterlockedCompareExchange64_rel(addr, new_val, old);
+  AO_t oldval;
+  _Asm_mov_to_ar(_AREG_CCV, old, _UP_MEM_FENCE);
+  oldval = _Asm_cmpxchg(AO_T_SIZE, _SEM_REL, addr,
+		  	new_val, _LDHINT_NONE, _UP_MEM_FENCE);
+  /* Hopefully the compiler knows not to reorder the above two? */
   return (oldval == old);
 }
 
