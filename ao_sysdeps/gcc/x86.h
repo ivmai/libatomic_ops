@@ -65,6 +65,16 @@ AO_fetch_and_add_full (volatile AO_T *p, long incr)
 
 #define AO_HAVE_fetch_and_add_full
 
+/* Really only works for 486 and later */
+AO_INLINE void
+AO_or_full (volatile AO_T *p, AO_T incr)
+{
+  __asm__ __volatile__ ("lock; orl %1, %0" :
+			"+m" (*p) : "r" (incr) : "memory");
+}
+
+#define AO_HAVE_or_full
+
 AO_INLINE AO_TS_T
 AO_test_and_set_full(volatile AO_T *addr)
 {

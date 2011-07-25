@@ -31,13 +31,13 @@
 
 /* We define only the full barrier variants, and count on the 		*/
 /* generalization section below to fill in the rest.			*/
-static pthread_mutex_t AO_lock = PTHREAD_MUTEX_INITIALIZER;
+extern pthread_mutex_t AO_pt_lock;
 
 AO_INLINE void
 AO_nop_full()
 {
-  pthread_mutex_lock(&AO_lock);
-  pthread_mutex_unlock(&AO_lock);
+  pthread_mutex_lock(&AO_pt_lock);
+  pthread_mutex_unlock(&AO_pt_lock);
 }
 
 #define AO_HAVE_nop_full
@@ -46,9 +46,9 @@ AO_INLINE AO_T
 AO_load_full(volatile AO_T *addr)
 {
   AO_T result;
-  pthread_mutex_lock(&AO_lock);
+  pthread_mutex_lock(&AO_pt_lock);
   result = *addr;
-  pthread_mutex_unlock(&AO_lock);
+  pthread_mutex_unlock(&AO_pt_lock);
   return result;
 }
 
@@ -57,9 +57,9 @@ AO_load_full(volatile AO_T *addr)
 AO_INLINE void
 AO_store_full(volatile AO_T *addr, AO_T val)
 {
-  pthread_mutex_lock(&AO_lock);
+  pthread_mutex_lock(&AO_pt_lock);
   *addr = val;
-  pthread_mutex_unlock(&AO_lock);
+  pthread_mutex_unlock(&AO_pt_lock);
 }
 
 #define AO_HAVE_store_full
@@ -68,46 +68,56 @@ AO_INLINE AO_TS_VAL
 AO_test_and_set_full(volatile AO_TS_T *addr)
 {
   int result;
-  pthread_mutex_lock(&AO_lock);
+  pthread_mutex_lock(&AO_pt_lock);
   result = (int)(*addr);
   *addr = AO_TS_SET;
-  pthread_mutex_unlock(&AO_lock);
+  pthread_mutex_unlock(&AO_pt_lock);
   assert(result == AO_TS_SET || result == AO_TS_CLEAR);
   return result;
 }
 
 #define AO_HAVE_test_and_set_full
 
-static AO_T
-AO_fetch_and_add_full(volatile AO_T *p, long incr)
+AO_INLINE AO_T
+AO_fetch_and_add_full(volatile AO_T *p, AO_T incr)
 {
   AO_T tmp;
 
-  pthread_mutex_lock(&AO_lock);
+  pthread_mutex_lock(&AO_pt_lock);
   tmp = *p;
   *p = tmp + incr;
-  pthread_mutex_unlock(&AO_lock);
+  pthread_mutex_unlock(&AO_pt_lock);
   return tmp;
 }
 
 #define AO_HAVE_fetch_and_add_full
 
-#define AO_fetch_and_add1_full(addr) AO_fetch_and_add_full(addr,1)
-#define AO_fetch_and_sub1_full(addr) AO_fetch_and_add_full(addr,-1)
+AO_INLINE void
+AO_or_full(volatile AO_T *p, AO_T incr)
+{
+  AO_T tmp;
+
+  pthread_mutex_lock(&AO_pt_lock);
+  tmp = *p;
+  *p = (tmp | incr);
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+
+#define AO_HAVE_or_full
 
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_T *addr,
 		             AO_T old, AO_T new_val) 
 {
-  pthread_mutex_lock(&AO_lock);
+  pthread_mutex_lock(&AO_pt_lock);
   if (*addr == old)
     {
       *addr = new_val;
-      pthread_mutex_unlock(&AO_lock);
+      pthread_mutex_unlock(&AO_pt_lock);
       return 1;
     }
   else
-    pthread_mutex_unlock(&AO_lock);
+    pthread_mutex_unlock(&AO_pt_lock);
     return 0;
 }
 

@@ -68,6 +68,7 @@
 /* AO_fetch_and_add						*/
 /* AO_fetch_and_add1						*/
 /* AO_fetch_and_sub1						*/
+/* AO_or							*/
 /* AO_compare_and_swap						*/
 /* 								*/
 /* Note that atomicity guarantees are valid only if both 	*/
@@ -89,10 +90,11 @@
 /* AO_TS_SET, and returns the prior value.			*/
 /* An AO_TS_T clear location can be reset with the		*/
 /* AO_CLEAR macro, which normally uses AO_store_release.	*/
-/* AO_fetch_and_add takes an address and a long increment 	*/
+/* AO_fetch_and_add takes an address and an AO_T increment 	*/
 /* value.  The AO_fetch_and_add1 and AO_fetch_and_sub1 variants	*/
 /* are provided, since they allow faster implementations on	*/
-/* some hardware.						*/
+/* some hardware. AO_or atomically ors an AO_T value into a	*/
+/* memory location, but does not provide access to the original.*/
 /*								*/
 /* We expect this list to grow slowly over time.		*/
 /*								*/

@@ -125,8 +125,8 @@ void * acqrel_thr(void *id)
 	my_counter1 = AO_load(&counter1);
 	if (my_counter1 < my_counter2)
 	  {
-	    fprintf(stderr, "Saw release store out of order: %d < %d\n",
-		    my_counter1, my_counter2);
+	    fprintf(stderr, "Saw release store out of order: %lu < %lu\n",
+		    (unsigned long)my_counter1, (unsigned long)my_counter2);
 	    abort();
 	  }
       }
@@ -178,6 +178,7 @@ void * test_and_set_thr(void * id)
         junk *= 17;
         junk *= 17;
     }
+  return 0;
 }
 
 int test_and_set_test(void)

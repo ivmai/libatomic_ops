@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
+# Copyright (c) 2003 Hewlett-Packard Developlment Company, L.P.
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -68,11 +68,11 @@ atomic_ops.a: atomic_ops.o
 	$(AR) ruc atomic_ops.a atomic_ops.o
 	$(RANLIB) atomic_ops.a
 
-test_atomic: test_atomic.c test_atomic_include.h $(ATOMIC_OPS_HEADERS)
-	$(CC) $(CFLAGS) test_atomic.c -o test_atomic -lpthread
+test_atomic: test_atomic.c atomic_ops.c test_atomic_include.h $(ATOMIC_OPS_HEADERS)
+	$(CC) $(CFLAGS) test_atomic.c atomic_ops.c -o test_atomic -lpthread
 
-test_atomic_pthreads: test_atomic.c test_atomic_include.h $(ATOMIC_OPS_HEADERS)
-	$(CC) $(CFLAGS) -DAO_USE_PTHREAD_DEFS test_atomic.c -o test_atomic_pthreads -lpthread
+test_atomic_pthreads: test_atomic.c atomic_ops.c test_atomic_include.h $(ATOMIC_OPS_HEADERS)
+	$(CC) $(CFLAGS) -DAO_USE_PTHREAD_DEFS test_atomic.c atomic_ops.c -o test_atomic_pthreads -lpthread
 
 test_atomic_include.h: test_atomic.template
 	sed -e s/XX// test_atomic.template > test_atomic_include.h

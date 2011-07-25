@@ -267,7 +267,7 @@
 #if defined(AO_HAVE_compare_and_swap_full) && \
     !defined(AO_HAVE_fetch_and_add_full)
    AO_INLINE AO_T
-   AO_fetch_and_add_full(volatile AO_T *addr, long incr)
+   AO_fetch_and_add_full(volatile AO_T *addr, AO_T incr)
    {
      AO_T old;
      do
@@ -487,39 +487,43 @@
 
 #if defined(AO_HAVE_fetch_and_add_full) &&\
     !defined(AO_HAVE_fetch_and_sub1_full)
-#  define AO_fetch_and_sub1_full(addr) AO_fetch_and_add_full(addr,-1)
+#  define AO_fetch_and_sub1_full(addr) AO_fetch_and_add_full(addr,(AO_T)(-1))
 #  define AO_HAVE_fetch_and_sub1_full
 #endif
 #if defined(AO_HAVE_fetch_and_add_release) &&\
     !defined(AO_HAVE_fetch_and_sub1_release)
-#  define AO_fetch_and_sub1_release(addr) AO_fetch_and_add_release(addr,-1)
+#  define AO_fetch_and_sub1_release(addr) \
+	AO_fetch_and_add_release(addr,(AO_T)(-1))
 #  define AO_HAVE_fetch_and_sub1_release
 #endif
 #if defined(AO_HAVE_fetch_and_add_acquire) &&\
     !defined(AO_HAVE_fetch_and_sub1_acquire)
-#  define AO_fetch_and_sub1_acquire(addr) AO_fetch_and_add_acquire(addr,-1)
+#  define AO_fetch_and_sub1_acquire(addr) \
+	AO_fetch_and_add_acquire(addr,(AO_T)(-1))
 #  define AO_HAVE_fetch_and_sub1_acquire
 #endif
 #if defined(AO_HAVE_fetch_and_add_write) &&\
     !defined(AO_HAVE_fetch_and_sub1_write)
-#  define AO_fetch_and_sub1_write(addr) AO_fetch_and_add_write(addr,-1)
+#  define AO_fetch_and_sub1_write(addr) \
+	AO_fetch_and_add_write(addr,(AO_T)(-1))
 #  define AO_HAVE_fetch_and_sub1_write
 #endif
 #if defined(AO_HAVE_fetch_and_add_read) &&\
     !defined(AO_HAVE_fetch_and_sub1_read)
-#  define AO_fetch_and_sub1_read(addr) AO_fetch_and_add_read(addr,-1)
+#  define AO_fetch_and_sub1_read(addr) \
+	AO_fetch_and_add_read(addr,(AO_T)(-1))
 #  define AO_HAVE_fetch_and_sub1_read
 #endif
 #if defined(AO_HAVE_fetch_and_add_release_write) &&\
     !defined(AO_HAVE_fetch_and_sub1_release_write)
 #  define AO_fetch_and_sub1_release_write(addr) \
-	AO_fetch_and_add_release_write(addr,-1)
+	AO_fetch_and_add_release_write(addr,(AO_T)(-1))
 #  define AO_HAVE_fetch_and_sub1_release_write
 #endif
 #if defined(AO_HAVE_fetch_and_add_acquire_read) &&\
     !defined(AO_HAVE_fetch_and_sub1_acquire_read)
 #  define AO_fetch_and_sub1_acquire_read(addr) \
-	AO_fetch_and_add_acquire_read(addr,-1)
+	AO_fetch_and_add_acquire_read(addr,(AO_T)(-1))
 #  define AO_HAVE_fetch_and_sub1_acquire_read
 #endif
 
@@ -602,6 +606,102 @@
 #  define AO_fetch_and_sub1_acquire_read(addr) \
   	AO_fetch_and_sub1_acquire(addr)
 #  define AO_HAVE_fetch_and_sub1_acquire_read
+#endif
+
+/* Atomic or */
+#if defined(AO_HAVE_compare_and_swap_full) && \
+    !defined(AO_HAVE_or_full)
+   AO_INLINE void
+   AO_or_full(volatile AO_T *addr, AO_T incr)
+   {
+     AO_T old;
+     do
+       {
+         old = *addr;
+       }
+     while (!AO_compare_and_swap_full(addr, old, (old | incr)));
+   }
+#  define AO_HAVE_or_full
+#endif
+
+#if defined(AO_HAVE_or_full)
+#  if !defined(AO_HAVE_or_release)
+#    define AO_or_release(addr, val) \
+  	 AO_or_full(addr, val)
+#    define AO_HAVE_or_release
+#  endif
+#  if !defined(AO_HAVE_or_acquire)
+#    define AO_or_acquire(addr, val) \
+  	 AO_or_full(addr, val)
+#    define AO_HAVE_or_acquire
+#  endif
+#  if !defined(AO_HAVE_or_write)
+#    define AO_or_write(addr, val) \
+  	 AO_or_full(addr, val)
+#    define AO_HAVE_or_write
+#  endif
+#  if !defined(AO_HAVE_or_read)
+#    define AO_or_read(addr, val) \
+  	 AO_or_full(addr, val)
+#    define AO_HAVE_or_read
+#  endif
+#endif /* AO_HAVE_or_full */
+
+#if !defined(AO_HAVE_or) && \
+    defined(AO_HAVE_or_release)
+#  define AO_or(addr, val) \
+  	AO_or_release(addr, val)
+#  define AO_HAVE_or
+#endif
+#if !defined(AO_HAVE_or) && \
+    defined(AO_HAVE_or_acquire)
+#  define AO_or(addr, val) \
+  	AO_or_acquire(addr, val)
+#  define AO_HAVE_or
+#endif
+#if !defined(AO_HAVE_or) && \
+    defined(AO_HAVE_or_write)
+#  define AO_or(addr, val) \
+  	AO_or_write(addr, val)
+#  define AO_HAVE_or
+#endif
+#if !defined(AO_HAVE_or) && \
+    defined(AO_HAVE_or_read)
+#  define AO_or(addr, val) \
+  	AO_or_read(addr, val)
+#  define AO_HAVE_or
+#endif
+
+#if defined(AO_HAVE_or_acquire) &&\
+    defined(AO_HAVE_nop_full) && \
+    !defined(AO_HAVE_or_full)
+#  define AO_or_full(addr, val) \
+  	(AO_nop_full(), AO_or_acquire(addr, val))
+#endif
+
+#if !defined(AO_HAVE_or_release_write) && \
+    defined(AO_HAVE_or_write)
+#  define AO_or_release_write(addr, val) \
+  	AO_or_write(addr, val)
+#  define AO_HAVE_or_release_write
+#endif
+#if !defined(AO_HAVE_or_release_write) && \
+    defined(AO_HAVE_or_release)
+#  define AO_or_release_write(addr, val) \
+  	AO_or_release(addr, val)
+#  define AO_HAVE_or_release_write
+#endif
+#if !defined(AO_HAVE_or_acquire_read) && \
+    defined(AO_HAVE_or_read)
+#  define AO_or_acquire_read(addr, val) \
+  	AO_or_read(addr, val)
+#  define AO_HAVE_or_acquire_read
+#endif
+#if !defined(AO_HAVE_or_acquire_read) && \
+    defined(AO_HAVE_or_acquire)
+#  define AO_or_acquire_read(addr, val) \
+  	AO_or_acquire(addr, val)
+#  define AO_HAVE_or_acquire_read
 #endif
 
   

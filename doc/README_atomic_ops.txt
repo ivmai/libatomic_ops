@@ -60,12 +60,14 @@ AO_T load(volatile AO_T * addr)
 	Atomic load of *addr.
 void store(volatile AO_T * addr, AO_T new_val)
 	Atomically store new_val to *addr.
-void fetch_and_add(volatile AO_T *addr, incr)
+AO_T fetch_and_add(volatile AO_T *addr, AO_T incr)
 	Atomically add incr to *addr, and return the original value of *addr.
-void fetch_and_add1(volatile AO_T *addr)
+AO_T fetch_and_add1(volatile AO_T *addr)
 	Equivalent to AO_fetch_and_add(addr, 1).
-void fetch_and_sub1(volatile AO_T *addr)
+AO_T fetch_and_sub1(volatile AO_T *addr)
 	Equivalent to AO_fetch_and_add(addr, (AO_T)(-1)).
+void or(volatile AO_T *addr, AO_T incr)
+	Atomically or incr into *addr.
 int compare_and_swap(volatile AO_T * addr, AO_T old_val, AO_T new_val)
 	Atomically compare *addr to old_val, and replace *addr by new_val
 	if the first comparison succeeds.  Returns nonzero if the comparison

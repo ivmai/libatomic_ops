@@ -36,6 +36,7 @@ AO_load_acquire(volatile AO_T *p)
 AO_INLINE void
 AO_store_release(volatile AO_T *p, AO_T val)
 {
+  AO_compiler_barrier();	/* Empirically necessary. Gcc bug? */
   /* A normal volatile store generates an st.rel	*/
   *p = val;
 }

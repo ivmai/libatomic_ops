@@ -18,7 +18,7 @@
 
 void test_atomicXX(void)
 {
-  AO_T x, y;
+  AO_T x;
 # if defined(AO_HAVE_test_and_setXX)
     AO_TS_T z = AO_TS_INITIALIZER;
 # endif
@@ -55,24 +55,31 @@ void test_atomicXX(void)
     MISSING(AO_fetch_and_add);
 # endif
 # if defined(AO_HAVE_fetch_and_add1XX)
-    TA_assert(AO_fetch_and_add1(&x) == 13);
+    TA_assert(AO_fetch_and_add1XX(&x) == 13);
 # else
     MISSING(AO_fetch_and_add1);
     ++x;
 # endif
 # if defined(AO_HAVE_fetch_and_sub1XX)
-    TA_assert(AO_fetch_and_sub1(&x) == 14);
+    TA_assert(AO_fetch_and_sub1XX(&x) == 14);
 # else
     MISSING(AO_fetch_and_sub1);
     --x;
 # endif
 # if defined(AO_HAVE_compare_and_swapXX)
-    TA_assert(!AO_compare_and_swap(&x, 14, 42));
+    TA_assert(!AO_compare_and_swapXX(&x, 14, 42));
     TA_assert(x == 13);
-    TA_assert(AO_compare_and_swap(&x, 13, 42));
+    TA_assert(AO_compare_and_swapXX(&x, 13, 42));
     TA_assert(x == 42);
 # else
     MISSING(AO_compare_and_swap);
+# endif
+# if defined(AO_HAVE_orXX)
+    AO_orXX(&x, 66);
+    TA_assert(x == 106);
+# else
+    MISSING(AO_or);
+    x |= 34;
 # endif
 }
 

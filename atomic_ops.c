@@ -37,7 +37,7 @@
  * Lock for pthreads-based implementation.
  */
 
-static pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /*
  * Out of line compare-and-swap emulation based on test and set.
