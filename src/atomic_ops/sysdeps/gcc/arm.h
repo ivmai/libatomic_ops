@@ -15,24 +15,34 @@
  *
  */
 
-/* FIXME.  Very incomplete.  No support for 64 bits.	*/
+/* There exist multiprocessor SoC ARM processors, so this may actually	*/
+/* matter.								*/
 
+/* I found a slide set that, if I read it correctly, claims that	*/
+/* Loads followed by either a Load or Store are ordered, but nothing	*/
+/* else is.								*/
+/* It appears that SWP is the only simple memory barrier.		*/
 #include "../all_atomic_load_store.h"
 
+#include "../read_ordered.h"
+
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
+
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr) {
   int oldval;
-  int temp = 1; /* locked value */
-
-         __asm__ __volatile__ (
-          "     l     %0,0(%2)\n"
-          "0:   cs    %0,%1,0(%2)\n"
-          "     jl    0b"
-          : "=&d" (ret)
-          : "d" (1), "a" (addr)
-          : "cc", "memory");
+  /* SWP on ARM is very similar to XCHG on x86. 		*/
+  /* The first operand is the result, the second the value	*/
+  /* to be stored.  Both registers must be different from addr.	*/
+  /* Make the address operand an early clobber output so it     */
+  /* doesn't overlap with the other operands.  The early clobber*/
+  /* on oldval is neccessary to prevent the compiler allocating */
+  /* them to the same register if they are both unused.  	*/
+  __asm__ __volatile__("swp %0, %2, [%3]"
+                        : "=&r"(oldval), "=&r"(addr)
+                        : "r"(1), "1"(addr)
+                        : "memory");
   return oldval;
 }
 

@@ -1,3 +1,24 @@
+[1.1 release]
+
+2003-09-27 Hans Boehm <Hans.Boehm@hp.com>
+	*src/atomic_ops.h: Define AO_CAN_EMUL_CAS for arm.
+	*src/atomic_ops/sysdeps/read_ordered.h: New file, extracted from
+	ordered_except_wr.h.
+	*src/atomic_ops/sysdeps/ordered_except_wr.h: include read_ordered.h
+	instead of duplicating it.
+	*src/atomic_ops/sysdeps/gcc/arm.h: Include read_ordered.h.
+
+2003-09-16 Hans Boehm <Hans.Boehm@hp.com>
+	*src/atomic_ops/sysdeps/gcc/arm.h: Replace the AO_test_and_set
+	definition with one that might actually work.  (Thanks to Kazu
+	Hirata and Paul Brook.)
+
+2003-08-01 Hans Boehm <Hans.Boehm@hp.com>
+	*src/atomic_ops/Makefile.am: Change function naming from "byte" to
+	"char" (again).
+
+[1.0 release]
+
 2005-03-21 Hans Boehm <Hans.Boehm@hp.com>
 	Fix various acquire_release_volatile.h files to reflect the fact
 	that both icc and gcc seem to reorder ordinary memory accesses around

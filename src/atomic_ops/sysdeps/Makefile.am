@@ -14,6 +14,7 @@ nobase_sysdep_HEADERS= generic_pthread.h \
 	  all_acquire_release_volatile.h \
 	  all_aligned_atomic_load_store.h \
 	  all_atomic_load_store.h \
+	  read_ordered.h \
 	  ordered_except_wr.h \
 	  ordered.h \
 	  ao_t_is_int.h \

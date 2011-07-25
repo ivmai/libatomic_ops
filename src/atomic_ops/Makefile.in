@@ -472,7 +472,7 @@ uninstall-info: uninstall-info-recursive
 
 
 generalize-small.h: generalize-small.template
-	sed -e s:XSIZE:byte:g -e s:XCTYPE:char:g $? > $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:char:g $? > $@
 	sed -e s:XSIZE:short:g -e s:XCTYPE:short:g $? >> $@
 	sed -e s:XSIZE:int:g -e s:XCTYPE:int:g $? >> $@
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

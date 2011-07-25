@@ -215,6 +215,7 @@
 # endif /* __powerpc__ */
 # if defined(__arm__) && !defined(AO_USE_PTHREAD_DEFS)
 #   include "atomic_ops/sysdeps/gcc/arm.h"
+#   define AO_CAN_EMUL_CAS
 # endif /* __arm__ */
 # if defined(__cris__) || defined(CRIS)
 #   include "atomic_ops/sysdeps/gcc/cris.h"

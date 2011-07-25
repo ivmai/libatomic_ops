@@ -164,7 +164,7 @@ int main(int argc, char **argv)
     }
   else
     {
-      fprintf(stderr, "Usage: %s [max # of threads]\n");
+      fprintf(stderr, "Usage: %s [max # of threads]\n", argv[0]);
       exit(1);
     }
   for (exper_n = 0; exper_n < N_EXPERIMENTS; ++ exper_n)
