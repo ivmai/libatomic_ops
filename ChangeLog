@@ -1,28 +1,34 @@
+[1.2 release]
+
+2006-07-11 Hans Boehm <Hans.Boehm@hp.com>
+	* src/atomic_ops/sysdeps/hpc/ia64.h: Fix typos.
+	
 2006-03-28 Earl Chew (Agilent)
-        * src/atomic_ops/sysdeps/gcc/powerpc.h: Remove unused variable cr.
-        * src/atomic_ops/sysdeps/msftc/x86.h:
-        Use new intrinsics available in MSVC 2003 and MSVC 2005.
-        Use inline assembler to generate mfence and byte sized xchg
-        Use correct prototype for InterlockedCompareExchange.
-        * src/atomic_ops.h: Add test for __PPC__ .
-        * tests/run_parallel.inc: Add simple VxWorks support.
-        * tests/test_atomic.c, tests/test_atomic_include.h: Add prototypes         to silence compiler warnings.
+	* src/atomic_ops/sysdeps/gcc/powerpc.h: Remove unused variable cr.
+	* src/atomic_ops/sysdeps/msftc/x86.h:
+	Use new intrinsics available in MSVC 2003 and MSVC 2005.
+	Use inline assembler to generate mfence and byte sized xchg
+	Use correct prototype for InterlockedCompareExchange.
+	* src/atomic_ops.h: Add test for __PPC__ .
+	* tests/run_parallel.inc: Add simple VxWorks support. 
+	* tests/test_atomic.c, tests/test_atomic_include.h: Add prototypes
+	to silence compiler warnings.
 
 2006-1-13 Hans Boehm <Hans.Boehm@hp.com>
-        *src/atomic_ops/sysdeps/gcc/powerpc.h: Beginnings of 64 bit support.
-        *src/atomic_ops/sysdeps/gcc/x86.h: Use "=q" for AO_test_and_set_full.
+	*src/atomic_ops/sysdeps/gcc/powerpc.h: Beginnings of 64 bit support.
+	*src/atomic_ops/sysdeps/gcc/x86.h: Use "=q" for AO_test_and_set_full.
 
 2005-11-4 Hans Boehm <Hans.Boehm@hp.com>
-        *src/atomic_ops/sysdeps/gcc/ia64.h: Include
-        all_acquire_release_volatile.h, instead of just the pointer-sized
-        version.
-        *src/atomic_ops/sysdeps/gcc/ia64.h: Include
-        all_acquire_release_volatile.h and all_atomic_load_store.h,
-        instead of just the pointer-sized versions.
+	*src/atomic_ops/sysdeps/gcc/ia64.h: Include
+	all_acquire_release_volatile.h, instead of just the pointer-sized
+	version.
+	*src/atomic_ops/sysdeps/gcc/ia64.h: Include
+	all_acquire_release_volatile.h and all_atomic_load_store.h,
+	instead of just the pointer-sized versions.
 
 [1.1 release]
 
-2003-09-27 Hans Boehm <Hans.Boehm@hp.com>
+2005-09-27 Hans Boehm <Hans.Boehm@hp.com>
 	*src/atomic_ops.h: Define AO_CAN_EMUL_CAS for arm.
 	*src/atomic_ops/sysdeps/read_ordered.h: New file, extracted from
 	ordered_except_wr.h.
@@ -30,12 +36,12 @@
 	instead of duplicating it.
 	*src/atomic_ops/sysdeps/gcc/arm.h: Include read_ordered.h.
 
-2003-09-16 Hans Boehm <Hans.Boehm@hp.com>
+2005-09-16 Hans Boehm <Hans.Boehm@hp.com>
 	*src/atomic_ops/sysdeps/gcc/arm.h: Replace the AO_test_and_set
 	definition with one that might actually work.  (Thanks to Kazu
 	Hirata and Paul Brook.)
 
-2003-08-01 Hans Boehm <Hans.Boehm@hp.com>
+2005-08-01 Hans Boehm <Hans.Boehm@hp.com>
 	*src/atomic_ops/Makefile.am: Change function naming from "byte" to
 	"char" (again).
 

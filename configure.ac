@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT([libatomic_ops],[1.1])
+AC_INIT([libatomic_ops],[1.2])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR(src/atomic_ops.c)
 AM_INIT_AUTOMAKE

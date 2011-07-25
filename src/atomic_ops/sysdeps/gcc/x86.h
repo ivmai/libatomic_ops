@@ -76,7 +76,7 @@ AO_char_fetch_and_add_full (volatile unsigned char *p, unsigned char incr)
   unsigned char result;
 
   __asm__ __volatile__ ("lock; xaddb %0, %1" :
-			"=r" (result), "=m" (*p) : "0" (incr), "m" (*p)
+			"=q" (result), "=m" (*p) : "0" (incr), "m" (*p)
 			: "memory");
   return result;
 }

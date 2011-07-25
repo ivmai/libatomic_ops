@@ -22,7 +22,7 @@
 
 #include "../all_atomic_load_store.h"
 
-#include "../acquire_release_volatile.h"
+#include "../all_acquire_release_volatile.h"
 
 #include "../test_and_set_t_is_char.h"
 

@@ -74,7 +74,7 @@ AO_char_fetch_and_add_full (volatile unsigned char *p, unsigned char incr)
   unsigned char result;
 
   __asm__ __volatile__ ("lock; xaddb %0, %1" :
-			"=r" (result), "=m" (*p) : "0" (incr), "m" (*p)
+			"=q" (result), "=m" (*p) : "0" (incr), "m" (*p)
 			: "memory");
   return result;
 }
@@ -123,7 +123,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
   unsigned char oldval;
   /* Note: the "xchg" instruction does not need a "lock" prefix */
   __asm__ __volatile__("xchgb %0, %1"
-		: "=r"(oldval), "=m"(*addr)
+		: "=q"(oldval), "=m"(*addr)
 		: "0"(0xff), "m"(*addr) : "memory");
   return (AO_TS_VAL_t)oldval;
 }

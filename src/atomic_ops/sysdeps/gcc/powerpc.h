@@ -97,6 +97,29 @@ AO_store_release(volatile AO_t *addr, AO_t value)
 /* This is similar to the code in the garbage collector.  Deleting 	*/
 /* this and having it synthesized from compare_and_swap would probably	*/
 /* only cost us a load immediate instruction.				*/
+#if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
+/* Completely untested.  And we should be using smaller objects anyway. */
+AO_INLINE AO_TS_VAL_t
+AO_test_and_set(volatile AO_TS_t *addr) {
+  unsigned long oldval;
+  unsigned long temp = 1; /* locked value */
+
+  __asm__ __volatile__(
+               "1:ldarx %0,0,%1\n"   /* load and reserve               */
+               "cmpdi %0, 0\n"       /* if load is                     */
+               "bne 2f\n"            /*   non-zero, return already set */
+               "stdcx. %2,0,%1\n"    /* else store conditional         */
+               "bne- 1b\n"           /* retry if lost reservation      */
+               "2:\n"                /* oldval is zero if we set       */
+              : "=&r"(oldval)
+              : "r"(addr), "r"(temp)
+              : "memory", "cc");
+
+  return oldval;
+}
+
+#else
+
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set(volatile AO_TS_t *addr) {
   int oldval;
@@ -115,6 +138,8 @@ AO_test_and_set(volatile AO_TS_t *addr) {
 
   return oldval;
 }
+
+#endif
 
 #define AO_have_test_and_set
 
@@ -146,6 +171,30 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
 
 #define AO_HAVE_test_and_set_full
 
+#if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
+/* FIXME: Completely untested.	*/
+AO_INLINE int
+AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
+  AO_t oldval;
+  int result = 0;
+
+  __asm__ __volatile__(
+               "1:ldarx %0,0,%2\n"   /* load and reserve              */
+               "cmpd %0, %4\n"      /* if load is not equal to 	*/
+               "bne 2f\n"            /*   old, fail			*/
+               "stdcx. %3,0,%2\n"    /* else store conditional         */
+               "bne- 1b\n"           /* retry if lost reservation      */
+	       "li %1,1\n"	     /* result = 1;			*/
+               "2:\n"
+              : "=&r"(oldval), "=&r"(result)
+              : "r"(addr), "r"(new_val), "r"(old), "1"(result)
+              : "memory", "cc");
+
+  return result;
+}
+
+#else
+
 AO_INLINE int
 AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
   AO_t oldval;
@@ -165,6 +214,7 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
 
   return result;
 }
+#endif
 
 #define AO_HAVE_compare_and_swap
 
