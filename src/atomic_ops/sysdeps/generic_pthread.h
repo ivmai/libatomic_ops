@@ -191,13 +191,10 @@ AO_int_fetch_and_add_full(volatile unsigned int *p, unsigned int incr)
 #define AO_HAVE_int_fetch_and_add_full
 
 AO_INLINE void
-AO_or_full(volatile AO_t *p, AO_t incr)
+AO_or_full(volatile AO_t *p, AO_t value)
 {
-  AO_t tmp;
-
   pthread_mutex_lock(&AO_pt_lock);
-  tmp = *p;
-  *p = (tmp | incr);
+  *p |= value;
   pthread_mutex_unlock(&AO_pt_lock);
 }
 #define AO_HAVE_or_full
