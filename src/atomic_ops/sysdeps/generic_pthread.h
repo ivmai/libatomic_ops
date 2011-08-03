@@ -200,8 +200,7 @@ AO_or_full(volatile AO_t *p, AO_t value)
 #define AO_HAVE_or_full
 
 AO_INLINE int
-AO_compare_and_swap_full(volatile AO_t *addr,
-                             AO_t old, AO_t new_val)
+AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
 {
   pthread_mutex_lock(&AO_pt_lock);
   if (*addr == old)
@@ -212,7 +211,7 @@ AO_compare_and_swap_full(volatile AO_t *addr,
     }
   else
     pthread_mutex_unlock(&AO_pt_lock);
-    return 0;
+  return 0;
 }
 #define AO_HAVE_compare_and_swap_full
 
@@ -239,14 +238,13 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
     }
   else
     pthread_mutex_unlock(&AO_pt_lock);
-    return 0;
+  return 0;
 }
 #define AO_HAVE_compare_double_and_swap_double_full
 
 AO_INLINE int
 AO_compare_and_swap_double_full(volatile AO_double_t *addr,
-                                AO_t old1,
-                                AO_t new1, AO_t new2)
+                                AO_t old1, AO_t new1, AO_t new2)
 {
   pthread_mutex_lock(&AO_pt_lock);
   if (addr -> AO_val1 == old1)
@@ -258,7 +256,7 @@ AO_compare_and_swap_double_full(volatile AO_double_t *addr,
     }
   else
     pthread_mutex_unlock(&AO_pt_lock);
-    return 0;
+  return 0;
 }
 #define AO_HAVE_compare_and_swap_double_full
 
