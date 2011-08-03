@@ -10,7 +10,7 @@
 #undef TA_assert
 #define TA_assert(e) \
   if (!(e)) { fprintf(stderr, "Assertion failed %s:%d (barrier: XX)\n", \
-		    __FILE__, __LINE__), exit(1); }
+                    __FILE__, __LINE__), exit(1); }
 
 #undef MISSING
 #define MISSING(name) \
@@ -198,6 +198,3 @@ void test_atomicXX(void)
     MISSING(AO_compare_and_swap_double);
 # endif
 }
-
-
-    
