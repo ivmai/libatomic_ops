@@ -91,10 +91,10 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
 
 /* Really only works for 486 and later */
 AO_INLINE void
-AO_or_full (volatile AO_t *p, AO_t incr)
+AO_or_full (volatile AO_t *p, AO_t value)
 {
   __asm__ __volatile__ ("lock; orl %1, %0" :
-                        "=m" (*p) : "r" (incr) /* , "m" (*p) */
+                        "=m" (*p) : "r" (value) /* , "m" (*p) */
                         : "memory");
 }
 #define AO_HAVE_or_full

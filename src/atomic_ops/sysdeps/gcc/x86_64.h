@@ -91,10 +91,10 @@ AO_int_fetch_and_add_full (volatile unsigned int *p, unsigned int incr)
 #define AO_HAVE_int_fetch_and_add_full
 
 AO_INLINE void
-AO_or_full (volatile AO_t *p, AO_t incr)
+AO_or_full (volatile AO_t *p, AO_t value)
 {
   __asm__ __volatile__ ("lock; orq %1, %0" :
-                        "=m" (*p) : "r" (incr), "m" (*p) : "memory");
+                        "=m" (*p) : "r" (value), "m" (*p) : "memory");
 }
 #define AO_HAVE_or_full
 

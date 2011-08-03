@@ -713,14 +713,14 @@
 /* Atomic or */
 #if defined(AO_HAVE_compare_and_swap_full) && !defined(AO_HAVE_or_full)
   AO_INLINE void
-  AO_or_full(volatile AO_t *addr, AO_t incr)
+  AO_or_full(volatile AO_t *addr, AO_t value)
   {
     AO_t old;
     do
       {
         old = *addr;
       }
-    while (!AO_compare_and_swap_full(addr, old, old | incr));
+    while (!AO_compare_and_swap_full(addr, old, old | value));
   }
 # define AO_HAVE_or_full
 #endif
