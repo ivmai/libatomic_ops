@@ -1,0 +1,29 @@
+# Ignored files in libatomic_ops Git repo.
+# Note: the list should be kept in sync with .cvsignore files for now.
+
+Makefile
+
+/autom4te.cache/
+/config.log
+/config.status
+/libatomic_ops-*
+
+/src/*.a
+/src/*.exe
+/src/*.lib
+/src/*.o
+/src/*.obj
+/src/.deps/
+/src/config.h
+/src/config.h.in~
+/src/stamp-h1
+
+/tests/*.exe
+/tests/*.o
+/tests/*.obj
+/tests/.deps/
+/tests/list_atomic.i
+/tests/test_atomic
+/tests/test_atomic_pthreads
+/tests/test_malloc
+/tests/test_stack

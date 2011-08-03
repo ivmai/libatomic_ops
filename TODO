@@ -1,10 +1,6 @@
 TODO tasks
 ==========
 
-Add .gitignore while keeping .cvsignore for compatibility (adjust build
-scripts if needed). I think there should be only one .gitignore file (in the
-root).
-
 Add .gitattribute file. Set crlf property. I think we should consistently
 use LF across the project (including Makefile.msft) and checkout files as-is.
 
