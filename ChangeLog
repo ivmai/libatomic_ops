@@ -1,3 +1,6 @@
+Retired in favor of Git commit log. No longer updated.
+
+
 2011-07-21  Ivan Maidanski <ivmai@mail.ru>
 
 	* .cvsignore: Don't ignore *.orig and *.rej files (having them

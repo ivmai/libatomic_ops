@@ -1,0 +1,28 @@
+TODO tasks
+==========
+
+Add .gitignore while keeping .cvsignore for compatibility (adjust build
+scripts if needed). I think there should be only one .gitignore file (in the
+root).
+
+Add .gitattribute file. Set crlf property. I think we should consistently
+use LF across the project (including Makefile.msft) and checkout files as-is.
+
+Drop all contents of ChangeLog in favor of Git commit annotation model.
+My opinion is that ChangeLog should be updated only on offical releases and
+contain only major changes.
+
+FIXME: make check (test_stack) fails on Linux/x86 with GCC v4.6.1.
+This either a bug in our code or in GCC. In the latter case, it might worth
+to create a work-around if possible.
+
+Update AUTHORS file. It should contain all contributors.
+
+Review build process: make invokes configure unnecessarily.
+Don't create autom4te.cache (or, at least, remove it on make distclean).
+
+Add AO_and, AO_xor companions to AO_or. Add tests.
+
+Add equivalent of __sync_val_compare_and_swap. Add tests.
+
+Review and fix warnings displayed with -Wall -Wextra.
