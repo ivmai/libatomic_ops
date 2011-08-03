@@ -56,7 +56,8 @@
 /*        preceding reads.                                      */
 /* _write: Earlier writes precede both this operation and       */
 /*        later writes.                                         */
-/* _full: Ordered with respect to both earlier and later memops.*/
+/* _full: Ordered with respect to both earlier and later memory */
+/*        operations.                                           */
 /* _release_write: Ordered with respect to earlier writes.      */
 /* _acquire_read: Ordered with respect to later reads.          */
 /*                                                              */
@@ -69,7 +70,9 @@
 /* AO_fetch_and_add                                             */
 /* AO_fetch_and_add1                                            */
 /* AO_fetch_and_sub1                                            */
+/* AO_and                                                       */
 /* AO_or                                                        */
+/* AO_xor                                                       */
 /* AO_compare_and_swap                                          */
 /*                                                              */
 /* Note that atomicity guarantees are valid only if both        */
@@ -94,8 +97,9 @@
 /* AO_fetch_and_add takes an address and an AO_t increment      */
 /* value.  The AO_fetch_and_add1 and AO_fetch_and_sub1 variants */
 /* are provided, since they allow faster implementations on     */
-/* some hardware. AO_or atomically ors an AO_t value into a     */
-/* memory location, but does not provide access to the original.*/
+/* some hardware. AO_and, AO_or, AO_xor do atomically and, or,  */
+/* xor (respectively) an AO_t value into a memory location,     */
+/* but do not provide access to the original.                   */
 /*                                                              */
 /* We expect this list to grow slowly over time.                */
 /*                                                              */

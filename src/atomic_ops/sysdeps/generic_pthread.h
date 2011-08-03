@@ -191,6 +191,15 @@ AO_int_fetch_and_add_full(volatile unsigned int *p, unsigned int incr)
 #define AO_HAVE_int_fetch_and_add_full
 
 AO_INLINE void
+AO_and_full(volatile AO_t *p, AO_t value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p &= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_and_full
+
+AO_INLINE void
 AO_or_full(volatile AO_t *p, AO_t value)
 {
   pthread_mutex_lock(&AO_pt_lock);
@@ -198,6 +207,15 @@ AO_or_full(volatile AO_t *p, AO_t value)
   pthread_mutex_unlock(&AO_pt_lock);
 }
 #define AO_HAVE_or_full
+
+AO_INLINE void
+AO_xor_full(volatile AO_t *p, AO_t value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p ^= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_xor_full
 
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)

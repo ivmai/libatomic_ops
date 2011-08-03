@@ -174,7 +174,21 @@ void test_atomicXX(void)
     TA_assert(x == 106);
 # else
     MISSING(AO_or);
-    x |= 34;
+    x |= 66;
+# endif
+# if defined(AO_HAVE_xorXX)
+    AO_xorXX(&x, 181);
+    TA_assert(x == 223);
+# else
+    MISSING(AO_xor);
+    x ^= 181;
+# endif
+# if defined(AO_HAVE_andXX)
+    AO_andXX(&x, 57);
+    TA_assert(x == 25);
+# else
+    MISSING(AO_and);
+    x &= 57;
 # endif
 # if defined(AO_HAVE_compare_double_and_swap_doubleXX)
     TA_assert(!AO_compare_double_and_swap_doubleXX(&w, 17, 42, 12, 13));

@@ -15,8 +15,6 @@ to create a work-around if possible.
 Review build process: make invokes configure unnecessarily.
 Don't create autom4te.cache (or, at least, remove it on make distclean).
 
-Add AO_and, AO_xor companions to AO_or. Add tests.
-
 Add equivalent of __sync_val_compare_and_swap. Add tests.
 
 Review and fix warnings displayed with -Wall -Wextra.

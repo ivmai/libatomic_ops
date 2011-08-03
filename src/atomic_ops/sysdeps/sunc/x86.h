@@ -91,6 +91,15 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
 
 /* Really only works for 486 and later */
 AO_INLINE void
+AO_and_full (volatile AO_t *p, AO_t value)
+{
+  __asm__ __volatile__ ("lock; andl %1, %0" :
+                        "=m" (*p) : "r" (value) /* , "m" (*p) */
+                        : "memory");
+}
+#define AO_HAVE_and_full
+
+AO_INLINE void
 AO_or_full (volatile AO_t *p, AO_t value)
 {
   __asm__ __volatile__ ("lock; orl %1, %0" :
@@ -98,6 +107,15 @@ AO_or_full (volatile AO_t *p, AO_t value)
                         : "memory");
 }
 #define AO_HAVE_or_full
+
+AO_INLINE void
+AO_xor_full (volatile AO_t *p, AO_t value)
+{
+  __asm__ __volatile__ ("lock; xorl %1, %0" :
+                        "=m" (*p) : "r" (value) /* , "m" (*p) */
+                        : "memory");
+}
+#define AO_HAVE_xor_full
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full (volatile AO_TS_t *addr)
