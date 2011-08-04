@@ -1,11 +1,8 @@
 TODO tasks
 ==========
 
-Add .gitattribute file. Set crlf property. I think we should consistently
-use LF across the project (including Makefile.msft) and checkout files as-is.
-
 Drop all contents of ChangeLog in favor of Git commit annotation model.
-My opinion is that ChangeLog should be updated only on offical releases and
+My opinion is that ChangeLog should be updated only on official releases and
 contain only major changes.
 
 FIXME: make check (test_stack) fails on Linux/x86 with GCC v4.6.1.
