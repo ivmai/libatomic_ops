@@ -3,6 +3,7 @@
 *.obj
 .deps
 Makefile
+core
 list_atomic.i
 test_atomic
 test_atomic_pthreads

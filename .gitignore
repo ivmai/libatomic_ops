@@ -22,6 +22,7 @@ Makefile
 /tests/*.o
 /tests/*.obj
 /tests/.deps/
+/tests/core
 /tests/list_atomic.i
 /tests/test_atomic
 /tests/test_atomic_pthreads
