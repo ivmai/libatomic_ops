@@ -2055,6 +2055,7 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
+
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
   if test -f "$ac_dir/install-sh"; then
@@ -4861,7 +4862,7 @@ else
 fi
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/atomic_ops/Makefile src/atomic_ops/sysdeps/Makefile doc/Makefile tests/Makefile"
+ac_config_files="$ac_config_files Makefile atomic_ops.pc doc/Makefile src/Makefile src/atomic_ops/Makefile src/atomic_ops/sysdeps/Makefile tests/Makefile"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -5614,10 +5615,11 @@ do
     "src/config.h") CONFIG_HEADERS="$CONFIG_HEADERS src/config.h" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "atomic_ops.pc") CONFIG_FILES="$CONFIG_FILES atomic_ops.pc" ;;
+    "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/atomic_ops/Makefile") CONFIG_FILES="$CONFIG_FILES src/atomic_ops/Makefile" ;;
     "src/atomic_ops/sysdeps/Makefile") CONFIG_FILES="$CONFIG_FILES src/atomic_ops/sysdeps/Makefile" ;;
-    "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "tests/Makefile") CONFIG_FILES="$CONFIG_FILES tests/Makefile" ;;
     "default") CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
 

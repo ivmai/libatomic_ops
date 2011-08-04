@@ -1,5 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 AC_INIT([libatomic_ops],[7.2alpha7])
+
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR(src/atomic_ops.c)
 AM_INIT_AUTOMAKE
@@ -92,8 +93,8 @@ AC_SUBST(THREADDLLIBS)
 AM_CONDITIONAL(HAVE_PTHREAD_H, test x$have_pthreads = xtrue)
 AM_CONDITIONAL(NEED_ASM, test x$need_asm = xtrue)
 
-AC_CONFIG_FILES([Makefile src/Makefile src/atomic_ops/Makefile \
-    src/atomic_ops/sysdeps/Makefile doc/Makefile tests/Makefile])
+AC_CONFIG_FILES([Makefile atomic_ops.pc doc/Makefile src/Makefile \
+    src/atomic_ops/Makefile src/atomic_ops/sysdeps/Makefile tests/Makefile])
 AC_CONFIG_COMMANDS([default],[[]],[[
 PICFLAG="${PICFLAG}"
 CC="${CC}"
