@@ -11,5 +11,3 @@ Don't create autom4te.cache (or, at least, remove it on make distclean).
 Add equivalent of __sync_val_compare_and_swap. Add tests.
 
 Review and fix warnings displayed with -Wall -Wextra.
-
-Add atomic_ops.pc.in; adjust scripts and gitignore.

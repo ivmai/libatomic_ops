@@ -3,6 +3,7 @@
 
 Makefile
 
+/atomic_ops.pc
 /autom4te.cache/
 /config.log
 /config.status
