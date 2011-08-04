@@ -1,10 +1,6 @@
 TODO tasks
 ==========
 
-Drop all contents of ChangeLog in favor of Git commit annotation model.
-My opinion is that ChangeLog should be updated only on official releases and
-contain only major changes.
-
 FIXME: make check (test_stack) fails on Linux/x86 with GCC v4.6.1.
 This either a bug in our code or in GCC. In the latter case, it might worth
 to create a work-around if possible.
