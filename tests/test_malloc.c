@@ -63,7 +63,7 @@ ln *cons(int d, ln *tail)
   size_t my_extra = extra;
   ln *result;
   int * extras;
-  int i;
+  unsigned i;
 
   if (my_extra > 100)
     extra = my_extra = 0;
@@ -101,13 +101,23 @@ void check_list(ln *l, int m, int n)
   ln *p;
   int i;
 
-  for (p = l, i = m; p != 0; p = p -> next, ++i)
+  for (p = l, i = m; p != 0 && i <= n; p = p -> next, ++i)
     {
       if (i != p -> data)
         {
           fprintf(stderr, "Found %d, expected %d\n", p -> data, i);
           abort();
         }
+    }
+  if (i <= n)
+    {
+      fprintf(stderr, "Number not found: %d\n", i);
+      abort();
+    }
+  if (p != 0)
+    {
+      fprintf(stderr, "Found unexpected number: %d\n", i);
+      abort();
     }
 }
 
@@ -180,7 +190,7 @@ void * run_one_test(void * arg) {
     x = reverse(x, 0);
   }
   check_list(x, 1, LIST_LENGTH);
-  return 0;
+  return arg; /* use arg to suppress compiler warning */
 }
 
 int main(int argc, char **argv) {

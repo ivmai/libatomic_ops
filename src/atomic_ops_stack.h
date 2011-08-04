@@ -119,7 +119,7 @@ typedef struct AO__stack {
   AO_stack_aux AO_aux;
 } AO_stack_t;
 
-#define AO_STACK_INITIALIZER {0}
+#define AO_STACK_INITIALIZER {0,{{0}}}
 
 AO_INLINE void AO_stack_init(AO_stack_t *list)
 {

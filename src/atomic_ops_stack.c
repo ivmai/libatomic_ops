@@ -184,7 +184,7 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
           AO_pause(++j);
         }
     }
-  assert(i >= 0 && i < AO_BL_SIZE);
+  assert(i < AO_BL_SIZE);
   assert(a -> AO_stack_bl[i] == first);
   /* First is on the auxiliary black list.  It may be removed by        */
   /* another thread before we get to it, but a new insertion of x       */
