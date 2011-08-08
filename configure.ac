@@ -32,6 +32,8 @@ if test "$GCC" = yes; then
       CFLAGS="$CFLAGS -D__PIC__=1"
       ;;
   esac
+  # Output all warnings.
+  CFLAGS="$CFLAGS -Wall -Wextra"
 else
   case "$host" in
     *-*-hpux*)
