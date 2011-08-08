@@ -1,9 +1,12 @@
 # Process this file with autoconf to produce a configure script.
 AC_INIT([libatomic_ops],[7.2alpha7])
 
+AC_PREREQ(2.64)
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR(src/atomic_ops.c)
-AM_INIT_AUTOMAKE
+#AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE([foreign dist-bzip2 nostdinc])
+AM_MAINTAINER_MODE
 AC_PROG_RANLIB
 
 AM_CONFIG_HEADER(src/config.h)
@@ -14,10 +17,6 @@ AM_PROG_AS
 
 # Checks for functions.
 AC_FUNC_MMAP
-
-# Checks for header files.
-AC_HEADER_STDC
-# AC_CHECK_HEADERS([ ])
 
 # Determine PIC flag, adjust default CFLAGS
 need_asm=false

@@ -5,7 +5,4 @@ FIXME: make check (test_stack) fails on Linux/x86 with GCC v4.6.1.
 This either a bug in our code or in GCC. In the latter case, it might worth
 to create a work-around if possible.
 
-Review build process: make invokes configure unnecessarily.
-Don't create autom4te.cache (or, at least, remove it on make distclean).
-
 Add equivalent of __sync_val_compare_and_swap. Add tests.
