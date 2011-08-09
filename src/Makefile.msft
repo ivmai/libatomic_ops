@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2003-2005 Hewlett-Packard Development Company, L.P.
-# 
+#
 # The really trivial win32/VC++ Makefile.  Note that atomic_ops.c isn't useful.
 # And we rely on a pre-built test_atomic_include.h and generalize-small.h,
 # since we can't rely on sed.
@@ -14,7 +14,7 @@
 
 LIB_OBJS=atomic_ops_stack.obj atomic_ops_malloc.obj
 
-all: check
+all: libatomic_ops_gpl.lib
 
 atomic_ops_stack.obj:
 	cl -O2 -c -DAO_ASSUME_WINDOWS98 atomic_ops_stack.c
@@ -29,8 +29,9 @@ test_atomic_w95: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
 	cl -O2 -I. ..\tests\test_atomic.c -o test_atomic_w95
 
 test_malloc: ..\tests\test_malloc.c ..\tests\test_atomic_include.h \
-	     libatomic_ops_gpl.lib 
-	cl -O2 -DAO_ASSUME_WINDOWS98 -I. ..\tests\test_malloc.c -o test_malloc libatomic_ops_gpl.lib
+	     libatomic_ops_gpl.lib
+	cl -O2 -DAO_ASSUME_WINDOWS98 -I. ..\tests\test_malloc.c \
+	     -o test_malloc libatomic_ops_gpl.lib
 
 libatomic_ops_gpl.lib: $(LIB_OBJS)
 	lib /MACHINE:i386 /out:libatomic_ops_gpl.lib $(LIB_OBJS)
@@ -41,5 +42,3 @@ check:  test_atomic test_atomic_w95 test_malloc
 	echo The following will print some \"Missing ...\" messages.
 	test_atomic
 	test_malloc
-
-
