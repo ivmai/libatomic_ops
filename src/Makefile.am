@@ -10,13 +10,13 @@ endif
 
 libatomic_ops_gpl_a_SOURCES = atomic_ops_stack.c atomic_ops_malloc.c
 
-EXTRA_DIST=Makefile.msft \
+EXTRA_DIST=Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-small.template atomic_ops/sysdeps/sunc/sparc.S
 
 #Private Headers
-privatedir=${includedir}/atomic_ops/
-private_HEADERS=atomic_ops/generalize.h atomic_ops/generalize-small.h \
-          atomic_ops/sysdeps/README \
+privatedir=${includedir}/
+nobase_private_HEADERS=atomic_ops/generalize.h atomic_ops/generalize-small.h \
+        \
           atomic_ops/sysdeps/acquire_release_volatile.h \
           atomic_ops/sysdeps/aligned_atomic_load_store.h \
           atomic_ops/sysdeps/all_acquire_release_volatile.h \
