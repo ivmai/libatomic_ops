@@ -17,7 +17,7 @@
 #endif
 
 
-#include "run_parallel.inc"
+#include "run_parallel.h"
 
 #include "test_atomic_include.h"
 

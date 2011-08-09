@@ -1,4 +1,4 @@
-EXTRA_DIST=test_atomic.template list_atomic.template run_parallel.inc \
+EXTRA_DIST=test_atomic_include.template list_atomic.template run_parallel.h \
 	   test_atomic_include.h list_atomic.c
 # We distribute test_atomic_include.h and list_atomic.c, since it is hard
 # to regenerate them on Windows without sed.
@@ -28,7 +28,7 @@ test_malloc_SOURCES=test_malloc.c
 test_malloc_LDADD=$(THREADDLLIBS) ../src/libatomic_ops_gpl.a \
 	../src/libatomic_ops.a
 
-test_atomic_include.h: test_atomic.template
+test_atomic_include.h: test_atomic_include.template
 	sed -e s/XX// $? > $@
 	sed -e s/XX/_release/ $? >> $@
 	sed -e s/XX/_acquire/ $? >> $@

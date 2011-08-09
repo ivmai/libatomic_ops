@@ -16,7 +16,7 @@
 # include "config.h"
 #endif
 
-#include "run_parallel.inc"
+#include "run_parallel.h"
 
 #include <stdlib.h>
 #include <stdio.h>
