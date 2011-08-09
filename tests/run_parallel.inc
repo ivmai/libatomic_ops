@@ -2,7 +2,7 @@
  * Copyright (c) 2003-2005 Hewlett-Packard Development Company, L.P.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 #if defined(_MSC_VER) || \

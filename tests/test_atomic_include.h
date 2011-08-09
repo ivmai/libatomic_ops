@@ -2,7 +2,7 @@
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* Some basic sanity tests.  These do not test the barrier semantics. */
@@ -216,7 +216,7 @@ void test_atomic(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* Some basic sanity tests.  These do not test the barrier semantics. */
@@ -430,7 +430,7 @@ void test_atomic_release(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* Some basic sanity tests.  These do not test the barrier semantics. */
@@ -644,7 +644,7 @@ void test_atomic_acquire(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* Some basic sanity tests.  These do not test the barrier semantics. */
@@ -858,7 +858,7 @@ void test_atomic_read(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* Some basic sanity tests.  These do not test the barrier semantics. */
@@ -1072,7 +1072,7 @@ void test_atomic_write(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* Some basic sanity tests.  These do not test the barrier semantics. */
@@ -1286,7 +1286,7 @@ void test_atomic_full(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* Some basic sanity tests.  These do not test the barrier semantics. */
@@ -1500,7 +1500,7 @@ void test_atomic_release_write(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* Some basic sanity tests.  These do not test the barrier semantics. */

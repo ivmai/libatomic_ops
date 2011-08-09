@@ -3,7 +3,7 @@
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* This generates a compilable program.  But it is really meant to be   */
@@ -71,7 +71,7 @@ void list_atomic(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* This generates a compilable program.  But it is really meant to be   */
@@ -139,7 +139,7 @@ void list_atomic_release(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* This generates a compilable program.  But it is really meant to be   */
@@ -207,7 +207,7 @@ void list_atomic_acquire(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* This generates a compilable program.  But it is really meant to be   */
@@ -275,7 +275,7 @@ void list_atomic_read(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* This generates a compilable program.  But it is really meant to be   */
@@ -343,7 +343,7 @@ void list_atomic_write(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* This generates a compilable program.  But it is really meant to be   */
@@ -411,7 +411,7 @@ void list_atomic_full(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* This generates a compilable program.  But it is really meant to be   */
@@ -479,7 +479,7 @@ void list_atomic_release_write(void)
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * This file is covered by the GNU general public license, version 2.
- * see doc/COPYING for details.
+ * see COPYING for details.
  */
 
 /* This generates a compilable program.  But it is really meant to be   */

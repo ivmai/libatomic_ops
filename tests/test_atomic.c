@@ -9,7 +9,7 @@
  * It is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU General Public License in the
- * file doc/COPYING for more details.
+ * file COPYING for more details.
  */
 
 #if defined(HAVE_CONFIG_H)
