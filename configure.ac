@@ -93,7 +93,8 @@ AC_SUBST(THREADDLLIBS)
 AM_CONDITIONAL(HAVE_PTHREAD_H, test x$have_pthreads = xtrue)
 AM_CONDITIONAL(NEED_ASM, test x$need_asm = xtrue)
 
-AC_CONFIG_FILES([Makefile atomic_ops.pc doc/Makefile src/Makefile \
+AC_CONFIG_FILES([Makefile pkgconfig/atomic_ops.pc \
+    pkgconfig/atomic_ops-uninstalled.pc doc/Makefile src/Makefile \
     src/atomic_ops/Makefile src/atomic_ops/sysdeps/Makefile tests/Makefile])
 AC_CONFIG_COMMANDS([default],[[]],[[
 PICFLAG="${PICFLAG}"
