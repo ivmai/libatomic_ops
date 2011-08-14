@@ -2,7 +2,8 @@
 
 Makefile
 
-/atomic_ops.pc
+/pkgconfig/atomic_ops.pc
+/pkgconfig/atomic_ops-uninstalled.pc
 /autom4te.cache/
 /config.log
 /config.status

@@ -81,8 +81,14 @@ AC_SUBST(THREADDLLIBS)
 
 AM_CONDITIONAL(NEED_ASM, test x$need_asm = xtrue)
 
-AC_CONFIG_FILES([Makefile atomic_ops.pc doc/Makefile src/Makefile \
-    tests/Makefile])
+AC_CONFIG_FILES([
+	Makefile
+	doc/Makefile
+	src/Makefile
+	tests/Makefile
+	pkgconfig/atomic_ops.pc
+	pkgconfig/atomic_ops-uninstalled.pc ])
+
 AC_CONFIG_COMMANDS([default],[[]],[[
 PICFLAG="${PICFLAG}"
 CC="${CC}"
