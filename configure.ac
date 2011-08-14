@@ -4,16 +4,16 @@ AC_INIT([libatomic_ops],[7.2alpha7])
 AC_PREREQ(2.64)
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR(src/atomic_ops.c)
-#AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign dist-bzip2 nostdinc])
 AM_MAINTAINER_MODE
-AC_PROG_RANLIB
 
 AM_CONFIG_HEADER(src/config.h)
 
 # Checks for programs.
 AM_PROG_CC_C_O
 AM_PROG_AS
+LT_INIT([disable-shared])
 
 # Checks for functions.
 AC_FUNC_MMAP
@@ -81,8 +81,14 @@ AC_SUBST(THREADDLLIBS)
 
 AM_CONDITIONAL(NEED_ASM, test x$need_asm = xtrue)
 
-AC_CONFIG_FILES([Makefile atomic_ops.pc doc/Makefile src/Makefile \
-    tests/Makefile])
+AC_CONFIG_FILES([
+	Makefile
+	doc/Makefile
+	src/Makefile
+	tests/Makefile
+	pkgconfig/atomic_ops.pc
+	pkgconfig/atomic_ops-uninstalled.pc ])
+
 AC_CONFIG_COMMANDS([default],[[]],[[
 PICFLAG="${PICFLAG}"
 CC="${CC}"
