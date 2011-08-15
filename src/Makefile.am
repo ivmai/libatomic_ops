@@ -2,14 +2,14 @@ AM_CFLAGS=@PICFLAG@
 AM_CPPFLAGS = -I$(top_builddir)/src -I$(top_srcdir)/src
 
 include_HEADERS=atomic_ops.h atomic_ops_stack.h atomic_ops_malloc.h
-lib_LIBRARIES = libatomic_ops.a libatomic_ops_gpl.a
+lib_LTLIBRARIES = libatomic_ops.la libatomic_ops_gpl.la
 if NEED_ASM
-libatomic_ops_a_SOURCES = atomic_ops.c atomic_ops_sysdeps.S
+libatomic_ops_la_SOURCES = atomic_ops.c atomic_ops_sysdeps.S
 else
-libatomic_ops_a_SOURCES = atomic_ops.c
+libatomic_ops_la_SOURCES = atomic_ops.c
 endif
 
-libatomic_ops_gpl_a_SOURCES = atomic_ops_stack.c atomic_ops_malloc.c
+libatomic_ops_gpl_la_SOURCES = atomic_ops_stack.c atomic_ops_malloc.c
 
 EXTRA_DIST=Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-small.template atomic_ops/sysdeps/sunc/sparc.S
