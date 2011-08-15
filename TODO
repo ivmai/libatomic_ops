@@ -7,4 +7,4 @@ to create a work-around if possible.
 
 Add equivalent of __sync_val_compare_and_swap. Add tests.
 
-Fix make distcheck: fails with "config.h: No such file or directory"
+Add C++0x ATM (atomic memory operations) layer.
