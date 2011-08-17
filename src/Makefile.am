@@ -8,8 +8,10 @@ libatomic_ops_la_SOURCES = atomic_ops.c atomic_ops_sysdeps.S
 else
 libatomic_ops_la_SOURCES = atomic_ops.c
 endif
+libatomic_ops_la_LDFLAGS = -version-info 1:3:0 -no-undefined
 
 libatomic_ops_gpl_la_SOURCES = atomic_ops_stack.c atomic_ops_malloc.c
+libatomic_ops_gpl_la_LDFLAGS = -version-info 1:3:0 -no-undefined
 
 EXTRA_DIST=Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-small.template atomic_ops/sysdeps/sunc/sparc.S
