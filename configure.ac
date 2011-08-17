@@ -23,12 +23,19 @@ need_asm=false
 PICFLAG=
 AC_MSG_CHECKING(Determining PIC compiler flag)
 if test "$GCC" = yes; then
-  AC_MSG_RESULT(-fPIC)
-  PICFLAG=-fPIC
   case "$host" in
     *-*-solaris*)
+      AC_MSG_RESULT(-fPIC)
+      PICFLAG=-fPIC
       # Workaround: at least GCC 3.4.6 does not define this macro.
       CFLAGS="$CFLAGS -D__PIC__=1"
+      ;;
+    *-*-cygwin*)
+      # Cygwin does not need -fPIC.
+      ;;
+    *)
+      AC_MSG_RESULT(-fPIC)
+      PICFLAG=-fPIC
       ;;
   esac
 else
