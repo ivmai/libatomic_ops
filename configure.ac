@@ -23,12 +23,19 @@ need_asm=false
 PICFLAG=
 AC_MSG_CHECKING(Determining PIC compiler flag)
 if test "$GCC" = yes; then
-  AC_MSG_RESULT(-fPIC)
-  PICFLAG=-fPIC
   case "$host" in
     *-*-solaris*)
+      AC_MSG_RESULT(-fPIC)
+      PICFLAG=-fPIC
       # Workaround: at least GCC 3.4.6 does not define this macro.
       CFLAGS="$CFLAGS -D__PIC__=1"
+      ;;
+    *-*-cygwin*)
+      # Cygwin does not need -fPIC.
+      ;;
+    *)
+      AC_MSG_RESULT(-fPIC)
+      PICFLAG=-fPIC
       ;;
   esac
   # Output all warnings.
@@ -82,12 +89,12 @@ AC_SUBST(THREADDLLIBS)
 AM_CONDITIONAL(NEED_ASM, test x$need_asm = xtrue)
 
 AC_CONFIG_FILES([
-	Makefile
-	doc/Makefile
-	src/Makefile
-	tests/Makefile
-	pkgconfig/atomic_ops.pc
-	pkgconfig/atomic_ops-uninstalled.pc ])
+        Makefile
+        doc/Makefile
+        src/Makefile
+        tests/Makefile
+        pkgconfig/atomic_ops.pc
+        pkgconfig/atomic_ops-uninstalled.pc ])
 
 AC_CONFIG_COMMANDS([default],[[]],[[
 PICFLAG="${PICFLAG}"
