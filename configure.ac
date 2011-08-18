@@ -87,7 +87,9 @@ AC_CONFIG_FILES([
 	src/Makefile
 	tests/Makefile
 	pkgconfig/atomic_ops.pc
-	pkgconfig/atomic_ops-uninstalled.pc ])
+	pkgconfig/atomic_ops-uninstalled.pc
+	pkgconfig/atomic_ops_as_stdatomic.pc
+	pkgconfig/atomic_ops_as_stdatomic-uninstalled.pc ])
 
 AC_CONFIG_COMMANDS([default],[[]],[[
 PICFLAG="${PICFLAG}"

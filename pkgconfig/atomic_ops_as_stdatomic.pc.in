@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: The atomic_ops library, stdatomic.h
+Description: Partial implementation of stdatomic.h based on libatomic_ops
+Version: @PACKAGE_VERSION@
+Libs: -L${libdir} -latomic_ops
+Cflags: -I${includedir} -I${includedir}/atomic_ops/as_stdatomic

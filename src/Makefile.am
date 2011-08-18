@@ -14,6 +14,8 @@ libatomic_ops_gpl_la_SOURCES = atomic_ops_stack.c atomic_ops_malloc.c
 EXTRA_DIST=Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-small.template atomic_ops/sysdeps/sunc/sparc.S
 
+nobase_include_HEADERS = atomic_ops/as_stdatomic/stdatomic.h
+
 #Private Headers
 privatedir=${includedir}/
 nobase_private_HEADERS=atomic_ops/generalize.h atomic_ops/generalize-small.h \
