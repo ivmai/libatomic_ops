@@ -163,17 +163,20 @@ AO_malloc_enable_mmap(void)
 {
 }
 
+/*ARGSUSED*/
 static char *get_mmaped(size_t sz)
 {
   return 0;
 }
 
+/*ARGSUSED*/
 static char *
 AO_malloc_large(size_t sz)
 {
   return 0;
 }
 
+/*ARGSUSED*/
 static void
 AO_free_large(char * p)
 {
