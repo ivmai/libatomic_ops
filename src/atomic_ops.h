@@ -151,10 +151,10 @@
 #define AO_TS_INITIALIZER (AO_t)AO_TS_CLEAR
 
 /* Platform-dependent stuff:                                    */
-#if defined(__GNUC__) || defined(_MSC_VER) || defined(__INTEL_COMPILER) \
-        || defined(__DMC__) || defined(__WATCOMC__)
+#if (defined(__GNUC__) || defined(_MSC_VER) || defined(__INTEL_COMPILER) \
+        || defined(__DMC__) || defined(__WATCOMC__)) && !defined(AO_NO_INLINE)
 # define AO_INLINE static __inline
-#elif defined(__sun)
+#elif defined(__sun) && !defined(AO_NO_INLINE)
 # define AO_INLINE static inline
 #else
 # define AO_INLINE static
