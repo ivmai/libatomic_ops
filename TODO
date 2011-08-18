@@ -2,8 +2,8 @@ TODO tasks
 ==========
 
 FIXME: make check (test_stack) fails on Linux/x86 with GCC v4.6.1.
-This either a bug in our code or in GCC. In the latter case, it might worth
-to create a work-around if possible.
+This looks to be a bug in GCC (the problem is with the inlined code of
+AO_compare_double_and_swap_double_full in AO_stack_pop_acquire in PIC mode).
 
 Add equivalent of __sync_val_compare_and_swap. Add tests.
 
