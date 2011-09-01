@@ -1,10 +1,28 @@
 TODO tasks
 ==========
 
-FIXME: make check (test_stack) fails on Linux/x86 with GCC v4.6.1.
-This looks to be a bug in GCC (the problem is with the inlined code of
-AO_compare_double_and_swap_double_full in AO_stack_pop_acquire in PIC mode).
+Extract bug-fix commits from master since 7.2alpha6 and apply them
+to release branch: 43ef16 (version change), d92333, 4fcfce (only for
+list_atomic.template plus regenerate). "release" branch should serve for the
+final release v7.2 candidate.
+
+In master branch, set version to 7_3alpha1.
 
 Add equivalent of __sync_val_compare_and_swap. Add tests.
 
 Add C++0x ATM (atomic memory operations) layer.
+
+Add a macro for designating libatomic_ops version (similar to that in BDWGC).
+
+
+FIXME tasks
+===========
+
+Linux/x86 + GCC v4.6.1: make check (test_stack) fails.
+This looks to be a bug in GCC (the problem is with the inlined code of
+AO_compare_double_and_swap_double_full in AO_stack_pop_acquire in PIC mode).
+
+iPhone 3GS + GCC v4.2.1 (based on Apple build 5555): test_atomic fails:
+Illegal instruction.
+
+iPhone 3GS + GCC v4.2.1: test_stack fails: Bus error.
