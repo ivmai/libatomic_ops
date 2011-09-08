@@ -1,3 +1,10 @@
+2011-08-10  Ivan Maidanski <ivmai@mail.ru> (really Petter Urkedal)
+
+	* src/Makefile.am, tests/Makefile.am: Set compiler include paths
+	to $(top_builddir)/src and $(top_srcdir)/src.
+	* src/Makefile.in: Regenerate.
+	* tests/Makefile.in: Ditto.
+
 2011-07-14  Ivan Maidanski <ivmai@mail.ru>
 
 	* tests/list_atomic.template (list_atomicXX): Remove "addr" local

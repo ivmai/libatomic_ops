@@ -6,7 +6,7 @@ EXTRA_DIST=test_atomic.template list_atomic.template run_parallel.inc \
 BUILT_SOURCES = test_atomic_include.h list_atomic.i
 CLEANFILES = list_atomic.i
 
-AM_CPPFLAGS=-I$(srcdir)/../src
+AM_CPPFLAGS = -I$(top_builddir)/src -I$(top_srcdir)/src
 
 TESTS=test_atomic test_atomic_pthreads test_stack test_malloc
 
