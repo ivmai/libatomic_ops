@@ -2,6 +2,8 @@
 
 Makefile
 
+/pkgconfig/atomic_ops.pc
+/pkgconfig/atomic_ops-uninstalled.pc
 /autom4te.cache/
 /config.log
 /config.status
@@ -9,10 +11,13 @@ Makefile
 
 /src/*.a
 /src/*.exe
+/src/*.la
 /src/*.lib
+/src/*.lo
 /src/*.o
 /src/*.obj
 /src/.deps/
+/src/.libs/
 /src/config.h
 /src/config.h.in~
 /src/stamp-h1
@@ -26,3 +31,7 @@ Makefile
 /tests/test_atomic_pthreads
 /tests/test_malloc
 /tests/test_stack
+
+/libtool
+/ltmain.sh
+/m4/*.m4
