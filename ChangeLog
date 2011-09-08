@@ -1,4 +1,8 @@
 
+* Fix AO_test_and_set_full (gcc/x86[_64].h) to work-around a bug in LLVM v2.7.
+* Fix AO_test_and_setXX in tests/list_atomic.template.
+
+
 [7.2alpha6] 2011-06-14
 ======================
 
