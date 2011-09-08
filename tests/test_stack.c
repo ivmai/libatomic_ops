@@ -16,6 +16,17 @@
 # include "config.h"
 #endif
 
+#if defined(__vxworks) || defined(_MSC_VER) || defined(_WIN32_WINCE) \
+    || (defined(_WIN32) && !defined(__CYGWIN32__) && !defined(__CYGWIN__))
+
+  /* Skip the test if no pthreads.  */
+  int main(void)
+  {
+    return 0;
+  }
+
+#else
+
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -239,3 +250,5 @@ int main(int argc, char **argv)
 # endif /* !NO_TIMES */
   return 0;
 }
+
+#endif /* !_MSC_VER */
