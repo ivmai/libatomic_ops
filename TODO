@@ -3,10 +3,8 @@ TODO tasks
 
 Extract bug-fix commits from master since 7.2alpha6 and apply them
 to release branch: 43ef16 (version change), d92333, 4fcfce (only for
-list_atomic.template plus regenerate). "release" branch should serve for the
-final release v7.2 candidate.
-
-In master branch, set version to 7_3alpha1.
+AO_test_and_setXX in list_atomic.template plus regenerate), ced58b93.
+"release" branch should serve for the final release v7.2 candidate.
 
 Add equivalent of __sync_val_compare_and_swap. Add tests.
 
