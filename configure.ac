@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT([libatomic_ops],[7.2alpha7])
+AC_INIT([libatomic_ops],[7.3alpha1])
 
 AC_PREREQ(2.64)
 AC_CANONICAL_TARGET([])
