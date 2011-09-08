@@ -1,5 +1,4 @@
 # Ignored files in libatomic_ops Git repo.
-# Note: the list should be kept in sync with .cvsignore files for now.
 
 Makefile
 
