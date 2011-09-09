@@ -35,8 +35,8 @@
  * operate on compare_and_swap locations.
  */
 
-#if !defined(ATOMIC_OPS_H)
-#  error This file should not be included directly.
+#ifndef AO_ATOMIC_OPS_H
+# error This file should not be included directly.
 #endif
 
 #ifndef AO_HAVE_double_t

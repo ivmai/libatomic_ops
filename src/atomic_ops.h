@@ -20,9 +20,8 @@
  * SOFTWARE.
  */
 
-#ifndef ATOMIC_OPS_H
-
-#define ATOMIC_OPS_H
+#ifndef AO_ATOMIC_OPS_H
+#define AO_ATOMIC_OPS_H
 
 #include <assert.h>
 #include <stddef.h>
@@ -373,4 +372,4 @@
 #define AO_T AO_t
 #define AO_TS_VAL AO_TS_VAL_t
 
-#endif /* ATOMIC_OPS_H */
+#endif /* !AO_ATOMIC_OPS_H */

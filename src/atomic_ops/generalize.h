@@ -43,8 +43,8 @@
  * file must define AO_NO_DD_ORDERING.
  */
 
-#ifndef ATOMIC_OPS_H
-# error Atomic_ops_generalize.h should not be included directly.
+#ifndef AO_ATOMIC_OPS_H
+# error This file should not be included directly.
 #endif
 
 #if AO_CHAR_TS_T

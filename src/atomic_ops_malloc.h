@@ -23,8 +23,8 @@
 /* Almost lock-free malloc implementation based on stack implementation. */
 /* See doc/README_malloc.txt file for detailed usage rules.              */
 
-#ifndef AO_ATOMIC_H
-#define AO_ATOMIC_H
+#ifndef AO_MALLOC_H
+#define AO_MALLOC_H
 
 #include <stdlib.h>     /* For size_t */
 
@@ -41,4 +41,4 @@ void * AO_malloc(size_t);
 /* Allow use of mmpa to grow the heap.  No-op on some platforms.        */
 void AO_malloc_enable_mmap(void);
 
-#endif /* !AO_ATOMIC_H */
+#endif /* !AO_MALLOC_H */
