@@ -5,8 +5,6 @@ Add equivalent of __sync_val_compare_and_swap. Add tests.
 
 Add C++0x ATM (atomic memory operations) layer.
 
-Add a macro for designating libatomic_ops version (similar to that in BDWGC).
-
 
 FIXME tasks
 ===========

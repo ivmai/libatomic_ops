@@ -23,6 +23,10 @@
 #ifndef AO_ATOMIC_OPS_H
 #define AO_ATOMIC_OPS_H
 
+#include "atomic_ops/ao_version.h"
+                        /* Define version numbers here to allow         */
+                        /* test on build machines for cross-builds.     */
+
 #include <assert.h>
 #include <stddef.h>
 

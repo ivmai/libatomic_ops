@@ -18,7 +18,9 @@ EXTRA_DIST=Makefile.msft atomic_ops/sysdeps/README \
 
 #Private Headers
 privatedir=${includedir}/
-nobase_private_HEADERS=atomic_ops/generalize.h atomic_ops/generalize-small.h \
+nobase_private_HEADERS = atomic_ops/ao_version.h \
+          atomic_ops/generalize.h \
+          atomic_ops/generalize-small.h \
         \
           atomic_ops/sysdeps/acquire_release_volatile.h \
           atomic_ops/sysdeps/aligned_atomic_load_store.h \
