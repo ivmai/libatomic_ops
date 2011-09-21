@@ -163,25 +163,10 @@ AO_malloc_enable_mmap(void)
 {
 }
 
-/*ARGSUSED*/
-static char *get_mmaped(size_t sz)
-{
-  return 0;
-}
-
-/*ARGSUSED*/
-static char *
-AO_malloc_large(size_t sz)
-{
-  return 0;
-}
-
-/*ARGSUSED*/
-static void
-AO_free_large(char * p)
-{
-  abort();  /* Programmer error.  Not really async-signal-safe, but ... */
-}
+#define get_mmaped(sz) ((char*)0)
+#define AO_malloc_large(sz) ((char*)0)
+#define AO_free_large(p) abort()
+                /* Programmer error.  Not really async-signal-safe, but ... */
 
 #endif /* No MMAP */
 
