@@ -23,12 +23,19 @@ need_asm=false
 PICFLAG=
 AC_MSG_CHECKING(Determining PIC compiler flag)
 if test "$GCC" = yes; then
-  AC_MSG_RESULT(-fPIC)
-  PICFLAG=-fPIC
   case "$host" in
     *-*-solaris*)
+      AC_MSG_RESULT(-fPIC)
+      PICFLAG=-fPIC
       # Workaround: at least GCC 3.4.6 does not define this macro.
       CFLAGS="$CFLAGS -D__PIC__=1"
+      ;;
+    *-*-cygwin* | *-*-mingw*)
+      # Cygwin and Mingw[-w32/64] do not need -fPIC.
+      ;;
+    *)
+      AC_MSG_RESULT(-fPIC)
+      PICFLAG=-fPIC
       ;;
   esac
 else
@@ -61,6 +68,7 @@ AC_SUBST(DEFS)
 AH_TEMPLATE([_PTHREADS], [Indicates the use of pthreads (NetBSD).])
 
 THREADDLLIBS=
+have_pthreads=true
 ## Libraries needed to support threads.
 AC_CHECK_LIB(pthread, pthread_self, THREADDLLIBS="-lpthread",,)
 AC_DEFINE(_REENTRANT, 1, [Required define if using POSIX threads.])
@@ -74,9 +82,14 @@ case "$host" in
     *-*-cygwin* | *-*-darwin*)
       THREADDLLIBS=
       ;;
+    *-*-mingw*)
+      THREADDLLIBS=
+      have_pthreads=false
+      ;;
 esac
 AC_SUBST(THREADDLLIBS)
 
+AM_CONDITIONAL(HAVE_PTHREAD_H, test x$have_pthreads = xtrue)
 AM_CONDITIONAL(NEED_ASM, test x$need_asm = xtrue)
 
 AC_CONFIG_FILES([Makefile src/Makefile src/atomic_ops/Makefile \

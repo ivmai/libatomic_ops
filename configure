@@ -606,6 +606,8 @@ LTLIBOBJS
 LIBOBJS
 NEED_ASM_FALSE
 NEED_ASM_TRUE
+HAVE_PTHREAD_H_FALSE
+HAVE_PTHREAD_H_TRUE
 THREADDLLIBS
 PICFLAG
 EGREP
@@ -4728,13 +4730,21 @@ PICFLAG=
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking Determining PIC compiler flag" >&5
 $as_echo_n "checking Determining PIC compiler flag... " >&6; }
 if test "$GCC" = yes; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: -fPIC" >&5
-$as_echo "-fPIC" >&6; }
-  PICFLAG=-fPIC
   case "$host" in
     *-*-solaris*)
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: -fPIC" >&5
+$as_echo "-fPIC" >&6; }
+      PICFLAG=-fPIC
       # Workaround: at least GCC 3.4.6 does not define this macro.
       CFLAGS="$CFLAGS -D__PIC__=1"
+      ;;
+    *-*-cygwin* | *-*-mingw*)
+      # Cygwin and Mingw[-w32/64] do not need -fPIC.
+      ;;
+    *)
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: -fPIC" >&5
+$as_echo "-fPIC" >&6; }
+      PICFLAG=-fPIC
       ;;
   esac
 else
@@ -4771,6 +4781,7 @@ CFLAGS="$CFLAGS -DNDEBUG"
 
 
 THREADDLLIBS=
+have_pthreads=true
 ## Libraries needed to support threads.
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_self in -lpthread" >&5
 $as_echo_n "checking for pthread_self in -lpthread... " >&6; }
@@ -4826,8 +4837,20 @@ case "$host" in
     *-*-cygwin* | *-*-darwin*)
       THREADDLLIBS=
       ;;
+    *-*-mingw*)
+      THREADDLLIBS=
+      have_pthreads=false
+      ;;
 esac
 
+
+ if test x$have_pthreads = xtrue; then
+  HAVE_PTHREAD_H_TRUE=
+  HAVE_PTHREAD_H_FALSE='#'
+else
+  HAVE_PTHREAD_H_TRUE='#'
+  HAVE_PTHREAD_H_FALSE=
+fi
 
  if test x$need_asm = xtrue; then
   NEED_ASM_TRUE=
@@ -4969,6 +4992,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCCAS_TRUE}" && test -z "${am__fastdepCCAS_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCCAS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${HAVE_PTHREAD_H_TRUE}" && test -z "${HAVE_PTHREAD_H_FALSE}"; then
+  as_fn_error $? "conditional \"HAVE_PTHREAD_H\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${NEED_ASM_TRUE}" && test -z "${NEED_ASM_FALSE}"; then
