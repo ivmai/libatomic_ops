@@ -10,7 +10,7 @@
 #undef TA_assert
 #define TA_assert(e) \
   if (!(e)) { fprintf(stderr, "Assertion failed %s:%d (barrier: )\n", \
-                    __FILE__, __LINE__), exit(1); }
+		    __FILE__, __LINE__), exit(1); }
 
 #undef MISSING
 #define MISSING(name) \
@@ -200,7 +200,7 @@ void test_atomic(void)
 }
 
 
-
+    
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -213,7 +213,7 @@ void test_atomic(void)
 #undef TA_assert
 #define TA_assert(e) \
   if (!(e)) { fprintf(stderr, "Assertion failed %s:%d (barrier: _release)\n", \
-                    __FILE__, __LINE__), exit(1); }
+		    __FILE__, __LINE__), exit(1); }
 
 #undef MISSING
 #define MISSING(name) \
@@ -403,7 +403,7 @@ void test_atomic_release(void)
 }
 
 
-
+    
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -416,7 +416,7 @@ void test_atomic_release(void)
 #undef TA_assert
 #define TA_assert(e) \
   if (!(e)) { fprintf(stderr, "Assertion failed %s:%d (barrier: _acquire)\n", \
-                    __FILE__, __LINE__), exit(1); }
+		    __FILE__, __LINE__), exit(1); }
 
 #undef MISSING
 #define MISSING(name) \
@@ -606,7 +606,7 @@ void test_atomic_acquire(void)
 }
 
 
-
+    
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -619,7 +619,7 @@ void test_atomic_acquire(void)
 #undef TA_assert
 #define TA_assert(e) \
   if (!(e)) { fprintf(stderr, "Assertion failed %s:%d (barrier: _read)\n", \
-                    __FILE__, __LINE__), exit(1); }
+		    __FILE__, __LINE__), exit(1); }
 
 #undef MISSING
 #define MISSING(name) \
@@ -809,7 +809,7 @@ void test_atomic_read(void)
 }
 
 
-
+    
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -822,7 +822,7 @@ void test_atomic_read(void)
 #undef TA_assert
 #define TA_assert(e) \
   if (!(e)) { fprintf(stderr, "Assertion failed %s:%d (barrier: _write)\n", \
-                    __FILE__, __LINE__), exit(1); }
+		    __FILE__, __LINE__), exit(1); }
 
 #undef MISSING
 #define MISSING(name) \
@@ -1012,7 +1012,7 @@ void test_atomic_write(void)
 }
 
 
-
+    
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -1025,7 +1025,7 @@ void test_atomic_write(void)
 #undef TA_assert
 #define TA_assert(e) \
   if (!(e)) { fprintf(stderr, "Assertion failed %s:%d (barrier: _full)\n", \
-                    __FILE__, __LINE__), exit(1); }
+		    __FILE__, __LINE__), exit(1); }
 
 #undef MISSING
 #define MISSING(name) \
@@ -1215,7 +1215,7 @@ void test_atomic_full(void)
 }
 
 
-
+    
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -1228,7 +1228,7 @@ void test_atomic_full(void)
 #undef TA_assert
 #define TA_assert(e) \
   if (!(e)) { fprintf(stderr, "Assertion failed %s:%d (barrier: _release_write)\n", \
-                    __FILE__, __LINE__), exit(1); }
+		    __FILE__, __LINE__), exit(1); }
 
 #undef MISSING
 #define MISSING(name) \
@@ -1418,7 +1418,7 @@ void test_atomic_release_write(void)
 }
 
 
-
+    
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -1431,7 +1431,7 @@ void test_atomic_release_write(void)
 #undef TA_assert
 #define TA_assert(e) \
   if (!(e)) { fprintf(stderr, "Assertion failed %s:%d (barrier: _acquire_read)\n", \
-                    __FILE__, __LINE__), exit(1); }
+		    __FILE__, __LINE__), exit(1); }
 
 #undef MISSING
 #define MISSING(name) \
@@ -1619,3 +1619,6 @@ void test_atomic_acquire_read(void)
     MISSING(AO_compare_and_swap_double);
 # endif
 }
+
+
+    

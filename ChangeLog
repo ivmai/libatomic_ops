@@ -1,4 +1,46 @@
-2011-08-10  Ivan Maidanski <ivmai@mail.ru> (really Petter Urkedal)
+2011-09-21  Ivan Maidanski <ivmai@mail.ru>
+
+	* configure: Regenerate.
+	* tests/Makefile.in: Ditto.
+	* tests/test_atomic_include.h: Ditto.
+
+2011-09-21  Ivan Maidanski <ivmai@mail.ru>
+
+	* configure.ac (PICFLAG, THREADDLLIBS): Define as empty for MinGW.
+	* configure.ac (have_pthreads): New definition (set to true unless
+	MinGW).
+	* configure.ac (HAVE_PTHREAD_H): New AM conditional (based on
+	have_pthreads value).
+	* tests/Makefile.am (test_atomic_pthreads_SOURCES,
+	test_atomic_pthreads_CPPFLAGS, test_atomic_pthreads_LDADD): Define
+	only if HAVE_PTHREAD_H.
+	* tests/Makefile.am (TESTS): Don't include test_atomic_pthreads unless
+	HAVE_PTHREAD_H.
+	* tests/Makefile.am (check_PROGRAMS): Define to TESTS value.
+
+2011-09-21  Ivan Maidanski <ivmai@mail.ru>
+
+	* configure.ac (PICFLAG): Set to -fPIC if GCC but not Gygwin.
+
+2011-09-21  Ivan Maidanski <ivmai@mail.ru>
+
+	* tests/test_malloc.c (LIST_LENGTH, LARGE_OBJ_SIZE): Define to
+	a smaller value unless HAVE_MMAP.
+
+2011-09-21  Ivan Maidanski <ivmai@mail.ru>
+
+	* tests/test_malloc.c (cons, run_one_test): Call exit with a non-zero
+	code (instead of abort) if out of memory.
+	* tests/test_stack.c (add_elements): Likewise.
+	* tests/test_stack.c (main): Use a distinct exit code if a thread
+	creation failed.
+
+2011-09-15  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/emul_cas.h: Fix a typo (replace AO_FORCE_CAS
+	with AO_REQUIRE_CAS in a comment).
+
+2011-09-08  Ivan Maidanski <ivmai@mail.ru> (really Petter Urkedal)
 
 	* src/Makefile.am, tests/Makefile.am: Set compiler include paths
 	to $(top_builddir)/src and $(top_srcdir)/src.
