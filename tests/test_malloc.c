@@ -39,11 +39,19 @@
 #endif
 
 #ifndef LIST_LENGTH
-# define LIST_LENGTH 1000
+# ifdef HAVE_MMAP
+#   define LIST_LENGTH 1000
+# else
+#   define LIST_LENGTH 100
+# endif
 #endif
 
 #ifndef LARGE_OBJ_SIZE
-# define LARGE_OBJ_SIZE 200000
+# ifdef HAVE_MMAP
+#   define LARGE_OBJ_SIZE 200000
+# else
+#   define LARGE_OBJ_SIZE 20000
+# endif
 #endif
 
 #ifdef USE_STANDARD_MALLOC
