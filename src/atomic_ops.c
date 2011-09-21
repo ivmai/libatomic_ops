@@ -256,6 +256,6 @@ void AO_store_full_emulation(volatile AO_t *addr, AO_t val)
 
 #else /* Non-posix platform */
 
-int AO_non_posix_implementation_is_entirely_in_headers;
+extern int AO_non_posix_implementation_is_entirely_in_headers;
 
 #endif
