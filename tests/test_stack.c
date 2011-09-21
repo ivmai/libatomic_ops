@@ -68,7 +68,7 @@ void add_elements(int n)
   if (le == 0)
     {
       fprintf(stderr, "Out of memory\n");
-      abort();
+      exit(2);
     }
   le -> data = n;
   AO_stack_push(&the_list, (AO_t *)le);
@@ -203,12 +203,12 @@ int main(int argc, char **argv)
         ops_performed = 0;
         start_time = get_msecs();
         for (i = 1; i < nthreads; ++i) {
-        int code;
+          int code;
 
           if ((code = pthread_create(thread+i, 0, run_one_test,
                                      (void *)(long)i)) != 0) {
             fprintf(stderr, "Thread creation failed %u\n", code);
-            exit(1);
+            exit(3);
           }
         }
         /* We use the main thread to run one test.  This allows gprof   */

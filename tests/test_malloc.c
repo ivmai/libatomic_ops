@@ -74,7 +74,7 @@ ln *cons(int d, ln *tail)
     {
       fprintf(stderr, "Out of memory\n");
         /* Normal for more than about 10 threads without mmap? */
-      abort();
+      exit(2);
     }
 
   result -> data = d;
@@ -154,7 +154,7 @@ void * run_one_test(void * arg) {
       {
         fprintf(stderr, "Out of memory\n");
           /* Normal for more than about 10 threads without mmap? */
-        abort();
+        exit(2);
       }
     q[0] = q[LARGE_OBJ_SIZE/2] = q[LARGE_OBJ_SIZE-1] = 'b';
     if (p[0] != 'a' || p[LARGE_OBJ_SIZE/2] != 'a'
