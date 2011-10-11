@@ -52,6 +52,7 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/gcc/arm.h \
           atomic_ops/sysdeps/gcc/avr32.h \
           atomic_ops/sysdeps/gcc/cris.h \
+          atomic_ops/sysdeps/gcc/hexagon.h \
           atomic_ops/sysdeps/gcc/hppa.h \
           atomic_ops/sysdeps/gcc/ia64.h \
           atomic_ops/sysdeps/gcc/m68k.h \
