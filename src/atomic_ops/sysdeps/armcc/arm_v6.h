@@ -229,4 +229,4 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
 }
 #define AO_HAVE_compare_double_and_swap_double
 
-#endif // __TARGET_ARCH_ARM
+#endif /* __TARGET_ARCH_ARM >= 6 */

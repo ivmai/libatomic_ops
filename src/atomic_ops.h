@@ -183,7 +183,8 @@
         /* But the documentation warns about VC++ 2003 and earlier.     */
 # endif
 #elif defined(__INTEL_COMPILER)
-# define AO_compiler_barrier() __memory_barrier() /* Too strong? IA64-only? */
+# define AO_compiler_barrier() __memory_barrier()
+                                        /* FIXME: Too strong? IA64-only? */
 #elif defined(_HPUX_SOURCE)
 # if defined(__ia64)
 #   include <machine/sys/inline.h>
