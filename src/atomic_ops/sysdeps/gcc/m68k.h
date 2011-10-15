@@ -29,7 +29,6 @@ typedef unsigned long AO_t __attribute__ ((aligned (4)));
 
 #include "../test_and_set_t_is_char.h"
 
-/* Contributed by Tony Mantler or new.  Should be changed to MIT license? */
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr) {
   AO_TS_t oldval;

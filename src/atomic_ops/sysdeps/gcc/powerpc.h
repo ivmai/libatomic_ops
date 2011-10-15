@@ -26,9 +26,6 @@
 /* Based on the above references, eieio is intended for use on          */
 /* uncached memory, which we don't support.  It does not order loads    */
 /* from cached memory.                                                  */
-/* Thanks to Maged Michael, Doug Lea, and Roger Hoover for helping to   */
-/* track some of this down and correcting my misunderstandings. -HB     */
-/* Earl Chew subsequently contributed further fixes & additions.        */
 
 #include "../all_aligned_atomic_load_store.h"
 
@@ -176,11 +173,11 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
 #if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
 /* FIXME: Completely untested.  */
   __asm__ __volatile__(
-               "1:ldarx %0,0,%2\n"   /* load and reserve              */
-               "cmpd %0, %4\n"      /* if load is not equal to  */
+               "1:ldarx %0,0,%2\n"   /* load and reserve                */
+               "cmpd %0, %4\n"       /* if load is not equal to         */
                "bne 2f\n"            /*   old, fail                     */
-               "stdcx. %3,0,%2\n"    /* else store conditional         */
-               "bne- 1b\n"           /* retry if lost reservation      */
+               "stdcx. %3,0,%2\n"    /* else store conditional          */
+               "bne- 1b\n"           /* retry if lost reservation       */
                "li %1,1\n"           /* result = 1;                     */
                "2:\n"
               : "=&r"(oldval), "=&r"(result)
@@ -188,11 +185,11 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val) {
               : "memory", "cr0");
 #else
   __asm__ __volatile__(
-               "1:lwarx %0,0,%2\n"   /* load and reserve              */
-               "cmpw %0, %4\n"      /* if load is not equal to  */
+               "1:lwarx %0,0,%2\n"   /* load and reserve                */
+               "cmpw %0, %4\n"       /* if load is not equal to         */
                "bne 2f\n"            /*   old, fail                     */
-               "stwcx. %3,0,%2\n"    /* else store conditional         */
-               "bne- 1b\n"           /* retry if lost reservation      */
+               "stwcx. %3,0,%2\n"    /* else store conditional          */
+               "bne- 1b\n"           /* retry if lost reservation       */
                "li %1,1\n"           /* result = 1;                     */
                "2:\n"
               : "=&r"(oldval), "=&r"(result)

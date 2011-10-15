@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2005 Hewlett-Packard Development Company, L.P.
- * Original Author: Hans Boehm
  *
  * This file may be redistributed and/or modified under the
  * terms of the GNU General Public License as published by the Free Software
