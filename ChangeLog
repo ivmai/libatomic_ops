@@ -1,6 +1,11 @@
 
-* Fix AO_test_and_set_full (gcc/x86[_64].h) to work-around a bug in LLVM v2.7.
+* Fix AO_compare_and_swap return type for s390 and PowerPC.
 * Fix AO_test_and_setXX in tests/list_atomic.template.
+* Fix AO_test_and_set_full (gcc/x86[_64].h) to work-around a bug in LLVM v2.7.
+* Fix AO_test_and_set_full on m68k.
+* Fix configure for Cygwin, mingw-w64/32.
+* Fix test_malloc - allocate less memory in case of missing mmap.
+* Implement the basic atomic primitives for the hexagon CPU.
 
 
 [7.2alpha6] 2011-06-14
