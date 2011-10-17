@@ -1,3 +1,26 @@
+2011-10-17  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/Makefile.in: Regenerate.
+
+2011-10-17  Ivan Maidanski <ivmai@mail.ru> (really Thorsten Glaser)
+
+	* src/atomic_ops/sysdeps/gcc/m68k.h (AO_test_and_set_full): Cast the
+	returned value.
+
+2011-10-15  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/s390.h (AO_compare_and_swap_full):
+	Change return from AO_t to int.
+	* src/atomic_ops/sysdeps/ibmc/powerpc.h (AO_compare_and_swap_acquire,
+	AO_compare_and_swap_release, AO_compare_and_swap_full): Likewise.
+
+2011-10-11  Ivan Maidanski <ivmai@mail.ru> (really Linas Vepstas)
+
+	* src/atomic_ops/sysdeps/Makefile.am (nobase_private_HEADERS): Add
+	hexagon.h.
+	* src/atomic_ops.h: Include hexagon.h file.
+	* src/atomic_ops/sysdeps/gcc/hexagon.h: New file.
+
 2011-09-21  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops.c
