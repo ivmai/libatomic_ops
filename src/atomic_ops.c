@@ -163,7 +163,27 @@ AO_INLINE void unlock(volatile AO_TS_t *l)
   static sigset_t all_sigs;
   static volatile AO_t initialized = 0;
   static volatile AO_TS_t init_lock = AO_TS_INITIALIZER;
-#endif
+
+  AO_INLINE void block_all_signals(sigset_t *old_sigs_ptr)
+  {
+    if (!AO_load_acquire(&initialized))
+    {
+      lock(&init_lock);
+      if (!initialized)
+        sigfillset(&all_sigs);
+      unlock(&init_lock);
+      AO_store_release(&initialized, 1);
+    }
+    sigprocmask(SIG_BLOCK, &all_sigs, old_sigs_ptr);
+        /* Neither sigprocmask nor pthread_sigmask is 100%      */
+        /* guaranteed to work here.  Sigprocmask is not         */
+        /* guaranteed be thread safe, and pthread_sigmask       */
+        /* is not async-signal-safe.  Under linuxthreads,       */
+        /* sigprocmask may block some pthreads-internal         */
+        /* signals.  So long as we do that for short periods,   */
+        /* we should be OK.                                     */
+  }
+#endif /* !AO_USE_NO_SIGNALS */
 
 int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
                                   AO_t new_val)
@@ -173,21 +193,7 @@ int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
 
 # ifndef AO_USE_NO_SIGNALS
     sigset_t old_sigs;
-    if (!AO_load_acquire(&initialized))
-    {
-      lock(&init_lock);
-      if (!initialized) sigfillset(&all_sigs);
-      unlock(&init_lock);
-      AO_store_release(&initialized, 1);
-    }
-    sigprocmask(SIG_BLOCK, &all_sigs, &old_sigs);
-        /* Neither sigprocmask nor pthread_sigmask is 100%      */
-        /* guaranteed to work here.  Sigprocmask is not         */
-        /* guaranteed be thread safe, and pthread_sigmask       */
-        /* is not async-signal-safe.  Under linuxthreads,       */
-        /* sigprocmask may block some pthreads-internal         */
-        /* signals.  So long as we do that for short periods,   */
-        /* we should be OK.                                     */
+    block_all_signals(&old_sigs);
 # endif
   lock(my_lock);
   if (*addr == old)
@@ -213,21 +219,7 @@ int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
 
 # ifndef AO_USE_NO_SIGNALS
     sigset_t old_sigs;
-    if (!AO_load_acquire(&initialized))
-    {
-      lock(&init_lock);
-      if (!initialized) sigfillset(&all_sigs);
-      unlock(&init_lock);
-      AO_store_release(&initialized, 1);
-    }
-    sigprocmask(SIG_BLOCK, &all_sigs, &old_sigs);
-        /* Neither sigprocmask nor pthread_sigmask is 100%      */
-        /* guaranteed to work here.  Sigprocmask is not         */
-        /* guaranteed be thread safe, and pthread_sigmask       */
-        /* is not async-signal-safe.  Under linuxthreads,       */
-        /* sigprocmask may block some pthreads-internal         */
-        /* signals.  So long as we do that for short periods,   */
-        /* we should be OK.                                     */
+    block_all_signals(&old_sigs);
 # endif
   lock(my_lock);
   if (addr -> AO_val1 == old_val1 && addr -> AO_val2 == old_val2)
