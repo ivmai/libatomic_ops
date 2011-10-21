@@ -189,6 +189,8 @@ AO_compare_and_swap_release(volatile AO_t *addr,
 }
 #define AO_HAVE_compare_and_swap_release
 
+/* FIXME: implement AO_fetch_compare_and_swap */
+
 AO_INLINE int
 AO_char_compare_and_swap_acquire(volatile unsigned char *addr,
                                  unsigned char old, unsigned char new_val)

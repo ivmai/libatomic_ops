@@ -77,6 +77,7 @@
 /* AO_or                                                        */
 /* AO_xor                                                       */
 /* AO_compare_and_swap                                          */
+/* AO_fetch_compare_and_swap                                    */
 /*                                                              */
 /* Note that atomicity guarantees are valid only if both        */
 /* readers and writers use AO_ operations to access the         */
@@ -90,9 +91,14 @@
 /* or can only be read concurrently, then x can be accessed     */
 /* via ordinary references and assignments.                     */
 /*                                                              */
-/* Compare_and_exchange takes an address and an expected old    */
-/* value and a new value, and returns an int.  Nonzero          */
+/* AO_compare_and_swap takes an address and an expected old     */
+/* value and a new value, and returns an int.  Non-zero result  */
 /* indicates that it succeeded.                                 */
+/* AO_fetch_compare_and_swap takes an address and an expected   */
+/* old value and a new value, and returns the real old value.   */
+/* The operation succeeded if and only if the expected old      */
+/* value matches the old value returned.                        */
+/*                                                              */
 /* Test_and_set takes an address, atomically replaces it by     */
 /* AO_TS_SET, and returns the prior value.                      */
 /* An AO_TS_t location can be reset with the                    */
@@ -350,6 +356,7 @@
 # else
 #  error Cannot implement AO_compare_and_swap_full on this architecture.
 # endif
+/* FIXME: same for AO_fetch_compare_and_swap */
 #endif /* AO_REQUIRE_CAS && !AO_HAVE_compare_and_swap ... */
 
 /* The most common way to clear a test-and-set location         */

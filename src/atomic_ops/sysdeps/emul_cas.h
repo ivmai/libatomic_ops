@@ -64,6 +64,8 @@ void AO_store_full_emulation(volatile AO_t *addr, AO_t val);
 # define AO_HAVE_compare_double_and_swap_double_full
 #endif
 
+/* FIXME: implement AO_fetch_compare_and_swap */
+
 #undef AO_store
 #undef AO_HAVE_store
 #undef AO_store_write

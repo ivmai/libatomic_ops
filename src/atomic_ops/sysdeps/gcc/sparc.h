@@ -63,6 +63,8 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
 #define AO_HAVE_compare_and_swap_full
 #endif /* !AO_NO_SPARC_V9 */
 
+/* FIXME: implement AO_fetch_compare_and_swap */
+
 /* FIXME: This needs to be extended for SPARC v8 and v9.        */
 /* SPARC V8 also has swap.  V9 has CAS.                         */
 /* There are barriers like membar #LoadStore.                   */

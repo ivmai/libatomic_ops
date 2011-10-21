@@ -195,6 +195,7 @@ int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
     sigset_t old_sigs;
     block_all_signals(&old_sigs);
 # endif
+
   lock(my_lock);
   if (*addr == old)
     {
@@ -209,6 +210,8 @@ int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
 # endif
   return result;
 }
+
+/* FIXME: implement AO_fetch_compare_and_swap */
 
 int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
                                                 AO_t old_val1, AO_t old_val2,

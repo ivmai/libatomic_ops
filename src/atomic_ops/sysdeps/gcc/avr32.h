@@ -63,3 +63,5 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
        return (int)ret;
 }
 #define AO_HAVE_compare_and_swap_full
+
+/* FIXME: implement AO_fetch_compare_and_swap */

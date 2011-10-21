@@ -72,6 +72,8 @@
 # define AO_HAVE_int_compare_and_swap
 #endif
 
+/* FIXME: implement AO_fetch_compare_and_swap */
+
 /* AO_load */
 #if defined(AO_HAVE_load_acquire) \
     && !defined(AO_HAVE_int_load_acquire)

@@ -4,6 +4,7 @@
 
 * Add '-no-undefined' to LDFLAGS in src/Makefile.am.
 * Add AO_and, AO_xor atomic operations.
+* Add AO_fetch_compare_and_swap primitives.
 * Add and fill in AUTHORS, TODO files.
 * Add atomic_ops.pc.in and atomic_ops-uninstalled.pc.in to pkgconfig folder.
 * Adjust AO_..._H macros in public headers.

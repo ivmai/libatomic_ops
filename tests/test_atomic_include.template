@@ -170,6 +170,7 @@ void test_atomicXX(void)
     MISSING(AO_compare_and_swap);
     if (x == 13) x = 42;
 # endif
+/* FIXME: test AO_fetch_compare_and_swap */
 # if defined(AO_HAVE_orXX)
     AO_orXX(&x, 66);
     TA_assert(x == 106);

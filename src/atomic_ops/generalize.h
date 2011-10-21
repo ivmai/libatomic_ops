@@ -1053,6 +1053,8 @@
 # endif
 #endif /* AO_HAVE_compare_and_swap_full */
 
+/* FIXME: implement AO_fetch_compare_and_swap */
+
 #if !defined(AO_HAVE_compare_and_swap) \
     && defined(AO_HAVE_compare_and_swap_release)
 # define AO_compare_and_swap(addr,old,new_val) \

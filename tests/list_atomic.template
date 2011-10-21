@@ -65,4 +65,5 @@ void list_atomicXX(void)
 # else
     "No AO_compare_and_swapXX";
 # endif
+/* FIXME: test AO_fetch_compare_and_swap */
 }

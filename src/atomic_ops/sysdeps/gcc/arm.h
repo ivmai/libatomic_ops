@@ -265,6 +265,8 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 }
 #define AO_HAVE_compare_and_swap
 
+/* FIXME: implement AO_fetch_compare_and_swap */
+
 #if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
     && !defined(__ARM_ARCH_6T2__) && !defined(__ARM_ARCH_6Z__) \
     && !defined(__ARM_ARCH_6ZT2__) && (!defined(__thumb__) \

@@ -198,6 +198,8 @@ __asm__ {
 }
 #define AO_HAVE_compare_and_swap
 
+/* FIXME: implement AO_fetch_compare_and_swap */
+
 /* helper functions for the Realview compiler: LDREXD is not usable
  * with inline assembler, so use the "embedded" assembler as
  * suggested by ARM Dev. support (June 2008). */

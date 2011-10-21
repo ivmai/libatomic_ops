@@ -149,6 +149,8 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
 }
 #define AO_HAVE_compare_and_swap_full
 
+/* FIXME: implement AO_fetch_compare_and_swap */
+
 /* Returns nonzero if the comparison succeeded. */
 /* Really requires at least a Pentium.          */
 AO_INLINE int

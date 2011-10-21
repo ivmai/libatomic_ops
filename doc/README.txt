@@ -100,6 +100,9 @@ int compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
         Atomically compare *addr to old_val, and replace *addr by new_val
         if the first comparison succeeds.  Returns nonzero if the comparison
         succeeded and *addr was updated.
+AO_t fetch_compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
+        Atomically compare *addr to old_val, and replace *addr by new_val
+        if the first comparison succeeds; returns the original value of *addr.
 AO_TS_VAL_t test_and_set(volatile AO_TS_t * addr)
         Atomically read the binary value at *addr, and set it.  AO_TS_VAL_t
         is an enumeration type which includes two values AO_TS_SET and
