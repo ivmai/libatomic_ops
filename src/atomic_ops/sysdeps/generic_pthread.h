@@ -141,52 +141,52 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 AO_INLINE AO_t
 AO_fetch_and_add_full(volatile AO_t *p, AO_t incr)
 {
-  AO_t tmp;
+  AO_t old_val;
 
   pthread_mutex_lock(&AO_pt_lock);
-  tmp = *p;
-  *p = tmp + incr;
+  old_val = *p;
+  *p = old_val + incr;
   pthread_mutex_unlock(&AO_pt_lock);
-  return tmp;
+  return old_val;
 }
 #define AO_HAVE_fetch_and_add_full
 
 AO_INLINE unsigned char
 AO_char_fetch_and_add_full(volatile unsigned char *p, unsigned char incr)
 {
-  unsigned char tmp;
+  unsigned char old_val;
 
   pthread_mutex_lock(&AO_pt_lock);
-  tmp = *p;
-  *p = tmp + incr;
+  old_val = *p;
+  *p = old_val + incr;
   pthread_mutex_unlock(&AO_pt_lock);
-  return tmp;
+  return old_val;
 }
 #define AO_HAVE_char_fetch_and_add_full
 
 AO_INLINE unsigned short
 AO_short_fetch_and_add_full(volatile unsigned short *p, unsigned short incr)
 {
-  unsigned short tmp;
+  unsigned short old_val;
 
   pthread_mutex_lock(&AO_pt_lock);
-  tmp = *p;
-  *p = tmp + incr;
+  old_val = *p;
+  *p = old_val + incr;
   pthread_mutex_unlock(&AO_pt_lock);
-  return tmp;
+  return old_val;
 }
 #define AO_HAVE_short_fetch_and_add_full
 
 AO_INLINE unsigned int
 AO_int_fetch_and_add_full(volatile unsigned int *p, unsigned int incr)
 {
-  unsigned int tmp;
+  unsigned int old_val;
 
   pthread_mutex_lock(&AO_pt_lock);
-  tmp = *p;
-  *p = tmp + incr;
+  old_val = *p;
+  *p = old_val + incr;
   pthread_mutex_unlock(&AO_pt_lock);
-  return tmp;
+  return old_val;
 }
 #define AO_HAVE_int_fetch_and_add_full
 
