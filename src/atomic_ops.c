@@ -162,9 +162,8 @@ AO_INLINE void unlock(volatile AO_TS_t *l)
 #ifndef AO_USE_NO_SIGNALS
   static sigset_t all_sigs;
   static volatile AO_t initialized = 0;
+  static volatile AO_TS_t init_lock = AO_TS_INITIALIZER;
 #endif
-
-static volatile AO_TS_t init_lock = AO_TS_INITIALIZER;
 
 int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
                                   AO_t new_val)
