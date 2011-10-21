@@ -1,5 +1,9 @@
 2011-10-21  Ivan Maidanski <ivmai@mail.ru>
 
+	* src/atomic_ops.c (init_lock): Define only unless AO_USE_NO_SIGNALS.
+
+2011-10-21  Ivan Maidanski <ivmai@mail.ru>
+
 	* doc/README.txt: Fix a typo.
 
 2011-10-21  Ivan Maidanski <ivmai@mail.ru>
