@@ -90,8 +90,12 @@ AO_t fetch_and_add1(volatile AO_t *addr)
         Equivalent to AO_fetch_and_add(addr, 1).
 AO_t fetch_and_sub1(volatile AO_t *addr)
         Equivalent to AO_fetch_and_add(addr, (AO_t)(-1)).
-void or(volatile AO_t *addr, AO_t incr)
-        Atomically or incr into *addr.
+void and(volatile AO_t *addr, AO_t value)
+        Atomically 'and' value into *addr.
+void or(volatile AO_t *addr, AO_t value)
+        Atomically 'or' value into *addr.
+void xor(volatile AO_t *addr, AO_t value)
+        Atomically 'xor' value into *addr.
 int compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
         Atomically compare *addr to old_val, and replace *addr by new_val
         if the first comparison succeeds.  Returns nonzero if the comparison
