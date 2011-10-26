@@ -131,7 +131,8 @@ AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
 {
 # ifdef AO_USE_SYNC_CAS_BUILTIN
-    return (int)__sync_bool_compare_and_swap(addr, old, new_val);
+    return (int)__sync_bool_compare_and_swap(addr, old, new_val
+                                             /* empty protection list */);
 # else
     char result;
     __asm__ __volatile__("lock; cmpxchgq %3, %0; setz %1"
