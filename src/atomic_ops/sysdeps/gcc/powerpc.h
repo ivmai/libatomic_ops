@@ -225,7 +225,68 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
 }
 #define AO_HAVE_compare_and_swap_full
 
-/* FIXME: implement AO_fetch_compare_and_swap */
+AO_INLINE AO_t
+AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+{
+  AO_t fetched_val;
+#if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
+/* FIXME: Completely untested.  */
+  __asm__ __volatile__(
+               "1:ldarx %0,0,%1\n"   /* load and reserve                */
+               "cmpd %0, %3\n"       /* if load is not equal to         */
+               "bne 2f\n"            /*   old_val, fail                 */
+               "stdcx. %2,0,%1\n"    /* else store conditional          */
+               "bne- 1b\n"           /* retry if lost reservation       */
+               "2:\n"
+              : "=&r"(fetched_val),
+              : "r"(addr), "r"(new_val), "r"(old_val)
+              : "memory", "cr0");
+#else
+  __asm__ __volatile__(
+               "1:lwarx %0,0,%1\n"   /* load and reserve                */
+               "cmpw %0, %3\n"       /* if load is not equal to         */
+               "bne 2f\n"            /*   old_val, fail                 */
+               "stwcx. %2,0,%1\n"    /* else store conditional          */
+               "bne- 1b\n"           /* retry if lost reservation       */
+               "2:\n"
+              : "=&r"(fetched_val),
+              : "r"(addr), "r"(new_val), "r"(old_val)
+              : "memory", "cr0");
+#endif
+  return fetched_val;
+}
+#define AO_HAVE_fetch_compare_and_swap
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_acquire(volatile AO_t *addr, AO_t old_val,
+                                  AO_t new_val)
+{
+  AO_t result = AO_fetch_compare_and_swap(addr, old_val, new_val);
+  AO_lwsync();
+  return result;
+}
+#define AO_HAVE_fetch_compare_and_swap_acquire
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_release(volatile AO_t *addr, AO_t old_val,
+                                  AO_t new_val)
+{
+  AO_lwsync();
+  return AO_fetch_compare_and_swap(addr, old_val, new_val);
+}
+#define AO_HAVE_fetch_compare_and_swap_release
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
+                               AO_t new_val)
+{
+  AO_t result;
+  AO_lwsync();
+  result = AO_fetch_compare_and_swap(addr, old_val, new_val);
+  AO_lwsync();
+  return result;
+}
+#define AO_HAVE_fetch_compare_and_swap_full
 
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *addr, AO_t incr) {

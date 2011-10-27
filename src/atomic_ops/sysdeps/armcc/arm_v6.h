@@ -198,7 +198,26 @@ __asm__ {
 }
 #define AO_HAVE_compare_and_swap
 
-/* FIXME: implement AO_fetch_compare_and_swap */
+AO_INLINE AO_t
+AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+{
+         AO_t fetched_val, tmp;
+
+retry:
+__asm__ {
+        mov     tmp, #2
+        ldrex   fetched_val, [addr]
+        teq     fetched_val, old_val
+#     ifdef __thumb__
+        it      eq
+#     endif
+        strexeq tmp, new_val, [addr]
+        teq     tmp, #1
+        beq     retry
+        }
+        return fetched_val;
+}
+#define AO_HAVE_fetch_compare_and_swap
 
 /* helper functions for the Realview compiler: LDREXD is not usable
  * with inline assembler, so use the "embedded" assembler as

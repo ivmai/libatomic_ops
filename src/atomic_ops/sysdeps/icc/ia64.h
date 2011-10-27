@@ -152,8 +152,6 @@ AO_compare_and_swap_release(volatile AO_t *addr,
 }
 #define AO_HAVE_compare_and_swap_release
 
-/* FIXME: implement AO_fetch_compare_and_swap */
-
 AO_INLINE int
 AO_char_compare_and_swap_acquire(volatile unsigned char *addr,
                                  unsigned char old, unsigned char new_val)
@@ -213,3 +211,73 @@ AO_int_compare_and_swap_release(volatile unsigned int *addr,
   return (oldval == old);
 }
 #define AO_HAVE_int_compare_and_swap_release
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_acquire(volatile AO_t *addr, AO_t old_val,
+                                  AO_t new_val)
+{
+  return _InterlockedCompareExchange64_acq(addr, new_val, old_val);
+}
+#define AO_HAVE_fetch_compare_and_swap_acquire
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_release(volatile AO_t *addr, AO_t old_val,
+                                  AO_t new_val)
+{
+  return _InterlockedCompareExchange64_rel(addr, new_val, old_val);
+}
+#define AO_HAVE_fetch_compare_and_swap_release
+
+AO_INLINE unsigned char
+AO_char_fetch_compare_and_swap_acquire(volatile unsigned char *addr,
+                                       unsigned char old_val,
+                                       unsigned char new_val)
+{
+  return _InterlockedCompareExchange8_acq(addr, new_val, old_val);
+}
+#define AO_HAVE_char_fetch_compare_and_swap_acquire
+
+AO_INLINE unsigned char
+AO_char_fetch_compare_and_swap_release(volatile unsigned char *addr,
+                                       unsigned char old_val,
+                                       unsigned char new_val)
+{
+  return _InterlockedCompareExchange8_rel(addr, new_val, old_val);
+}
+#define AO_HAVE_char_fetch_compare_and_swap_release
+
+AO_INLINE unsigned short
+AO_short_fetch_compare_and_swap_acquire(volatile unsigned short *addr,
+                                        unsigned short old_val,
+                                        unsigned short new_val)
+{
+  return _InterlockedCompareExchange16_acq(addr, new_val, old_val);
+}
+#define AO_HAVE_short_fetch_compare_and_swap_acquire
+
+AO_INLINE unsigned short
+AO_short_fetch_compare_and_swap_release(volatile unsigned short *addr,
+                                        unsigned short old_val,
+                                        unsigned short new_val)
+{
+  return _InterlockedCompareExchange16_rel(addr, new_val, old_val);
+}
+#define AO_HAVE_short_fetch_compare_and_swap_release
+
+AO_INLINE unsigned int
+AO_int_fetch_compare_and_swap_acquire(volatile unsigned int *addr,
+                                      unsigned int old_val,
+                                      unsigned int new_val)
+{
+  return _InterlockedCompareExchange_acq(addr, new_val, old_val);
+}
+#define AO_HAVE_int_fetch_compare_and_swap_acquire
+
+AO_INLINE unsigned int
+AO_int_fetch_compare_and_swap_release(volatile unsigned int *addr,
+                                      unsigned int old_val,
+                                      unsigned int new_val)
+{
+  return _InterlockedCompareExchange_rel(addr, new_val, old_val);
+}
+#define AO_HAVE_int_fetch_compare_and_swap_release

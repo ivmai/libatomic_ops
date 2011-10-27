@@ -356,7 +356,6 @@
 # else
 #  error Cannot implement AO_compare_and_swap_full on this architecture.
 # endif
-/* FIXME: same for AO_fetch_compare_and_swap */
 #endif /* AO_REQUIRE_CAS && !AO_HAVE_compare_and_swap ... */
 
 /* The most common way to clear a test-and-set location         */

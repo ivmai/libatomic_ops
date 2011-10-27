@@ -116,5 +116,19 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
 }
 # define AO_HAVE_compare_and_swap_full
 
-/* FIXME: implement AO_fetch_compare_and_swap */
+  AO_INLINE AO_t
+  AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
+                                 AO_t new_val)
+  {
+#   ifdef AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE
+      return (AO_t)_InterlockedCompareExchange(
+                                        (PVOID AO_INTERLOCKED_VOLATILE *)addr,
+                                        (PVOID)new_val, (PVOID)old_val);
+#   else
+      return (AO_t)_InterlockedCompareExchange(
+                                         (LONG AO_INTERLOCKED_VOLATILE *)addr,
+                                         (LONG)new_val, (LONG)old_val);
+#   endif
+  }
+# define AO_HAVE_fetch_compare_and_swap_full
 #endif /* AO_ASSUME_WINDOWS98 */

@@ -142,7 +142,18 @@ AO_compare_and_swap_full (volatile AO_t *addr, AO_t old, AO_t new_val)
 }
 #define AO_HAVE_compare_and_swap_full
 
-/* FIXME: implement AO_fetch_compare_and_swap */
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
+                               AO_t new_val)
+{
+    AO_t fetched_val;
+    __asm__ __volatile__("lock; cmpxchgl %1, %2"
+                         : "=a" (fetched_val)
+                         : "r" (new_val), "m" (*addr), "0" (old_val)
+                         : "memory");
+    return fetched_val;
+}
+#define AO_HAVE_fetch_compare_and_swap_full
 
 #if 0
 /* FIXME: not tested (and probably wrong). Besides,     */

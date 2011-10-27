@@ -170,7 +170,6 @@ void test_atomicXX(void)
     MISSING(AO_compare_and_swap);
     if (x == 13) x = 42;
 # endif
-/* FIXME: test AO_fetch_compare_and_swap */
 # if defined(AO_HAVE_orXX)
     AO_orXX(&x, 66);
     TA_assert(x == 106);
@@ -191,6 +190,15 @@ void test_atomicXX(void)
 # else
     MISSING(AO_and);
     x &= 57;
+# endif
+# if defined(AO_HAVE_fetch_compare_and_swapXX)
+    TA_assert(AO_fetch_compare_and_swapXX(&x, 14, 117) == 25);
+    TA_assert(x == 25);
+    TA_assert(AO_fetch_compare_and_swapXX(&x, 25, 117) == 25);
+    TA_assert(x == 117);
+# else
+    MISSING(AO_fetch_compare_and_swap);
+    if (x == 25) x = 117;
 # endif
 # if defined(AO_HAVE_compare_double_and_swap_doubleXX)
     TA_assert(!AO_compare_double_and_swap_doubleXX(&w, 17, 42, 12, 13));

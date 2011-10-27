@@ -211,7 +211,26 @@ int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
   return result;
 }
 
-/* FIXME: implement AO_fetch_compare_and_swap */
+AO_t AO_fetch_compare_and_swap_emulation(volatile AO_t *addr, AO_t old_val,
+                                         AO_t new_val)
+{
+  AO_TS_t *my_lock = AO_locks + AO_HASH(addr);
+  AO_t fetched_val;
+
+# ifndef AO_USE_NO_SIGNALS
+    sigset_t old_sigs;
+    block_all_signals(&old_sigs);
+# endif
+  lock(my_lock);
+  fetched_val = *addr;
+  if (fetched_val == old_val)
+    *addr = new_val;
+  unlock(my_lock);
+# ifndef AO_USE_NO_SIGNALS
+    sigprocmask(SIG_SETMASK, &old_sigs, NULL);
+# endif
+  return fetched_val;
+}
 
 int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
                                                 AO_t old_val1, AO_t old_val2,

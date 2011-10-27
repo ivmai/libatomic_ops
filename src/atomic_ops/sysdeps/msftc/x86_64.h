@@ -85,7 +85,14 @@ AO_compare_and_swap_full(volatile AO_t *addr,
 }
 #define AO_HAVE_compare_and_swap_full
 
-/* FIXME: implement AO_fetch_compare_and_swap */
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
+                               AO_t new_val)
+{
+  return (AO_t)_InterlockedCompareExchange64((LONGLONG volatile *)addr,
+                                        (LONGLONG)new_val, (LONGLONG)old_val);
+}
+#define AO_HAVE_fetch_compare_and_swap_full
 
 /* As far as we can tell, the lfence and sfence instructions are not    */
 /* currently needed or useful for cached memory accesses.               */

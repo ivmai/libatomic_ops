@@ -107,8 +107,6 @@ AO_compare_and_swap_release(volatile AO_t *addr,
 }
 #define AO_HAVE_compare_and_swap_release
 
-/* FIXME: implement AO_fetch_compare_and_swap */
-
 AO_INLINE int
 AO_char_compare_and_swap_acquire(volatile unsigned char *addr,
                                  unsigned char old, unsigned char new_val)
@@ -160,6 +158,73 @@ AO_short_compare_and_swap_release(volatile unsigned short *addr,
   return (oldval == old);
 }
 #define AO_HAVE_short_compare_and_swap_release
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_acquire(volatile AO_t *addr, AO_t old_val,
+                                  AO_t new_val)
+{
+  _Asm_mov_to_ar(_AREG_CCV, old_val, _DOWN_MEM_FENCE);
+  return _Asm_cmpxchg(AO_T_SIZE, _SEM_ACQ, addr,
+                      new_val, _LDHINT_NONE, _DOWN_MEM_FENCE);
+}
+#define AO_HAVE_fetch_compare_and_swap_acquire
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_release(volatile AO_t *addr, AO_t old_val,
+                                  AO_t new_val)
+{
+  _Asm_mov_to_ar(_AREG_CCV, old_val, _UP_MEM_FENCE);
+  return _Asm_cmpxchg(AO_T_SIZE, _SEM_REL, addr,
+                      new_val, _LDHINT_NONE, _UP_MEM_FENCE);
+
+}
+#define AO_HAVE_fetch_compare_and_swap_release
+
+AO_INLINE unsigned char
+AO_char_fetch_compare_and_swap_acquire(volatile unsigned char *addr,
+                                unsigned char old_val, unsigned char new_val)
+{
+  _Asm_mov_to_ar(_AREG_CCV, old_val, _DOWN_MEM_FENCE);
+  return _Asm_cmpxchg(_SZ_B, _SEM_ACQ, addr,
+                      new_val, _LDHINT_NONE, _DOWN_MEM_FENCE);
+
+}
+#define AO_HAVE_char_fetch_compare_and_swap_acquire
+
+AO_INLINE unsigned char
+AO_char_fetch_compare_and_swap_release(volatile unsigned char *addr,
+                                unsigned char old_val, unsigned char new_val)
+{
+  _Asm_mov_to_ar(_AREG_CCV, old_val, _UP_MEM_FENCE);
+  return _Asm_cmpxchg(_SZ_B, _SEM_REL, addr,
+                      new_val, _LDHINT_NONE, _UP_MEM_FENCE);
+
+}
+#define AO_HAVE_char_fetch_compare_and_swap_release
+
+AO_INLINE unsigned short
+AO_short_fetch_compare_and_swap_acquire(volatile unsigned short *addr,
+                                        unsigned short old_val,
+                                        unsigned short new_val)
+{
+  _Asm_mov_to_ar(_AREG_CCV, old_val, _DOWN_MEM_FENCE);
+  return _Asm_cmpxchg(_SZ_B, _SEM_ACQ, addr,
+                      new_val, _LDHINT_NONE, _DOWN_MEM_FENCE);
+
+}
+#define AO_HAVE_short_fetch_compare_and_swap_acquire
+
+AO_INLINE unsigned short
+AO_short_fetch_compare_and_swap_release(volatile unsigned short *addr,
+                                        unsigned short old_val,
+                                        unsigned short new_val)
+{
+  _Asm_mov_to_ar(_AREG_CCV, old_val, _UP_MEM_FENCE);
+  return _Asm_cmpxchg(_SZ_B, _SEM_REL, addr,
+                      new_val, _LDHINT_NONE, _UP_MEM_FENCE);
+
+}
+#define AO_HAVE_short_fetch_compare_and_swap_release
 
 #ifndef __LP64__
 # include "../ao_t_is_int.h"

@@ -265,7 +265,29 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 }
 #define AO_HAVE_compare_and_swap
 
-/* FIXME: implement AO_fetch_compare_and_swap */
+AO_INLINE AO_t
+AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+{
+  AO_t fetched_val, flag;
+
+  __asm__ __volatile__("@AO_fetch_compare_and_swap\n"
+    AO_THUMB_GO_ARM
+    "1:     mov     %0, #2\n"           /* store a flag */
+    "       ldrex   %1, [%3]\n"         /* get original */
+    "       teq     %1, %4\n"           /* see if match */
+#   ifdef __thumb2__
+      "       it      eq\n"
+#   endif
+    "       strexeq %0, %5, [%3]\n"     /* store new one if matched */
+    "       teq     %0, #1\n"
+    "       beq     1b\n"               /* if update failed, repeat */
+    AO_THUMB_RESTORE_MODE
+    : "=&r"(flag), "=&r"(fetched_val), "+m"(*addr)
+    : "r"(addr), "r"(old_val), "r"(new_val)
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
+  return fetched_val;
+}
+#define AO_HAVE_fetch_compare_and_swap
 
 #if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
     && !defined(__ARM_ARCH_6T2__) && !defined(__ARM_ARCH_6Z__) \

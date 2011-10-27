@@ -92,6 +92,27 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
 }
 #define AO_HAVE_compare_and_swap
 
-/* FIXME: implement AO_fetch_compare_and_swap */
+AO_INLINE AO_t
+AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+{
+  AO_t __oldval;
+
+  __asm__ __volatile__(
+     "1:\n"
+     "  %0 = memw_locked(%2);\n"        /* load and reserve            */
+     "  {\n"
+     "    p2 = cmp.eq(%0,%3);\n"        /* if load is not equal to     */
+     "    if (!p2.new) jump:nt 2f; \n"  /* old_val, fail               */
+     "  }\n"
+     "  memw_locked(%2,p1) = %4;\n"     /* else store conditional      */
+     "  if (!p1) jump 1b;\n"            /* retry if lost reservation   */
+     "2:\n"
+     : "=&r" (__oldval), "+m"(*addr)
+     : "r" (addr), "r" (old_val), "r" (new_val)
+     : "p1", "p2", "memory"
+  );
+  return __oldval;
+}
+#define AO_HAVE_fetch_compare_and_swap
 
 #include "../ao_t_is_int.h"

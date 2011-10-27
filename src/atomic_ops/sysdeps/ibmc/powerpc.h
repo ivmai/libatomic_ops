@@ -120,5 +120,43 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
 }
 #define AO_HAVE_compare_and_swap_full
 
-/* FIXME: We should also implement AO_fetch_compare_and_swap,           */
-/* AO_fetch_and_add, AO_and/or/xor primitives directly.                 */
+/*AO_INLINE AO_t
+AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+{
+# error FIXME Implement me
+}
+#define AO_HAVE_fetch_compare_and_swap*/
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_acquire(volatile AO_t *addr, AO_t old_val,
+                                  AO_t new_val)
+{
+  AO_t result = AO_fetch_compare_and_swap(addr, old_val, new_val);
+  AO_lwsync();
+  return result;
+}
+#define AO_HAVE_fetch_compare_and_swap_acquire
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_release(volatile AO_t *addr, AO_t old_val,
+                                  AO_t new_val)
+{
+  AO_lwsync();
+  return AO_fetch_compare_and_swap(addr, old_val, new_val);
+}
+#define AO_HAVE_fetch_compare_and_swap_release
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
+                               AO_t new_val)
+{
+  AO_t result;
+  AO_lwsync();
+  result = AO_fetch_compare_and_swap(addr, old_val, new_val);
+  AO_lwsync();
+  return result;
+}
+#define AO_HAVE_fetch_compare_and_swap_full
+
+/* FIXME: We should also implement AO_fetch_and_add, AO_and, AO_or,     */
+/* AO_xor primitives directly.                                          */

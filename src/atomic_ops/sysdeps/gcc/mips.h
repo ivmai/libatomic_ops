@@ -96,9 +96,7 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
 
 /* FIXME: implement AO_fetch_compare_and_swap */
 
-/*
- * FIXME: We should also implement fetch_and_add and or primitives
- * directly.
- */
+/* FIXME: We should also implement AO_fetch_and_add, AO_and, AO_or,     */
+/* AO_xor primitives directly.                                          */
 
 #include "../ao_t_is_int.h"
