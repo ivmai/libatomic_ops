@@ -4,6 +4,7 @@
 * Fix AO_test_and_set_full (gcc/x86[_64].h) to work-around a bug in LLVM v2.7.
 * Fix AO_test_and_set_full on m68k.
 * Fix configure for Cygwin, mingw-w64/32.
+* Fix generalized AO_<type>_fetch_and_add() return type.
 * Fix test_malloc - allocate less memory in case of missing mmap.
 * Implement the basic atomic primitives for the hexagon CPU.
 
