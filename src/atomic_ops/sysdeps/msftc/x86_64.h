@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -74,16 +74,6 @@ AO_fetch_and_sub1_full (volatile AO_t *p)
   return _InterlockedDecrement64((LONGLONG volatile *)p) + 1;
 }
 #define AO_HAVE_fetch_and_sub1_full
-
-AO_INLINE int
-AO_compare_and_swap_full(volatile AO_t *addr,
-                         AO_t old, AO_t new_val)
-{
-    return _InterlockedCompareExchange64((LONGLONG volatile *)addr,
-                                         (LONGLONG)new_val, (LONGLONG)old)
-           == (LONGLONG)old;
-}
-#define AO_HAVE_compare_and_swap_full
 
 AO_INLINE AO_t
 AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,

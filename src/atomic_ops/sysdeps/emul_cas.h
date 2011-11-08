@@ -43,9 +43,6 @@
 # include "standard_ao_double_t.h"
 #endif
 
-int AO_compare_and_swap_emulation(volatile AO_t *addr, AO_t old,
-                                  AO_t new_val);
-
 AO_t AO_fetch_compare_and_swap_emulation(volatile AO_t *addr, AO_t old_val,
                                          AO_t new_val);
 
@@ -54,10 +51,6 @@ int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
                                                 AO_t new_val1, AO_t new_val2);
 
 void AO_store_full_emulation(volatile AO_t *addr, AO_t val);
-
-#define AO_compare_and_swap_full(addr, old, newval) \
-       AO_compare_and_swap_emulation(addr, old, newval)
-#define AO_HAVE_compare_and_swap_full
 
 #ifndef AO_HAVE_fetch_compare_and_swap_full
 # define AO_fetch_compare_and_swap_full(addr, old, newval) \

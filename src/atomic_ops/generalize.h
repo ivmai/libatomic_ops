@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2004 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,6 +45,49 @@
 
 #ifndef AO_ATOMIC_OPS_H
 # error This file should not be included directly.
+#endif
+
+/* Emulate AO_compare_and_swap() via AO_fetch_compare_and_swap().       */
+#if defined(AO_HAVE_fetch_compare_and_swap) \
+    && !defined(AO_HAVE_compare_and_swap)
+  AO_INLINE int
+  AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+  {
+    return AO_fetch_compare_and_swap(addr, old_val, new_val) == old_val;
+  }
+# define AO_HAVE_compare_and_swap
+#endif
+
+#if defined(AO_HAVE_fetch_compare_and_swap_full) \
+    && !defined(AO_HAVE_compare_and_swap_full)
+  AO_INLINE int
+  AO_compare_and_swap_full(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+  {
+    return AO_fetch_compare_and_swap_full(addr, old_val, new_val) == old_val;
+  }
+# define AO_HAVE_compare_and_swap_full
+#endif
+
+#if defined(AO_HAVE_fetch_compare_and_swap_acquire) \
+    && !defined(AO_HAVE_compare_and_swap_acquire)
+  AO_INLINE int
+  AO_compare_and_swap_acquire(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+  {
+    return AO_fetch_compare_and_swap_acquire(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_compare_and_swap_acquire
+#endif
+
+#if defined(AO_HAVE_fetch_compare_and_swap_release) \
+    && !defined(AO_HAVE_compare_and_swap_release)
+  AO_INLINE int
+  AO_compare_and_swap_release(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+  {
+    return AO_fetch_compare_and_swap_release(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_compare_and_swap_release
 #endif
 
 #if AO_CHAR_TS_T

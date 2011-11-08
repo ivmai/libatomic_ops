@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -349,8 +349,11 @@
 #endif
 
 #if defined(AO_REQUIRE_CAS) && !defined(AO_HAVE_compare_and_swap) \
+    && !defined(AO_HAVE_fetch_compare_and_swap) \
     && !defined(AO_HAVE_compare_and_swap_full) \
-    && !defined(AO_HAVE_compare_and_swap_acquire)
+    && !defined(AO_HAVE_fetch_compare_and_swap_full) \
+    && !defined(AO_HAVE_compare_and_swap_acquire) \
+    && !defined(AO_HAVE_fetch_compare_and_swap_acquire)
 # if defined(AO_CAN_EMUL_CAS)
 #   include "atomic_ops/sysdeps/emul_cas.h"
 # else
@@ -369,7 +372,8 @@
 
 /* The generalization section.  */
 #if !defined(AO_GENERALIZE_TWICE) && defined(AO_CAN_EMUL_CAS) \
-    && !defined(AO_HAVE_compare_and_swap_full)
+    && !defined(AO_HAVE_compare_and_swap_full) \
+    && !defined(AO_HAVE_fetch_compare_and_swap_full)
 # define AO_GENERALIZE_TWICE
 #endif
 

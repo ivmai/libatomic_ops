@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -100,22 +100,6 @@ AO_fetch_and_sub1_full(volatile AO_t *p)
 #define AO_HAVE_fetch_and_sub1_full
 
 #ifdef AO_ASSUME_WINDOWS98
-/* Returns nonzero if the comparison succeeded. */
-AO_INLINE int
-AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
-{
-# ifdef AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE
-    return _InterlockedCompareExchange((PVOID AO_INTERLOCKED_VOLATILE *)addr,
-                                       (PVOID)new_val, (PVOID)old)
-           == (PVOID)old;
-# else
-    return _InterlockedCompareExchange((LONG AO_INTERLOCKED_VOLATILE *)addr,
-                                       (LONG)new_val, (LONG)old)
-           == (LONG)old;
-# endif
-}
-# define AO_HAVE_compare_and_swap_full
-
   AO_INLINE AO_t
   AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                                  AO_t new_val)
@@ -126,8 +110,8 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
                                         (PVOID)new_val, (PVOID)old_val);
 #   else
       return (AO_t)_InterlockedCompareExchange(
-                                         (LONG AO_INTERLOCKED_VOLATILE *)addr,
-                                         (LONG)new_val, (LONG)old_val);
+                                        (LONG AO_INTERLOCKED_VOLATILE *)addr,
+                                        (LONG)new_val, (LONG)old_val);
 #   endif
   }
 # define AO_HAVE_fetch_compare_and_swap_full
