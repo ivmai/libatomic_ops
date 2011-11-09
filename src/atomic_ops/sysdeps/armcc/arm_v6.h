@@ -175,28 +175,29 @@ __asm {
 #define AO_HAVE_fetch_and_sub1
 
 /* NEC LE-IT: compare and swap */
-/* Returns nonzero if the comparison succeeded. */
-AO_INLINE int
-AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
-{
-         AO_t result,tmp;
+#ifndef AO_GENERALIZE_ASM_BOOL_CAS
+  /* Returns nonzero if the comparison succeeded.       */
+  AO_INLINE int
+  AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+  {
+    AO_t result, tmp;
 
-retry:
-__asm__ {
-        mov     result, #2
-        ldrex   tmp, [addr]
-        teq     tmp, old_val
+  retry:
+    __asm__ {
+      mov     result, #2
+      ldrex   tmp, [addr]
+      teq     tmp, old_val
 #     ifdef __thumb__
         it      eq
 #     endif
-        strexeq result, new_val, [addr]
-        teq     result, #1
-        beq     retry
-        }
-
-        return !(result&2);
-}
-#define AO_HAVE_compare_and_swap
+      strexeq result, new_val, [addr]
+      teq     result, #1
+      beq     retry
+    }
+    return !(result&2);
+  }
+# define AO_HAVE_compare_and_swap
+#endif /* !AO_GENERALIZE_ASM_BOOL_CAS */
 
 AO_INLINE AO_t
 AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)

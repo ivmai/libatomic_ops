@@ -130,17 +130,20 @@ AO_test_and_set_full (volatile AO_TS_t *addr)
 }
 #define AO_HAVE_test_and_set_full
 
-/* Returns nonzero if the comparison succeeded. */
-AO_INLINE int
-AO_compare_and_swap_full (volatile AO_t *addr, AO_t old, AO_t new_val)
-{
-  char result;
-  __asm__ __volatile__ ("lock; cmpxchgl %2, %0; setz %1"
-                        : "=m"(*addr), "=a"(result)
-                        : "r" (new_val), "a"(old) : "memory");
-  return (int) result;
-}
-#define AO_HAVE_compare_and_swap_full
+#ifndef AO_GENERALIZE_ASM_BOOL_CAS
+  /* Returns nonzero if the comparison succeeded.       */
+  AO_INLINE int
+  AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
+  {
+    char result;
+    __asm__ __volatile__ ("lock; cmpxchgl %2, %0; setz %1"
+                          : "=m"(*addr), "=a"(result)
+                          : "r" (new_val), "a"(old)
+                          : "memory");
+    return (int) result;
+  }
+# define AO_HAVE_compare_and_swap_full
+#endif /* !AO_GENERALIZE_ASM_BOOL_CAS */
 
 AO_INLINE AO_t
 AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
