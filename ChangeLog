@@ -1,10 +1,37 @@
 
+[7.3alpha2] (unreleased)
+========================
+
+* Add '-no-undefined' to LDFLAGS in src/Makefile.am.
+* Add AO_and, AO_xor atomic operations.
+* Add and fill in AUTHORS, TODO files.
+* Add atomic_ops.pc.in and atomic_ops-uninstalled.pc.in to pkgconfig folder.
+* Adjust AO_..._H macros in public headers.
+* Define AO macros for libatomic_ops version identification.
+* Eliminate compiler warnings in various functions and macros.
+* Improve Makefile for MS VC++; pass '-W3' option to MS compiler.
+* Merge all Makefile.am files in src tree.
+* Minor code refactoring of atomic_ops.c, generic_pthread.h.
+* Minor configure build improvements (e.g., ensure proper autoconf version).
+* Place only major per-release changes description to ChangeLog (this file).
+* Remove all auto-generated files except for generalize-small.h from the repo.
+* Remove duplicate doc/COPYING and empty NEWS files.
+* Replace atomic_ops_malloc static mmap-related empty functions with macros.
+* Show extra compiler warnings (GCC only).
+* Turn off AO primitives inlining if AO_NO_INLINE defined.
+
+
+[7.2 release] (unreleased)
+==========================
+
+* Define and use AO_PTRDIFF_T in tests for casts between pointer and integer.
 * Fix AO_compare_and_swap return type for s390 and PowerPC.
 * Fix AO_test_and_setXX in tests/list_atomic.template.
 * Fix AO_test_and_set_full (gcc/x86[_64].h) to work-around a bug in LLVM v2.7.
 * Fix AO_test_and_set_full on m68k.
 * Fix configure for Cygwin, mingw-w64/32.
 * Fix generalized AO_<type>_fetch_and_add() return type.
+* Fix test_atomic_include for the case of missing CAS primitive.
 * Fix test_malloc - allocate less memory in case of missing mmap.
 * Implement the basic atomic primitives for the hexagon CPU.
 
