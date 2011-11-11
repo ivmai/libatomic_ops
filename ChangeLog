@@ -1,6 +1,6 @@
 
-[7.3alpha2] (unreleased)
-========================
+[7.3alpha2] (development)
+=========================
 
 * Add '-no-undefined' to LDFLAGS in src/Makefile.am.
 * Add AO_and, AO_xor atomic operations.
@@ -21,8 +21,8 @@
 * Turn off AO primitives inlining if AO_NO_INLINE defined.
 
 
-[7.2 release] (unreleased)
-==========================
+[7.2] (candidate)
+=================
 
 * Define and use AO_PTRDIFF_T in tests for casts between pointer and integer.
 * Fix AO_compare_and_swap return type for s390 and PowerPC.
@@ -97,8 +97,8 @@
 * gcc/powerpc.h: Consider __NO_LWSYNC__.
 
 
-[7.1 release] 2008-02-11
-========================
+[7.1] 2008-02-11
+================
 
 * Add test_and_set, AO_double_compare_and_swap generalizations.
 * Conditionally add compare_double_and_swap_double (x86).
@@ -113,8 +113,8 @@
 * Use _InterlockedExchangeAdd for MS VC (x86).
 
 
-[7.0 release] 2007-06-28
-========================
+[7.0] 2007-06-28
+================
 
 * Add 64-bit version of AO_load_acquire for PowerPC.
 * Add support of x86 and x86_64 for MS VC.
@@ -124,8 +124,8 @@
 * Update README to reflect C++0x effort.
 
 
-[1.2 release] 2006-07-11
-========================
+[1.2] 2006-07-11
+================
 
 * Add prototypes to suppress compiler warnings.
 * Add simple VxWorks support.
@@ -138,16 +138,16 @@
 * Use new intrinsics available in MSVC 2003 and MSVC 2005.
 
 
-[1.1 release] 2005-09-27
-========================
+[1.1] 2005-09-27
+================
 
 * Add and use read_ordered.h.
 * Change function naming from "byte" to "char".
 * Fix AO_test_and_set for ARM; define AO_CAN_EMUL_CAS.
 
 
-[1.0 release] 2005-03-21
-========================
+[1.0] 2005-03-21
+================
 
 * Fix various bugs.
 * Add atomic_ops primitives for different sized data.
