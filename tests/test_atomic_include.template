@@ -25,7 +25,8 @@ void test_atomicXX(void)
 # if defined(AO_HAVE_test_and_setXX)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
-# if defined(AO_HAVE_double_t)
+# if defined(AO_HAVE_compare_and_swap_doubleXX) \
+     || defined(AO_HAVE_compare_double_and_swap_doubleXX)
     AO_double_t w;
     w.AO_val1 = 0;
     w.AO_val2 = 0;
