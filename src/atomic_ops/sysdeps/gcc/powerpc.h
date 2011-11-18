@@ -174,7 +174,6 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
     AO_t oldval;
     int result = 0;
 #   if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
-      /* FIXME: Completely untested.    */
       __asm__ __volatile__(
         "1:ldarx %0,0,%2\n"     /* load and reserve             */
         "cmpd %0, %4\n"         /* if load is not equal to      */
@@ -237,7 +236,6 @@ AO_INLINE AO_t
 AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 {
   AO_t fetched_val;
-  /* FIXME: Completely untested.        */
 # if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
     __asm__ __volatile__(
       "1:ldarx %0,0,%1\n"       /* load and reserve             */
@@ -301,14 +299,13 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr) {
   AO_t oldval;
   AO_t newval;
 #if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
-/* FIXME: Completely untested.                                          */
   __asm__ __volatile__(
                "1:ldarx %0,0,%2\n"   /* load and reserve                */
                "add %1,%0,%3\n"      /* increment                       */
                "stdcx. %1,0,%2\n"    /* store conditional               */
                "bne- 1b\n"           /* retry if lost reservation       */
               : "=&r"(oldval), "=&r"(newval)
-               : "r"(addr), "r"(incr)
+              : "r"(addr), "r"(incr)
               : "memory", "cr0");
 #else
   __asm__ __volatile__(
@@ -317,7 +314,7 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr) {
                "stwcx. %1,0,%2\n"    /* store conditional               */
                "bne- 1b\n"           /* retry if lost reservation       */
               : "=&r"(oldval), "=&r"(newval)
-               : "r"(addr), "r"(incr)
+              : "r"(addr), "r"(incr)
               : "memory", "cr0");
 #endif
   return oldval;
