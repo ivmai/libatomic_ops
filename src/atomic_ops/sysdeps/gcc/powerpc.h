@@ -246,7 +246,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
       "stdcx. %2,0,%1\n"        /* else store conditional       */
       "bne- 1b\n"               /* retry if lost reservation    */
       "2:\n"
-      : "=&r"(fetched_val),
+      : "=&r"(fetched_val)
       : "r"(addr), "r"(new_val), "r"(old_val)
       : "memory", "cr0");
 # else
@@ -257,7 +257,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
       "stwcx. %2,0,%1\n"        /* else store conditional       */
       "bne- 1b\n"               /* retry if lost reservation    */
       "2:\n"
-      : "=&r"(fetched_val),
+      : "=&r"(fetched_val)
       : "r"(addr), "r"(new_val), "r"(old_val)
       : "memory", "cr0");
 # endif
