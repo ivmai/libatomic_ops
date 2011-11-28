@@ -61,3 +61,5 @@ AO_compare_and_swap(volatile AO_t *addr,
   return (int)was_equal;
 }
 #define AO_HAVE_compare_and_swap
+
+/* FIXME: implement AO_fetch_compare_and_swap */

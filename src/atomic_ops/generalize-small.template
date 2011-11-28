@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2004 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -152,6 +152,43 @@
 # define AO_XSIZE_store_full(addr, val) \
                         (AO_XSIZE_store_release(addr, val), AO_nop_full())
 # define AO_HAVE_XSIZE_store_full
+#endif
+
+/* AO_XSIZE_compare_and_swap */
+#if defined(AO_HAVE_XSIZE_fetch_compare_and_swap_full) \
+    && !defined(AO_HAVE_XSIZE_compare_and_swap_full)
+  AO_INLINE int
+  AO_XSIZE_compare_and_swap_full(volatile XCTYPE *addr, XCTYPE old_val,
+                                 XCTYPE new_val)
+  {
+    return AO_XSIZE_fetch_compare_and_swap_full(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_XSIZE_compare_and_swap_full
+#endif
+
+#if defined(AO_HAVE_XSIZE_fetch_compare_and_swap_acquire) \
+    && !defined(AO_HAVE_XSIZE_compare_and_swap_acquire)
+  AO_INLINE int
+  AO_XSIZE_compare_and_swap_acquire(volatile XCTYPE *addr, XCTYPE old_val,
+                                    XCTYPE new_val)
+  {
+    return AO_XSIZE_fetch_compare_and_swap_acquire(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_XSIZE_compare_and_swap_acquire
+#endif
+
+#if defined(AO_HAVE_XSIZE_fetch_compare_and_swap_release) \
+    && !defined(AO_HAVE_XSIZE_compare_and_swap_release)
+  AO_INLINE int
+  AO_XSIZE_compare_and_swap_release(volatile XCTYPE *addr, XCTYPE old_val,
+                                    XCTYPE new_val)
+  {
+    return AO_XSIZE_fetch_compare_and_swap_release(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_XSIZE_compare_and_swap_release
 #endif
 
 /* XSIZE_fetch_and_add */

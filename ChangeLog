@@ -4,11 +4,13 @@
 
 * Add '-no-undefined' to LDFLAGS in src/Makefile.am.
 * Add AO_and, AO_xor atomic operations.
+* Add AO_fetch_compare_and_swap primitives.
 * Add and fill in AUTHORS, TODO files.
 * Add atomic_ops.pc.in and atomic_ops-uninstalled.pc.in to pkgconfig folder.
 * Adjust AO_..._H macros in public headers.
 * Define AO macros for libatomic_ops version identification.
 * Eliminate compiler warnings in various functions and macros.
+* Generalize AO_compare_and_swap primitives via AO_fetch_compare_and_swap.
 * Improve Makefile for MS VC++; pass '-W3' option to MS compiler.
 * Merge all Makefile.am files in src tree.
 * Minor code refactoring of atomic_ops.c, generic_pthread.h.

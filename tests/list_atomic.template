@@ -65,4 +65,10 @@ void list_atomicXX(void)
 # else
     "No AO_compare_and_swapXX";
 # endif
+# if defined(AO_HAVE_fetch_compare_and_swapXX)
+    "AO_fetch_compare_and_swapXX(&val, oldval, newval):";
+    AO_fetch_compare_and_swapXX(&val, oldval, newval);
+# else
+    "No AO_fetch_compare_and_swapXX";
+# endif
 }

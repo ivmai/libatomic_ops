@@ -126,22 +126,43 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 }
 #define AO_HAVE_test_and_set_full
 
-/* Returns nonzero if the comparison succeeded. */
-AO_INLINE int
-AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
+#ifndef AO_GENERALIZE_ASM_BOOL_CAS
+  /* Returns nonzero if the comparison succeeded.       */
+  AO_INLINE int
+  AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
+  {
+#   ifdef AO_USE_SYNC_CAS_BUILTIN
+      return (int)__sync_bool_compare_and_swap(addr, old, new_val
+                                               /* empty protection list */);
+#   else
+      char result;
+      __asm__ __volatile__("lock; cmpxchgq %3, %0; setz %1"
+                           : "=m" (*addr), "=a" (result)
+                           : "m" (*addr), "r" (new_val), "a" (old)
+                           : "memory");
+      return (int)result;
+#   endif
+  }
+# define AO_HAVE_compare_and_swap_full
+#endif /* !AO_GENERALIZE_ASM_BOOL_CAS */
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
+                               AO_t new_val)
 {
 # ifdef AO_USE_SYNC_CAS_BUILTIN
-    return (int)__sync_bool_compare_and_swap(addr, old, new_val
-                                             /* empty protection list */);
+    return __sync_val_compare_and_swap(addr, old_val, new_val
+                                       /* empty protection list */);
 # else
-    char result;
-    __asm__ __volatile__("lock; cmpxchgq %3, %0; setz %1"
-                         : "=m" (*addr), "=a" (result)
-                         : "m" (*addr), "r" (new_val), "a" (old) : "memory");
-    return (int) result;
+    AO_t fetched_val;
+    __asm__ __volatile__("lock; cmpxchgq %3, %4"
+                         : "=a" (fetched_val), "=m" (*addr)
+                         : "0" (old_val), "q" (new_val), "m" (*addr)
+                         : "memory");
+    return fetched_val;
 # endif
 }
-#define AO_HAVE_compare_and_swap_full
+#define AO_HAVE_fetch_compare_and_swap_full
 
 #ifdef AO_CMPXCHG16B_AVAILABLE
 

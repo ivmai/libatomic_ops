@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2004 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -152,6 +152,43 @@
 # define AO_char_store_full(addr, val) \
                         (AO_char_store_release(addr, val), AO_nop_full())
 # define AO_HAVE_char_store_full
+#endif
+
+/* AO_char_compare_and_swap */
+#if defined(AO_HAVE_char_fetch_compare_and_swap_full) \
+    && !defined(AO_HAVE_char_compare_and_swap_full)
+  AO_INLINE int
+  AO_char_compare_and_swap_full(volatile char *addr, char old_val,
+                                 char new_val)
+  {
+    return AO_char_fetch_compare_and_swap_full(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_char_compare_and_swap_full
+#endif
+
+#if defined(AO_HAVE_char_fetch_compare_and_swap_acquire) \
+    && !defined(AO_HAVE_char_compare_and_swap_acquire)
+  AO_INLINE int
+  AO_char_compare_and_swap_acquire(volatile char *addr, char old_val,
+                                    char new_val)
+  {
+    return AO_char_fetch_compare_and_swap_acquire(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_char_compare_and_swap_acquire
+#endif
+
+#if defined(AO_HAVE_char_fetch_compare_and_swap_release) \
+    && !defined(AO_HAVE_char_compare_and_swap_release)
+  AO_INLINE int
+  AO_char_compare_and_swap_release(volatile char *addr, char old_val,
+                                    char new_val)
+  {
+    return AO_char_fetch_compare_and_swap_release(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_char_compare_and_swap_release
 #endif
 
 /* char_fetch_and_add */
@@ -582,7 +619,7 @@
 # endif
 #endif /* !AO_NO_DD_ORDERING */
 /*
- * Copyright (c) 2003-2004 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -735,6 +772,43 @@
 # define AO_short_store_full(addr, val) \
                         (AO_short_store_release(addr, val), AO_nop_full())
 # define AO_HAVE_short_store_full
+#endif
+
+/* AO_short_compare_and_swap */
+#if defined(AO_HAVE_short_fetch_compare_and_swap_full) \
+    && !defined(AO_HAVE_short_compare_and_swap_full)
+  AO_INLINE int
+  AO_short_compare_and_swap_full(volatile short *addr, short old_val,
+                                 short new_val)
+  {
+    return AO_short_fetch_compare_and_swap_full(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_short_compare_and_swap_full
+#endif
+
+#if defined(AO_HAVE_short_fetch_compare_and_swap_acquire) \
+    && !defined(AO_HAVE_short_compare_and_swap_acquire)
+  AO_INLINE int
+  AO_short_compare_and_swap_acquire(volatile short *addr, short old_val,
+                                    short new_val)
+  {
+    return AO_short_fetch_compare_and_swap_acquire(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_short_compare_and_swap_acquire
+#endif
+
+#if defined(AO_HAVE_short_fetch_compare_and_swap_release) \
+    && !defined(AO_HAVE_short_compare_and_swap_release)
+  AO_INLINE int
+  AO_short_compare_and_swap_release(volatile short *addr, short old_val,
+                                    short new_val)
+  {
+    return AO_short_fetch_compare_and_swap_release(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_short_compare_and_swap_release
 #endif
 
 /* short_fetch_and_add */
@@ -1165,7 +1239,7 @@
 # endif
 #endif /* !AO_NO_DD_ORDERING */
 /*
- * Copyright (c) 2003-2004 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -1318,6 +1392,43 @@
 # define AO_int_store_full(addr, val) \
                         (AO_int_store_release(addr, val), AO_nop_full())
 # define AO_HAVE_int_store_full
+#endif
+
+/* AO_int_compare_and_swap */
+#if defined(AO_HAVE_int_fetch_compare_and_swap_full) \
+    && !defined(AO_HAVE_int_compare_and_swap_full)
+  AO_INLINE int
+  AO_int_compare_and_swap_full(volatile int *addr, int old_val,
+                                 int new_val)
+  {
+    return AO_int_fetch_compare_and_swap_full(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_int_compare_and_swap_full
+#endif
+
+#if defined(AO_HAVE_int_fetch_compare_and_swap_acquire) \
+    && !defined(AO_HAVE_int_compare_and_swap_acquire)
+  AO_INLINE int
+  AO_int_compare_and_swap_acquire(volatile int *addr, int old_val,
+                                    int new_val)
+  {
+    return AO_int_fetch_compare_and_swap_acquire(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_int_compare_and_swap_acquire
+#endif
+
+#if defined(AO_HAVE_int_fetch_compare_and_swap_release) \
+    && !defined(AO_HAVE_int_compare_and_swap_release)
+  AO_INLINE int
+  AO_int_compare_and_swap_release(volatile int *addr, int old_val,
+                                    int new_val)
+  {
+    return AO_int_fetch_compare_and_swap_release(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_int_compare_and_swap_release
 #endif
 
 /* int_fetch_and_add */

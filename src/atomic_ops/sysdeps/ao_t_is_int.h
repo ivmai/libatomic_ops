@@ -72,6 +72,50 @@
 # define AO_HAVE_int_compare_and_swap
 #endif
 
+/* AO_fetch_compare_and_swap */
+#if defined(AO_HAVE_fetch_compare_and_swap_full) \
+    && !defined(AO_HAVE_int_fetch_compare_and_swap_full)
+# define AO_int_fetch_compare_and_swap_full(addr, old, new_val) \
+       ((int)AO_fetch_compare_and_swap_full((volatile AO_t *)(addr), \
+                                            (AO_t)(old), (AO_t)(new_val)))
+# define AO_HAVE_int_fetch_compare_and_swap_full
+#endif
+#if defined(AO_HAVE_fetch_compare_and_swap_acquire) \
+    && !defined(AO_HAVE_int_fetch_compare_and_swap_acquire)
+# define AO_int_fetch_compare_and_swap_acquire(addr, old, new_val) \
+       ((int)AO_fetch_compare_and_swap_acquire((volatile AO_t *)(addr), \
+                                               (AO_t)(old), (AO_t)(new_val)))
+# define AO_HAVE_int_fetch_compare_and_swap_acquire
+#endif
+#if defined(AO_HAVE_fetch_compare_and_swap_release) \
+    && !defined(AO_HAVE_int_fetch_compare_and_swap_release)
+# define AO_int_fetch_compare_and_swap_release(addr, old, new_val) \
+       ((int)AO_fetch_compare_and_swap_release((volatile AO_t *)(addr), \
+                                               (AO_t)(old), (AO_t)(new_val)))
+# define AO_HAVE_int_fetch_compare_and_swap_release
+#endif
+#if defined(AO_HAVE_fetch_compare_and_swap_write) \
+    && !defined(AO_HAVE_int_fetch_compare_and_swap_write)
+# define AO_int_fetch_compare_and_swap_write(addr, old, new_val) \
+       ((int)AO_fetch_compare_and_swap_write((volatile AO_t *)(addr), \
+                                             (AO_t)(old), (AO_t)(new_val)))
+# define AO_HAVE_int_fetch_compare_and_swap_write
+#endif
+#if defined(AO_HAVE_fetch_compare_and_swap_read) \
+    && !defined(AO_HAVE_int_fetch_compare_and_swap_read)
+# define AO_int_fetch_compare_and_swap_read(addr, old, new_val) \
+       ((int)AO_fetch_compare_and_swap_read((volatile AO_t *)(addr), \
+                                            (AO_t)(old), (AO_t)(new_val)))
+# define AO_HAVE_int_fetch_compare_and_swap_read
+#endif
+#if defined(AO_HAVE_fetch_compare_and_swap) \
+    && !defined(AO_HAVE_int_fetch_compare_and_swap)
+# define AO_int_fetch_compare_and_swap(addr, old, new_val) \
+       ((int)AO_fetch_compare_and_swap((volatile AO_t *)(addr), \
+                                       (AO_t)(old), (AO_t)(new_val)))
+# define AO_HAVE_int_fetch_compare_and_swap
+#endif
+
 /* AO_load */
 #if defined(AO_HAVE_load_acquire) \
     && !defined(AO_HAVE_int_load_acquire)

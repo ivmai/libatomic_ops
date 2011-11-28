@@ -217,21 +217,20 @@ AO_xor_full(volatile AO_t *p, AO_t value)
 }
 #define AO_HAVE_xor_full
 
-AO_INLINE int
-AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
+                               AO_t new_val)
 {
+  AO_t fetched_val;
+
   pthread_mutex_lock(&AO_pt_lock);
-  if (*addr == old)
-    {
-      *addr = new_val;
-      pthread_mutex_unlock(&AO_pt_lock);
-      return 1;
-    }
-  else
-    pthread_mutex_unlock(&AO_pt_lock);
-  return 0;
+  fetched_val = *addr;
+  if (fetched_val == old_val)
+    *addr = new_val;
+  pthread_mutex_unlock(&AO_pt_lock);
+  return fetched_val;
 }
-#define AO_HAVE_compare_and_swap_full
+#define AO_HAVE_fetch_compare_and_swap_full
 
 /* Unlike real architectures, we define both double-width CAS variants. */
 

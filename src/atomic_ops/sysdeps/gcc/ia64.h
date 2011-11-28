@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -157,119 +157,117 @@ AO_int_fetch_and_sub1_release (volatile unsigned int *addr)
 
 #endif /* !_ILP32 */
 
-AO_INLINE int
-AO_compare_and_swap_acquire(volatile AO_t *addr,
-                             AO_t old, AO_t new_val)
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_acquire(volatile AO_t *addr, AO_t old, AO_t new_val)
 {
-  AO_t oldval;
+  AO_t fetched_val;
   AO_MASK(old);
   __asm__ __volatile__(AO_SWIZZLE
                        "mov ar.ccv=%[old] ;; cmpxchg" AO_LEN
                        ".acq %0=[%1],%[new_val],ar.ccv"
-                       : "=r"(oldval) AO_OUT_ADDR
+                       : "=r"(fetched_val) AO_OUT_ADDR
                        : AO_IN_ADDR, [new_val]"r"(new_val), [old]"r"(old)
                        : "memory");
-  return (oldval == old);
+  return fetched_val;
 }
-#define AO_HAVE_compare_and_swap_acquire
+#define AO_HAVE_fetch_compare_and_swap_acquire
 
-AO_INLINE int
-AO_compare_and_swap_release(volatile AO_t *addr,
-                             AO_t old, AO_t new_val)
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_release(volatile AO_t *addr, AO_t old, AO_t new_val)
 {
-  AO_t oldval;
+  AO_t fetched_val;
   AO_MASK(old);
   __asm__ __volatile__(AO_SWIZZLE
                        "mov ar.ccv=%[old] ;; cmpxchg" AO_LEN
                        ".rel %0=[%1],%[new_val],ar.ccv"
-                       : "=r"(oldval) AO_OUT_ADDR
+                       : "=r"(fetched_val) AO_OUT_ADDR
                        : AO_IN_ADDR, [new_val]"r"(new_val), [old]"r"(old)
                        : "memory");
-  return (oldval == old);
+  return fetched_val;
 }
-#define AO_HAVE_compare_and_swap_release
+#define AO_HAVE_fetch_compare_and_swap_release
 
-AO_INLINE int
-AO_char_compare_and_swap_acquire(volatile unsigned char *addr,
-                                 unsigned char old, unsigned char new_val)
+AO_INLINE unsigned char
+AO_char_fetch_compare_and_swap_acquire(volatile unsigned char *addr,
+                                unsigned char old, unsigned char new_val)
 {
-  unsigned char oldval;
+  unsigned char fetched_val;
   __asm__ __volatile__(AO_SWIZZLE
                "mov ar.ccv=%[old] ;; cmpxchg1.acq %0=[%1],%[new_val],ar.ccv"
-               : "=r"(oldval) AO_OUT_ADDR
+               : "=r"(fetched_val) AO_OUT_ADDR
                : AO_IN_ADDR, [new_val]"r"(new_val), [old]"r"((AO_t)old)
                : "memory");
-  return (oldval == old);
+  return fetched_val;
 }
-#define AO_HAVE_char_compare_and_swap_acquire
+#define AO_HAVE_char_fetch_compare_and_swap_acquire
 
-AO_INLINE int
-AO_char_compare_and_swap_release(volatile unsigned char *addr,
-                                 unsigned char old, unsigned char new_val)
+AO_INLINE unsigned char
+AO_char_fetch_compare_and_swap_release(volatile unsigned char *addr,
+                                unsigned char old, unsigned char new_val)
 {
-  unsigned char oldval;
+  unsigned char fetched_val;
   __asm__ __volatile__(AO_SWIZZLE
                 "mov ar.ccv=%[old] ;; cmpxchg1.rel %0=[%1],%[new_val],ar.ccv"
-                : "=r"(oldval) AO_OUT_ADDR
+                : "=r"(fetched_val) AO_OUT_ADDR
                 : AO_IN_ADDR, [new_val]"r"(new_val), [old]"r"((AO_t)old)
                 : "memory");
-  return (oldval == old);
+  return fetched_val;
 }
-#define AO_HAVE_char_compare_and_swap_release
+#define AO_HAVE_char_fetch_compare_and_swap_release
 
-AO_INLINE int
-AO_short_compare_and_swap_acquire(volatile unsigned short *addr,
-                                  unsigned short old, unsigned short new_val)
+AO_INLINE unsigned short
+AO_short_fetch_compare_and_swap_acquire(volatile unsigned short *addr,
+                                unsigned short old, unsigned short new_val)
 {
-  unsigned short oldval;
+  unsigned short fetched_val;
   __asm__ __volatile__(AO_SWIZZLE
                 "mov ar.ccv=%[old] ;; cmpxchg2.acq %0=[%1],%[new_val],ar.ccv"
-                : "=r"(oldval) AO_OUT_ADDR
+                : "=r"(fetched_val) AO_OUT_ADDR
                 : AO_IN_ADDR, [new_val]"r"(new_val), [old]"r"((AO_t)old)
                 : "memory");
-  return (oldval == old);
+  return fetched_val;
 }
-#define AO_HAVE_short_compare_and_swap_acquire
+#define AO_HAVE_short_fetch_compare_and_swap_acquire
 
-AO_INLINE int
-AO_short_compare_and_swap_release(volatile unsigned short *addr,
-                                  unsigned short old, unsigned short new_val)
+AO_INLINE unsigned short
+AO_short_fetch_compare_and_swap_release(volatile unsigned short *addr,
+                                unsigned short old, unsigned short new_val)
 {
-  unsigned short oldval;
+  unsigned short fetched_val;
   __asm__ __volatile__(AO_SWIZZLE
                 "mov ar.ccv=%[old] ;; cmpxchg2.rel %0=[%1],%[new_val],ar.ccv"
-                : "=r"(oldval) AO_OUT_ADDR
+                : "=r"(fetched_val) AO_OUT_ADDR
                 : AO_IN_ADDR, [new_val]"r"(new_val), [old]"r"((AO_t)old)
                 : "memory");
-  return (oldval == old);
+  return fetched_val;
 }
-#define AO_HAVE_short_compare_and_swap_release
+#define AO_HAVE_short_fetch_compare_and_swap_release
 
 #ifndef _ILP32
 
-AO_INLINE int
-AO_int_compare_and_swap_acquire(volatile unsigned int *addr,
+AO_INLINE unsigned int
+AO_int_fetch_compare_and_swap_acquire(volatile unsigned int *addr,
                                 unsigned int old, unsigned int new_val)
 {
-  unsigned int oldval;
+  unsigned int fetched_val;
   __asm__ __volatile__("mov ar.ccv=%3 ;; cmpxchg4.acq %0=[%1],%2,ar.ccv"
-                       : "=r"(oldval)
+                       : "=r"(fetched_val)
                        : AO_IN_ADDR, "r"(new_val), "r"((AO_t)old) : "memory");
-  return (oldval == old);
+  return fetched_val;
 }
-#define AO_HAVE_int_compare_and_swap_acquire
+#define AO_HAVE_int_fetch_compare_and_swap_acquire
 
-AO_INLINE int
-AO_int_compare_and_swap_release(volatile unsigned int *addr,
+AO_INLINE unsigned int
+AO_int_fetch_compare_and_swap_release(volatile unsigned int *addr,
                                 unsigned int old, unsigned int new_val)
 {
-  unsigned int oldval;
+  unsigned int fetched_val;
   __asm__ __volatile__("mov ar.ccv=%3 ;; cmpxchg4.rel %0=[%1],%2,ar.ccv"
-                       : "=r"(oldval)
+                       : "=r"(fetched_val)
                        : AO_IN_ADDR, "r"(new_val), "r"((AO_t)old) : "memory");
-  return (oldval == old);
+  return fetched_val;
 }
-#define AO_HAVE_int_compare_and_swap_release
+#define AO_HAVE_int_fetch_compare_and_swap_release
 
 #endif /* !_ILP32 */
 
