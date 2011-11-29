@@ -11,7 +11,9 @@
 * Define AO macros for libatomic_ops version identification.
 * Eliminate compiler warnings in various functions and macros.
 * Generalize AO_compare_and_swap primitives via AO_fetch_compare_and_swap.
+* Generalize acquire/release/full CAS primitives for MIPS
 * Improve Makefile for MS VC++; pass '-W3' option to MS compiler.
+* Include ao_t_is_int.h from atomic_ops.h after first generalization pass
 * Merge all Makefile.am files in src tree.
 * Minor code refactoring of atomic_ops.c, generic_pthread.h.
 * Minor configure build improvements (e.g., ensure proper autoconf version).
@@ -32,6 +34,7 @@
 * Fix AO_test_and_set_full (gcc/x86[_64].h) to work-around a bug in LLVM v2.7.
 * Fix AO_test_and_set_full on m68k.
 * Fix configure for Cygwin, mingw-w64/32.
+* Fix generalization for IA-64 (regarding AO_or, AO_..._read/write primitives)
 * Fix generalized AO_<type>_fetch_and_add() return type.
 * Fix test_atomic_include for the case of missing CAS primitive.
 * Fix test_malloc - allocate less memory in case of missing mmap.
