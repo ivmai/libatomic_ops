@@ -279,6 +279,7 @@ AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr) {
 #define AO_HAVE_fetch_and_add_full
 
 #if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
+  /* Empty */
 #else
-# include "../ao_t_is_int.h"
+# define AO_T_IS_INT
 #endif

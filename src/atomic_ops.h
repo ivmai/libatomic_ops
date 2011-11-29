@@ -371,6 +371,16 @@
 /* In fact, we observe that this converges after a small fixed number   */
 /* of iterations, usually one.                                          */
 #include "atomic_ops/generalize.h"
+
+#ifdef AO_T_IS_INT
+  /* Included after the first generalization pass.      */
+# include "atomic_ops/sysdeps/ao_t_is_int.h"
+# ifndef AO_GENERALIZE_TWICE
+    /* Always generalize again. */
+#   define AO_GENERALIZE_TWICE
+# endif
+#endif /* AO_T_IS_INT */
+
 #ifdef AO_GENERALIZE_TWICE
 # include "atomic_ops/generalize.h"
 #endif

@@ -99,4 +99,4 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
  * directly.
  */
 
-#include "../ao_t_is_int.h"
+#define AO_T_IS_INT

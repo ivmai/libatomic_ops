@@ -179,4 +179,4 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 #define AO_HAVE_compare_double_and_swap_double_full
 #endif
 
-#include "../ao_t_is_int.h"
+#define AO_T_IS_INT

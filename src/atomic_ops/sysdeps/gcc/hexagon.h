@@ -92,7 +92,4 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
 }
 #define AO_HAVE_compare_and_swap
 
-/* Generalize first to define more AO_int_... primitives.       */
-#include "../../generalize.h"
-
-#include "../ao_t_is_int.h"
+#define AO_T_IS_INT
