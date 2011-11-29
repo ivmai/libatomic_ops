@@ -1,3 +1,10 @@
+2011-11-29  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/hexagon.h: Include generalize.h file
+	before ao_t_is_int.h one.
+	* src/atomic_ops/sysdeps/gcc/ia64.h: Likewise.
+	* src/atomic_ops/sysdeps/hpc/ia64.h: Likewise.
+
 2011-11-03  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/generalize-small.template
