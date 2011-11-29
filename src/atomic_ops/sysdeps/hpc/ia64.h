@@ -149,5 +149,5 @@ AO_short_fetch_compare_and_swap_release(volatile unsigned short *addr,
 #define AO_HAVE_short_fetch_compare_and_swap_release
 
 #ifndef __LP64__
-# include "../ao_t_is_int.h"
+# define AO_T_IS_INT
 #endif
