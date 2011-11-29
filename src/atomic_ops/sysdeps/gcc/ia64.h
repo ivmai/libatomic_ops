@@ -52,7 +52,7 @@
 # define AO_OUT_ADDR
 # define AO_SWIZZLE
 # define AO_MASK(ptr) /* empty */
-#endif
+#endif /* !_ILP32 */
 
 AO_INLINE void
 AO_nop_full(void)
@@ -108,54 +108,6 @@ AO_fetch_and_sub1_release (volatile AO_t *addr)
   return result;
 }
 #define AO_HAVE_fetch_and_sub1_release
-
-#ifndef _ILP32
-
-AO_INLINE unsigned int
-AO_int_fetch_and_add1_acquire (volatile unsigned int *addr)
-{
-  unsigned int result;
-
-  __asm__ __volatile__ ("fetchadd4.acq %0=[%1],1":
-                        "=r" (result): AO_IN_ADDR :"memory");
-  return result;
-}
-#define AO_HAVE_int_fetch_and_add1_acquire
-
-AO_INLINE unsigned int
-AO_int_fetch_and_add1_release (volatile unsigned int *addr)
-{
-  unsigned int result;
-
-  __asm__ __volatile__ ("fetchadd4.rel %0=[%1],1":
-                        "=r" (result): AO_IN_ADDR :"memory");
-  return result;
-}
-#define AO_HAVE_int_fetch_and_add1_release
-
-AO_INLINE unsigned int
-AO_int_fetch_and_sub1_acquire (volatile unsigned int *addr)
-{
-  unsigned int result;
-
-  __asm__ __volatile__ ("fetchadd4.acq %0=[%1],-1":
-                        "=r" (result): AO_IN_ADDR :"memory");
-  return result;
-}
-#define AO_HAVE_int_fetch_and_sub1_acquire
-
-AO_INLINE unsigned int
-AO_int_fetch_and_sub1_release (volatile unsigned int *addr)
-{
-  unsigned int result;
-
-  __asm__ __volatile__ ("fetchadd4.rel %0=[%1],-1":
-                        "=r" (result): AO_IN_ADDR :"memory");
-  return result;
-}
-#define AO_HAVE_int_fetch_and_sub1_release
-
-#endif /* !_ILP32 */
 
 AO_INLINE AO_t
 AO_fetch_compare_and_swap_acquire(volatile AO_t *addr, AO_t old, AO_t new_val)
@@ -243,39 +195,83 @@ AO_short_fetch_compare_and_swap_release(volatile unsigned short *addr,
 }
 #define AO_HAVE_short_fetch_compare_and_swap_release
 
-#ifndef _ILP32
+#ifdef _ILP32
 
-AO_INLINE unsigned int
-AO_int_fetch_compare_and_swap_acquire(volatile unsigned int *addr,
-                                unsigned int old, unsigned int new_val)
-{
-  unsigned int fetched_val;
-  __asm__ __volatile__("mov ar.ccv=%3 ;; cmpxchg4.acq %0=[%1],%2,ar.ccv"
-                       : "=r"(fetched_val)
-                       : AO_IN_ADDR, "r"(new_val), "r"((AO_t)old) : "memory");
-  return fetched_val;
-}
-#define AO_HAVE_int_fetch_compare_and_swap_acquire
+# define AO_T_IS_INT
 
-AO_INLINE unsigned int
-AO_int_fetch_compare_and_swap_release(volatile unsigned int *addr,
-                                unsigned int old, unsigned int new_val)
-{
-  unsigned int fetched_val;
-  __asm__ __volatile__("mov ar.ccv=%3 ;; cmpxchg4.rel %0=[%1],%2,ar.ccv"
-                       : "=r"(fetched_val)
-                       : AO_IN_ADDR, "r"(new_val), "r"((AO_t)old) : "memory");
-  return fetched_val;
-}
-#define AO_HAVE_int_fetch_compare_and_swap_release
+  /* FIXME: Add compare_double_and_swap_double for the _ILP32 case.     */
+#else
 
+  AO_INLINE unsigned int
+  AO_int_fetch_and_add1_acquire(volatile unsigned int *addr)
+  {
+    unsigned int result;
+    __asm__ __volatile__("fetchadd4.acq %0=[%1],1"
+                         : "=r" (result) : AO_IN_ADDR
+                         : "memory");
+    return result;
+  }
+# define AO_HAVE_int_fetch_and_add1_acquire
+
+  AO_INLINE unsigned int
+  AO_int_fetch_and_add1_release(volatile unsigned int *addr)
+  {
+    unsigned int result;
+    __asm__ __volatile__("fetchadd4.rel %0=[%1],1"
+                         : "=r" (result) : AO_IN_ADDR
+                         : "memory");
+    return result;
+  }
+# define AO_HAVE_int_fetch_and_add1_release
+
+  AO_INLINE unsigned int
+  AO_int_fetch_and_sub1_acquire(volatile unsigned int *addr)
+  {
+    unsigned int result;
+    __asm__ __volatile__("fetchadd4.acq %0=[%1],-1"
+                         : "=r" (result) : AO_IN_ADDR
+                         : "memory");
+    return result;
+  }
+# define AO_HAVE_int_fetch_and_sub1_acquire
+
+  AO_INLINE unsigned int
+  AO_int_fetch_and_sub1_release(volatile unsigned int *addr)
+  {
+    unsigned int result;
+    __asm__ __volatile__("fetchadd4.rel %0=[%1],-1"
+                         : "=r" (result) : AO_IN_ADDR
+                         : "memory");
+    return result;
+  }
+# define AO_HAVE_int_fetch_and_sub1_release
+
+  AO_INLINE unsigned int
+  AO_int_fetch_compare_and_swap_acquire(volatile unsigned int *addr,
+                                        unsigned int old, unsigned int new_val)
+  {
+    unsigned int fetched_val;
+    __asm__ __volatile__("mov ar.ccv=%3 ;; cmpxchg4.acq %0=[%1],%2,ar.ccv"
+                         : "=r"(fetched_val)
+                         : AO_IN_ADDR, "r"(new_val), "r"((AO_t)old)
+                         : "memory");
+    return fetched_val;
+  }
+# define AO_HAVE_int_fetch_compare_and_swap_acquire
+
+  AO_INLINE unsigned int
+  AO_int_fetch_compare_and_swap_release(volatile unsigned int *addr,
+                                        unsigned int old, unsigned int new_val)
+  {
+    unsigned int fetched_val;
+    __asm__ __volatile__("mov ar.ccv=%3 ;; cmpxchg4.rel %0=[%1],%2,ar.ccv"
+                         : "=r"(fetched_val)
+                         : AO_IN_ADDR, "r"(new_val), "r"((AO_t)old)
+                         : "memory");
+    return fetched_val;
+  }
+# define AO_HAVE_int_fetch_compare_and_swap_release
 #endif /* !_ILP32 */
 
 /* FIXME: Add compare_and_swap_double as soon as there is widely        */
 /* available hardware that implements it.                               */
-
-/* FIXME: Add compare_double_and_swap_double for the _ILP32 case.       */
-
-#ifdef _ILP32
-# define AO_T_IS_INT
-#endif
