@@ -26,6 +26,16 @@
 /* Data dependence does not imply read ordering.  */
 #define AO_NO_DD_ORDERING
 
+#ifdef AO_ICE9A1_LLSC_WAR
+  /* ICE9 rev A1 chip (used in very few systems) is reported to */
+  /* have a low-frequency bug that causes LL to fail.           */
+  /* To workaround, just issue the second 'LL'.                 */
+# define AO_MIPS_LL_FIX(args_str) \
+      "       ll   " args_str "\n"
+#else
+# define AO_MIPS_LL_FIX(args_str) ""
+#endif
+
 AO_INLINE void
 AO_nop_full(void)
 {
@@ -53,6 +63,7 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
       "       .set noreorder\n"
       "       .set nomacro\n"
       "1:     ll   %0, %2\n"
+      AO_MIPS_LL_FIX("%0, %2")
       "       addu %1, %0, %3\n"
       "       sc   %1, %2\n"
       "       beqz %1, 1b\n"
@@ -77,6 +88,7 @@ AO_test_and_set(volatile AO_TS_t *addr)
       "       .set noreorder\n"
       "       .set nomacro\n"
       "1:     ll   %0, %2\n"
+      AO_MIPS_LL_FIX("%0, %2")
       "       move %1, %3\n"
       "       sc   %1, %2\n"
       "       beqz %1, 1b\n"
@@ -102,6 +114,7 @@ AO_test_and_set(volatile AO_TS_t *addr)
         "       .set noreorder      \n"
         "       .set nomacro        \n"
         "1:     ll      %0, %1      \n"
+        AO_MIPS_LL_FIX("%0, %1")
         "       bne     %0, %4, 2f  \n"
         "        move   %0, %3      \n"
         "       sc      %0, %1      \n"
@@ -129,6 +142,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
       "       .set noreorder\n"
       "       .set nomacro\n"
       "1:     ll   %0, %2\n"
+      AO_MIPS_LL_FIX("%0, %2")
       "       bne  %0, %4, 2f\n"
       "       move %1, %3\n"
       "       sc   %1, %2\n"
