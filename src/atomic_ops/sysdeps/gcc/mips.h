@@ -40,37 +40,63 @@ AO_nop_full(void)
 }
 #define AO_HAVE_nop_full
 
-AO_INLINE int
-AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
+#ifndef AO_GENERALIZE_ASM_BOOL_CAS
+  AO_INLINE int
+  AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
+  {
+    register int was_equal = 0;
+    register int temp;
+
+    __asm__ __volatile__(
+        "       .set push           \n"
+        "       .set mips2          \n"
+        "       .set noreorder      \n"
+        "       .set nomacro        \n"
+        "1:     ll      %0, %1      \n"
+        "       bne     %0, %4, 2f  \n"
+        "        move   %0, %3      \n"
+        "       sc      %0, %1      \n"
+        "       .set pop            \n"
+        "       beqz    %0, 1b      \n"
+        "       li      %2, 1       \n"
+        "2:                           "
+        : "=&r" (temp), "+R" (*addr), "+r" (was_equal)
+        : "r" (new_val), "r" (old)
+        : "memory");
+    return was_equal;
+  }
+# define AO_HAVE_compare_and_swap
+#endif /* !AO_GENERALIZE_ASM_BOOL_CAS */
+
+AO_INLINE AO_t
+AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
 {
-  register int was_equal = 0;
+  register int fetched_val;
   register int temp;
 
   __asm__ __volatile__(
-      "       .set push           \n"
-      "       .set mips2          \n"
-      "       .set noreorder      \n"
-      "       .set nomacro        \n"
-      "1:     ll      %0, %1      \n"
-      "       bne     %0, %4, 2f  \n"
-      "        move   %0, %3      \n"
-      "       sc      %0, %1      \n"
-      "       .set pop            \n"
-      "       beqz    %0, 1b      \n"
-      "       li      %2, 1       \n"
-      "2:                           "
-      : "=&r" (temp), "+R" (*addr), "+r" (was_equal)
-      : "r" (new_val), "r" (old)
+      "       .set push\n"
+      "       .set mips2\n"
+      "       .set noreorder\n"
+      "       .set nomacro\n"
+      "1:     ll   %0, %2\n"
+      "       bne  %0, %4, 2f\n"
+      "       move %1, %3\n"
+      "       sc   %1, %2\n"
+      "       beqz %1, 1b\n"
+      "       nop\n"
+      "       .set pop\n"
+      "2:"
+      : "=&r" (fetched_val), "=&r" (temp), "=m" (*addr)
+      : "r" (new_val), "Jr" (old)
       : "memory");
-  return was_equal;
+  return (AO_t)fetched_val;
 }
-#define AO_HAVE_compare_and_swap
+#define AO_HAVE_fetch_compare_and_swap
 
 /* CAS primitives with acquire, release and full semantics are  */
 /* generated automatically (and AO_int_... primitives are       */
 /* defined properly after the first generalization pass).       */
-
-/* FIXME: implement AO_fetch_compare_and_swap */
 
 /* FIXME: We should also implement AO_fetch_and_add, AO_and, AO_or,     */
 /* AO_xor primitives directly.                                          */
