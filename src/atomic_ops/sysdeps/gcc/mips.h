@@ -40,6 +40,55 @@ AO_nop_full(void)
 }
 #define AO_HAVE_nop_full
 
+AO_INLINE AO_t
+AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
+{
+  register int result;
+  register int temp;
+
+  __asm__ __volatile__(
+
+      "       .set push\n"
+      "       .set mips2\n"
+      "       .set noreorder\n"
+      "       .set nomacro\n"
+      "1:     ll   %0, %2\n"
+      "       addu %1, %0, %3\n"
+      "       sc   %1, %2\n"
+      "       beqz %1, 1b\n"
+      "       nop\n"
+      "       .set pop "
+      : "=&r" (result), "=&r" (temp), "=m" (*addr)
+      : "Ir" (incr)
+      : "memory");
+  return (AO_t)result;
+}
+#define AO_HAVE_fetch_and_add
+
+AO_INLINE AO_TS_VAL_t
+AO_test_and_set(volatile AO_TS_t *addr)
+{
+  register int oldval;
+  register int temp;
+
+  __asm__ __volatile__(
+      "       .set push\n"
+      "       .set mips2\n"
+      "       .set noreorder\n"
+      "       .set nomacro\n"
+      "1:     ll   %0, %2\n"
+      "       move %1, %3\n"
+      "       sc   %1, %2\n"
+      "       beqz %1, 1b\n"
+      "       nop\n"
+      "       .set pop "
+      : "=&r" (oldval), "=&r" (temp), "=m" (*addr)
+      : "r" (1)
+      : "memory");
+  return (AO_TS_VAL_t)oldval;
+}
+#define AO_HAVE_test_and_set
+
 #ifndef AO_GENERALIZE_ASM_BOOL_CAS
   AO_INLINE int
   AO_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
@@ -98,7 +147,6 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
 /* generated automatically (and AO_int_... primitives are       */
 /* defined properly after the first generalization pass).       */
 
-/* FIXME: We should also implement AO_fetch_and_add, AO_and, AO_or,     */
-/* AO_xor primitives directly.                                          */
+/* FIXME: Implement AO_and/or/xor primitives directly.          */
 
 #define AO_T_IS_INT
