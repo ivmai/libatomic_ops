@@ -226,7 +226,8 @@
 #   include "atomic_ops/sysdeps/gcc/x86.h"
 # endif /* __i386__ */
 # if defined(__x86_64__)
-#   if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2)
+#   if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2)) \
+       && !defined(AO_USE_SYNC_CAS_BUILTIN)
       /* It is safe to use __sync CAS built-in on this architecture.    */
 #     define AO_USE_SYNC_CAS_BUILTIN
 #   endif
@@ -302,7 +303,7 @@
 #     include "atomic_ops/sysdeps/gcc/x86.h"
 #   endif /* __i386__ */
 #   if defined(__x86_64__)
-#     if __INTEL_COMPILER > 1110
+#     if (__INTEL_COMPILER > 1110) && !defined(AO_USE_SYNC_CAS_BUILTIN)
 #       define AO_USE_SYNC_CAS_BUILTIN
 #     endif
 #     include "atomic_ops/sysdeps/gcc/x86_64.h"
