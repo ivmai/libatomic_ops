@@ -28,7 +28,7 @@ if test "$GCC" = yes; then
       AC_MSG_RESULT(-fPIC)
       PICFLAG=-fPIC
       # Workaround: at least GCC 3.4.6 does not define this macro.
-      CFLAGS="$CFLAGS -D__PIC__=1"
+      CFLAGS="-D__PIC__=1 $CFLAGS"
       ;;
     *-*-cygwin* | *-*-mingw*)
       # Cygwin and Mingw[-w32/64] do not need -fPIC.
@@ -39,18 +39,18 @@ if test "$GCC" = yes; then
       ;;
   esac
   # Output all warnings.
-  CFLAGS="$CFLAGS -Wall -Wextra"
+  CFLAGS="-Wall -Wextra $CFLAGS"
 else
   case "$host" in
     *-*-hpux*)
       AC_MSG_RESULT("+Z")
       PICFLAG="+Z"
-      CFLAGS="$CFLAGS +O2 -mt"
+      CFLAGS="+O2 -mt $CFLAGS"
       ;;
     *-*-solaris*)
       AC_MSG_RESULT(-Kpic)
       PICFLAG=-Kpic
-      CFLAGS="$CFLAGS -O"
+      CFLAGS="-O $CFLAGS"
       need_asm=true
       ;;
     *-*-linux*)
@@ -63,7 +63,7 @@ else
       ;;
   esac
 fi
-CFLAGS="$CFLAGS -DNDEBUG"
+CFLAGS="-DNDEBUG $CFLAGS"
 AC_SUBST(PICFLAG)
 AC_SUBST(DEFS)
 
