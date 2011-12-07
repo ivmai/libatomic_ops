@@ -37,7 +37,6 @@
 
 # define _InterlockedIncrement       InterlockedIncrement
 # define _InterlockedDecrement       InterlockedDecrement
-# define _InterlockedExchange        InterlockedExchange
 # define _InterlockedExchangeAdd     InterlockedExchangeAdd
 # define _InterlockedCompareExchange InterlockedCompareExchange
 
@@ -50,8 +49,6 @@
 #     include <intrin.h>
 #   endif
 
-#   pragma intrinsic (_ReadWriteBarrier)
-
 # else /* elif _MSC_VER < 1400 */
 #  ifdef __cplusplus
      extern "C" {
@@ -59,7 +56,6 @@
    LONG __cdecl _InterlockedIncrement(LONG volatile *);
    LONG __cdecl _InterlockedDecrement(LONG volatile *);
    LONG __cdecl _InterlockedExchangeAdd(LONG volatile *, LONG);
-   LONG __cdecl _InterlockedExchange(LONG volatile *, LONG);
    LONG __cdecl _InterlockedCompareExchange(LONG volatile *,
                                         LONG /* Exchange */, LONG /* Comp */);
 #  ifdef __cplusplus
@@ -69,7 +65,6 @@
 
 # pragma intrinsic (_InterlockedIncrement)
 # pragma intrinsic (_InterlockedDecrement)
-# pragma intrinsic (_InterlockedExchange)
 # pragma intrinsic (_InterlockedExchangeAdd)
 # pragma intrinsic (_InterlockedCompareExchange)
 

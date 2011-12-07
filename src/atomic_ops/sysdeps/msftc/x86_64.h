@@ -46,11 +46,8 @@
 /* Assume _MSC_VER >= 1400 */
 #include <intrin.h>
 
-#pragma intrinsic (_ReadWriteBarrier)
-
 #pragma intrinsic (_InterlockedIncrement64)
 #pragma intrinsic (_InterlockedDecrement64)
-#pragma intrinsic (_InterlockedExchange64)
 #pragma intrinsic (_InterlockedExchangeAdd64)
 #pragma intrinsic (_InterlockedCompareExchange64)
 
