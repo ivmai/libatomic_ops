@@ -18,6 +18,7 @@
 * Minor code refactoring of atomic_ops.c, generic_pthread.h.
 * Minor configure build improvements (e.g., ensure proper autoconf version).
 * Place only major per-release changes description to ChangeLog (this file).
+* Recognize AO_PREFER_GENERALIZED macro to favor generalization over assembly.
 * Remove all auto-generated files except for generalize-small.h from the repo.
 * Remove duplicate doc/COPYING and empty NEWS files.
 * Replace atomic_ops_malloc static mmap-related empty functions with macros.
