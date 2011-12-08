@@ -61,6 +61,7 @@ AO_nop_full(void)
 }
 #define AO_HAVE_nop_full
 
+#ifndef AO_PREFER_GENERALIZED
 AO_INLINE AO_t
 AO_fetch_and_add1_acquire (volatile AO_t *addr)
 {
@@ -108,6 +109,7 @@ AO_fetch_and_sub1_release (volatile AO_t *addr)
   return result;
 }
 #define AO_HAVE_fetch_and_sub1_release
+#endif /* !AO_PREFER_GENERALIZED */
 
 AO_INLINE AO_t
 AO_fetch_compare_and_swap_acquire(volatile AO_t *addr, AO_t old, AO_t new_val)
@@ -202,6 +204,7 @@ AO_short_fetch_compare_and_swap_release(volatile unsigned short *addr,
   /* FIXME: Add compare_double_and_swap_double for the _ILP32 case.     */
 #else
 
+# ifndef AO_PREFER_GENERALIZED
   AO_INLINE unsigned int
   AO_int_fetch_and_add1_acquire(volatile unsigned int *addr)
   {
@@ -245,6 +248,7 @@ AO_short_fetch_compare_and_swap_release(volatile unsigned short *addr,
     return result;
   }
 # define AO_HAVE_int_fetch_and_sub1_release
+# endif /* !AO_PREFER_GENERALIZED */
 
   AO_INLINE unsigned int
   AO_int_fetch_compare_and_swap_acquire(volatile unsigned int *addr,

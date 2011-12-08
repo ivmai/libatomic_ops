@@ -63,15 +63,18 @@
 #  endif
 # endif /* _MSC_VER < 1400 */
 
-# pragma intrinsic (_InterlockedIncrement)
-# pragma intrinsic (_InterlockedDecrement)
-# pragma intrinsic (_InterlockedExchangeAdd)
+# if !defined(AO_PREFER_GENERALIZED) || !defined(AO_ASSUME_WINDOWS98)
+#   pragma intrinsic (_InterlockedIncrement)
+#   pragma intrinsic (_InterlockedDecrement)
+#   pragma intrinsic (_InterlockedExchangeAdd)
+# endif /* !AO_PREFER_GENERALIZED */
 # pragma intrinsic (_InterlockedCompareExchange)
 
 # define AO_INTERLOCKED_VOLATILE volatile
 
 #endif /* _MSC_VER >= 1310 */
 
+#if !defined(AO_PREFER_GENERALIZED) || !defined(AO_ASSUME_WINDOWS98)
 AO_INLINE AO_t
 AO_fetch_and_add_full(volatile AO_t *p, AO_t incr)
 {
@@ -93,6 +96,7 @@ AO_fetch_and_sub1_full(volatile AO_t *p)
   return _InterlockedDecrement((LONG AO_INTERLOCKED_VOLATILE *)p) + 1;
 }
 #define AO_HAVE_fetch_and_sub1_full
+#endif /* !AO_PREFER_GENERALIZED */
 
 #ifdef AO_ASSUME_WINDOWS98
   AO_INLINE AO_t

@@ -96,6 +96,7 @@ __asm {
         more flexible, other instructions can be done between the LDREX and STREX accesses.
    "
 */
+#ifndef AO_PREFER_GENERALIZED
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set(volatile AO_TS_t *addr) {
 
@@ -173,6 +174,7 @@ __asm {
         return result;
 }
 #define AO_HAVE_fetch_and_sub1
+#endif /* !AO_PREFER_GENERALIZED */
 
 /* NEC LE-IT: compare and swap */
 #ifndef AO_GENERALIZE_ASM_BOOL_CAS

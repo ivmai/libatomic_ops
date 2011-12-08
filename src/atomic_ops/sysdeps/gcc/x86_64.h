@@ -42,6 +42,7 @@ AO_nop_full(void)
 /* As far as we can tell, the lfence and sfence instructions are not    */
 /* currently needed or useful for cached memory accesses.               */
 
+#ifndef AO_PREFER_GENERALIZED
 AO_INLINE AO_t
 AO_fetch_and_add_full (volatile AO_t *p, AO_t incr)
 {
@@ -53,6 +54,7 @@ AO_fetch_and_add_full (volatile AO_t *p, AO_t incr)
   return result;
 }
 #define AO_HAVE_fetch_and_add_full
+#endif /* !AO_PREFER_GENERALIZED */
 
 AO_INLINE unsigned char
 AO_char_fetch_and_add_full (volatile unsigned char *p, unsigned char incr)
@@ -90,6 +92,7 @@ AO_int_fetch_and_add_full (volatile unsigned int *p, unsigned int incr)
 }
 #define AO_HAVE_int_fetch_and_add_full
 
+#ifndef AO_PREFER_GENERALIZED
 AO_INLINE void
 AO_and_full (volatile AO_t *p, AO_t value)
 {
@@ -113,6 +116,7 @@ AO_xor_full (volatile AO_t *p, AO_t value)
                         "=m" (*p) : "r" (value), "m" (*p) : "memory");
 }
 #define AO_HAVE_xor_full
+#endif /* !AO_PREFER_GENERALIZED */
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)

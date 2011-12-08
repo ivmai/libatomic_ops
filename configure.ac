@@ -83,6 +83,8 @@ AH_TEMPLATE([AO_TRACE_MALLOC], [Trace AO_malloc/free calls (for debug only)])
 # These macros are tested in public headers
 AH_TEMPLATE([AO_GENERALIZE_ASM_BOOL_CAS],
         [Force compare_and_swap definition via fetch_compare_and_swap])
+AH_TEMPLATE([AO_PREFER_GENERALIZED],
+        [Prefer generalized definitions to direct assembly-based ones])
 AH_TEMPLATE([AO_USE_PTHREAD_DEFS],
         [Emulate atomic operations via slow and async-signal-unsafe \
          pthread locking])

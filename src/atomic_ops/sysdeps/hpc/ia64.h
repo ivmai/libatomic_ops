@@ -49,6 +49,7 @@ AO_nop_full(void)
 }
 #define AO_HAVE_nop_full
 
+#ifndef AO_PREFER_GENERALIZED
 AO_INLINE AO_t
 AO_fetch_and_add1_acquire (volatile AO_t *p)
 {
@@ -80,6 +81,7 @@ AO_fetch_and_sub1_release (volatile AO_t *p)
                        _LDHINT_NONE, _UP_MEM_FENCE);
 }
 #define AO_HAVE_fetch_and_sub1_release
+#endif /* !AO_PREFER_GENERALIZED */
 
 AO_INLINE AO_t
 AO_fetch_compare_and_swap_acquire(volatile AO_t *addr, AO_t old_val,

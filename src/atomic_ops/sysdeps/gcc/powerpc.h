@@ -102,6 +102,7 @@ AO_store_release(volatile AO_t *addr, AO_t value)
 }
 #define AO_HAVE_store_release
 
+#ifndef AO_PREFER_GENERALIZED
 /* This is similar to the code in the garbage collector.  Deleting      */
 /* this and having it synthesized from compare_and_swap would probably  */
 /* only cost us a load immediate instruction.                           */
@@ -165,6 +166,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
   return result;
 }
 #define AO_HAVE_test_and_set_full
+#endif /* !AO_PREFER_GENERALIZED */
 
 #ifndef AO_GENERALIZE_ASM_BOOL_CAS
 
@@ -294,6 +296,7 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 }
 #define AO_HAVE_fetch_compare_and_swap_full
 
+#ifndef AO_PREFER_GENERALIZED
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *addr, AO_t incr) {
   AO_t oldval;
@@ -345,6 +348,7 @@ AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr) {
   return result;
 }
 #define AO_HAVE_fetch_and_add_full
+#endif /* !AO_PREFER_GENERALIZED */
 
 #if defined(__powerpc64__) || defined(__ppc64__) || defined(__64BIT__)
   /* Empty */

@@ -27,6 +27,7 @@ AO_nop_full(void)
 /* The Hexagon has load-locked, store-conditional primitives, and so    */
 /* resulting code is very nearly identical to that of PowerPC.          */
 
+#ifndef AO_PREFER_GENERALIZED
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
 {
@@ -67,6 +68,7 @@ AO_test_and_set(volatile AO_TS_t *addr)
   return (AO_TS_VAL_t)oldval;
 }
 #define AO_HAVE_test_and_set
+#endif /* !AO_PREFER_GENERALIZED */
 
 #ifndef AO_GENERALIZE_ASM_BOOL_CAS
   AO_INLINE int

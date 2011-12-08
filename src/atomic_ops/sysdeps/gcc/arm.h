@@ -145,6 +145,7 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
       interrupt latencies. LDREX, STREX are more flexible, other instructions
       can be done between the LDREX and STREX accesses."
 */
+#ifndef AO_PREFER_GENERALIZED
 #if !defined(AO_FORCE_USE_SWP) || defined(__thumb2__)
   /* But, on the other hand, there could be a considerable performance  */
   /* degradation in case of a race.  Eg., test_atomic.c executing       */
@@ -238,6 +239,7 @@ AO_fetch_and_sub1(volatile AO_t *p)
   return result;
 }
 #define AO_HAVE_fetch_and_sub1
+#endif /* !AO_PREFER_GENERALIZED */
 
 /* NEC LE-IT: compare and swap */
 #ifndef AO_GENERALIZE_ASM_BOOL_CAS
@@ -351,6 +353,8 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 #endif /* __ARM_ARCH_x */
 
 #if !defined(AO_HAVE_test_and_set_full) && !defined(AO_HAVE_test_and_set) \
+    && (!defined(AO_PREFER_GENERALIZED) \
+        || !defined(AO_HAVE_fetch_compare_and_swap)) \
     && !defined(__ARM_ARCH_2__) && !defined(__ARM_ARCH_6M__)
   AO_INLINE AO_TS_VAL_t
   AO_test_and_set_full(volatile AO_TS_t *addr)
