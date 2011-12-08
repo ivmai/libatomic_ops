@@ -50,6 +50,7 @@ AO_nop_full(void)
 }
 #define AO_HAVE_nop_full
 
+#ifndef AO_PREFER_GENERALIZED
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
 {
@@ -100,6 +101,9 @@ AO_test_and_set(volatile AO_TS_t *addr)
   return (AO_TS_VAL_t)oldval;
 }
 #define AO_HAVE_test_and_set
+
+  /* FIXME: Implement AO_and/or/xor primitives directly.        */
+#endif /* !AO_PREFER_GENERALIZED */
 
 #ifndef AO_GENERALIZE_ASM_BOOL_CAS
   AO_INLINE int
@@ -160,7 +164,5 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
 /* CAS primitives with acquire, release and full semantics are  */
 /* generated automatically (and AO_int_... primitives are       */
 /* defined properly after the first generalization pass).       */
-
-/* FIXME: Implement AO_and/or/xor primitives directly.          */
 
 #define AO_T_IS_INT
