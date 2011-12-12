@@ -63,7 +63,13 @@ else
       ;;
   esac
 fi
-CFLAGS="-DNDEBUG $CFLAGS"
+
+AC_ARG_ENABLE(assertions,
+        [AC_HELP_STRING([--enable-assertions], [Assertion checking])])
+if test "$enable_assertions" != yes; then
+  AC_DEFINE([NDEBUG], 1, [Define to disable assertion checking.])
+fi
+
 AC_SUBST(PICFLAG)
 AC_SUBST(DEFS)
 
