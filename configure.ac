@@ -38,8 +38,16 @@ if test "$GCC" = yes; then
       PICFLAG=-fPIC
       ;;
   esac
+
   # Output all warnings.
-  CFLAGS="-Wall -Wextra $CFLAGS"
+  AC_MSG_CHECKING(for gcc -Wextra)
+  old_CFLAGS="$CFLAGS"
+  CFLAGS="-Wextra $CFLAGS"
+  AC_TRY_COMPILE([],[], [ac_cv_cc_wextra=yes], [ac_cv_cc_wextra=no])
+  CFLAGS="$old_CFLAGS"
+  AC_MSG_RESULT($ac_cv_cc_wextra)
+  AS_IF([test "$ac_cv_cc_wextra" = yes], [WEXTRA="-Wextra"], [WEXTRA="-W"])
+  CFLAGS="-Wall $WEXTRA $CFLAGS"
 else
   case "$host" in
     *-*-hpux*)
