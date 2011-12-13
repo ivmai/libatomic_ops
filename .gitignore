@@ -9,22 +9,20 @@ Makefile
 /config.status
 /libatomic_ops-*
 
-/src/*.a
-/src/*.exe
-/src/*.la
-/src/*.lib
-/src/*.lo
-/src/*.o
-/src/*.obj
+*.a
+*.exe
+*.la
+*.lib
+*.lo
+*.o
+*.obj
+
 /src/.deps/
 /src/.libs/
 /src/config.h
 /src/config.h.in~
 /src/stamp-h1
 
-/tests/*.exe
-/tests/*.o
-/tests/*.obj
 /tests/.deps/
 /tests/core
 /tests/list_atomic.i
