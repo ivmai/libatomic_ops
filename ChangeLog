@@ -9,6 +9,7 @@
 * Add atomic_ops.pc.in and atomic_ops-uninstalled.pc.in to pkgconfig folder.
 * Adjust AO_..._H macros in public headers.
 * Define AO macros for libatomic_ops version identification.
+* Do not define NDEBUG if '--enable-assertions' passed to configure.
 * Eliminate compiler warnings in various functions and macros.
 * Generalize AO_compare_and_swap primitives via AO_fetch_compare_and_swap.
 * Generalize acquire/release/full CAS primitives for MIPS
