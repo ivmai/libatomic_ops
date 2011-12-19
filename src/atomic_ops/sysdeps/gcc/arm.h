@@ -61,6 +61,26 @@
          && !defined(__ARM_ARCH_5T__) && !defined(__ARM_ARCH_5TE__) \
          && !defined(__ARM_ARCH_5TEJ__) && !defined(__ARM_ARCH_6M__)) \
         || defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__))
+# define AO_ARM_HAVE_LDREX
+# if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
+     && !defined(__ARM_ARCH_6T2__) && !defined(__ARM_ARCH_6Z__) \
+     && !defined(__ARM_ARCH_6ZT2__) && (!defined(__thumb__) \
+              || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
+                  && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__)))
+    /* LDREXD/STREXD present in ARMv6K/M+ (see gas/config/tc-arm.c)       */
+    /* In the Thumb mode, this works only starting from ARMv7 (except for */
+    /* the base and 'M' models).                                          */
+#   define AO_ARM_HAVE_LDREXD
+# endif /* ARMv7+ */
+#endif /* ARMv6+ */
+
+#if !defined(__ARM_ARCH_2__) && !defined(__ARM_ARCH_6M__) \
+    && !defined(__thumb2__)
+# define AO_ARM_HAVE_SWP
+                /* Note: ARMv6M is excluded due to no ARM mode support. */
+#endif /* !__thumb2__ */
+
+#ifdef AO_ARM_HAVE_LDREX
 
 #include "../standard_ao_double_t.h"
 
@@ -147,13 +167,13 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
       can be done between the LDREX and STREX accesses."
 */
 #ifndef AO_PREFER_GENERALIZED
-#if !defined(AO_FORCE_USE_SWP) || defined(__thumb2__)
+#if !defined(AO_FORCE_USE_SWP) || !defined(AO_ARM_HAVE_SWP)
   /* But, on the other hand, there could be a considerable performance  */
   /* degradation in case of a race.  Eg., test_atomic.c executing       */
   /* test_and_set test on a dual-core ARMv7 processor using LDREX/STREX */
   /* showed around 35 times lower performance than that using SWP.      */
   /* To force use of SWP instruction, use -D AO_FORCE_USE_SWP option    */
-  /* (this is ignored in the Thumb-2 mode as SWP is missing there).     */
+  /* (the latter is ignored if SWP instruction is unsupported).         */
   AO_INLINE AO_TS_VAL_t
   AO_test_and_set(volatile AO_TS_t *addr)
   {
@@ -294,14 +314,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 }
 #define AO_HAVE_fetch_compare_and_swap
 
-#if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
-    && !defined(__ARM_ARCH_6T2__) && !defined(__ARM_ARCH_6Z__) \
-    && !defined(__ARM_ARCH_6ZT2__) && (!defined(__thumb__) \
-              || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
-                  && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__)))
-  /* LDREXD/STREXD present in ARMv6K/M+ (see gas/config/tc-arm.c)       */
-  /* In the Thumb mode, this works only starting from ARMv7 (except for */
-  /* the base and 'M' models).                                          */
+#ifdef AO_ARM_HAVE_LDREXD
   AO_INLINE int
   AO_compare_double_and_swap_double(volatile AO_double_t *addr,
                                     AO_t old_val1, AO_t old_val2,
@@ -331,7 +344,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     return !result;   /* if succeded, return 1 else 0 */
   }
 # define AO_HAVE_compare_double_and_swap_double
-#endif
+#endif /* AO_ARM_HAVE_LDREXD */
 
 #else
 /* pre ARMv6 architectures ... */
@@ -350,13 +363,11 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 /* cleared the reservation.  They should, but there is some doubt that  */
 /* this is currently always the case, e.g., for Linux.                  */
 
-/* ARMv6M does not support ARM mode.    */
-#endif /* __ARM_ARCH_x */
+#endif /* !AO_ARM_HAVE_LDREX */
 
 #if !defined(AO_HAVE_test_and_set_full) && !defined(AO_HAVE_test_and_set) \
-    && (!defined(AO_PREFER_GENERALIZED) \
-        || !defined(AO_HAVE_fetch_compare_and_swap)) \
-    && !defined(__ARM_ARCH_2__) && !defined(__ARM_ARCH_6M__)
+    && defined (AO_ARM_HAVE_SWP) && (!defined(AO_PREFER_GENERALIZED) \
+                                || !defined(AO_HAVE_fetch_compare_and_swap))
   AO_INLINE AO_TS_VAL_t
   AO_test_and_set_full(volatile AO_TS_t *addr)
   {
@@ -381,4 +392,4 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     return oldval;
   }
 # define AO_HAVE_test_and_set_full
-#endif /* !AO_HAVE_test_and_set[_full] */
+#endif /* !AO_HAVE_test_and_set[_full] && AO_ARM_HAVE_SWP */
