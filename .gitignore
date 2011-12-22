@@ -5,6 +5,7 @@ Makefile
 /pkgconfig/atomic_ops.pc
 /pkgconfig/atomic_ops-uninstalled.pc
 /autom4te.cache/
+/config.cache
 /config.log
 /config.status
 /libatomic_ops-*
