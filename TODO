@@ -7,10 +7,6 @@ Add C++0x ATM (atomic memory operations) layer.
 FIXME tasks
 ===========
 
-Linux/x86 + GCC v4.6.1: make check (test_stack) fails.
-This looks to be a bug in GCC (the problem is with the inlined code of
-AO_compare_double_and_swap_double_full in AO_stack_pop_acquire in PIC mode).
-
 iPhone 3GS + GCC v4.2.1 (based on Apple build 5555): test_atomic fails:
 Illegal instruction.
 
