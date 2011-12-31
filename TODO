@@ -6,8 +6,3 @@ Add C++0x ATM (atomic memory operations) layer.
 
 FIXME tasks
 ===========
-
-iPhone 3GS + GCC v4.2.1 (based on Apple build 5555): test_atomic fails:
-Illegal instruction.
-
-iPhone 3GS + GCC v4.2.1: test_stack fails: Bus error.
