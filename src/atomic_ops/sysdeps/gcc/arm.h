@@ -120,7 +120,7 @@ AO_load(const volatile AO_t *addr)
  * Support engineers response for behaviour of ARMv6:
  *
    Core1        Core2          SUCCESS
-   ===================================
+   == == == == == == == == == == == ==
    LDREX(x)
    STREX(x)                    Yes
    -----------------------------------
