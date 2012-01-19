@@ -1,3 +1,9 @@
+2012-01-19  Ivan Maidanski <ivmai@mail.ru>
+
+	* tests/test_atomic.c (main): Put "void" keyword into the arguments
+	specification of the function prototype.
+	* tests/test_stack.c (main): Likewise.
+
 2011-12-16  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/gcc/arm.h (__ARM_ARCH_7__, __ARM_ARCH_7A__):
