@@ -83,7 +83,7 @@ void print_list(void)
     printf("%d\n", p -> data);
 }
 
-static char marks[MAX_NTHREADS * MAX_NTHREADS];
+static char marks[MAX_NTHREADS * (MAX_NTHREADS + 1) / 2 + 1];
 
 void check_list(int n)
 {
@@ -91,16 +91,19 @@ void check_list(int n)
   int i;
 
   for (i = 1; i <= n; ++i) marks[i] = 0;
+
   for (p = (list_element *)AO_REAL_HEAD_PTR(the_list);
        p != 0;
        p = (list_element *)AO_REAL_NEXT_PTR(p -> next))
     {
-      if (p -> data > n || p -> data <= 0)
-        fprintf(stderr, "Found erroneous list element %d\n", p -> data);
-      if (marks[p -> data] != 0)
-        fprintf(stderr, "Found duplicate list element %d\n", p -> data);
-      marks[p -> data] = 1;
+      i = p -> data;
+      if (i > n || i <= 0)
+        fprintf(stderr, "Found erroneous list element %d\n", i);
+      if (marks[i] != 0)
+        fprintf(stderr, "Found duplicate list element %d\n", i);
+      marks[i] = 1;
     }
+
   for (i = 1; i <= n; ++i)
     if (marks[i] != 1)
       fprintf(stderr, "Missing list element %d\n", i);
