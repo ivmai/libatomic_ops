@@ -164,7 +164,7 @@ int test_and_set_test(void)
 
 #endif /* defined(AO_HAVE_test_and_set_acquire) */
 
-int main()
+int main(void)
 {
   test_atomic();
   test_atomic_acquire();
