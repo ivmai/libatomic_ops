@@ -74,7 +74,7 @@ void add_elements(int n)
   AO_stack_push(&the_list, (AO_t *)le);
 }
 
-void print_list()
+void print_list(void)
 {
   list_element *p;
 
