@@ -235,11 +235,9 @@ int msb(size_t s)
   int result = 0;
   int v;
   if ((s & 0xff) != s) {
-    /* The following shift often generates warnings on 32-bit arch's    */
-    /* That's OK, because it will never be executed there.              */
-    /* Doing the shift only in a conditional expression suppresses the  */
-    /* warning with the modern compilers.                               */
-    if (sizeof(size_t) > 4 && (v = s >> 32) != 0)
+    /* The following is a tricky code ought to be equivalent to         */
+    /* "(v = s >> 32) != 0" but suppresses warnings on 32-bit arch's.   */
+    if (sizeof(size_t) > 4 && (v = s >> (sizeof(size_t) > 4 ? 32 : 0)) != 0)
       {
         s = v;
         result += 32;
