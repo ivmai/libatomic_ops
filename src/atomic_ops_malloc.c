@@ -204,10 +204,6 @@ retry:
 /* of total size 2**i bytes.                                    */
 AO_stack_t AO_free_list[LOG_MAX_SIZE+1];
 
-/* Chunk free list, linked through first word in chunks.        */
-/* All entries of size CHUNK_SIZE.                              */
-AO_stack_t AO_chunk_free_list;
-
 /* Break up the chunk, and add it to the object free list for   */
 /* the given size.  Sz must be a power of two.                  */
 /* We have exclusive access to chunk.                           */
@@ -224,13 +220,13 @@ add_chunk_as(void * chunk, size_t sz, unsigned log_sz)
   }
 }
 
-static int msbs[16] = {0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4};
+static const int msbs[16] = {0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4};
 
 /* Return the position of the most significant set bit in the   */
 /* argument.                                                    */
 /* We follow the conventions of ffs(), i.e. the least           */
 /* significant bit is number one.                               */
-int msb(size_t s)
+static int msb(size_t s)
 {
   int result = 0;
   int v;
