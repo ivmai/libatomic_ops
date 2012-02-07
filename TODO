@@ -4,3 +4,5 @@ Add C++0x ATM (atomic memory operations) layer.
 
 
 == FIXME tasks ==
+
+clang-1.1/x86: make check (test_stack) fails.
