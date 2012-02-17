@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script.
 AC_INIT([libatomic_ops],[7.3alpha1],gc@linux.hpl.hp.com)
 
-AC_PREREQ(2.64)
+AC_PREREQ(2.63)
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR(src/atomic_ops.c)
 AC_CONFIG_MACRO_DIR([m4])
