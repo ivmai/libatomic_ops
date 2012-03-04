@@ -38,7 +38,7 @@ void AO_free(void *);
 
 void * AO_malloc(size_t);
 
-/* Allow use of mmpa to grow the heap.  No-op on some platforms.        */
+/* Allow use of mmap to grow the heap.  No-op on some platforms.        */
 void AO_malloc_enable_mmap(void);
 
 #endif /* !AO_MALLOC_H */
