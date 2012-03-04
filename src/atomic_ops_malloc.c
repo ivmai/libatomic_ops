@@ -57,7 +57,6 @@
 char AO_initial_heap[AO_INITIAL_HEAP_SIZE];
 
 static volatile AO_t initial_heap_ptr = (AO_t)AO_initial_heap;
-static volatile char *initial_heap_lim = AO_initial_heap + AO_INITIAL_HEAP_SIZE;
 
 #if defined(HAVE_MMAP)
 
@@ -172,51 +171,49 @@ AO_malloc_enable_mmap(void)
 static char *
 get_chunk(void)
 {
-  char *initial_ptr;
   char *my_chunk_ptr;
-  char * my_lim;
 
-retry:
-  initial_ptr = (char *)AO_load(&initial_heap_ptr);
-  my_chunk_ptr = (char *)(((AO_t)initial_ptr + (ALIGNMENT - 1))
-                          & ~(ALIGNMENT - 1));
-  if (initial_ptr != my_chunk_ptr)
-    {
-      /* Align correctly.  If this fails, someone else did it for us.   */
-      AO_compare_and_swap_acquire(&initial_heap_ptr, (AO_t)initial_ptr,
-                                  (AO_t)my_chunk_ptr);
-    }
-  my_lim = my_chunk_ptr + CHUNK_SIZE;
-  if (my_lim <= initial_heap_lim)
-    {
-      if (!AO_compare_and_swap(&initial_heap_ptr, (AO_t)my_chunk_ptr,
-                                                  (AO_t)my_lim))
-        goto retry;
+  for (;;) {
+    char *initial_ptr = (char *)AO_load(&initial_heap_ptr);
+
+    my_chunk_ptr = (char *)(((AO_t)initial_ptr + (ALIGNMENT - 1))
+                            & ~(ALIGNMENT - 1));
+    if (initial_ptr != my_chunk_ptr)
+      {
+        /* Align correctly.  If this fails, someone else did it for us. */
+        (void)AO_compare_and_swap_acquire(&initial_heap_ptr,
+                                    (AO_t)initial_ptr, (AO_t)my_chunk_ptr);
+      }
+
+    if (my_chunk_ptr - AO_initial_heap > AO_INITIAL_HEAP_SIZE - CHUNK_SIZE)
+      break;
+    if (AO_compare_and_swap(&initial_heap_ptr, (AO_t)my_chunk_ptr,
+                            (AO_t)(my_chunk_ptr + CHUNK_SIZE))) {
       return my_chunk_ptr;
     }
+  }
+
   /* We failed.  The initial heap is used up.   */
   my_chunk_ptr = get_mmaped(CHUNK_SIZE);
   assert (!((AO_t)my_chunk_ptr & (ALIGNMENT-1)));
   return my_chunk_ptr;
 }
 
-/* Object free lists.  Ith entry corresponds to objects */
+/* Object free lists.  Ith entry corresponds to objects         */
 /* of total size 2**i bytes.                                    */
 AO_stack_t AO_free_list[LOG_MAX_SIZE+1];
 
 /* Break up the chunk, and add it to the object free list for   */
-/* the given size.  Sz must be a power of two.                  */
-/* We have exclusive access to chunk.                           */
-static void
-add_chunk_as(void * chunk, size_t sz, unsigned log_sz)
+/* the given size.  We have exclusive access to chunk.          */
+static void add_chunk_as(void * chunk, unsigned log_sz)
 {
-  char *first = (char *)chunk + ALIGNMENT - sizeof(AO_t);
-  char *limit = (char *)chunk + CHUNK_SIZE - sz;
-  char *next, *p;
+  size_t ofs, limit;
+  size_t sz = 1 << log_sz;
 
-  for (p = first; p <= limit; p = next) {
-    next = p + sz;
-    AO_stack_push(AO_free_list+log_sz, (AO_t *)p);
+  assert (CHUNK_SIZE >= sz);
+  limit = (size_t)CHUNK_SIZE - sz;
+  for (ofs = ALIGNMENT - sizeof(AO_t); ofs <= limit; ofs += sz) {
+    AO_stack_push(&AO_free_list[log_sz], (AO_t *)((char *)chunk + ofs));
   }
 }
 
@@ -262,17 +259,16 @@ void *
 AO_malloc(size_t sz)
 {
   AO_t *result;
-  size_t adj_sz = sz + sizeof(AO_t);
   int log_sz;
+
   if (sz > CHUNK_SIZE)
     return AO_malloc_large(sz);
-  log_sz = msb(adj_sz-1);
+  log_sz = msb(sz + (sizeof(AO_t) - 1));
   result = AO_stack_pop(AO_free_list+log_sz);
   while (0 == result) {
     void * chunk = get_chunk();
     if (0 == chunk) return 0;
-    adj_sz = 1 << log_sz;
-    add_chunk_as(chunk, adj_sz, log_sz);
+    add_chunk_as(chunk, log_sz);
     result = AO_stack_pop(AO_free_list+log_sz);
   }
   *result = log_sz;
