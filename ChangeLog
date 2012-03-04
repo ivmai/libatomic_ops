@@ -6,7 +6,9 @@
 * Add AO_fetch_compare_and_swap primitives.
 * Add and fill in AUTHORS, TODO files.
 * Add atomic_ops.pc.in and atomic_ops-uninstalled.pc.in to pkgconfig folder.
+* Add autogen.sh file.
 * Adjust AO_..._H macros in public headers.
+* Code refactoring of gcc/arm.h by introducing AO_ARM_HAVE_x macros.
 * Define AO macros for libatomic_ops version identification.
 * Do not define NDEBUG if '--enable-assertions' passed to configure.
 * Eliminate compiler warnings in various functions and macros.
@@ -23,6 +25,8 @@
 * Remove all auto-generated files except for generalize-small.h from the repo.
 * Remove duplicate doc/COPYING and empty NEWS files.
 * Replace atomic_ops_malloc static mmap-related empty functions with macros.
+* Replace pointer relational comparisons with non-pointer ones.
+* Require automake 2.63 instead of v2.64.
 * Show extra compiler warnings (GCC only).
 * Turn off AO primitives inlining if AO_NO_INLINE defined.
 
