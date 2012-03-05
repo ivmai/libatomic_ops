@@ -26,7 +26,7 @@
 * Remove duplicate doc/COPYING and empty NEWS files.
 * Replace atomic_ops_malloc static mmap-related empty functions with macros.
 * Replace pointer relational comparisons with non-pointer ones.
-* Require automake 2.63 instead of v2.64.
+* Require automake 2.61 instead of v2.64.
 * Show extra compiler warnings (GCC only).
 * Turn off AO primitives inlining if AO_NO_INLINE defined.
 
