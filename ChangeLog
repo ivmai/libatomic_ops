@@ -35,6 +35,8 @@
 
 * Define and use AO_PTRDIFF_T in tests for casts between pointer and integer.
 * Fix AO_compare_and_swap return type for s390 and PowerPC.
+* Fix AO_compare_double_and_swap_double_full for gcc/x86 (PIC mode).
+* Fix AO_stack_push_release to workaround bug in clang-1.1/x86 compiler.
 * Fix AO_test_and_setXX in tests/list_atomic.template.
 * Fix AO_test_and_set_full (gcc/x86[_64].h) to work-around a bug in LLVM v2.7.
 * Fix AO_test_and_set_full on m68k.
