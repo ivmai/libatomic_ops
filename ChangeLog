@@ -5,7 +5,6 @@
 * Add AO_and, AO_xor atomic operations.
 * Add AO_fetch_compare_and_swap primitives.
 * Add and fill in AUTHORS, TODO files.
-* Add atomic_ops.pc.in and atomic_ops-uninstalled.pc.in to pkgconfig folder.
 * Add autogen.sh file.
 * Adjust AO_..._H macros in public headers.
 * Code refactoring of gcc/arm.h by introducing AO_ARM_HAVE_x macros.
@@ -33,6 +32,7 @@
 
 == [7.2] (candidate) ==
 
+* Add atomic_ops.pc.in and atomic_ops-uninstalled.pc.in to pkgconfig folder.
 * Define and use AO_PTRDIFF_T in tests for casts between pointer and integer.
 * Fix AO_compare_and_swap return type for s390 and PowerPC.
 * Fix AO_compare_double_and_swap_double_full for gcc/x86 (PIC mode).
