@@ -6,7 +6,7 @@
  * Similar things could be done for PowerPC 64-bit using a VMX data type...
  */
 
-#if (defined(__x86_64__) && defined(__GNUC__)) || defined(_WIN64)
+#if (defined(__x86_64__) && __GNUC__ >= 4) || defined(_WIN64)
 # include <xmmintrin.h>
   typedef __m128 double_ptr_storage;
 #elif defined(_WIN32) && !defined(__GNUC__)
