@@ -169,6 +169,13 @@
 # define AO_INLINE static
 #endif
 
+#if __GNUC__ >= 3 && !defined(LINT2)
+# define AO_EXPECT_FALSE(expr) __builtin_expect(expr, 0)
+  /* Equivalent to (expr) but predict that usually (expr) == 0. */
+#else
+# define AO_EXPECT_FALSE(expr) (expr)
+#endif /* !__GNUC__ */
+
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER)
 # define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")
 #elif defined(_MSC_VER) || defined(__DMC__) || defined(__BORLANDC__) \

@@ -371,7 +371,7 @@
       {
         old = *addr;
       }
-    while (!AO_compare_and_swap_full(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old, old+incr)));
     return old;
   }
 # define AO_HAVE_fetch_and_add_full
@@ -387,7 +387,7 @@
       {
         old = *addr;
       }
-    while (!AO_compare_and_swap_acquire(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap_acquire(addr, old, old+incr)));
     return old;
   }
 # define AO_HAVE_fetch_and_add_acquire
@@ -403,7 +403,7 @@
       {
         old = *addr;
       }
-    while (!AO_compare_and_swap_release(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(addr, old, old+incr)));
     return old;
   }
 # define AO_HAVE_fetch_and_add_release
@@ -418,7 +418,7 @@
       {
         old = *addr;
       }
-    while (!AO_compare_and_swap(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap(addr, old, old+incr)));
     return old;
   }
 # define AO_HAVE_fetch_and_add
@@ -763,7 +763,7 @@
       {
         old = *addr;
       }
-    while (!AO_compare_and_swap_full(addr, old, old & value));
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old, old & value)));
   }
 # define AO_HAVE_and_full
 #endif
@@ -837,7 +837,7 @@
       {
         old = *addr;
       }
-    while (!AO_compare_and_swap_full(addr, old, old | value));
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old, old | value)));
   }
 # define AO_HAVE_or_full
 #endif
@@ -911,7 +911,7 @@
       {
         old = *addr;
       }
-    while (!AO_compare_and_swap_full(addr, old, old ^ value));
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old, old ^ value)));
   }
 # define AO_HAVE_xor_full
 #endif

@@ -203,7 +203,8 @@
       {
         old = *addr;
       }
-    while (!AO_char_compare_and_swap_full(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(addr, old,
+                                                           old + incr)));
     return old;
   }
 # define AO_HAVE_char_fetch_and_add_full
@@ -220,7 +221,8 @@
       {
         old = *addr;
       }
-    while (!AO_char_compare_and_swap_acquire(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_acquire(addr, old,
+                                                              old + incr)));
     return old;
   }
 # define AO_HAVE_char_fetch_and_add_acquire
@@ -237,7 +239,8 @@
       {
         old = *addr;
       }
-    while (!AO_char_compare_and_swap_release(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_release(addr, old,
+                                                              old + incr)));
     return old;
   }
 # define AO_HAVE_char_fetch_and_add_release
@@ -823,7 +826,8 @@
       {
         old = *addr;
       }
-    while (!AO_short_compare_and_swap_full(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(addr, old,
+                                                           old + incr)));
     return old;
   }
 # define AO_HAVE_short_fetch_and_add_full
@@ -840,7 +844,8 @@
       {
         old = *addr;
       }
-    while (!AO_short_compare_and_swap_acquire(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_acquire(addr, old,
+                                                              old + incr)));
     return old;
   }
 # define AO_HAVE_short_fetch_and_add_acquire
@@ -857,7 +862,8 @@
       {
         old = *addr;
       }
-    while (!AO_short_compare_and_swap_release(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_release(addr, old,
+                                                              old + incr)));
     return old;
   }
 # define AO_HAVE_short_fetch_and_add_release
@@ -1443,7 +1449,8 @@
       {
         old = *addr;
       }
-    while (!AO_int_compare_and_swap_full(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(addr, old,
+                                                           old + incr)));
     return old;
   }
 # define AO_HAVE_int_fetch_and_add_full
@@ -1460,7 +1467,8 @@
       {
         old = *addr;
       }
-    while (!AO_int_compare_and_swap_acquire(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_acquire(addr, old,
+                                                              old + incr)));
     return old;
   }
 # define AO_HAVE_int_fetch_and_add_acquire
@@ -1477,7 +1485,8 @@
       {
         old = *addr;
       }
-    while (!AO_int_compare_and_swap_release(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_release(addr, old,
+                                                              old + incr)));
     return old;
   }
 # define AO_HAVE_int_fetch_and_add_release

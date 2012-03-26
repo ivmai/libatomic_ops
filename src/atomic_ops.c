@@ -150,7 +150,7 @@ static void lock_ool(volatile AO_TS_t *l)
 
 AO_INLINE void lock(volatile AO_TS_t *l)
 {
-  if (AO_test_and_set_acquire(l) == AO_TS_SET)
+  if (AO_EXPECT_FALSE(AO_test_and_set_acquire(l) == AO_TS_SET))
     lock_ool(l);
 }
 
@@ -166,7 +166,7 @@ AO_INLINE void unlock(volatile AO_TS_t *l)
 
   AO_INLINE void block_all_signals(sigset_t *old_sigs_ptr)
   {
-    if (!AO_load_acquire(&initialized))
+    if (AO_EXPECT_FALSE(!AO_load_acquire(&initialized)))
     {
       lock(&init_lock);
       if (!initialized)

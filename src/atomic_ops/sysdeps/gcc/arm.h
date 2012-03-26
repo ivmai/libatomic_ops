@@ -340,7 +340,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
         : "=&r"(result), "+m"(*addr)
         : "r"(new_val), "r"(addr)
         : "cc");
-    } while (result);
+    } while (AO_EXPECT_FALSE(result));
     return !result;   /* if succeded, return 1 else 0 */
   }
 # define AO_HAVE_compare_double_and_swap_double

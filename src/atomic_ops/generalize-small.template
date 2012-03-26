@@ -203,7 +203,8 @@
       {
         old = *addr;
       }
-    while (!AO_XSIZE_compare_and_swap_full(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_full(addr, old,
+                                                           old + incr)));
     return old;
   }
 # define AO_HAVE_XSIZE_fetch_and_add_full
@@ -220,7 +221,8 @@
       {
         old = *addr;
       }
-    while (!AO_XSIZE_compare_and_swap_acquire(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_acquire(addr, old,
+                                                              old + incr)));
     return old;
   }
 # define AO_HAVE_XSIZE_fetch_and_add_acquire
@@ -237,7 +239,8 @@
       {
         old = *addr;
       }
-    while (!AO_XSIZE_compare_and_swap_release(addr, old, old+incr));
+    while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_release(addr, old,
+                                                              old + incr)));
     return old;
   }
 # define AO_HAVE_XSIZE_fetch_and_add_release
