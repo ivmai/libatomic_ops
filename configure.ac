@@ -19,24 +19,32 @@ AC_FUNC_MMAP
 AC_HEADER_STDC
 # AC_CHECK_HEADERS([ ])
 
-# Determine PIC flag, adjust default CFLAGS
+# Determine PIC flag.
 need_asm=false
 PICFLAG=
-AC_MSG_CHECKING(Determining PIC compiler flag)
+AC_MSG_CHECKING(for PIC compiler flag)
 if test "$GCC" = yes; then
   case "$host" in
-    *-*-solaris*)
-      AC_MSG_RESULT(-fPIC)
-      PICFLAG=-fPIC
-      # Workaround: at least GCC 3.4.6 does not define this macro.
-      CFLAGS="$CFLAGS -D__PIC__=1"
-      ;;
     *-*-cygwin* | *-*-mingw*)
       # Cygwin and Mingw[-w32/64] do not need -fPIC.
+      AC_MSG_RESULT("<none>")
       ;;
     *)
       AC_MSG_RESULT(-fPIC)
       PICFLAG=-fPIC
+      AC_MSG_CHECKING(whether gcc -fPIC causes __PIC__ definition)
+      # Workaround: at least GCC 3.4.6 (Solaris) does not define this macro.
+      old_CFLAGS="$CFLAGS"
+      CFLAGS="$PICFLAG $CFLAGS"
+      AC_TRY_COMPILE([],[
+ #ifndef __PIC__
+ # error
+ #endif
+      ], [ac_cv_pic_macro=yes], [ac_cv_pic_macro=no])
+      CFLAGS="$old_CFLAGS"
+      AC_MSG_RESULT($ac_cv_pic_macro)
+      AS_IF([test "$ac_cv_pic_macro" = yes], [],
+            [PICFLAG="-D__PIC__=1 $PICFLAG"])
       ;;
   esac
 else
