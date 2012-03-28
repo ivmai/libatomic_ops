@@ -1,3 +1,11 @@
+2012-03-28  Ivan Maidanski <ivmai@mail.ru>
+
+	* configure.ac (PICFLAG): Adjust AC_MSG_CHECKING message; report
+	"none" result if no -fPIC is needed (for Cygwin/MinGW); determine
+	whether GCC -fPIC option causes __PIC__ macro definition; pass
+	-D __PIC__ to PICFLAG (instead of CFLAGS) only if not defined
+	automatically in case -fPIC specified; update comment.
+
 2012-03-26  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/standard_ao_double_t.h: Do not use __m128

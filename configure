@@ -4725,27 +4725,56 @@ fi
 
 # AC_CHECK_HEADERS([ ])
 
-# Determine PIC flag, adjust default CFLAGS
+# Determine PIC flag.
 need_asm=false
 PICFLAG=
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking Determining PIC compiler flag" >&5
-$as_echo_n "checking Determining PIC compiler flag... " >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for PIC compiler flag" >&5
+$as_echo_n "checking for PIC compiler flag... " >&6; }
 if test "$GCC" = yes; then
   case "$host" in
-    *-*-solaris*)
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: -fPIC" >&5
-$as_echo "-fPIC" >&6; }
-      PICFLAG=-fPIC
-      # Workaround: at least GCC 3.4.6 does not define this macro.
-      CFLAGS="$CFLAGS -D__PIC__=1"
-      ;;
     *-*-cygwin* | *-*-mingw*)
       # Cygwin and Mingw[-w32/64] do not need -fPIC.
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: \"<none>\"" >&5
+$as_echo "\"<none>\"" >&6; }
       ;;
     *)
       { $as_echo "$as_me:${as_lineno-$LINENO}: result: -fPIC" >&5
 $as_echo "-fPIC" >&6; }
       PICFLAG=-fPIC
+      { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether gcc -fPIC causes __PIC__ definition" >&5
+$as_echo_n "checking whether gcc -fPIC causes __PIC__ definition... " >&6; }
+      # Workaround: at least GCC 3.4.6 (Solaris) does not define this macro.
+      old_CFLAGS="$CFLAGS"
+      CFLAGS="$PICFLAG $CFLAGS"
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+ #ifndef __PIC__
+ # error
+ #endif
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  ac_cv_pic_macro=yes
+else
+  ac_cv_pic_macro=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+      CFLAGS="$old_CFLAGS"
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_pic_macro" >&5
+$as_echo "$ac_cv_pic_macro" >&6; }
+      if test "$ac_cv_pic_macro" = yes; then :
+
+else
+  PICFLAG="-D__PIC__=1 $PICFLAG"
+fi
       ;;
   esac
 else
