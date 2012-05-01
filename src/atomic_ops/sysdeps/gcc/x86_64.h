@@ -48,7 +48,7 @@ AO_fetch_and_add_full (volatile AO_t *p, AO_t incr)
 {
   AO_t result;
 
-  __asm__ __volatile__ ("lock; xaddq %0, %1" :
+  __asm__ __volatile__ ("lock; xadd %0, %1" :
                         "=r" (result), "=m" (*p) : "0" (incr), "m" (*p)
                         : "memory");
   return result;
@@ -96,7 +96,7 @@ AO_int_fetch_and_add_full (volatile unsigned int *p, unsigned int incr)
 AO_INLINE void
 AO_and_full (volatile AO_t *p, AO_t value)
 {
-  __asm__ __volatile__ ("lock; andq %1, %0" :
+  __asm__ __volatile__ ("lock; and %1, %0" :
                         "=m" (*p) : "r" (value), "m" (*p) : "memory");
 }
 #define AO_HAVE_and_full
@@ -104,7 +104,7 @@ AO_and_full (volatile AO_t *p, AO_t value)
 AO_INLINE void
 AO_or_full (volatile AO_t *p, AO_t value)
 {
-  __asm__ __volatile__ ("lock; orq %1, %0" :
+  __asm__ __volatile__ ("lock; or %1, %0" :
                         "=m" (*p) : "r" (value), "m" (*p) : "memory");
 }
 #define AO_HAVE_or_full
@@ -112,7 +112,7 @@ AO_or_full (volatile AO_t *p, AO_t value)
 AO_INLINE void
 AO_xor_full (volatile AO_t *p, AO_t value)
 {
-  __asm__ __volatile__ ("lock; xorq %1, %0" :
+  __asm__ __volatile__ ("lock; xor %1, %0" :
                         "=m" (*p) : "r" (value), "m" (*p) : "memory");
 }
 #define AO_HAVE_xor_full
@@ -140,7 +140,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
                                                /* empty protection list */);
 #   else
       char result;
-      __asm__ __volatile__("lock; cmpxchgq %3, %0; setz %1"
+      __asm__ __volatile__("lock; cmpxchg %3, %0; setz %1"
                            : "=m" (*addr), "=a" (result)
                            : "m" (*addr), "r" (new_val), "a" (old)
                            : "memory");
@@ -159,7 +159,7 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                                        /* empty protection list */);
 # else
     AO_t fetched_val;
-    __asm__ __volatile__("lock; cmpxchgq %3, %4"
+    __asm__ __volatile__("lock; cmpxchg %3, %4"
                          : "=a" (fetched_val), "=m" (*addr)
                          : "0" (old_val), "q" (new_val), "m" (*addr)
                          : "memory");
