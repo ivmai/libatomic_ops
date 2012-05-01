@@ -45,6 +45,7 @@
 * Fix configure for Cygwin, mingw-w64/32.
 * Fix configure to define __PIC__ macro explicitly if needed (GCC).
 * Fix double_ptr_storage definition for GCC pre-v4 (x86_64).
+* Fix for x32 by removing 'q' suffix in x86-64 instructions.
 * Fix generalization for IA-64 (regarding AO_or, AO_..._read/write primitives)
 * Fix generalized AO_<type>_fetch_and_add() return type.
 * Fix test_atomic_include for the case of missing CAS primitive.
