@@ -1,5 +1,5 @@
 
-== [7.3alpha2] (development) ==
+== [7.3alpha2] 2012-05-11 ==
 
 * Add '-no-undefined' to LDFLAGS in src/Makefile.am.
 * Add AO_and, AO_xor atomic operations.
@@ -31,7 +31,7 @@
 * Use __builtin_expect in CAS failure loop condition checks (GCC only).
 
 
-== [7.2] (candidate) ==
+== [7.2] 2012-05-11 ==
 
 * Add atomic_ops.pc.in and atomic_ops-uninstalled.pc.in to pkgconfig folder.
 * Define and use AO_PTRDIFF_T in tests for casts between pointer and integer.

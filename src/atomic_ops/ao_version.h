@@ -27,4 +27,4 @@
 /* The version here should match that in configure.ac and README.       */
 #define AO_VERSION_MAJOR 7
 #define AO_VERSION_MINOR 3
-#define AO_VERSION_ALPHA 1 /* 7.3alpha1 */
+#define AO_VERSION_ALPHA 2 /* 7.3alpha2 */
