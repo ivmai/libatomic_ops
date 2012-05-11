@@ -1,3 +1,10 @@
+[7.2]
+
+2012-05-11  Ivan Maidanski <ivmai@mail.ru>
+
+	* configure.ac, README: Bump version to 7.2 (final).
+	* configure: Regenerate.
+
 2012-05-01  H.J. Lu <hjl.tools@gmail.com>
 
 	* src/atomic_ops/sysdeps/gcc/x86_64.h (AO_fetch_and_add_full,
