@@ -158,8 +158,9 @@
 #if defined(AO_HAVE_char_fetch_compare_and_swap_full) \
     && !defined(AO_HAVE_char_compare_and_swap_full)
   AO_INLINE int
-  AO_char_compare_and_swap_full(volatile char *addr, char old_val,
-                                 char new_val)
+  AO_char_compare_and_swap_full(volatile unsigned char *addr,
+                                 unsigned char old_val,
+                                 unsigned char new_val)
   {
     return AO_char_fetch_compare_and_swap_full(addr, old_val, new_val)
              == old_val;
@@ -170,8 +171,9 @@
 #if defined(AO_HAVE_char_fetch_compare_and_swap_acquire) \
     && !defined(AO_HAVE_char_compare_and_swap_acquire)
   AO_INLINE int
-  AO_char_compare_and_swap_acquire(volatile char *addr, char old_val,
-                                    char new_val)
+  AO_char_compare_and_swap_acquire(volatile unsigned char *addr,
+                                    unsigned char old_val,
+                                    unsigned char new_val)
   {
     return AO_char_fetch_compare_and_swap_acquire(addr, old_val, new_val)
              == old_val;
@@ -182,8 +184,9 @@
 #if defined(AO_HAVE_char_fetch_compare_and_swap_release) \
     && !defined(AO_HAVE_char_compare_and_swap_release)
   AO_INLINE int
-  AO_char_compare_and_swap_release(volatile char *addr, char old_val,
-                                    char new_val)
+  AO_char_compare_and_swap_release(volatile unsigned char *addr,
+                                    unsigned char old_val,
+                                    unsigned char new_val)
   {
     return AO_char_fetch_compare_and_swap_release(addr, old_val, new_val)
              == old_val;
@@ -194,7 +197,7 @@
 /* char_fetch_and_add */
 #if defined(AO_HAVE_char_compare_and_swap_full) \
     && !defined(AO_HAVE_char_fetch_and_add_full)
-  AO_INLINE char
+  AO_INLINE unsigned char
   AO_char_fetch_and_add_full(volatile unsigned char *addr,
                               unsigned char incr)
   {
@@ -212,7 +215,7 @@
 
 #if defined(AO_HAVE_char_compare_and_swap_acquire) \
     && !defined(AO_HAVE_char_fetch_and_add_acquire)
-  AO_INLINE char
+  AO_INLINE unsigned char
   AO_char_fetch_and_add_acquire(volatile unsigned char *addr,
                                  unsigned char incr)
   {
@@ -230,7 +233,7 @@
 
 #if defined(AO_HAVE_char_compare_and_swap_release) \
     && !defined(AO_HAVE_char_fetch_and_add_release)
-  AO_INLINE char
+  AO_INLINE unsigned char
   AO_char_fetch_and_add_release(volatile unsigned char *addr,
                                  unsigned char incr)
   {
@@ -781,8 +784,9 @@
 #if defined(AO_HAVE_short_fetch_compare_and_swap_full) \
     && !defined(AO_HAVE_short_compare_and_swap_full)
   AO_INLINE int
-  AO_short_compare_and_swap_full(volatile short *addr, short old_val,
-                                 short new_val)
+  AO_short_compare_and_swap_full(volatile unsigned short *addr,
+                                 unsigned short old_val,
+                                 unsigned short new_val)
   {
     return AO_short_fetch_compare_and_swap_full(addr, old_val, new_val)
              == old_val;
@@ -793,8 +797,9 @@
 #if defined(AO_HAVE_short_fetch_compare_and_swap_acquire) \
     && !defined(AO_HAVE_short_compare_and_swap_acquire)
   AO_INLINE int
-  AO_short_compare_and_swap_acquire(volatile short *addr, short old_val,
-                                    short new_val)
+  AO_short_compare_and_swap_acquire(volatile unsigned short *addr,
+                                    unsigned short old_val,
+                                    unsigned short new_val)
   {
     return AO_short_fetch_compare_and_swap_acquire(addr, old_val, new_val)
              == old_val;
@@ -805,8 +810,9 @@
 #if defined(AO_HAVE_short_fetch_compare_and_swap_release) \
     && !defined(AO_HAVE_short_compare_and_swap_release)
   AO_INLINE int
-  AO_short_compare_and_swap_release(volatile short *addr, short old_val,
-                                    short new_val)
+  AO_short_compare_and_swap_release(volatile unsigned short *addr,
+                                    unsigned short old_val,
+                                    unsigned short new_val)
   {
     return AO_short_fetch_compare_and_swap_release(addr, old_val, new_val)
              == old_val;
@@ -817,7 +823,7 @@
 /* short_fetch_and_add */
 #if defined(AO_HAVE_short_compare_and_swap_full) \
     && !defined(AO_HAVE_short_fetch_and_add_full)
-  AO_INLINE short
+  AO_INLINE unsigned short
   AO_short_fetch_and_add_full(volatile unsigned short *addr,
                               unsigned short incr)
   {
@@ -835,7 +841,7 @@
 
 #if defined(AO_HAVE_short_compare_and_swap_acquire) \
     && !defined(AO_HAVE_short_fetch_and_add_acquire)
-  AO_INLINE short
+  AO_INLINE unsigned short
   AO_short_fetch_and_add_acquire(volatile unsigned short *addr,
                                  unsigned short incr)
   {
@@ -853,7 +859,7 @@
 
 #if defined(AO_HAVE_short_compare_and_swap_release) \
     && !defined(AO_HAVE_short_fetch_and_add_release)
-  AO_INLINE short
+  AO_INLINE unsigned short
   AO_short_fetch_and_add_release(volatile unsigned short *addr,
                                  unsigned short incr)
   {
@@ -1404,8 +1410,9 @@
 #if defined(AO_HAVE_int_fetch_compare_and_swap_full) \
     && !defined(AO_HAVE_int_compare_and_swap_full)
   AO_INLINE int
-  AO_int_compare_and_swap_full(volatile int *addr, int old_val,
-                                 int new_val)
+  AO_int_compare_and_swap_full(volatile unsigned int *addr,
+                                 unsigned int old_val,
+                                 unsigned int new_val)
   {
     return AO_int_fetch_compare_and_swap_full(addr, old_val, new_val)
              == old_val;
@@ -1416,8 +1423,9 @@
 #if defined(AO_HAVE_int_fetch_compare_and_swap_acquire) \
     && !defined(AO_HAVE_int_compare_and_swap_acquire)
   AO_INLINE int
-  AO_int_compare_and_swap_acquire(volatile int *addr, int old_val,
-                                    int new_val)
+  AO_int_compare_and_swap_acquire(volatile unsigned int *addr,
+                                    unsigned int old_val,
+                                    unsigned int new_val)
   {
     return AO_int_fetch_compare_and_swap_acquire(addr, old_val, new_val)
              == old_val;
@@ -1428,8 +1436,9 @@
 #if defined(AO_HAVE_int_fetch_compare_and_swap_release) \
     && !defined(AO_HAVE_int_compare_and_swap_release)
   AO_INLINE int
-  AO_int_compare_and_swap_release(volatile int *addr, int old_val,
-                                    int new_val)
+  AO_int_compare_and_swap_release(volatile unsigned int *addr,
+                                    unsigned int old_val,
+                                    unsigned int new_val)
   {
     return AO_int_fetch_compare_and_swap_release(addr, old_val, new_val)
              == old_val;
@@ -1440,7 +1449,7 @@
 /* int_fetch_and_add */
 #if defined(AO_HAVE_int_compare_and_swap_full) \
     && !defined(AO_HAVE_int_fetch_and_add_full)
-  AO_INLINE int
+  AO_INLINE unsigned int
   AO_int_fetch_and_add_full(volatile unsigned int *addr,
                               unsigned int incr)
   {
@@ -1458,7 +1467,7 @@
 
 #if defined(AO_HAVE_int_compare_and_swap_acquire) \
     && !defined(AO_HAVE_int_fetch_and_add_acquire)
-  AO_INLINE int
+  AO_INLINE unsigned int
   AO_int_fetch_and_add_acquire(volatile unsigned int *addr,
                                  unsigned int incr)
   {
@@ -1476,7 +1485,7 @@
 
 #if defined(AO_HAVE_int_compare_and_swap_release) \
     && !defined(AO_HAVE_int_fetch_and_add_release)
-  AO_INLINE int
+  AO_INLINE unsigned int
   AO_int_fetch_and_add_release(volatile unsigned int *addr,
                                  unsigned int incr)
   {
