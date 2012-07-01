@@ -1,4 +1,9 @@
 
+== [7.3alpha4] (development) ==
+
+* Fix generalized AO_char/short_compare_and_swap/fetch_and_add CTYPE args.
+
+
 == [7.3alpha2] 2012-05-11 ==
 
 * Add '-no-undefined' to LDFLAGS in src/Makefile.am.
