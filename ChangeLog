@@ -58,6 +58,11 @@
 * Implement the basic atomic primitives for the hexagon CPU.
 
 
+== [7.2d] (to be released) ==
+
+* Fix generalized AO_char/short_fetch_and_add CTYPE args (missing 'unsigned').
+
+
 == [7.2alpha6] 2011-06-14 ==
 
 * Add missing AO_HAVE_ macros.
