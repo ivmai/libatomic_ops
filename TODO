@@ -4,3 +4,9 @@ Add C++0x ATM (atomic memory operations) layer.
 
 
 == FIXME tasks ==
+
+Debian/powerpc and Debian/alpha (gcc 4.6.3-7):
+test_stack failed (Debian Bug #680100).
+
+Debian/m68k (Linux 3.2.0-2-atari):
+test_stack failed (Bus error), regression (Debian Bug #680066).
