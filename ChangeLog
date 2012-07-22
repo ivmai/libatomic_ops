@@ -1,7 +1,7 @@
 
 == [7.3alpha4] (development) ==
 
-* Fix generalized AO_char/short_compare_and_swap/fetch_and_add CTYPE args.
+* Fix generalized AO_char/short_compare_and_swap args (missing 'unsigned').
 
 
 == [7.3alpha2] 2012-05-11 ==
@@ -36,6 +36,12 @@
 * Use __builtin_expect in CAS failure loop condition checks (GCC only).
 
 
+== [7.2d] (to be released) ==
+
+* Fix AO_compare_double_and_swap_double_full for gcc-4.2.1/x86 in PIC mode.
+* Fix missing 'unsigned' for generalized AO_char/short_fetch_and_add result.
+
+
 == [7.2] 2012-05-11 ==
 
 * Add atomic_ops.pc.in and atomic_ops-uninstalled.pc.in to pkgconfig folder.
@@ -56,11 +62,6 @@
 * Fix test_atomic_include for the case of missing CAS primitive.
 * Fix test_malloc - allocate less memory in case of missing mmap.
 * Implement the basic atomic primitives for the hexagon CPU.
-
-
-== [7.2d] (to be released) ==
-
-* Fix generalized AO_char/short_fetch_and_add CTYPE args (missing 'unsigned').
 
 
 == [7.2alpha6] 2011-06-14 ==
