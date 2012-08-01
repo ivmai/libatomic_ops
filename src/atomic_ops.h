@@ -185,7 +185,7 @@
     /* FIXME - We dont know how to do this.  This is a guess.   */
     /* And probably a bad one.                                  */
     static volatile int AO_barrier_dummy;
-#   define AO_compiler_barrier() AO_barrier_dummy = AO_barrier_dummy
+#   define AO_compiler_barrier() (void)(AO_barrier_dummy = AO_barrier_dummy)
 # endif
 #else
   /* We conjecture that the following usually gives us the right        */
