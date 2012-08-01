@@ -39,6 +39,7 @@
 == [7.2d] (to be released) ==
 
 * Fix AO_compare_double_and_swap_double_full for gcc-4.2.1/x86 in PIC mode.
+* Fix AO_compiler_barrier missing parentheses.
 * Fix missing 'unsigned' for generalized AO_char/short_fetch_and_add result.
 
 
