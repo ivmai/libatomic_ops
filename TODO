@@ -10,3 +10,5 @@ test_stack failed (Debian Bug #680100).
 
 Debian/m68k (Linux 3.2.0-2-atari):
 test_stack failed (Bus error), regression (Debian Bug #680066).
+
+Linux/i386 (clang-3.0-6ubuntu3): test_stack failed.
