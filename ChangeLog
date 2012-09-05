@@ -36,7 +36,12 @@
 * Use __builtin_expect in CAS failure loop condition checks (GCC only).
 
 
-== [7.2d] (to be released) ==
+== [7.2e] (candidate) ==
+
+* Fix compare_double_and_swap_double for clang3.0/x86 in PIC mode.
+
+
+== [7.2d] 2012-08-09 ==
 
 * Fix AO_compare_double_and_swap_double_full for gcc-4.2.1/x86 in PIC mode.
 * Fix AO_compiler_barrier missing parentheses.
