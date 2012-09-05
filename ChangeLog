@@ -2,6 +2,7 @@
 == [7.3alpha4] (development) ==
 
 * Fix generalized AO_char/short_compare_and_swap args (missing 'unsigned').
+* Implement compare_double_and_swap_double for SunCC/x86.
 
 
 == [7.3alpha2] 2012-05-11 ==
