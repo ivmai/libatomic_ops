@@ -1,3 +1,13 @@
+2012-09-05  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/x86.h
+	(AO_compare_double_and_swap_double_full): Re-implement for PIC mode
+	saving EBX to a local variable (instead of pushing it to stack) and
+	saving memory operand address to a register (edi which is manually
+	preserved), so that the whole code could also work even if EBX points
+	to memory operand (e.g., in Clang); test __PIC__ using ifdef (instead
+	of "if"); update comments; reformat code.
+
 [7.2d]
 
 2012-08-09  Ivan Maidanski <ivmai@mail.ru>
