@@ -1,3 +1,9 @@
+2012-09-18  Ivan Maidanski <ivmai@mail.ru>
+
+	* tests/test_atomic.c (acqrel_thr): Call abort() after fprintf(stderr).
+	* tests/test_malloc.c (run_one_test): Likewise.
+	* tests/test_stack.c (check_list, main): Likewise.
+
 2012-09-05  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/gcc/x86.h
