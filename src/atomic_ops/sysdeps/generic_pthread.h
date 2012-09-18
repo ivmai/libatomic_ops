@@ -240,6 +240,8 @@ typedef struct {
 } AO_double_t;
 #define AO_HAVE_double_t
 
+#define AO_DOUBLE_T_INITIALIZER { (AO_t)0, (AO_t)0 }
+
 AO_INLINE int
 AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                        AO_t old1, AO_t old2,
