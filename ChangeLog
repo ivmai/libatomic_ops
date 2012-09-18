@@ -3,6 +3,8 @@
 
 * Fix generalized AO_char/short_compare_and_swap args (missing 'unsigned').
 * Implement compare_double_and_swap_double for SunCC/x86.
+* Log messages to stdout instead of stderr (tests).
+* Remove useless 'perror' call in tests run_parallel.h.
 
 
 == [7.3alpha2] 2012-05-11 ==
@@ -40,6 +42,7 @@
 == [7.2e] (candidate) ==
 
 * Fix compare_double_and_swap_double for clang3.0/x86 in PIC mode.
+* Terminate tests with abort after error reported.
 
 
 == [7.2d] 2012-08-09 ==
