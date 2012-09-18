@@ -97,14 +97,23 @@ void check_list(int n)
        p = (list_element *)AO_REAL_NEXT_PTR(p -> next))
     {
       if (p -> data > n || p -> data <= 0)
-        fprintf(stderr, "Found erroneous list element %d\n", p -> data);
+        {
+          fprintf(stderr, "Found erroneous list element %d\n", p -> data);
+          abort();
+        }
       if (marks[p -> data] != 0)
-        fprintf(stderr, "Found duplicate list element %d\n", p -> data);
+        {
+          fprintf(stderr, "Found duplicate list element %d\n", p -> data);
+          abort();
+        }
       marks[p -> data] = 1;
     }
   for (i = 1; i <= n; ++i)
     if (marks[i] != 1)
-      fprintf(stderr, "Missing list element %d\n", i);
+      {
+        fprintf(stderr, "Missing list element %d\n", i);
+        abort();
+      }
 }
 
 volatile AO_t ops_performed = 0;
@@ -218,6 +227,7 @@ int main(int argc, char **argv)
           int code;
           if ((code = pthread_join(thread[i], 0)) != 0) {
             fprintf(stderr, "Thread join failed %u\n", code);
+            abort();
           }
         }
         times[nthreads][exper_n] = (unsigned long)(get_msecs() - start_time);
