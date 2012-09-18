@@ -77,7 +77,6 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
     {
       if ((code = pthread_create(thr + i, &attr, f1, (void *)(long)i)) != 0)
     {
-      perror("Thread creation failed");
       fprintf(stderr, "Pthread_create returned %d, thread %d\n", code, i);
       abort();
         }
@@ -86,7 +85,6 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
     {
       if ((code = pthread_join(thr[i], NULL)) != 0)
     {
-      perror("Thread join failed");
       fprintf(stderr, "Pthread_join returned %d, thread %d\n", code, i);
       abort();
         }
@@ -181,7 +179,6 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
       if ((thr[i] = CreateThread(NULL, 0, tramp, (LPVOID)(args+i), 0, NULL))
       == NULL)
     {
-      perror("Thread creation failed");
       fprintf(stderr, "CreateThread failed with %lu, thread %d\n",
               (unsigned long)GetLastError(), i);
       abort();
@@ -191,7 +188,6 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
     {
       if ((code = WaitForSingleObject(thr[i], INFINITE)) != WAIT_OBJECT_0)
     {
-      perror("Thread join failed");
       fprintf(stderr, "WaitForSingleObject returned %lu, thread %d\n",
               (unsigned long)code, i);
       abort();
