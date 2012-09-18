@@ -98,15 +98,24 @@ void check_list(int n)
     {
       i = p -> data;
       if (i > n || i <= 0)
-        fprintf(stderr, "Found erroneous list element %d\n", i);
+        {
+          fprintf(stderr, "Found erroneous list element %d\n", i);
+          abort();
+        }
       if (marks[i] != 0)
-        fprintf(stderr, "Found duplicate list element %d\n", i);
+        {
+          fprintf(stderr, "Found duplicate list element %d\n", i);
+          abort();
+        }
       marks[i] = 1;
     }
 
   for (i = 1; i <= n; ++i)
     if (marks[i] != 1)
-      fprintf(stderr, "Missing list element %d\n", i);
+      {
+        fprintf(stderr, "Missing list element %d\n", i);
+        abort();
+      }
 }
 
 volatile AO_t ops_performed = 0;
@@ -220,6 +229,7 @@ int main(int argc, char **argv)
           int code;
           if ((code = pthread_join(thread[i], 0)) != 0) {
             fprintf(stderr, "Thread join failed %u\n", code);
+            abort();
           }
         }
         times[nthreads][exper_n] = (unsigned long)(get_msecs() - start_time);

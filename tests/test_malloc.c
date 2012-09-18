@@ -160,6 +160,7 @@ void * run_one_test(void * arg) {
   if (0 == p) {
 #   ifdef HAVE_MMAP
       fprintf(stderr, "AO_malloc(%d) failed\n", LARGE_OBJ_SIZE);
+      abort();
 #   else
       fprintf(stderr, "AO_malloc(%d) failed: This is normal without mmap\n",
               LARGE_OBJ_SIZE);

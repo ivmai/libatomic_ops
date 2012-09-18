@@ -76,7 +76,10 @@ void * acqrel_thr(void *id)
       {
         AO_t my_counter1;
         if (me != 1)
-          fprintf(stderr, "acqrel test: too many threads\n");
+          {
+            fprintf(stderr, "acqrel test: too many threads\n");
+            abort();
+          }
         my_counter1 = AO_load(&counter1);
         AO_store(&counter1, my_counter1 + 1);
         AO_store_release_write(&counter2, my_counter1 + 1);
