@@ -342,12 +342,9 @@
 
 #if defined(__sun) && !defined(__GNUC__) && !defined(AO_USE_PTHREAD_DEFS)
   /* Note: use -DAO_USE_PTHREAD_DEFS if Sun CC does not handle inline asm. */
-# if defined(__i386)
+# if defined(__i386) || defined(__x86_64) || defined(__amd64)
 #   include "atomic_ops/sysdeps/sunc/x86.h"
-# endif /* __i386 */
-# if defined(__x86_64) || defined(__amd64)
-#   include "atomic_ops/sysdeps/sunc/x86_64.h"
-# endif /* __x86_64 */
+# endif
 #endif
 
 #if !defined(__GNUC__) && (defined(sparc) || defined(__sparc)) \
