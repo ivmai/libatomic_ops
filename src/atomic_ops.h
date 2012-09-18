@@ -238,7 +238,14 @@
       /* It is safe to use __sync CAS built-in on this architecture.    */
 #     define AO_USE_SYNC_CAS_BUILTIN
 #   endif
-#   include "atomic_ops/sysdeps/gcc/x86_64.h"
+#   ifdef __ILP32__
+#     ifndef AO_USE_PENTIUM4_INSTRS
+#       define AO_USE_PENTIUM4_INSTRS
+#     endif
+#     include "atomic_ops/sysdeps/gcc/x86.h"
+#   else
+#     include "atomic_ops/sysdeps/gcc/x86_64.h"
+#   endif
 # endif /* __x86_64__ */
 # if defined(__ia64__)
 #   include "atomic_ops/sysdeps/gcc/ia64.h"
@@ -313,7 +320,14 @@
 #     if (__INTEL_COMPILER > 1110) && !defined(AO_USE_SYNC_CAS_BUILTIN)
 #       define AO_USE_SYNC_CAS_BUILTIN
 #     endif
-#     include "atomic_ops/sysdeps/gcc/x86_64.h"
+#     ifdef __ILP32__
+#       ifndef AO_USE_PENTIUM4_INSTRS
+#         define AO_USE_PENTIUM4_INSTRS
+#       endif
+#       include "atomic_ops/sysdeps/gcc/x86.h"
+#     else
+#       include "atomic_ops/sysdeps/gcc/x86_64.h"
+#     endif
 #   endif /* __x86_64__ */
 # endif
 #endif
