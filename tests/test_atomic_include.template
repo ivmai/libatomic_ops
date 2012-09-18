@@ -14,7 +14,7 @@
 
 #undef MISSING
 #define MISSING(name) \
-  fprintf(stderr, "Missing: %s\n", #name "XX")
+  printf("Missing: %s\n", #name "XX")
 
 void test_atomicXX(void)
 {

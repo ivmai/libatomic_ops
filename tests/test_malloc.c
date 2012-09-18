@@ -97,9 +97,9 @@ void print_list(ln *l)
 
   for (p = l; p != 0; p = p -> next)
     {
-      fprintf(stderr, "%d, ", p -> data);
+      printf("%d, ", p -> data);
     }
-  fprintf(stderr, "\n");
+  printf("\n");
 }
 
 /* Check that l contains numbers from m to n inclusive in ascending order */

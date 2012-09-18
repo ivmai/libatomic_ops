@@ -55,7 +55,7 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
   int i;
   int code;
 
-  fprintf(stderr, "Testing %s\n", name);
+  printf("Testing %s\n", name);
   if (nthreads > 100)
     {
       fprintf(stderr, "run_parallel: requested too many threads\n");
@@ -65,10 +65,11 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
 # ifdef _HPUX_SOURCE
    /* Default stack size is too small, especially with the 64 bit ABI */
    /* Increase it.                                                    */
-    if (pthread_default_stacksize_np(1024*1024, 0) != 0) {
-      fprintf(stderr, "pthread_default_stacksize_np failed. "
-                  "OK after first call.\n");
-    }
+    if (pthread_default_stacksize_np(1024*1024, 0) != 0)
+      {
+        fprintf(stderr, "pthread_default_stacksize_np failed. "
+                        "OK after first call.\n");
+      }
 # endif
 
   pthread_attr_init(&attr);
@@ -76,22 +77,22 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
   for (i = 0; i < nthreads; ++i)
     {
       if ((code = pthread_create(thr + i, &attr, f1, (void *)(long)i)) != 0)
-    {
-      fprintf(stderr, "Pthread_create returned %d, thread %d\n", code, i);
-      abort();
-        }
+      {
+        fprintf(stderr, "pthread_create returned %d, thread %d\n", code, i);
+        abort();
+      }
     }
   for (i = 0; i < nthreads; ++i)
     {
       if ((code = pthread_join(thr[i], NULL)) != 0)
-    {
-      fprintf(stderr, "Pthread_join returned %d, thread %d\n", code, i);
-      abort();
-        }
+      {
+        fprintf(stderr, "pthread_join returned %d, thread %d\n", code, i);
+        abort();
+      }
     }
   if (t())
     {
-      fprintf(stderr, "Succeeded\n");
+      printf("Succeeded\n");
     }
   else
     {
@@ -108,7 +109,7 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
   int thr[100];
   int i;
 
-  fprintf(stderr, "Testing %s\n", name);
+  printf("Testing %s\n", name);
   if (nthreads > 100)
     {
       fprintf(stderr, "run_parallel: requested too many threads\n");
@@ -120,11 +121,11 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
       thr[i] = taskSpawn((char*) name, 180, 0, 32768, (FUNCPTR) f1, i,
                          1, 2, 3, 4, 5, 6, 7, 8, 9);
       if (thr[i] == ERROR)
-    {
-      fprintf(stderr, "taskSpawn failed with %d, thread %d\n",
-              errno, i);
-      taskSuspend(0);
-        }
+      {
+        fprintf(stderr, "taskSpawn failed with %d, thread %d\n",
+                errno, i);
+        taskSuspend(0);
+      }
     }
   for (i = 0; i < nthreads; ++i)
     {
@@ -133,7 +134,7 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
     }
   if (t())
     {
-      fprintf(stderr, "Succeeded\n");
+      printf("Succeeded\n");
     }
   else
     {
@@ -165,7 +166,7 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
   int i;
   DWORD code;
 
-  fprintf(stderr, "Testing %s\n", name);
+  printf("Testing %s\n", name);
   if (nthreads > 100)
     {
       fprintf(stderr, "run_parallel: requested too many threads\n");
@@ -177,25 +178,25 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
       args[i].fn = f1;
       args[i].arg = i;
       if ((thr[i] = CreateThread(NULL, 0, tramp, (LPVOID)(args+i), 0, NULL))
-      == NULL)
-    {
-      fprintf(stderr, "CreateThread failed with %lu, thread %d\n",
-              (unsigned long)GetLastError(), i);
-      abort();
+          == NULL)
+        {
+          fprintf(stderr, "CreateThread failed with %lu, thread %d\n",
+                  (unsigned long)GetLastError(), i);
+          abort();
         }
     }
   for (i = 0; i < nthreads; ++i)
     {
       if ((code = WaitForSingleObject(thr[i], INFINITE)) != WAIT_OBJECT_0)
-    {
-      fprintf(stderr, "WaitForSingleObject returned %lu, thread %d\n",
-              (unsigned long)code, i);
-      abort();
-        }
+      {
+        fprintf(stderr, "WaitForSingleObject returned %lu, thread %d\n",
+                (unsigned long)code, i);
+        abort();
+      }
     }
   if (t())
     {
-      fprintf(stderr, "Succeeded\n");
+      printf("Succeeded\n");
     }
   else
     {
