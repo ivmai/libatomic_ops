@@ -1,5 +1,12 @@
 2012-09-18  Ivan Maidanski <ivmai@mail.ru>
 
+	* src/atomic_ops/sysdeps/gcc/x86_64.h
+	(AO_compare_double_and_swap_double_full): Fix a typo in comment.
+	* src/atomic_ops/sysdeps/sunc/x86_64.h
+	(AO_compare_double_and_swap_double_full): Likewise.
+
+2012-09-18  Ivan Maidanski <ivmai@mail.ru>
+
 	* tests/test_atomic.c (acqrel_thr): Call abort() after fprintf(stderr).
 	* tests/test_malloc.c (run_one_test): Likewise.
 	* tests/test_stack.c (check_list, main): Likewise.
