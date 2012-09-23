@@ -266,7 +266,7 @@
      || defined(__powerpc64__) || defined(__ppc64__)
 #   include "atomic_ops/sysdeps/gcc/powerpc.h"
 # endif /* __powerpc__ */
-# if defined(__arm__) && !defined(AO_USE_PTHREAD_DEFS)
+# if defined(__arm__)
 #   include "atomic_ops/sysdeps/gcc/arm.h"
 #   define AO_CAN_EMUL_CAS
 # endif /* __arm__ */
