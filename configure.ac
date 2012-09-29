@@ -136,7 +136,7 @@ AH_TEMPLATE([AO_USE_SYNC_CAS_BUILTIN],
          (only gcc/x86, gcc/x86_64)])
 AH_TEMPLATE([AO_WEAK_DOUBLE_CAS_EMULATION],
         [Emulate double-width CAS via pthread locking in case of no hardware \
-         support (only gcc/x86_64, sunc/x86_64)])
+         support (only gcc/x86_64, the emulation is unsafe)])
 
 THREADDLLIBS=
 have_pthreads=true

@@ -205,14 +205,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 # define AO_HAVE_int_fetch_and_add_full
 
 # ifdef AO_CMPXCHG16B_AVAILABLE
-    /* NEC LE-IT: older AMD Opterons are missing this instruction.      */
-    /* On these machines SIGILL will be thrown.                         */
-    /* Define AO_WEAK_DOUBLE_CAS_EMULATION to have an emulated (lock    */
-    /* based) version available.                                        */
-    /* HB: Changed this to not define either by default.  There are     */
-    /* enough machines and tool chains around on which cmpxchg16b       */
-    /* doesn't work.  And the emulation is unsafe by our usual rules.   */
-    /* However both are clearly useful in certain cases.                */
+    /* Older AMD Opterons are missing this instruction (SIGILL should   */
+    /* be thrown in this case).                                         */
     AO_INLINE int
     AO_compare_double_and_swap_double_full (volatile AO_double_t *addr,
                                             AO_t old_val1, AO_t old_val2,
@@ -227,26 +221,6 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
       return (int) result;
     }
 #   define AO_HAVE_compare_double_and_swap_double_full
-
-# elif defined(AO_WEAK_DOUBLE_CAS_EMULATION)
-    /* This one provides spinlock based emulation of CAS implemented in */
-    /* atomic_ops.c.  We probably do not want to do this here, since it */
-    /* is not atomic with respect to other kinds of updates of *addr.   */
-    /* On the other hand, this may be a useful facility on occasion.    */
-    int AO_compare_double_and_swap_double_emulation(
-                                                volatile AO_double_t *addr,
-                                                AO_t old_val1, AO_t old_val2,
-                                                AO_t new_val1, AO_t new_val2);
-
-    AO_INLINE int
-    AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
-                                           AO_t old_val1, AO_t old_val2,
-                                           AO_t new_val1, AO_t new_val2)
-    {
-      return AO_compare_double_and_swap_double_emulation(addr,
-                                old_val1, old_val2, new_val1, new_val2);
-    }
-#   define AO_HAVE_compare_double_and_swap_double_full
-# endif /* AO_WEAK_DOUBLE_CAS_EMULATION && !AO_CMPXCHG16B_AVAILABLE */
+# endif /* !AO_CMPXCHG16B_AVAILABLE */
 
 #endif /* x64 */
