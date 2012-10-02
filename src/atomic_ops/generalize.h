@@ -1517,8 +1517,21 @@
 # endif
 #endif
 
-/* NEC LE-IT: Convenience functions for AO_double compare and swap which */
-/* types and reads easier in code                                        */
+/* Convenience functions for AO_double compare-and-swap which types and */
+/* reads easier in code.                                                */
+#if defined(AO_HAVE_compare_double_and_swap_double) \
+    && !defined(AO_HAVE_double_compare_and_swap)
+  AO_INLINE int
+  AO_double_compare_and_swap(volatile AO_double_t *addr,
+                             AO_double_t old_val, AO_double_t new_val)
+  {
+    return AO_compare_double_and_swap_double(addr,
+                                        old_val.AO_val1, old_val.AO_val2,
+                                        new_val.AO_val1, new_val.AO_val2);
+  }
+# define AO_HAVE_double_compare_and_swap
+#endif
+
 #if defined(AO_HAVE_compare_double_and_swap_double_release) \
     && !defined(AO_HAVE_double_compare_and_swap_release)
   AO_INLINE int
