@@ -58,7 +58,7 @@ void AO_store_full_emulation(volatile AO_t *addr, AO_t val);
 # define AO_HAVE_fetch_compare_and_swap_full
 #endif
 
-#ifndef AO_HAVE_compare_double_and_swap_double
+#ifndef AO_HAVE_compare_double_and_swap_double_full
 # define AO_compare_double_and_swap_double_full(addr, old1, old2, \
                                                 newval1, newval2) \
         AO_compare_double_and_swap_double_emulation(addr, old1, old2, \
