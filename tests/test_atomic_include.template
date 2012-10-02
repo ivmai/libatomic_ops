@@ -26,10 +26,15 @@ void test_atomicXX(void)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
 # if defined(AO_HAVE_compare_and_swap_doubleXX) \
-     || defined(AO_HAVE_compare_double_and_swap_doubleXX)
+     || defined(AO_HAVE_compare_double_and_swap_doubleXX) \
+     || defined(AO_HAVE_double_compare_and_swapXX)
     AO_double_t w;
     w.AO_val1 = 0;
     w.AO_val2 = 0;
+# endif
+# if defined(AO_HAVE_double_compare_and_swapXX)
+    AO_double_t old_w;
+    AO_double_t new_w;
 # endif
 
 # if defined(AO_HAVE_nopXX)
@@ -234,5 +239,46 @@ void test_atomicXX(void)
     TA_assert(w.AO_val1 == 0 && w.AO_val2 == 0);
 # else
     MISSING(AO_compare_and_swap_double);
+# endif
+# if defined(AO_HAVE_double_compare_and_swapXX)
+    old_w.AO_val1 = 4116;
+    old_w.AO_val2 = 2121;
+    new_w.AO_val1 = 8537;
+    new_w.AO_val2 = 6410;
+    TA_assert(!AO_double_compare_and_swapXX(&w, old_w, new_w));
+    TA_assert(w.AO_val1 == 0 && w.AO_val2 == 0);
+    TA_assert(AO_double_compare_and_swapXX(&w, w, new_w));
+    TA_assert(w.AO_val1 == 8537 && w.AO_val2 == 6410);
+    old_w.AO_val1 = new_w.AO_val1;
+    old_w.AO_val2 = 29;
+    new_w.AO_val1 = 820;
+    new_w.AO_val2 = 5917;
+    TA_assert(!AO_double_compare_and_swapXX(&w, old_w, new_w));
+    TA_assert(w.AO_val1 == 8537 && w.AO_val2 == 6410);
+    old_w.AO_val1 = 11;
+    old_w.AO_val2 = 6410;
+    new_w.AO_val1 = 3552;
+    new_w.AO_val2 = 1746;
+    TA_assert(!AO_double_compare_and_swapXX(&w, old_w, new_w));
+    TA_assert(w.AO_val1 == 8537 && w.AO_val2 == 6410);
+    old_w.AO_val1 = old_w.AO_val2;
+    old_w.AO_val2 = 8537;
+    new_w.AO_val1 = 4116;
+    new_w.AO_val2 = 2121;
+    TA_assert(!AO_double_compare_and_swapXX(&w, old_w, new_w));
+    TA_assert(w.AO_val1 == 8537 && w.AO_val2 == 6410);
+    old_w.AO_val1 = old_w.AO_val2;
+    old_w.AO_val2 = 6410;
+    new_w.AO_val1 = 1;
+    TA_assert(AO_double_compare_and_swapXX(&w, old_w, new_w));
+    TA_assert(w.AO_val1 == 1 && w.AO_val2 == 2121);
+    old_w.AO_val1 = new_w.AO_val1;
+    old_w.AO_val2 = w.AO_val2;
+    new_w.AO_val1--;
+    new_w.AO_val2 = 0;
+    TA_assert(AO_double_compare_and_swapXX(&w, old_w, new_w));
+    TA_assert(w.AO_val1 == 0 && w.AO_val2 == 0);
+# else
+    MISSING(AO_double_compare_and_swap);
 # endif
 }
