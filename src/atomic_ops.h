@@ -118,7 +118,7 @@
 /*      data.x = ...; data.y = ...; ...                         */
 /*      AO_store_release_write(&data_is_initialized, 1)         */
 /* then data is guaranteed to be initialized after the test     */
-/*      if (AO_load_release_read(&data_is_initialized)) ...     */
+/*      if (AO_load_acquire_read(&data_is_initialized)) ...     */
 /* succeeds.  Furthermore, this should generate near-optimal    */
 /* code on all common platforms.                                */
 /*                                                              */
