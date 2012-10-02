@@ -37,8 +37,6 @@
 # include "../test_and_set_t_is_ao_t.h"
 #endif
 
-#include "../standard_ao_double_t.h"
-
 #include <windows.h>
         /* Seems like over-kill, but that's what MSDN recommends.       */
         /* And apparently winbase.h is not always self-contained.       */
@@ -119,7 +117,9 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 
 # if _MSC_VER >= 1500
 
-#pragma intrinsic (_InterlockedCompareExchange128)
+#   include "../standard_ao_double_t.h"
+
+#   pragma intrinsic (_InterlockedCompareExchange128)
 
 AO_INLINE int
 AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
@@ -135,6 +135,9 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 #   define AO_HAVE_compare_double_and_swap_double_full
 
 # elif defined(AO_ASM_X64_AVAILABLE)
+
+#   include "../standard_ao_double_t.h"
+
     /* If there is no intrinsic _InterlockedCompareExchange128 then we  */
     /* need basically what's given below.                               */
 AO_INLINE int
@@ -153,6 +156,6 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
         }
 }
 #   define AO_HAVE_compare_double_and_swap_double_full
-# endif /* _MSC_VER >= 1500 || AO_ASM_X64_AVAILABLE */
+# endif /* AO_ASM_X64_AVAILABLE && (_MSC_VER < 1500) */
 
 #endif /* AO_CMPXCHG16B_AVAILABLE */

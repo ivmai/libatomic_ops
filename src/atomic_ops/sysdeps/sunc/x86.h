@@ -31,8 +31,6 @@
 
 #include "../test_and_set_t_is_char.h"
 
-#include "../standard_ao_double_t.h"
-
 #if !defined(AO_USE_PENTIUM4_INSTRS) && !defined(__i386)
   /* "mfence" (SSE2) is supported on all x86_64/amd64 chips.            */
 # define AO_USE_PENTIUM4_INSTRS
@@ -168,6 +166,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 #if defined(__i386)
 
 # ifndef AO_NO_CMPXCHG8B
+#   include "../standard_ao_double_t.h"
+
     /* Returns nonzero if the comparison succeeded.     */
     /* Really requires at least a Pentium.              */
     AO_INLINE int
@@ -205,6 +205,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 # define AO_HAVE_int_fetch_and_add_full
 
 # ifdef AO_CMPXCHG16B_AVAILABLE
+#   include "../standard_ao_double_t.h"
+
     /* Older AMD Opterons are missing this instruction (SIGILL should   */
     /* be thrown in this case).                                         */
     AO_INLINE int

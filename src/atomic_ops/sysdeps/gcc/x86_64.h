@@ -29,8 +29,6 @@
 
 #include "../test_and_set_t_is_char.h"
 
-#include "../standard_ao_double_t.h"
-
 AO_INLINE void
 AO_nop_full(void)
 {
@@ -170,6 +168,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 
 #ifdef AO_CMPXCHG16B_AVAILABLE
 
+# include "../standard_ao_double_t.h"
+
 /* NEC LE-IT: older AMD Opterons are missing this instruction.
  * On these machines SIGILL will be thrown.
  * Define AO_WEAK_DOUBLE_CAS_EMULATION to have an emulated
@@ -199,6 +199,8 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
 /* not atomic with respect to other kinds of updates of *addr.  On the  */
 /* other hand, this may be a useful facility on occasion.               */
 #ifdef AO_WEAK_DOUBLE_CAS_EMULATION
+# include "../standard_ao_double_t.h"
+
 int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
                                                 AO_t old_val1, AO_t old_val2,
                                                 AO_t new_val1, AO_t new_val2);
