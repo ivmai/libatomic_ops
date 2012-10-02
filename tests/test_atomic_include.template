@@ -39,19 +39,28 @@ void test_atomicXX(void)
 
 # if defined(AO_HAVE_nopXX)
     AO_nopXX();
-# else
+# elif !defined(AO_HAVE_nop) || !defined(AO_HAVE_nop_full) \
+       || !defined(AO_HAVE_nop_read) || !defined(AO_HAVE_nop_write)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_storeXX)
     AO_storeXX(&x, 13);
     TA_assert (x == 13);
 # else
-    MISSING(AO_store);
+#   if !defined(AO_HAVE_store) || !defined(AO_HAVE_store_full) \
+       || !defined(AO_HAVE_store_release) \
+       || !defined(AO_HAVE_store_release_write) \
+       || !defined(AO_HAVE_store_write)
+      MISSING(AO_store);
+#   endif
     x = 13;
 # endif
 # if defined(AO_HAVE_loadXX)
     TA_assert(AO_loadXX(&x) == 13);
-# else
+# elif !defined(AO_HAVE_load) || !defined(AO_HAVE_load_acquire) \
+       || !defined(AO_HAVE_load_acquire_read) \
+       || !defined(AO_HAVE_load_dd_acquire_read) \
+       || !defined(AO_HAVE_load_full) || !defined(AO_HAVE_load_read)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_setXX)
@@ -83,12 +92,21 @@ void test_atomicXX(void)
 # if defined(AO_HAVE_short_storeXX)
     AO_short_storeXX(&s, 13);
 # else
-    MISSING(AO_short_store);
+#   if !defined(AO_HAVE_short_store) || !defined(AO_HAVE_short_store_full) \
+       || !defined(AO_HAVE_short_store_release) \
+       || !defined(AO_HAVE_short_store_release_write) \
+       || !defined(AO_HAVE_short_store_write)
+      MISSING(AO_short_store);
+#   endif
     s = 13;
 # endif
 # if defined(AO_HAVE_short_loadXX)
     TA_assert(AO_short_load(&s) == 13);
-# else
+# elif !defined(AO_HAVE_short_load) || !defined(AO_HAVE_short_load_acquire) \
+       || !defined(AO_HAVE_short_load_acquire_read) \
+       || !defined(AO_HAVE_short_load_dd_acquire_read) \
+       || !defined(AO_HAVE_short_load_full) \
+       || !defined(AO_HAVE_short_load_read)
     MISSING(AO_short_load);
 # endif
 # if defined(AO_HAVE_short_fetch_and_addXX)
@@ -112,12 +130,20 @@ void test_atomicXX(void)
 # if defined(AO_HAVE_char_storeXX)
     AO_char_storeXX(&b, 13);
 # else
-    MISSING(AO_char_store);
+#   if !defined(AO_HAVE_char_store) || !defined(AO_HAVE_char_store_full) \
+       || !defined(AO_HAVE_char_store_release) \
+       || !defined(AO_HAVE_char_store_release_write) \
+       || !defined(AO_HAVE_char_store_write)
+      MISSING(AO_char_store);
+#   endif
     b = 13;
 # endif
 # if defined(AO_HAVE_char_loadXX)
     TA_assert(AO_char_load(&b) == 13);
-# else
+# elif !defined(AO_HAVE_char_load) || !defined(AO_HAVE_char_load_acquire) \
+       || !defined(AO_HAVE_char_load_acquire_read) \
+       || !defined(AO_HAVE_char_load_dd_acquire_read) \
+       || !defined(AO_HAVE_char_load_full) || !defined(AO_HAVE_char_load_read)
     MISSING(AO_char_load);
 # endif
 # if defined(AO_HAVE_char_fetch_and_addXX)
@@ -141,12 +167,20 @@ void test_atomicXX(void)
 # if defined(AO_HAVE_int_storeXX)
     AO_int_storeXX(&zz, 13);
 # else
-    MISSING(AO_int_store);
+#   if !defined(AO_HAVE_int_store) || !defined(AO_HAVE_int_store_full) \
+       || !defined(AO_HAVE_int_store_release) \
+       || !defined(AO_HAVE_int_store_release_write) \
+       || !defined(AO_HAVE_int_store_write)
+      MISSING(AO_int_store);
+#   endif
     zz = 13;
 # endif
 # if defined(AO_HAVE_int_loadXX)
     TA_assert(AO_int_load(&zz) == 13);
-# else
+# elif !defined(AO_HAVE_int_load) || !defined(AO_HAVE_int_load_acquire) \
+       || !defined(AO_HAVE_int_load_acquire_read) \
+       || !defined(AO_HAVE_int_load_dd_acquire_read) \
+       || !defined(AO_HAVE_int_load_full) || !defined(AO_HAVE_int_load_read)
     MISSING(AO_int_load);
 # endif
 # if defined(AO_HAVE_int_fetch_and_addXX)
