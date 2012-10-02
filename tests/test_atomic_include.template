@@ -206,9 +206,16 @@ void test_atomicXX(void)
     TA_assert(w.AO_val1 == 0 && w.AO_val2 == 0);
     TA_assert(AO_compare_double_and_swap_doubleXX(&w, 0, 0, 12, 13));
     TA_assert(w.AO_val1 == 12 && w.AO_val2 == 13);
+    TA_assert(!AO_compare_double_and_swap_doubleXX(&w, 12, 14, 64, 33));
+    TA_assert(w.AO_val1 == 12 && w.AO_val2 == 13);
+    TA_assert(!AO_compare_double_and_swap_doubleXX(&w, 11, 13, 85, 82));
+    TA_assert(w.AO_val1 == 12 && w.AO_val2 == 13);
+    TA_assert(!AO_compare_double_and_swap_doubleXX(&w, 13, 12, 17, 42));
+    TA_assert(w.AO_val1 == 12 && w.AO_val2 == 13);
     TA_assert(AO_compare_double_and_swap_doubleXX(&w, 12, 13, 17, 42));
     TA_assert(w.AO_val1 == 17 && w.AO_val2 == 42);
-    w.AO_val1 = 0; w.AO_val2 = 0;
+    TA_assert(AO_compare_double_and_swap_doubleXX(&w, 17, 42, 0, 0));
+    TA_assert(w.AO_val1 == 0 && w.AO_val2 == 0);
 # else
     MISSING(AO_compare_double_and_swap_double);
 # endif
@@ -217,8 +224,14 @@ void test_atomicXX(void)
     TA_assert(w.AO_val1 == 0 && w.AO_val2 == 0);
     TA_assert(AO_compare_and_swap_doubleXX(&w, 0, 12, 13));
     TA_assert(w.AO_val1 == 12 && w.AO_val2 == 13);
+    TA_assert(!AO_compare_and_swap_doubleXX(&w, 13, 12, 33));
+    TA_assert(w.AO_val1 == 12 && w.AO_val2 == 13);
+    TA_assert(!AO_compare_and_swap_doubleXX(&w, 1213, 48, 86));
+    TA_assert(w.AO_val1 == 12 && w.AO_val2 == 13);
     TA_assert(AO_compare_and_swap_doubleXX(&w, 12, 17, 42));
     TA_assert(w.AO_val1 == 17 && w.AO_val2 == 42);
+    TA_assert(AO_compare_and_swap_doubleXX(&w, 17, 0, 0));
+    TA_assert(w.AO_val1 == 0 && w.AO_val2 == 0);
 # else
     MISSING(AO_compare_and_swap_double);
 # endif
