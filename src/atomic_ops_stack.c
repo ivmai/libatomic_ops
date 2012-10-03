@@ -32,14 +32,12 @@ static AO_t dummy = 1;
 /* Spin for 2**n units. */
 static void AO_spin(int n)
 {
-  int i;
-  AO_T j = AO_load(&dummy);
+  AO_t j = AO_load(&dummy);
+  int i = 2 << n;
 
-  for (i = 0; i < (2 << n); ++i)
-    {
-       j *= 5;
-       j -= 4;
-    }
+  while (i-- > 0)
+    j += (j - 1) << 2;
+  /* Given 'dummy' is initialized to 1, j is 1 after the loop.  */
   AO_store(&dummy, j);
 }
 
