@@ -127,7 +127,7 @@ void AO_pause(int n)
         ts.tv_nsec = (n > 28 ? 100000 * 1000 : 1 << (n - 2));
         nanosleep(&ts, 0);
 #     elif defined(AO_USE_WIN32_PTHREADS)
-        Sleep(n > 28 ? 100 : 1 << (n - 22)); /* in millis */
+        Sleep(n > 28 ? 100 : n < 22 ? 1 : 1 << (n - 22)); /* in millis */
 #     else
         struct timeval tv;
         /* Short async-signal-safe sleep. */
