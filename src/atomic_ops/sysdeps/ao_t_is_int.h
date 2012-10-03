@@ -25,7 +25,7 @@
  * any AO_... operations can also server as AO_int_... operations.
  * We currently define only the more important ones here, and allow for
  * the normal generalization process to define the others.
- * We should probably add others in the future.
+ * TODO: Probably add others in the future.
  */
 
 /* AO_compare_and_swap */

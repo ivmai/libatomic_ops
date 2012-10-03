@@ -101,7 +101,7 @@ AO_test_and_set(volatile AO_TS_t *addr)
 }
 #define AO_HAVE_test_and_set
 
-  /* FIXME: Implement AO_and/or/xor primitives directly.        */
+  /* TODO: Implement AO_and/or/xor primitives directly. */
 #endif /* !AO_PREFER_GENERALIZED */
 
 #ifndef AO_GENERALIZE_ASM_BOOL_CAS

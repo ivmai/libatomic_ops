@@ -125,5 +125,4 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 }
 #define AO_HAVE_fetch_compare_and_swap_full
 
-/* FIXME: We should also implement AO_fetch_and_add, AO_and, AO_or,     */
-/* AO_xor primitives directly.                                          */
+/* TODO: Implement AO_fetch_and_add, AO_and/or/xor directly.    */

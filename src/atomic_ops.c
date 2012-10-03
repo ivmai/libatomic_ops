@@ -87,7 +87,7 @@ pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
  * never acquire more than one lock at a time, this can't deadlock.
  * We explicitly disable signals while we perform this operation.
  *
- * FIXME: We should probably also support emulation based on Lamport
+ * TODO: Probably also support emulation based on Lamport
  * locks, since we may not have test_and_set either.
  */
 #define AO_HASH_SIZE 16

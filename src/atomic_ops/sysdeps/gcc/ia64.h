@@ -201,7 +201,7 @@ AO_short_fetch_compare_and_swap_release(volatile unsigned short *addr,
 
 # define AO_T_IS_INT
 
-  /* FIXME: Add compare_double_and_swap_double for the _ILP32 case.     */
+  /* TODO: Add compare_double_and_swap_double for the _ILP32 case.      */
 #else
 
 # ifndef AO_PREFER_GENERALIZED
@@ -277,5 +277,5 @@ AO_short_fetch_compare_and_swap_release(volatile unsigned short *addr,
 # define AO_HAVE_int_fetch_compare_and_swap_release
 #endif /* !_ILP32 */
 
-/* FIXME: Add compare_and_swap_double as soon as there is widely        */
+/* TODO: Add compare_and_swap_double as soon as there is widely         */
 /* available hardware that implements it.                               */
