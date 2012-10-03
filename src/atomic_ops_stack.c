@@ -27,7 +27,7 @@
   /* FIXME: At least AO_spin should be factored out.    */
 #include <windows.h>
 
-AO_t dummy;
+static AO_t dummy = 1;
 
 /* Spin for 2**n units. */
 static void AO_spin(int n)
