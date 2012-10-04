@@ -15,12 +15,17 @@
 # include "config.h"
 #endif
 
-#if defined(__vxworks) || defined(_MSC_VER) || defined(_WIN32_WINCE) \
-    || (defined(_WIN32) && !defined(__CYGWIN32__) && !defined(__CYGWIN__))
+#include <stdio.h>
+
+#if (((defined(_WIN32) && !defined(__CYGWIN32__) && !defined(__CYGWIN__)) \
+      || defined(_MSC_VER) || defined(_WIN32_WINCE)) \
+     && !defined(AO_USE_WIN32_PTHREADS)) \
+    || defined(__vxworks)
 
   /* Skip the test if no pthreads.  */
   int main(void)
   {
+    printf("test skipped\n");
     return 0;
   }
 
@@ -28,7 +33,6 @@
 
 #include <pthread.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include "atomic_ops.h"
 #include "atomic_ops_stack.h"
 
@@ -120,8 +124,14 @@ void check_list(int n)
 
 volatile AO_t ops_performed = 0;
 
-#define LIMIT 1000000
+#ifndef LIMIT
         /* Total number of push/pop ops in all threads per test.    */
+# ifdef AO_USE_PTHREAD_DEFS
+#   define LIMIT 20000
+# else
+#   define LIMIT 1000000
+# endif
+#endif
 
 #ifdef AO_HAVE_fetch_and_add
 # define fetch_and_add(addr, val) AO_fetch_and_add(addr, val)
