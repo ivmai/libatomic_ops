@@ -11,6 +11,7 @@ Makefile
 /libatomic_ops-*
 
 *.a
+*.dll
 *.exe
 *.gcda
 *.gcno
@@ -19,6 +20,7 @@ Makefile
 *.lo
 *.o
 *.obj
+*.so
 
 /src/.deps/
 /src/.libs/
@@ -37,3 +39,5 @@ Makefile
 /libtool
 /ltmain.sh
 /m4/*.m4
+
+/pthreads-w32*
