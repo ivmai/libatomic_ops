@@ -43,10 +43,11 @@
 # define AO_USE_NO_SIGNALS
 #endif
 
+#undef AO_REQUIRE_CAS
+#include "atomic_ops.h" /* Without cas emulation! */
+
 #if !defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__BORLANDC__) \
     || defined(AO_USE_NO_SIGNALS)
-
-#undef AO_REQUIRE_CAS
 
 #include <pthread.h>
 
@@ -65,8 +66,6 @@
 #else
 # include <sys/select.h>
 #endif
-
-#include "atomic_ops.h"  /* Without cas emulation! */
 
 #ifndef AO_HAVE_double_t
 # include "atomic_ops/sysdeps/standard_ao_double_t.h"
@@ -101,42 +100,7 @@ AO_TS_t AO_locks[AO_HASH_SIZE] = {
   AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER,
 };
 
-static AO_t dummy = 1;
-
-/* Spin for 2**n units. */
-static void AO_spin(int n)
-{
-  AO_t j = AO_load(&dummy);
-  int i = 2 << n;
-
-  while (i-- > 0)
-    j += (j - 1) << 2;
-  /* Given 'dummy' is initialized to 1, j is 1 after the loop.  */
-  AO_store(&dummy, j);
-}
-
-void AO_pause(int n)
-{
-  if (n < 12)
-    AO_spin(n);
-  else
-    {
-#     ifdef AO_USE_NANOSLEEP
-        struct timespec ts;
-        ts.tv_sec = 0;
-        ts.tv_nsec = (n > 28 ? 100000 * 1000 : 1 << (n - 2));
-        nanosleep(&ts, 0);
-#     elif defined(AO_USE_WIN32_PTHREADS)
-        Sleep(n > 28 ? 100 : n < 22 ? 1 : 1 << (n - 22)); /* in millis */
-#     else
-        struct timeval tv;
-        /* Short async-signal-safe sleep. */
-        tv.tv_sec = 0;
-        tv.tv_usec = n > 28 ? 100000 : 1 << (n - 12);
-        select(0, 0, 0, 0, &tv);
-#     endif
-    }
-}
+void AO_pause(int); /* defined below */
 
 static void lock_ool(volatile AO_TS_t *l)
 {
@@ -241,6 +205,48 @@ void AO_store_full_emulation(volatile AO_t *addr, AO_t val)
 
 #else /* Non-posix platform */
 
-extern int AO_non_posix_implementation_is_entirely_in_headers;
+# include <windows.h>
+
+# define AO_USE_WIN32_PTHREADS
+                /* define to use Sleep() */
+
+  extern int AO_non_posix_implementation_is_entirely_in_headers;
 
 #endif
+
+static AO_t spin_dummy = 1;
+
+/* Spin for 2**n units. */
+static void AO_spin(int n)
+{
+  AO_t j = AO_load(&spin_dummy);
+  int i = 2 << n;
+
+  while (i-- > 0)
+    j += (j - 1) << 2;
+  /* Given 'spin_dummy' is initialized to 1, j is 1 after the loop.     */
+  AO_store(&spin_dummy, j);
+}
+
+void AO_pause(int n)
+{
+  if (n < 12)
+    AO_spin(n);
+  else
+    {
+#     ifdef AO_USE_NANOSLEEP
+        struct timespec ts;
+        ts.tv_sec = 0;
+        ts.tv_nsec = (n > 28 ? 100000 * 1000 : 1 << (n - 2));
+        nanosleep(&ts, 0);
+#     elif defined(AO_USE_WIN32_PTHREADS)
+        Sleep(n > 28 ? 100 : n < 22 ? 1 : 1 << (n - 22)); /* in millis */
+#     else
+        struct timeval tv;
+        /* Short async-signal-safe sleep. */
+        tv.tv_sec = 0;
+        tv.tv_usec = n > 28 ? 100000 : 1 << (n - 12);
+        select(0, 0, 0, 0, &tv);
+#     endif
+    }
+}

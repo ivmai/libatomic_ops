@@ -18,52 +18,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+
 #define AO_REQUIRE_CAS
 #include "atomic_ops_stack.h"
 
-#if defined(_MSC_VER) \
-    || defined(_WIN32) && !defined(__CYGWIN32__) && !defined(__CYGWIN__)
-  /* AO_pause not defined elsewhere */
-  /* FIXME: At least AO_spin should be factored out.    */
-#include <windows.h>
-
-static AO_t dummy = 1;
-
-/* Spin for 2**n units. */
-static void AO_spin(int n)
-{
-  AO_t j = AO_load(&dummy);
-  int i = 2 << n;
-
-  while (i-- > 0)
-    j += (j - 1) << 2;
-  /* Given 'dummy' is initialized to 1, j is 1 after the loop.  */
-  AO_store(&dummy, j);
-}
-
-void AO_pause(int n)
-{
-    if (n < 12)
-      AO_spin(n);
-    else
-      {
-        DWORD msecs;
-
-        /* Short async-signal-safe sleep. */
-        msecs = n > 28 ? 100 : n < 22 ? 1 : 1 << (n - 22); /* in millis */
-        Sleep(msecs);
-      }
-}
-
-#else
-
-/* AO_pause is available elsewhere */
-
-extern void AO_pause(int);
-
-#endif
-
 #ifdef AO_USE_ALMOST_LOCK_FREE
+
+  void AO_pause(int); /* defined in atomic_ops.c */
 
 /* LIFO linked lists based on compare-and-swap.  We need to avoid       */
 /* the case of a node deletion and reinsertion while I'm deleting       */
