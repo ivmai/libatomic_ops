@@ -82,8 +82,6 @@
 
 #ifdef AO_ARM_HAVE_LDREX
 
-#include "../standard_ao_double_t.h"
-
 AO_INLINE void
 AO_nop_full(void)
 {
@@ -315,6 +313,8 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 #define AO_HAVE_fetch_compare_and_swap
 
 #ifdef AO_ARM_HAVE_LDREXD
+# include "../standard_ao_double_t.h"
+
   AO_INLINE int
   AO_compare_double_and_swap_double(volatile AO_double_t *addr,
                                     AO_t old_val1, AO_t old_val2,
