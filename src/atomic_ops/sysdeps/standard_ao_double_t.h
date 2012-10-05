@@ -41,7 +41,9 @@
 
 typedef union {
     double_ptr_storage AO_whole;
-    struct {AO_t AO_v1; AO_t AO_v2;} AO_parts;
+    struct { AO_t AO_v1; AO_t AO_v2; } AO_parts;
+        /* Note that AO_v1 corresponds to the low or the high part of   */
+        /* AO_whole depending on the machine endianness.                */
 } AO_double_t;
 #define AO_HAVE_double_t
 
