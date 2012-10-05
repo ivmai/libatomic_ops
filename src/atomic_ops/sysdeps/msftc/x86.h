@@ -85,13 +85,22 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 #endif
 
 #ifdef AO_ASSUME_VISTA
+# include "../standard_ao_double_t.h"
 
-/* NEC LE-IT: whenever we run on a pentium class machine we have that
- * certain function */
+  /* Whenever we run on a Pentium class machine, we have that certain   */
+  /* function.                                                          */
+# pragma intrinsic (_InterlockedCompareExchange64)
 
-#include "../standard_ao_double_t.h"
-#pragma intrinsic (_InterlockedCompareExchange64)
-/* Returns nonzero if the comparison succeeded. */
+  /* Returns nonzero if the comparison succeeded.       */
+  AO_INLINE int
+  AO_double_compare_and_swap_full(volatile AO_double_t *addr,
+                                  AO_double_t old_val, AO_double_t new_val)
+  {
+    return _InterlockedCompareExchange64((__int64 volatile *)addr,
+                new_val.AO_whole, old_val.AO_whole) == old_val.AO_whole;
+  }
+# define AO_HAVE_double_compare_and_swap_full
+
 AO_INLINE int
 AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                        AO_t old_val1, AO_t old_val2,
@@ -103,17 +112,6 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                        newv, oldv) == oldv;
 }
 #define AO_HAVE_compare_double_and_swap_double_full
-
-#ifdef __cplusplus
-AO_INLINE int
-AO_double_compare_and_swap_full(volatile AO_double_t *addr,
-                                AO_double_t old_val, AO_double_t new_val)
-{
-    return _InterlockedCompareExchange64((__int64 volatile *)addr,
-                new_val.AO_whole, old_val.AO_whole) == old_val.AO_whole;
-}
-#define AO_HAVE_double_compare_and_swap_full
-#endif /* __cplusplus */
 
 #endif /* AO_ASSUME_VISTA */
 
