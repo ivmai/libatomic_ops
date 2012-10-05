@@ -339,23 +339,6 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     return !result;   /* if succeded, return 1 else 0 */
   }
 # define AO_HAVE_double_compare_and_swap
-
-  /* TODO: Move to generalize.h.        */
-  AO_INLINE int
-  AO_compare_double_and_swap_double(volatile AO_double_t *addr,
-                                    AO_t old_val1, AO_t old_val2,
-                                    AO_t new_val1, AO_t new_val2)
-  {
-    AO_double_t old_w;
-    AO_double_t new_w;
-
-    old_w.AO_val1 = old_val1;
-    old_w.AO_val2 = old_val2;
-    new_w.AO_val1 = new_val1;
-    new_w.AO_val2 = new_val2;
-    return AO_double_compare_and_swap(addr, old_w, new_w);
-  }
-# define AO_HAVE_compare_double_and_swap_double
 #endif /* AO_ARM_HAVE_LDREXD */
 
 #else
