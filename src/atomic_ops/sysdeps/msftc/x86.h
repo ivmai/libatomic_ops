@@ -103,6 +103,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
   }
 # define AO_HAVE_double_compare_and_swap_full
 
+  /* TODO: Move to generalize.h.        */
   AO_INLINE int
   AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                          AO_t old_val1, AO_t old_val2,
@@ -115,10 +116,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
     old_w.AO_val2 = old_val2;
     new_w.AO_val1 = new_val1;
     new_w.AO_val2 = new_val2;
-    return (double_ptr_storage)_InterlockedCompareExchange64(
-                                        (__int64 volatile *)addr,
-                                        new_w.AO_whole,
-                                        old_w.AO_whole) == old_w.AO_whole;
+    return AO_double_compare_and_swap_full(addr, old_w, new_w);
   }
 # define AO_HAVE_compare_double_and_swap_double_full
 
