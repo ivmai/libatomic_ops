@@ -33,8 +33,8 @@
 
 #include <pthread.h>
 #include <stdlib.h>
-#include "atomic_ops.h"
-#include "atomic_ops_stack.h"
+
+#include "atomic_ops_stack.h" /* includes atomic_ops.h as well */
 
 #ifndef MAX_NTHREADS
 # define MAX_NTHREADS 100
