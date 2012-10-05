@@ -34,7 +34,11 @@
 #endif
 
 #ifndef N_REVERSALS
-# define N_REVERSALS 1000 /* must be even */
+# ifdef AO_USE_PTHREAD_DEFS
+#   define N_REVERSALS 4
+# else
+#   define N_REVERSALS 1000 /* must be even */
+# endif
 #endif
 
 #ifndef LIST_LENGTH
