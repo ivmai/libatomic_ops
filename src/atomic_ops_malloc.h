@@ -26,9 +26,9 @@
 #ifndef AO_MALLOC_H
 #define AO_MALLOC_H
 
-#include <stdlib.h>     /* For size_t */
-
 #include "atomic_ops_stack.h"
+
+#include <stddef.h> /* for size_t */
 
 #ifdef AO_STACK_IS_LOCK_FREE
 # define AO_MALLOC_IS_LOCK_FREE

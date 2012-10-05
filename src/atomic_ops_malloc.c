@@ -16,9 +16,12 @@
 #endif
 
 #define AO_REQUIRE_CAS
-#include "atomic_ops_stack.h"
+#include "atomic_ops_malloc.h"
+
 #include <string.h>     /* for ffs, which is assumed reentrant. */
 #include <stdlib.h>
+#include <assert.h>
+
 #ifdef AO_TRACE_MALLOC
 # include <stdio.h>
 # include <pthread.h>
