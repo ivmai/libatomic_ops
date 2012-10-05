@@ -320,25 +320,27 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
                                     AO_t old_val1, AO_t old_val2,
                                     AO_t new_val1, AO_t new_val2)
   {
-    double_ptr_storage old_val =
-                        ((double_ptr_storage)old_val2 << 32) | old_val1;
-    double_ptr_storage new_val =
-                        ((double_ptr_storage)new_val2 << 32) | new_val1;
+    AO_double_t old_w;
+    AO_double_t new_w;
     double_ptr_storage tmp;
     int result = 1;
 
+    old_w.AO_val1 = old_val1;
+    old_w.AO_val2 = old_val2;
+    new_w.AO_val1 = new_val1;
+    new_w.AO_val2 = new_val2;
     do {
       __asm__ __volatile__("@AO_compare_double_and_swap_double\n"
         "       ldrexd  %0, [%1]\n"     /* get original to r1 & r2 */
         : "=&r"(tmp)
         : "r"(addr)
         : "cc");
-      if (tmp != old_val)
+      if (tmp != old_w.AO_whole)
         break;
       __asm__ __volatile__(
         "       strexd  %0, %2, [%3]\n" /* store new one if matched */
         : "=&r"(result), "+m"(*addr)
-        : "r"(new_val), "r"(addr)
+        : "r"(new_w.AO_whole), "r"(addr)
         : "cc");
     } while (AO_EXPECT_FALSE(result));
     return !result;   /* if succeded, return 1 else 0 */

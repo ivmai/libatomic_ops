@@ -96,22 +96,31 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
   AO_double_compare_and_swap_full(volatile AO_double_t *addr,
                                   AO_double_t old_val, AO_double_t new_val)
   {
-    return _InterlockedCompareExchange64((__int64 volatile *)addr,
-                new_val.AO_whole, old_val.AO_whole) == old_val.AO_whole;
+    return (double_ptr_storage)_InterlockedCompareExchange64(
+                                        (__int64 volatile *)addr,
+                                        new_val.AO_whole /* exchange */,
+                                        old_val.AO_whole) == old_val.AO_whole;
   }
 # define AO_HAVE_double_compare_and_swap_full
 
-AO_INLINE int
-AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
-                                       AO_t old_val1, AO_t old_val2,
-                                       AO_t new_val1, AO_t new_val2)
-{
-    __int64 oldv = (__int64)old_val1 | ((__int64)old_val2 << 32);
-    __int64 newv = (__int64)new_val1 | ((__int64)new_val2 << 32);
-    return _InterlockedCompareExchange64((__int64 volatile *)addr,
-                                       newv, oldv) == oldv;
-}
-#define AO_HAVE_compare_double_and_swap_double_full
+  AO_INLINE int
+  AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
+                                         AO_t old_val1, AO_t old_val2,
+                                         AO_t new_val1, AO_t new_val2)
+  {
+    AO_double_t old_w;
+    AO_double_t new_w;
+
+    old_w.AO_val1 = old_val1;
+    old_w.AO_val2 = old_val2;
+    new_w.AO_val1 = new_val1;
+    new_w.AO_val2 = new_val2;
+    return (double_ptr_storage)_InterlockedCompareExchange64(
+                                        (__int64 volatile *)addr,
+                                        new_w.AO_whole,
+                                        old_w.AO_whole) == old_w.AO_whole;
+  }
+# define AO_HAVE_compare_double_and_swap_double_full
 
 #endif /* AO_ASSUME_VISTA */
 
