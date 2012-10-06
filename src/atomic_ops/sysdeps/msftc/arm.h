@@ -87,3 +87,5 @@ AO_store_full(volatile AO_t *addr, AO_t value)
 /* AO_test_and_set_full() is emulated using CAS.                        */
 
 #endif /* _M_ARM < 6 */
+
+#define AO_T_IS_INT

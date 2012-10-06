@@ -167,4 +167,5 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
 /* generated automatically (and AO_int_... primitives are       */
 /* defined properly after the first generalization pass).       */
 
+/* FIXME: 32-bit ABI is assumed.    */
 #define AO_T_IS_INT
