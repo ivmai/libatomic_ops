@@ -18,8 +18,9 @@ pieces from the resulting src directory contents:
         "atomic_ops_stack.h" - Header file describing almost lock-free stack.
         "atomic_ops_malloc.h" - Header file describing almost lock-free malloc.
         "libatomic_ops_gpl.lib" - Library containing implementation of the
-                                  above two.  The atomic_ops.h implementation
-                                  is entirely in the header files in Win32.
+                        above two (plus AO_pause() defined in atomic_ops.c).
+                        The atomic_ops.h implementation is entirely in the
+                        header files in Win32.
 
 Most clients of atomic_ops.h will need to define AO_ASSUME_WINDOWS98 before
 including it.  Compare_and_swap is otherwise not available.
