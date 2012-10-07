@@ -24,6 +24,8 @@ pieces from the resulting src directory contents:
 
 Most clients of atomic_ops.h will need to define AO_ASSUME_WINDOWS98 before
 including it.  Compare_and_swap is otherwise not available.
+Defining AO_ASSUME_VISTA will make compare_double_and_swap_double available
+as well.
 
 Note that the library is covered by the GNU General Public License, while
 the top 2 of these pieces allow use in proprietary code.
