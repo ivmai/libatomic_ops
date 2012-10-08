@@ -32,7 +32,7 @@ atomic_ops_malloc.obj:
 	cl $(CFLAGS) -c atomic_ops_malloc.c
 
 libatomic_ops_gpl.lib: $(LIB_OBJS)
-	lib /MACHINE:i386 /out:libatomic_ops_gpl.lib $(LIB_OBJS)
+	lib /out:libatomic_ops_gpl.lib $(LIB_OBJS)
 
 test_atomic: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
 	cl $(CFLAGS) -I. ..\tests\test_atomic.c /Fo.\test_atomic
