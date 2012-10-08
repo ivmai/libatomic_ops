@@ -179,7 +179,7 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 }
 #define AO_HAVE_fetch_compare_and_swap_full
 
-#if !defined(__x86_64__)
+#if !defined(__x86_64__) && !defined(AO_USE_SYNC_CAS_BUILTIN)
 # include "../standard_ao_double_t.h"
 
   /* Returns nonzero if the comparison succeeded.       */
@@ -246,7 +246,7 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 
 # define AO_T_IS_INT
 
-#elif defined(__ILP32__)
+#elif defined(__ILP32__) || !defined(__x86_64__)
 # include "../standard_ao_double_t.h"
 
   /* X32 has native support for 64-bit integer operations (AO_double_t  */
