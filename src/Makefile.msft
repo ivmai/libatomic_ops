@@ -16,33 +16,33 @@
 #CPU=$(MY_CPU)
 #!include <ntwin32.mak>
 
+CFLAGS=-O2 -W3 -DAO_ASSUME_WINDOWS98
+
 LIB_OBJS=atomic_ops.obj atomic_ops_malloc.obj atomic_ops_stack.obj
 
 all: libatomic_ops_gpl.lib
 
 atomic_ops.obj:
-	cl -W3 -O2 -c atomic_ops.c
+	cl $(CFLAGS) -c atomic_ops.c
 
 atomic_ops_stack.obj:
-	cl -W3 -O2 -c -DAO_ASSUME_WINDOWS98 atomic_ops_stack.c
+	cl $(CFLAGS) -c atomic_ops_stack.c
 
 atomic_ops_malloc.obj:
-	cl -W3 -O2 -c -DAO_ASSUME_WINDOWS98 atomic_ops_malloc.c
+	cl $(CFLAGS) -c atomic_ops_malloc.c
+
+libatomic_ops_gpl.lib: $(LIB_OBJS)
+	lib /MACHINE:i386 /out:libatomic_ops_gpl.lib $(LIB_OBJS)
 
 test_atomic: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
-	cl -W3 -O2 -I. -DAO_ASSUME_WINDOWS98 ..\tests\test_atomic.c \
-	     /Fo.\test_atomic
+	cl $(CFLAGS) -I. ..\tests\test_atomic.c /Fo.\test_atomic
 
 test_atomic_w95: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
 	cl -W3 -O2 -I. ..\tests\test_atomic.c /Fo.\test_atomic_w95
 
-test_malloc: ..\tests\test_malloc.c ..\tests\test_atomic_include.h \
-	     libatomic_ops_gpl.lib
-	cl -W3 -O2 -DAO_ASSUME_WINDOWS98 -I. ..\tests\test_malloc.c \
-	     /Fo.\test_malloc libatomic_ops_gpl.lib
-
-libatomic_ops_gpl.lib: $(LIB_OBJS)
-	lib /MACHINE:i386 /out:libatomic_ops_gpl.lib $(LIB_OBJS)
+test_malloc: ..\tests\test_malloc.c libatomic_ops_gpl.lib
+	cl $(CFLAGS) -I. ..\tests\test_malloc.c /Fo.\test_malloc \
+	    libatomic_ops_gpl.lib
 
 check:  test_atomic test_atomic_w95 test_malloc
 	echo The following will print lots of \"Missing ...\" messages.
