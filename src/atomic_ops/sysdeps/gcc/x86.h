@@ -256,22 +256,6 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
   }
 # define AO_HAVE_double_compare_and_swap_full
 
-  /* TODO: Remove if generalized.       */
-  AO_INLINE int
-  AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
-                                         AO_t old_val1, AO_t old_val2,
-                                         AO_t new_val1, AO_t new_val2)
-  {
-    AO_double_t old_w;
-    AO_double_t new_w;
-    old_w.AO_val1 = old_val1;
-    old_w.AO_val2 = old_val2;
-    new_w.AO_val1 = new_val1;
-    new_w.AO_val2 = new_val2;
-    return AO_double_compare_and_swap_full(addr, old_w, new_w);
-  }
-# define AO_HAVE_compare_double_and_swap_double_full
-
 #endif /* x86_64 && ILP32 */
 
 #define AO_T_IS_INT
