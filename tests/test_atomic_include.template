@@ -73,7 +73,7 @@ void test_atomicXX(void)
 # endif
 # if defined(AO_HAVE_fetch_and_addXX)
     TA_assert(AO_fetch_and_addXX(&x, 42) == 13);
-    TA_assert(AO_fetch_and_addXX(&x, -42) == 55);
+    TA_assert(AO_fetch_and_addXX(&x, (AO_t)(-42)) == 55);
 # else
     MISSING(AO_fetch_and_add);
 # endif
@@ -111,7 +111,7 @@ void test_atomicXX(void)
 # endif
 # if defined(AO_HAVE_short_fetch_and_addXX)
     TA_assert(AO_short_fetch_and_addXX(&s, 42) == 13);
-    TA_assert(AO_short_fetch_and_addXX(&s, -42) == 55);
+    TA_assert(AO_short_fetch_and_addXX(&s, (unsigned short)-42) == 55);
 # else
     MISSING(AO_short_fetch_and_add);
 # endif
@@ -148,7 +148,7 @@ void test_atomicXX(void)
 # endif
 # if defined(AO_HAVE_char_fetch_and_addXX)
     TA_assert(AO_char_fetch_and_addXX(&b, 42) == 13);
-    TA_assert(AO_char_fetch_and_addXX(&b, -42) == 55);
+    TA_assert(AO_char_fetch_and_addXX(&b, (unsigned char)-42) == 55);
 # else
     MISSING(AO_char_fetch_and_add);
 # endif
@@ -185,7 +185,7 @@ void test_atomicXX(void)
 # endif
 # if defined(AO_HAVE_int_fetch_and_addXX)
     TA_assert(AO_int_fetch_and_addXX(&zz, 42) == 13);
-    TA_assert(AO_int_fetch_and_addXX(&zz, -42) == 55);
+    TA_assert(AO_int_fetch_and_addXX(&zz, (unsigned int)-42) == 55);
 # else
     MISSING(AO_int_fetch_and_add);
 # endif
