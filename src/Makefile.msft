@@ -35,7 +35,7 @@ test_malloc: ..\tests\test_malloc.c ..\tests\test_atomic_include.h \
 	     /Fo.\test_malloc libatomic_ops_gpl.lib
 
 libatomic_ops_gpl.lib: $(LIB_OBJS)
-	lib /MACHINE:i386 /out:libatomic_ops_gpl.lib $(LIB_OBJS)
+	lib /out:libatomic_ops_gpl.lib $(LIB_OBJS)
 
 check:  test_atomic test_atomic_w95 test_malloc
 	echo The following will print lots of \"Missing ...\" messages.
