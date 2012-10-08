@@ -169,7 +169,7 @@ volatile AO_t ops_performed = 0;
 #endif
 {
   list_element * t[MAX_NTHREADS + 1];
-  long index = (long)arg;
+  int index = (int)(size_t)arg;
   int i;
   int j = 0;
 
