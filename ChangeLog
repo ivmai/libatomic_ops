@@ -1,3 +1,10 @@
+2012-10-09  Ivan Maidanski <ivmai@mail.ru>
+
+	* tests/test_stack.c (run_one_test): Change type of "index" local
+	variable from long to int to match printf format specifier (when
+	VERBOSE defined); cast from "arg" pointer to integer via size_t (to
+	avoid 64-bit compiler warning).
+
 2012-10-08  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/gcc/x86.h (AO_double_compare_and_swap_full):
