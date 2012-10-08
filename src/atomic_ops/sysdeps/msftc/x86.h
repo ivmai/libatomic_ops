@@ -37,6 +37,10 @@
 
 #include "../test_and_set_t_is_char.h"
 
+#if defined(AO_ASSUME_VISTA) && !defined(AO_ASSUME_WINDOWS98)
+# define AO_ASSUME_WINDOWS98
+#endif
+
 #ifndef AO_USE_INTERLOCKED_INTRINSICS
   /* _Interlocked primitives (Inc, Dec, Xchg, Add) are always available */
 # define AO_USE_INTERLOCKED_INTRINSICS
