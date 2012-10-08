@@ -129,6 +129,8 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val)
 }
 #define AO_HAVE_compare_and_swap_full
 
+#if !defined(__x86_64__)
+
 /* Returns nonzero if the comparison succeeded. */
 /* Really requires at least a Pentium.          */
 AO_INLINE int
@@ -189,5 +191,39 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
   return (int) result;
 }
 #define AO_HAVE_compare_double_and_swap_double_full
+
+#else /* x86_64 && ILP32 */
+
+  /* X32 has native support for 64-bit integer operations (AO_double_t  */
+  /* is a 64-bit integer and we could use 64-bit cmpxchg).              */
+  /* This primitive is used by compare_double_and_swap_double_full.     */
+  AO_INLINE int
+  AO_double_compare_and_swap_full(volatile AO_double_t *addr,
+                                  AO_double_t old_val, AO_double_t new_val)
+  {
+    /* It is safe to use __sync CAS built-in here.      */
+    return __sync_bool_compare_and_swap(&addr->AO_whole,
+                                        old_val.AO_whole, new_val.AO_whole
+                                        /* empty protection list */);
+  }
+# define AO_HAVE_double_compare_and_swap_full
+
+  /* TODO: Remove if generalized.       */
+  AO_INLINE int
+  AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
+                                         AO_t old_val1, AO_t old_val2,
+                                         AO_t new_val1, AO_t new_val2)
+  {
+    AO_double_t old_w;
+    AO_double_t new_w;
+    old_w.AO_val1 = old_val1;
+    old_w.AO_val2 = old_val2;
+    new_w.AO_val1 = new_val1;
+    new_w.AO_val2 = new_val2;
+    return AO_double_compare_and_swap_full(addr, old_w, new_w);
+  }
+# define AO_HAVE_compare_double_and_swap_double_full
+
+#endif /* x86_64 && ILP32 */
 
 #include "../ao_t_is_int.h"
