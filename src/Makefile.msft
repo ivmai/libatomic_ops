@@ -49,9 +49,9 @@ test_stack: ..\tests\test_stack.c libatomic_ops_gpl.lib
 	    libatomic_ops_gpl.lib
 
 check: test_atomic test_atomic_w95 test_malloc test_stack
-	echo The following will print lots of \"Missing ...\" messages.
+	@echo "The following will print lots of 'Missing ...' messages"
 	test_atomic_w95
-	echo The following will print some \"Missing ...\" messages.
+	@echo "The following will print some 'Missing ...' messages"
 	test_atomic
 	test_malloc
 	test_stack
