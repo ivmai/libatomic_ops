@@ -44,6 +44,7 @@
 /* Assume _MSC_VER >= 1400 */
 #include <intrin.h>
 
+#pragma intrinsic (_InterlockedExchangeAdd)
 #pragma intrinsic (_InterlockedCompareExchange64)
 
 #ifndef AO_PREFER_GENERALIZED
@@ -83,30 +84,61 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 }
 #define AO_HAVE_fetch_compare_and_swap_full
 
-/* As far as we can tell, the lfence and sfence instructions are not    */
-/* currently needed or useful for cached memory accesses.               */
+AO_INLINE unsigned int
+AO_int_fetch_and_add_full(volatile unsigned int *p, unsigned int incr)
+{
+  return _InterlockedExchangeAdd((LONG volatile *)p, incr);
+}
+#define AO_HAVE_int_fetch_and_add_full
 
 #ifdef AO_ASM_X64_AVAILABLE
 
-AO_INLINE void
-AO_nop_full(void)
-{
-  /* Note: "mfence" (SSE2) is supported on all x86_64/amd64 chips.      */
-  __asm { mfence }
-}
-#define AO_HAVE_nop_full
+  AO_INLINE unsigned char
+  AO_char_fetch_and_add_full(volatile unsigned char *p, unsigned char incr)
+  {
+    __asm
+    {
+      mov al, incr
+      mov rbx, p
+      lock xadd byte ptr [rbx], al
+    }
+  }
+# define AO_HAVE_char_fetch_and_add_full
 
-AO_INLINE AO_TS_VAL_t
-AO_test_and_set_full(volatile AO_TS_t *addr)
-{
+  AO_INLINE unsigned short
+  AO_short_fetch_and_add_full(volatile unsigned short *p, unsigned short incr)
+  {
+    __asm
+    {
+      mov ax, incr
+      mov rbx, p
+      lock xadd word ptr [rbx], ax
+    }
+  }
+# define AO_HAVE_short_fetch_and_add_full
+
+/* As far as we can tell, the lfence and sfence instructions are not    */
+/* currently needed or useful for cached memory accesses.               */
+
+  AO_INLINE void
+  AO_nop_full(void)
+  {
+    /* Note: "mfence" (SSE2) is supported on all x86_64/amd64 chips.    */
+    __asm { mfence }
+  }
+# define AO_HAVE_nop_full
+
+  AO_INLINE AO_TS_VAL_t
+  AO_test_and_set_full(volatile AO_TS_t *addr)
+  {
     __asm
     {
         mov     rax,AO_TS_SET           ;
         mov     rbx,addr                ;
         xchg    byte ptr [rbx],al       ;
     }
-}
-#define AO_HAVE_test_and_set_full
+  }
+# define AO_HAVE_test_and_set_full
 
 #endif /* AO_ASM_X64_AVAILABLE */
 

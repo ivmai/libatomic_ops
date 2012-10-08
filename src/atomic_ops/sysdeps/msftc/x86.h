@@ -71,6 +71,34 @@ AO_nop_full(void)
 
 #endif
 
+#ifndef AO_NO_ASM_XADD
+  AO_INLINE unsigned char
+  AO_char_fetch_and_add_full(volatile unsigned char *p, unsigned char incr)
+  {
+    __asm
+    {
+      mov al, incr
+      mov ebx, p
+      lock xadd byte ptr [ebx], al
+    }
+    /* Ignore possible "missing return value" warning here.     */
+  }
+# define AO_HAVE_char_fetch_and_add_full
+
+  AO_INLINE unsigned short
+  AO_short_fetch_and_add_full(volatile unsigned short *p, unsigned short incr)
+  {
+    __asm
+    {
+      mov ax, incr
+      mov ebx, p
+      lock xadd word ptr [ebx], ax
+    }
+    /* Ignore possible "missing return value" warning here.     */
+  }
+# define AO_HAVE_short_fetch_and_add_full
+#endif /* !AO_NO_ASM_XADD */
+
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
 {
