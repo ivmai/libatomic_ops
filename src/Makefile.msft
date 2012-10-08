@@ -44,12 +44,17 @@ test_malloc: ..\tests\test_malloc.c libatomic_ops_gpl.lib
 	cl $(CFLAGS) -I. ..\tests\test_malloc.c /Fo.\test_malloc \
 	    libatomic_ops_gpl.lib
 
-check:  test_atomic test_atomic_w95 test_malloc
+test_stack: ..\tests\test_stack.c libatomic_ops_gpl.lib
+	cl $(CFLAGS) -I. ..\tests\test_stack.c /Fo.\test_stack \
+	    libatomic_ops_gpl.lib
+
+check: test_atomic test_atomic_w95 test_malloc test_stack
 	echo The following will print lots of \"Missing ...\" messages.
 	test_atomic_w95
 	echo The following will print some \"Missing ...\" messages.
 	test_atomic
 	test_malloc
+	test_stack
 
 clean:
 	del *.exe *.obj libatomic_ops_gpl.lib
