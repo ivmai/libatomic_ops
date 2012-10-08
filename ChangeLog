@@ -1,3 +1,53 @@
+2012-10-08  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/x86.h (AO_double_compare_and_swap_full):
+	New function (only if __x86_64__) implemented using GCC built-in
+	__sync CAS primitive available for x32.
+	* src/atomic_ops/sysdeps/gcc/x86.h
+	(AO_HAVE_double_compare_and_swap_full): New macro (for x32 only).
+	* src/atomic_ops/sysdeps/gcc/x86.h
+	(AO_compare_double_and_swap_double_full): Implement using
+	double_compare_and_swap_full instead of cmpxchg8b for x32 (since
+	x86_64 has cmpxchg and cmpxchg16b but not cmpxchg8b).
+
+2012-10-05  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops.h: Fix typos in comments (update generalize.h
+	filename).
+
+2012-10-03  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops.c (AO_pause): Fix millis value (passed to Win32
+	Sleep) for the case of 'n' argument in range between 12 and 21,
+	inclusive if AO_USE_WIN32_PTHREADS (sleep for 1 ms in this case).
+	* src/atomic_ops_stack.c (AO_pause): Evaluate 'msecs' value using the
+	same algorithm as in atomic_ops.c (Win32 only).
+
+2012-10-03  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_stack.c (dummy): Define as static (to make symbol
+	without AO_ prefix visible only within this file); initialize to 1
+	(same as in atomic_ops.c, so that AO_spin would never really alter
+	its value).
+
+2012-10-02  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops.h: Fix 'load' primitive name in comment (replace
+	AO_load_release_read with AO_load_acquire_read).
+
+2012-10-02  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/emul_cas.h
+	(AO_compare_double_and_swap_double_full): Test (define if)
+	AO_HAVE_compare_double_and_swap_double_full macro instead of
+	AO_HAVE_compare_double_and_swap_double.
+
+2012-10-01  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/standard_ao_double_t.h (double_ptr_storage):
+	Define as "unsigned long long" instead of __m128 for gcc/x32 (i.e.,
+	ILP32 on x86_64); update and reformat comment.
+
 2012-09-19  Ivan Maidanski <ivmai@mail.ru>
 
 	* configure: Regenerate (by autoreconf -vif using autoconf-2.68,
@@ -16,6 +66,23 @@
 	* src/atomic_ops/Makefile.in: Likewise.
 	* src/atomic_ops/sysdeps/Makefile.in: Likewise.
 	* tests/Makefile.in: Likewise.
+
+2012-09-18  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops.h: Include gcc/x86.h instead of gcc/x86_64.h if
+	gcc/x32 (i.e., GCC (or Intel compiler), __x86_64__ is defined, and
+	__ILP32__ is defined) to have AO_compare_double_and_swap_double_full
+	defined properly (based on cmpxchg8b); explicitly define
+	AO_USE_PENTIUM4_INSTRS for gcc/x32.
+	* src/atomic_ops/sysdeps/gcc/x86_64.h: Remove ILP32-specific code
+	(AO_T_IS_INT definition).
+
+2012-09-18  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/sunc/x86_64.h
+	(AO_compare_double_and_swap_double_full): Fix inline assembly
+	arguments commenting out "m"(*addr) one (similar to that in
+	sunc/x86.h) if AO_CMPXCHG16B_AVAILABLE defined.
 
 2012-09-18  Ivan Maidanski <ivmai@mail.ru>
 
