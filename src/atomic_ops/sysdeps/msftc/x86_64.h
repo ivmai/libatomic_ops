@@ -144,7 +144,7 @@ AO_int_fetch_and_add_full(volatile unsigned int *p, unsigned int incr)
 
 #ifdef AO_CMPXCHG16B_AVAILABLE
 /* AO_compare_double_and_swap_double_full needs implementation for Win64.
- * Also see ../gcc/x86_64.h for partial old Opteron workaround.
+ * Also see ../gcc/x86.h for partial old Opteron workaround.
  */
 
 # if _MSC_VER >= 1500
