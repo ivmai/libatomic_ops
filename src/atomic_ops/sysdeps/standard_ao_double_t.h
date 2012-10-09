@@ -38,14 +38,18 @@
 # define AO_HAVE_DOUBLE_PTR_STORAGE
 
 typedef union {
-    double_ptr_storage AO_whole;
     struct { AO_t AO_v1; AO_t AO_v2; } AO_parts;
         /* Note that AO_v1 corresponds to the low or the high part of   */
         /* AO_whole depending on the machine endianness.                */
+    double_ptr_storage AO_whole;
+        /* AO_whole is now (starting from v7.3alpha3) the 2nd element   */
+        /* of this union to make AO_DOUBLE_T_INITIALIZER portable       */
+        /* (because __m128 definition could vary from a primitive type  */
+        /* to a structure or array/vector).                             */
 } AO_double_t;
 #define AO_HAVE_double_t
 
-#define AO_DOUBLE_T_INITIALIZER { 0 }
+#define AO_DOUBLE_T_INITIALIZER { { (AO_t)0, (AO_t)0 } }
 
 #define AO_val1 AO_parts.AO_v1
 #define AO_val2 AO_parts.AO_v2
