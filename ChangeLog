@@ -1,10 +1,41 @@
 
 == [7.3alpha4] (development) ==
 
+* Add information about AO_ASSUME_VISTA to README_win32.
+* Add missing double_compare_and_swap to generalization.
+* Add negative double-CAS test cases to test_atomic_include.
+* Add test_stack to Makefile.msft (Win32).
+* Adjust included filenames in atomic_ops_malloc and test_stack.
+* Adjust quotes in echo command of Makefile.msft (Win32).
+* Define AO_int_X operations for ARM and avr32.
+* Do not include standard_ao_double_t.h where double-CAS is unimplemented.
+* Do not report absence of meaningless nop, load and store in test_atomic.
+* Eliminate 'missing initializer' warning for AO_stack_t value initializer.
+* Eliminate 64-bit compiler warnings in atomic_ops_malloc.
+* Eliminate arithmetic shifts in double-CAS (gcc/arm, msftc/x86).
+* Eliminate warning for fetch_and_add argument in test_atomic_include.
+* Enable Makefile.msft for Win64.
+* Enable double_compare_and_swap for non-cpp code (msftc/x86.h).
+* Enable test_stack for pthreads-w32 and Win32 with native threads.
 * Fix generalized AO_char/short_compare_and_swap args (missing 'unsigned').
+* Generalize compare_double_and_swap_double using double_compare_and_swap.
+* Implement char/short/int_fetch_and_add for msftc/x86[_64] (Win32).
 * Implement compare_double_and_swap_double for SunCC/x86.
 * Log messages to stdout instead of stderr (tests).
+* Make AO_ASSUME_VISTA also enables Win98 code in msftc/x86.h (Win32).
+* Move default compiler options to CFLAGS in Makefile.msft (Win32).
+* Optimize AO_spin manually to minimize compiler influence on its duration.
+* Perform only few list reversals in test_malloc if AO based on pthreads.
+* Remove duplicate AO_spin and AO_pause definition in atomic_ops_stack.
+* Remove gcc/x86_64.h eliminating code duplication of gcc/x86.h.
+* Remove nested AO_USE_PTHREAD_DEFS macro check in atomic_ops.h (gcc/arm).
+* Remove sunc/x86_64.h eliminating code duplication of sunc/x86.h.
+* Remove unsafe emulation-based implementation of double CAS (SunCC/x86_64).
 * Remove useless 'perror' call in tests run_parallel.h.
+* Reorder AO_double_t union elements for AO_DOUBLE_T_INITIALIZER portability.
+* Replace some FIXME items with TODO in atomic_ops.c and sysdeps headers.
+* Test double_compare_and_swap in test_atomic.
+* Use built-in __sync CAS for double-CAS if AO_USE_SYNC_CAS_BUILTIN for x86.
 
 
 == [7.3alpha2] 2012-05-11 ==
@@ -41,7 +72,14 @@
 
 == [7.2e] (candidate) ==
 
+* Fix AO_pause sleep delay for particular argument values (Win32).
+* Fix cmpxchg16b-based compare_double_and_swap_double for SunCC/x86_64.
+* Fix compare_double_and_swap_double and double_ptr_storage for gcc/x32.
 * Fix compare_double_and_swap_double for clang3.0/x86 in PIC mode.
+* Fix compare_double_and_swap_double_full definition condition in emul_cas.
+* Fix typos in atomic_ops.h comments.
+* Fix variable type to match printf format specifier in test_stack.
+* Fix visibility and initial value of 'dummy' variable in atomic_ops_stack.
 * Terminate tests with abort after error reported.
 
 
