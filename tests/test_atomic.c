@@ -44,11 +44,11 @@ void * add1sub1_thr(void * id)
   int i;
 
   for (i = 0; i < NITERS; ++i)
-    if (me & 1)
-      AO_fetch_and_sub1(&counter);
-    else
-      AO_fetch_and_add1(&counter);
-
+    if ((me & 1) != 0) {
+      (void)AO_fetch_and_sub1(&counter);
+    } else {
+      (void)AO_fetch_and_add1(&counter);
+    }
   return 0;
 }
 
