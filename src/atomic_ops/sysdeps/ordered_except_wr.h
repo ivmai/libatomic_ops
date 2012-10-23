@@ -32,6 +32,7 @@
 AO_INLINE void
 AO_nop_write(void)
 {
+  /* AO_nop_write implementation is the same as of AO_nop_read. */
   AO_compiler_barrier();
   /* sfence according to Intel docs.  Pentium 3 and up. */
   /* Unnecessary for cached accesses?                   */
