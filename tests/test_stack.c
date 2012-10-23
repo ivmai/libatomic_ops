@@ -260,7 +260,7 @@ int main(int argc, char **argv)
                                   (void *)(size_t)i);
 #         endif
           if (code != 0) {
-            fprintf(stderr, "Thread creation failed %u\n", code);
+            fprintf(stderr, "Thread creation failed %u\n", (unsigned)code);
             exit(3);
           }
         }
@@ -277,7 +277,7 @@ int main(int argc, char **argv)
             code = pthread_join(thread[i], 0);
 #         endif
           if (code != 0) {
-            fprintf(stderr, "Thread join failed %u\n", code);
+            fprintf(stderr, "Thread join failed %u\n", (unsigned)code);
             abort();
           }
         }
