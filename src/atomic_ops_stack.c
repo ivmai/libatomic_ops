@@ -151,13 +151,25 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
   /* We need to make sure that first is still the first entry on the    */
   /* list.  Otherwise it's possible that a reinsertion of it was        */
   /* already started before we added the black list entry.              */
-  if (AO_EXPECT_FALSE(first != AO_load(list))) {
+# if defined(__alpha__) && (__GNUC__ == 4)
+    if (first != AO_load(list))
+                        /* Workaround __builtin_expect bug found in     */
+                        /* gcc-4.6.3/alpha causing test_stack failure.  */
+# else
+    if (AO_EXPECT_FALSE(first != AO_load(list)))
+# endif
+  {
     AO_store_release(a->AO_stack_bl+i, 0);
     goto retry;
   }
   first_ptr = AO_REAL_NEXT_PTR(first);
   next = AO_load(first_ptr);
-  if (AO_EXPECT_FALSE(!AO_compare_and_swap_release(list, first, next))) {
+# if defined(__alpha__) && (__GNUC__ == 4)
+    if (!AO_compare_and_swap_release(list, first, next))
+# else
+    if (AO_EXPECT_FALSE(!AO_compare_and_swap_release(list, first, next)))
+# endif
+  {
     AO_store_release(a->AO_stack_bl+i, 0);
     goto retry;
   }
