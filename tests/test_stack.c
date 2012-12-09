@@ -241,6 +241,11 @@ int main(int argc, char **argv)
         long long start_time;
         list_element * le;
 
+#       ifdef VERBOSE
+          printf("Before add_elements: exper_n=%d, nthreads=%d,"
+                 " max_nthreads=%d, list_length=%d\n",
+                 exper_n, nthreads, max_nthreads, list_length);
+#       endif
         add_elements(list_length);
 #       ifdef VERBOSE
           printf("Initial list (nthreads = %d):\n", nthreads);
