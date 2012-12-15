@@ -73,7 +73,7 @@ static volatile AO_t initial_heap_ptr = (AO_t)AO_initial_heap;
 #endif
 
 #ifdef USE_MMAP_FIXED
-# define GC_MMAP_FLAGS MAP_FIXED | MAP_PRIVATE
+# define GC_MMAP_FLAGS (MAP_FIXED | MAP_PRIVATE)
         /* Seems to yield better performance on Solaris 2, but can      */
         /* be unreliable if something is already mapped at the address. */
 #else
