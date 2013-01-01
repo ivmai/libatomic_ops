@@ -79,6 +79,6 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/sunc/x86.h
 
 atomic_ops/generalize-small.h: atomic_ops/generalize-small.template
-	sed -e s:XSIZE:char:g -e s:XCTYPE:char:g $? > $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:short:g $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:int:g $? >> $@
+	sed -e s:XSIZE_:char_:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE_:short_:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XSIZE_:int_:g -e s:XCTYPE:unsigned:g $? >> $@

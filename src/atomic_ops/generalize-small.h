@@ -44,10 +44,11 @@
 
 #if defined(AO_HAVE_char_load) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_char_load_acquire)
-  AO_INLINE unsigned char
-  AO_char_load_acquire(const volatile unsigned char *addr)
+  AO_INLINE unsigned/**/char
+  AO_char_load_acquire(const volatile unsigned/**/char *addr)
   {
-    unsigned char result = AO_char_load(addr);
+    unsigned/**/char result = AO_char_load(addr);
+
     /* Acquire barrier would be useless, since the load could be delayed    */
     /* beyond it.                                                           */
     AO_nop_full();
@@ -58,10 +59,11 @@
 
 #if defined(AO_HAVE_char_load) && defined(AO_HAVE_nop_read) \
     && !defined(AO_HAVE_char_load_read)
-  AO_INLINE unsigned char
-  AO_char_load_read(const volatile unsigned char *addr)
+  AO_INLINE unsigned/**/char
+  AO_char_load_read(const volatile unsigned/**/char *addr)
   {
-    unsigned char result = AO_char_load(addr);
+    unsigned/**/char result = AO_char_load(addr);
+
     /* Acquire barrier would be useless, since the load could be delayed    */
     /* beyond it.                                                           */
     AO_nop_read();
@@ -154,13 +156,12 @@
 # define AO_HAVE_char_store_full
 #endif
 
-/* AO_char_compare_and_swap */
+/* char_compare_and_swap */
 #if defined(AO_HAVE_char_fetch_compare_and_swap_full) \
     && !defined(AO_HAVE_char_compare_and_swap_full)
   AO_INLINE int
-  AO_char_compare_and_swap_full(volatile unsigned char *addr,
-                                 unsigned char old_val,
-                                 unsigned char new_val)
+  AO_char_compare_and_swap_full(volatile unsigned/**/char *addr, unsigned/**/char old_val,
+                                 unsigned/**/char new_val)
   {
     return AO_char_fetch_compare_and_swap_full(addr, old_val, new_val)
              == old_val;
@@ -171,9 +172,8 @@
 #if defined(AO_HAVE_char_fetch_compare_and_swap_acquire) \
     && !defined(AO_HAVE_char_compare_and_swap_acquire)
   AO_INLINE int
-  AO_char_compare_and_swap_acquire(volatile unsigned char *addr,
-                                    unsigned char old_val,
-                                    unsigned char new_val)
+  AO_char_compare_and_swap_acquire(volatile unsigned/**/char *addr, unsigned/**/char old_val,
+                                    unsigned/**/char new_val)
   {
     return AO_char_fetch_compare_and_swap_acquire(addr, old_val, new_val)
              == old_val;
@@ -184,9 +184,8 @@
 #if defined(AO_HAVE_char_fetch_compare_and_swap_release) \
     && !defined(AO_HAVE_char_compare_and_swap_release)
   AO_INLINE int
-  AO_char_compare_and_swap_release(volatile unsigned char *addr,
-                                    unsigned char old_val,
-                                    unsigned char new_val)
+  AO_char_compare_and_swap_release(volatile unsigned/**/char *addr, unsigned/**/char old_val,
+                                    unsigned/**/char new_val)
   {
     return AO_char_fetch_compare_and_swap_release(addr, old_val, new_val)
              == old_val;
@@ -197,11 +196,11 @@
 /* char_fetch_and_add */
 #if defined(AO_HAVE_char_compare_and_swap_full) \
     && !defined(AO_HAVE_char_fetch_and_add_full)
-  AO_INLINE unsigned char
-  AO_char_fetch_and_add_full(volatile unsigned char *addr,
-                              unsigned char incr)
+  AO_INLINE unsigned/**/char
+  AO_char_fetch_and_add_full(volatile unsigned/**/char *addr, unsigned/**/char incr)
   {
-    unsigned char old;
+    unsigned/**/char old;
+
     do
       {
         old = *addr;
@@ -215,11 +214,11 @@
 
 #if defined(AO_HAVE_char_compare_and_swap_acquire) \
     && !defined(AO_HAVE_char_fetch_and_add_acquire)
-  AO_INLINE unsigned char
-  AO_char_fetch_and_add_acquire(volatile unsigned char *addr,
-                                 unsigned char incr)
+  AO_INLINE unsigned/**/char
+  AO_char_fetch_and_add_acquire(volatile unsigned/**/char *addr, unsigned/**/char incr)
   {
-    unsigned char old;
+    unsigned/**/char old;
+
     do
       {
         old = *addr;
@@ -233,11 +232,11 @@
 
 #if defined(AO_HAVE_char_compare_and_swap_release) \
     && !defined(AO_HAVE_char_fetch_and_add_release)
-  AO_INLINE unsigned char
-  AO_char_fetch_and_add_release(volatile unsigned char *addr,
-                                 unsigned char incr)
+  AO_INLINE unsigned/**/char
+  AO_char_fetch_and_add_release(volatile unsigned/**/char *addr, unsigned/**/char incr)
   {
-    unsigned char old;
+    unsigned/**/char old;
+
     do
       {
         old = *addr;
@@ -251,10 +250,11 @@
 
 #if defined(AO_HAVE_char_compare_and_swap) \
     && !defined(AO_HAVE_char_fetch_and_add)
-  AO_INLINE unsigned char
-  AO_char_fetch_and_add(volatile unsigned char *addr, unsigned char incr)
+  AO_INLINE unsigned/**/char
+  AO_char_fetch_and_add(volatile unsigned/**/char *addr, unsigned/**/char incr)
   {
-    unsigned char old;
+    unsigned/**/char old;
+
     do
       {
         old = *addr;
@@ -505,49 +505,49 @@
 #if defined(AO_HAVE_char_fetch_and_add_full) \
     && !defined(AO_HAVE_char_fetch_and_sub1_full)
 # define AO_char_fetch_and_sub1_full(addr) \
-                AO_char_fetch_and_add_full(addr,(unsigned char)(-1))
+                AO_char_fetch_and_add_full(addr, (unsigned/**/char)(-1))
 # define AO_HAVE_char_fetch_and_sub1_full
 #endif
 #if defined(AO_HAVE_char_fetch_and_add_release) \
     && !defined(AO_HAVE_char_fetch_and_sub1_release)
 # define AO_char_fetch_and_sub1_release(addr) \
-                AO_char_fetch_and_add_release(addr,(unsigned char)(-1))
+                AO_char_fetch_and_add_release(addr, (unsigned/**/char)(-1))
 # define AO_HAVE_char_fetch_and_sub1_release
 #endif
 #if defined(AO_HAVE_char_fetch_and_add_acquire) \
     && !defined(AO_HAVE_char_fetch_and_sub1_acquire)
 # define AO_char_fetch_and_sub1_acquire(addr) \
-                AO_char_fetch_and_add_acquire(addr,(unsigned char)(-1))
+                AO_char_fetch_and_add_acquire(addr, (unsigned/**/char)(-1))
 # define AO_HAVE_char_fetch_and_sub1_acquire
 #endif
 #if defined(AO_HAVE_char_fetch_and_add_write) \
     && !defined(AO_HAVE_char_fetch_and_sub1_write)
 # define AO_char_fetch_and_sub1_write(addr) \
-                AO_char_fetch_and_add_write(addr,(unsigned char)(-1))
+                AO_char_fetch_and_add_write(addr, (unsigned/**/char)(-1))
 # define AO_HAVE_char_fetch_and_sub1_write
 #endif
 #if defined(AO_HAVE_char_fetch_and_add_read) \
     && !defined(AO_HAVE_char_fetch_and_sub1_read)
 # define AO_char_fetch_and_sub1_read(addr) \
-                AO_char_fetch_and_add_read(addr,(unsigned char)(-1))
+                AO_char_fetch_and_add_read(addr, (unsigned/**/char)(-1))
 # define AO_HAVE_char_fetch_and_sub1_read
 #endif
 #if defined(AO_HAVE_char_fetch_and_add_release_write) \
     && !defined(AO_HAVE_char_fetch_and_sub1_release_write)
 # define AO_char_fetch_and_sub1_release_write(addr) \
-        AO_char_fetch_and_add_release_write(addr,(unsigned char)(-1))
+                AO_char_fetch_and_add_release_write(addr, (unsigned/**/char)(-1))
 # define AO_HAVE_char_fetch_and_sub1_release_write
 #endif
 #if defined(AO_HAVE_char_fetch_and_add_acquire_read) \
     && !defined(AO_HAVE_char_fetch_and_sub1_acquire_read)
 # define AO_char_fetch_and_sub1_acquire_read(addr) \
-        AO_char_fetch_and_add_acquire_read(addr,(unsigned char)(-1))
+                AO_char_fetch_and_add_acquire_read(addr, (unsigned/**/char)(-1))
 # define AO_HAVE_char_fetch_and_sub1_acquire_read
 #endif
 #if defined(AO_HAVE_char_fetch_and_add) \
     && !defined(AO_HAVE_char_fetch_and_sub1)
 # define AO_char_fetch_and_sub1(addr) \
-                AO_char_fetch_and_add(addr,(unsigned char)(-1))
+                AO_char_fetch_and_add(addr, (unsigned/**/char)(-1))
 # define AO_HAVE_char_fetch_and_sub1
 #endif
 
@@ -687,10 +687,11 @@
 
 #if defined(AO_HAVE_short_load) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_short_load_acquire)
-  AO_INLINE unsigned short
-  AO_short_load_acquire(const volatile unsigned short *addr)
+  AO_INLINE unsigned/**/short
+  AO_short_load_acquire(const volatile unsigned/**/short *addr)
   {
-    unsigned short result = AO_short_load(addr);
+    unsigned/**/short result = AO_short_load(addr);
+
     /* Acquire barrier would be useless, since the load could be delayed    */
     /* beyond it.                                                           */
     AO_nop_full();
@@ -701,10 +702,11 @@
 
 #if defined(AO_HAVE_short_load) && defined(AO_HAVE_nop_read) \
     && !defined(AO_HAVE_short_load_read)
-  AO_INLINE unsigned short
-  AO_short_load_read(const volatile unsigned short *addr)
+  AO_INLINE unsigned/**/short
+  AO_short_load_read(const volatile unsigned/**/short *addr)
   {
-    unsigned short result = AO_short_load(addr);
+    unsigned/**/short result = AO_short_load(addr);
+
     /* Acquire barrier would be useless, since the load could be delayed    */
     /* beyond it.                                                           */
     AO_nop_read();
@@ -797,13 +799,12 @@
 # define AO_HAVE_short_store_full
 #endif
 
-/* AO_short_compare_and_swap */
+/* short_compare_and_swap */
 #if defined(AO_HAVE_short_fetch_compare_and_swap_full) \
     && !defined(AO_HAVE_short_compare_and_swap_full)
   AO_INLINE int
-  AO_short_compare_and_swap_full(volatile unsigned short *addr,
-                                 unsigned short old_val,
-                                 unsigned short new_val)
+  AO_short_compare_and_swap_full(volatile unsigned/**/short *addr, unsigned/**/short old_val,
+                                 unsigned/**/short new_val)
   {
     return AO_short_fetch_compare_and_swap_full(addr, old_val, new_val)
              == old_val;
@@ -814,9 +815,8 @@
 #if defined(AO_HAVE_short_fetch_compare_and_swap_acquire) \
     && !defined(AO_HAVE_short_compare_and_swap_acquire)
   AO_INLINE int
-  AO_short_compare_and_swap_acquire(volatile unsigned short *addr,
-                                    unsigned short old_val,
-                                    unsigned short new_val)
+  AO_short_compare_and_swap_acquire(volatile unsigned/**/short *addr, unsigned/**/short old_val,
+                                    unsigned/**/short new_val)
   {
     return AO_short_fetch_compare_and_swap_acquire(addr, old_val, new_val)
              == old_val;
@@ -827,9 +827,8 @@
 #if defined(AO_HAVE_short_fetch_compare_and_swap_release) \
     && !defined(AO_HAVE_short_compare_and_swap_release)
   AO_INLINE int
-  AO_short_compare_and_swap_release(volatile unsigned short *addr,
-                                    unsigned short old_val,
-                                    unsigned short new_val)
+  AO_short_compare_and_swap_release(volatile unsigned/**/short *addr, unsigned/**/short old_val,
+                                    unsigned/**/short new_val)
   {
     return AO_short_fetch_compare_and_swap_release(addr, old_val, new_val)
              == old_val;
@@ -840,11 +839,11 @@
 /* short_fetch_and_add */
 #if defined(AO_HAVE_short_compare_and_swap_full) \
     && !defined(AO_HAVE_short_fetch_and_add_full)
-  AO_INLINE unsigned short
-  AO_short_fetch_and_add_full(volatile unsigned short *addr,
-                              unsigned short incr)
+  AO_INLINE unsigned/**/short
+  AO_short_fetch_and_add_full(volatile unsigned/**/short *addr, unsigned/**/short incr)
   {
-    unsigned short old;
+    unsigned/**/short old;
+
     do
       {
         old = *addr;
@@ -858,11 +857,11 @@
 
 #if defined(AO_HAVE_short_compare_and_swap_acquire) \
     && !defined(AO_HAVE_short_fetch_and_add_acquire)
-  AO_INLINE unsigned short
-  AO_short_fetch_and_add_acquire(volatile unsigned short *addr,
-                                 unsigned short incr)
+  AO_INLINE unsigned/**/short
+  AO_short_fetch_and_add_acquire(volatile unsigned/**/short *addr, unsigned/**/short incr)
   {
-    unsigned short old;
+    unsigned/**/short old;
+
     do
       {
         old = *addr;
@@ -876,11 +875,11 @@
 
 #if defined(AO_HAVE_short_compare_and_swap_release) \
     && !defined(AO_HAVE_short_fetch_and_add_release)
-  AO_INLINE unsigned short
-  AO_short_fetch_and_add_release(volatile unsigned short *addr,
-                                 unsigned short incr)
+  AO_INLINE unsigned/**/short
+  AO_short_fetch_and_add_release(volatile unsigned/**/short *addr, unsigned/**/short incr)
   {
-    unsigned short old;
+    unsigned/**/short old;
+
     do
       {
         old = *addr;
@@ -894,10 +893,11 @@
 
 #if defined(AO_HAVE_short_compare_and_swap) \
     && !defined(AO_HAVE_short_fetch_and_add)
-  AO_INLINE unsigned short
-  AO_short_fetch_and_add(volatile unsigned short *addr, unsigned short incr)
+  AO_INLINE unsigned/**/short
+  AO_short_fetch_and_add(volatile unsigned/**/short *addr, unsigned/**/short incr)
   {
-    unsigned short old;
+    unsigned/**/short old;
+
     do
       {
         old = *addr;
@@ -1148,49 +1148,49 @@
 #if defined(AO_HAVE_short_fetch_and_add_full) \
     && !defined(AO_HAVE_short_fetch_and_sub1_full)
 # define AO_short_fetch_and_sub1_full(addr) \
-                AO_short_fetch_and_add_full(addr,(unsigned short)(-1))
+                AO_short_fetch_and_add_full(addr, (unsigned/**/short)(-1))
 # define AO_HAVE_short_fetch_and_sub1_full
 #endif
 #if defined(AO_HAVE_short_fetch_and_add_release) \
     && !defined(AO_HAVE_short_fetch_and_sub1_release)
 # define AO_short_fetch_and_sub1_release(addr) \
-                AO_short_fetch_and_add_release(addr,(unsigned short)(-1))
+                AO_short_fetch_and_add_release(addr, (unsigned/**/short)(-1))
 # define AO_HAVE_short_fetch_and_sub1_release
 #endif
 #if defined(AO_HAVE_short_fetch_and_add_acquire) \
     && !defined(AO_HAVE_short_fetch_and_sub1_acquire)
 # define AO_short_fetch_and_sub1_acquire(addr) \
-                AO_short_fetch_and_add_acquire(addr,(unsigned short)(-1))
+                AO_short_fetch_and_add_acquire(addr, (unsigned/**/short)(-1))
 # define AO_HAVE_short_fetch_and_sub1_acquire
 #endif
 #if defined(AO_HAVE_short_fetch_and_add_write) \
     && !defined(AO_HAVE_short_fetch_and_sub1_write)
 # define AO_short_fetch_and_sub1_write(addr) \
-                AO_short_fetch_and_add_write(addr,(unsigned short)(-1))
+                AO_short_fetch_and_add_write(addr, (unsigned/**/short)(-1))
 # define AO_HAVE_short_fetch_and_sub1_write
 #endif
 #if defined(AO_HAVE_short_fetch_and_add_read) \
     && !defined(AO_HAVE_short_fetch_and_sub1_read)
 # define AO_short_fetch_and_sub1_read(addr) \
-                AO_short_fetch_and_add_read(addr,(unsigned short)(-1))
+                AO_short_fetch_and_add_read(addr, (unsigned/**/short)(-1))
 # define AO_HAVE_short_fetch_and_sub1_read
 #endif
 #if defined(AO_HAVE_short_fetch_and_add_release_write) \
     && !defined(AO_HAVE_short_fetch_and_sub1_release_write)
 # define AO_short_fetch_and_sub1_release_write(addr) \
-        AO_short_fetch_and_add_release_write(addr,(unsigned short)(-1))
+                AO_short_fetch_and_add_release_write(addr, (unsigned/**/short)(-1))
 # define AO_HAVE_short_fetch_and_sub1_release_write
 #endif
 #if defined(AO_HAVE_short_fetch_and_add_acquire_read) \
     && !defined(AO_HAVE_short_fetch_and_sub1_acquire_read)
 # define AO_short_fetch_and_sub1_acquire_read(addr) \
-        AO_short_fetch_and_add_acquire_read(addr,(unsigned short)(-1))
+                AO_short_fetch_and_add_acquire_read(addr, (unsigned/**/short)(-1))
 # define AO_HAVE_short_fetch_and_sub1_acquire_read
 #endif
 #if defined(AO_HAVE_short_fetch_and_add) \
     && !defined(AO_HAVE_short_fetch_and_sub1)
 # define AO_short_fetch_and_sub1(addr) \
-                AO_short_fetch_and_add(addr,(unsigned short)(-1))
+                AO_short_fetch_and_add(addr, (unsigned/**/short)(-1))
 # define AO_HAVE_short_fetch_and_sub1
 #endif
 
@@ -1330,10 +1330,11 @@
 
 #if defined(AO_HAVE_int_load) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_int_load_acquire)
-  AO_INLINE unsigned int
-  AO_int_load_acquire(const volatile unsigned int *addr)
+  AO_INLINE unsigned
+  AO_int_load_acquire(const volatile unsigned *addr)
   {
-    unsigned int result = AO_int_load(addr);
+    unsigned result = AO_int_load(addr);
+
     /* Acquire barrier would be useless, since the load could be delayed    */
     /* beyond it.                                                           */
     AO_nop_full();
@@ -1344,10 +1345,11 @@
 
 #if defined(AO_HAVE_int_load) && defined(AO_HAVE_nop_read) \
     && !defined(AO_HAVE_int_load_read)
-  AO_INLINE unsigned int
-  AO_int_load_read(const volatile unsigned int *addr)
+  AO_INLINE unsigned
+  AO_int_load_read(const volatile unsigned *addr)
   {
-    unsigned int result = AO_int_load(addr);
+    unsigned result = AO_int_load(addr);
+
     /* Acquire barrier would be useless, since the load could be delayed    */
     /* beyond it.                                                           */
     AO_nop_read();
@@ -1440,13 +1442,12 @@
 # define AO_HAVE_int_store_full
 #endif
 
-/* AO_int_compare_and_swap */
+/* int_compare_and_swap */
 #if defined(AO_HAVE_int_fetch_compare_and_swap_full) \
     && !defined(AO_HAVE_int_compare_and_swap_full)
   AO_INLINE int
-  AO_int_compare_and_swap_full(volatile unsigned int *addr,
-                                 unsigned int old_val,
-                                 unsigned int new_val)
+  AO_int_compare_and_swap_full(volatile unsigned *addr, unsigned old_val,
+                                 unsigned new_val)
   {
     return AO_int_fetch_compare_and_swap_full(addr, old_val, new_val)
              == old_val;
@@ -1457,9 +1458,8 @@
 #if defined(AO_HAVE_int_fetch_compare_and_swap_acquire) \
     && !defined(AO_HAVE_int_compare_and_swap_acquire)
   AO_INLINE int
-  AO_int_compare_and_swap_acquire(volatile unsigned int *addr,
-                                    unsigned int old_val,
-                                    unsigned int new_val)
+  AO_int_compare_and_swap_acquire(volatile unsigned *addr, unsigned old_val,
+                                    unsigned new_val)
   {
     return AO_int_fetch_compare_and_swap_acquire(addr, old_val, new_val)
              == old_val;
@@ -1470,9 +1470,8 @@
 #if defined(AO_HAVE_int_fetch_compare_and_swap_release) \
     && !defined(AO_HAVE_int_compare_and_swap_release)
   AO_INLINE int
-  AO_int_compare_and_swap_release(volatile unsigned int *addr,
-                                    unsigned int old_val,
-                                    unsigned int new_val)
+  AO_int_compare_and_swap_release(volatile unsigned *addr, unsigned old_val,
+                                    unsigned new_val)
   {
     return AO_int_fetch_compare_and_swap_release(addr, old_val, new_val)
              == old_val;
@@ -1483,11 +1482,11 @@
 /* int_fetch_and_add */
 #if defined(AO_HAVE_int_compare_and_swap_full) \
     && !defined(AO_HAVE_int_fetch_and_add_full)
-  AO_INLINE unsigned int
-  AO_int_fetch_and_add_full(volatile unsigned int *addr,
-                              unsigned int incr)
+  AO_INLINE unsigned
+  AO_int_fetch_and_add_full(volatile unsigned *addr, unsigned incr)
   {
-    unsigned int old;
+    unsigned old;
+
     do
       {
         old = *addr;
@@ -1501,11 +1500,11 @@
 
 #if defined(AO_HAVE_int_compare_and_swap_acquire) \
     && !defined(AO_HAVE_int_fetch_and_add_acquire)
-  AO_INLINE unsigned int
-  AO_int_fetch_and_add_acquire(volatile unsigned int *addr,
-                                 unsigned int incr)
+  AO_INLINE unsigned
+  AO_int_fetch_and_add_acquire(volatile unsigned *addr, unsigned incr)
   {
-    unsigned int old;
+    unsigned old;
+
     do
       {
         old = *addr;
@@ -1519,11 +1518,11 @@
 
 #if defined(AO_HAVE_int_compare_and_swap_release) \
     && !defined(AO_HAVE_int_fetch_and_add_release)
-  AO_INLINE unsigned int
-  AO_int_fetch_and_add_release(volatile unsigned int *addr,
-                                 unsigned int incr)
+  AO_INLINE unsigned
+  AO_int_fetch_and_add_release(volatile unsigned *addr, unsigned incr)
   {
-    unsigned int old;
+    unsigned old;
+
     do
       {
         old = *addr;
@@ -1537,10 +1536,11 @@
 
 #if defined(AO_HAVE_int_compare_and_swap) \
     && !defined(AO_HAVE_int_fetch_and_add)
-  AO_INLINE unsigned int
-  AO_int_fetch_and_add(volatile unsigned int *addr, unsigned int incr)
+  AO_INLINE unsigned
+  AO_int_fetch_and_add(volatile unsigned *addr, unsigned incr)
   {
-    unsigned int old;
+    unsigned old;
+
     do
       {
         old = *addr;
@@ -1791,49 +1791,49 @@
 #if defined(AO_HAVE_int_fetch_and_add_full) \
     && !defined(AO_HAVE_int_fetch_and_sub1_full)
 # define AO_int_fetch_and_sub1_full(addr) \
-                AO_int_fetch_and_add_full(addr,(unsigned int)(-1))
+                AO_int_fetch_and_add_full(addr, (unsigned)(-1))
 # define AO_HAVE_int_fetch_and_sub1_full
 #endif
 #if defined(AO_HAVE_int_fetch_and_add_release) \
     && !defined(AO_HAVE_int_fetch_and_sub1_release)
 # define AO_int_fetch_and_sub1_release(addr) \
-                AO_int_fetch_and_add_release(addr,(unsigned int)(-1))
+                AO_int_fetch_and_add_release(addr, (unsigned)(-1))
 # define AO_HAVE_int_fetch_and_sub1_release
 #endif
 #if defined(AO_HAVE_int_fetch_and_add_acquire) \
     && !defined(AO_HAVE_int_fetch_and_sub1_acquire)
 # define AO_int_fetch_and_sub1_acquire(addr) \
-                AO_int_fetch_and_add_acquire(addr,(unsigned int)(-1))
+                AO_int_fetch_and_add_acquire(addr, (unsigned)(-1))
 # define AO_HAVE_int_fetch_and_sub1_acquire
 #endif
 #if defined(AO_HAVE_int_fetch_and_add_write) \
     && !defined(AO_HAVE_int_fetch_and_sub1_write)
 # define AO_int_fetch_and_sub1_write(addr) \
-                AO_int_fetch_and_add_write(addr,(unsigned int)(-1))
+                AO_int_fetch_and_add_write(addr, (unsigned)(-1))
 # define AO_HAVE_int_fetch_and_sub1_write
 #endif
 #if defined(AO_HAVE_int_fetch_and_add_read) \
     && !defined(AO_HAVE_int_fetch_and_sub1_read)
 # define AO_int_fetch_and_sub1_read(addr) \
-                AO_int_fetch_and_add_read(addr,(unsigned int)(-1))
+                AO_int_fetch_and_add_read(addr, (unsigned)(-1))
 # define AO_HAVE_int_fetch_and_sub1_read
 #endif
 #if defined(AO_HAVE_int_fetch_and_add_release_write) \
     && !defined(AO_HAVE_int_fetch_and_sub1_release_write)
 # define AO_int_fetch_and_sub1_release_write(addr) \
-        AO_int_fetch_and_add_release_write(addr,(unsigned int)(-1))
+                AO_int_fetch_and_add_release_write(addr, (unsigned)(-1))
 # define AO_HAVE_int_fetch_and_sub1_release_write
 #endif
 #if defined(AO_HAVE_int_fetch_and_add_acquire_read) \
     && !defined(AO_HAVE_int_fetch_and_sub1_acquire_read)
 # define AO_int_fetch_and_sub1_acquire_read(addr) \
-        AO_int_fetch_and_add_acquire_read(addr,(unsigned int)(-1))
+                AO_int_fetch_and_add_acquire_read(addr, (unsigned)(-1))
 # define AO_HAVE_int_fetch_and_sub1_acquire_read
 #endif
 #if defined(AO_HAVE_int_fetch_and_add) \
     && !defined(AO_HAVE_int_fetch_and_sub1)
 # define AO_int_fetch_and_sub1(addr) \
-                AO_int_fetch_and_add(addr,(unsigned int)(-1))
+                AO_int_fetch_and_add(addr, (unsigned)(-1))
 # define AO_HAVE_int_fetch_and_sub1
 #endif
 
