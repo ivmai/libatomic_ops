@@ -193,7 +193,20 @@
 # define AO_HAVE_char_compare_and_swap_release
 #endif
 
+#if defined(AO_HAVE_char_fetch_compare_and_swap) \
+    && !defined(AO_HAVE_char_compare_and_swap)
+  AO_INLINE int
+  AO_char_compare_and_swap(volatile unsigned/**/char *addr, unsigned/**/char old_val,
+                            unsigned/**/char new_val)
+  {
+    return AO_char_fetch_compare_and_swap(addr, old_val, new_val) == old_val;
+  }
+# define AO_HAVE_char_compare_and_swap
+#endif
+
 /* char_fetch_and_add */
+/* We first try to implement fetch_and_add variants in terms of the     */
+/* corresponding compare_and_swap variants to minimize adding barriers. */
 #if defined(AO_HAVE_char_compare_and_swap_full) \
     && !defined(AO_HAVE_char_fetch_and_add_full)
   AO_INLINE unsigned/**/char
@@ -836,7 +849,20 @@
 # define AO_HAVE_short_compare_and_swap_release
 #endif
 
+#if defined(AO_HAVE_short_fetch_compare_and_swap) \
+    && !defined(AO_HAVE_short_compare_and_swap)
+  AO_INLINE int
+  AO_short_compare_and_swap(volatile unsigned/**/short *addr, unsigned/**/short old_val,
+                            unsigned/**/short new_val)
+  {
+    return AO_short_fetch_compare_and_swap(addr, old_val, new_val) == old_val;
+  }
+# define AO_HAVE_short_compare_and_swap
+#endif
+
 /* short_fetch_and_add */
+/* We first try to implement fetch_and_add variants in terms of the     */
+/* corresponding compare_and_swap variants to minimize adding barriers. */
 #if defined(AO_HAVE_short_compare_and_swap_full) \
     && !defined(AO_HAVE_short_fetch_and_add_full)
   AO_INLINE unsigned/**/short
@@ -1479,7 +1505,20 @@
 # define AO_HAVE_int_compare_and_swap_release
 #endif
 
+#if defined(AO_HAVE_int_fetch_compare_and_swap) \
+    && !defined(AO_HAVE_int_compare_and_swap)
+  AO_INLINE int
+  AO_int_compare_and_swap(volatile unsigned *addr, unsigned old_val,
+                            unsigned new_val)
+  {
+    return AO_int_fetch_compare_and_swap(addr, old_val, new_val) == old_val;
+  }
+# define AO_HAVE_int_compare_and_swap
+#endif
+
 /* int_fetch_and_add */
+/* We first try to implement fetch_and_add variants in terms of the     */
+/* corresponding compare_and_swap variants to minimize adding barriers. */
 #if defined(AO_HAVE_int_compare_and_swap_full) \
     && !defined(AO_HAVE_int_fetch_and_add_full)
   AO_INLINE unsigned
