@@ -232,6 +232,53 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 }
 #define AO_HAVE_fetch_compare_and_swap_full
 
+AO_INLINE unsigned char
+AO_char_fetch_compare_and_swap_full(volatile unsigned char *addr,
+                                    unsigned char old_val,
+                                    unsigned char new_val)
+{
+  unsigned char fetched_val;
+
+  pthread_mutex_lock(&AO_pt_lock);
+  fetched_val = *addr;
+  if (fetched_val == old_val)
+    *addr = new_val;
+  pthread_mutex_unlock(&AO_pt_lock);
+  return fetched_val;
+}
+#define AO_HAVE_char_fetch_compare_and_swap_full
+
+AO_INLINE unsigned short
+AO_short_fetch_compare_and_swap_full(volatile unsigned short *addr,
+                                     unsigned short old_val,
+                                     unsigned short new_val)
+{
+  unsigned short fetched_val;
+
+  pthread_mutex_lock(&AO_pt_lock);
+  fetched_val = *addr;
+  if (fetched_val == old_val)
+    *addr = new_val;
+  pthread_mutex_unlock(&AO_pt_lock);
+  return fetched_val;
+}
+#define AO_HAVE_short_fetch_compare_and_swap_full
+
+AO_INLINE unsigned
+AO_int_fetch_compare_and_swap_full(volatile unsigned *addr, unsigned old_val,
+                                   unsigned new_val)
+{
+  unsigned fetched_val;
+
+  pthread_mutex_lock(&AO_pt_lock);
+  fetched_val = *addr;
+  if (fetched_val == old_val)
+    *addr = new_val;
+  pthread_mutex_unlock(&AO_pt_lock);
+  return fetched_val;
+}
+#define AO_HAVE_int_fetch_compare_and_swap_full
+
 /* Unlike real architectures, we define both double-width CAS variants. */
 
 typedef struct {
