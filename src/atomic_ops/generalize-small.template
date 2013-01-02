@@ -21,14 +21,14 @@
  */
 
 /* XSIZE_load */
-#if defined(AO_HAVE_XSIZE_load_acquire) && !defined(AO_HAVE_XSIZE_load)
-# define AO_XSIZE_load(addr) AO_XSIZE_load_acquire(addr)
-# define AO_HAVE_XSIZE_load
-#endif
-
 #if defined(AO_HAVE_XSIZE_load_full) && !defined(AO_HAVE_XSIZE_load_acquire)
 # define AO_XSIZE_load_acquire(addr) AO_XSIZE_load_full(addr)
 # define AO_HAVE_XSIZE_load_acquire
+#endif
+
+#if defined(AO_HAVE_XSIZE_load_acquire) && !defined(AO_HAVE_XSIZE_load)
+# define AO_XSIZE_load(addr) AO_XSIZE_load_acquire(addr)
+# define AO_HAVE_XSIZE_load
 #endif
 
 #if defined(AO_HAVE_XSIZE_load_full) && !defined(AO_HAVE_XSIZE_load_read)
@@ -100,14 +100,14 @@
 #endif /* !AO_NO_DD_ORDERING */
 
 /* XSIZE_store */
-#if defined(AO_HAVE_XSIZE_store_release) && !defined(AO_HAVE_XSIZE_store)
-# define AO_XSIZE_store(addr, val) AO_XSIZE_store_release(addr,val)
-# define AO_HAVE_XSIZE_store
-#endif
-
 #if defined(AO_HAVE_XSIZE_store_full) && !defined(AO_HAVE_XSIZE_store_release)
 # define AO_XSIZE_store_release(addr,val) AO_XSIZE_store_full(addr,val)
 # define AO_HAVE_XSIZE_store_release
+#endif
+
+#if defined(AO_HAVE_XSIZE_store_release) && !defined(AO_HAVE_XSIZE_store)
+# define AO_XSIZE_store(addr, val) AO_XSIZE_store_release(addr,val)
+# define AO_HAVE_XSIZE_store
 #endif
 
 #if defined(AO_HAVE_XSIZE_store_full) && !defined(AO_HAVE_XSIZE_store_write)
