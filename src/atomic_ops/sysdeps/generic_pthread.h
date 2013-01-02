@@ -217,6 +217,87 @@ AO_xor_full(volatile AO_t *p, AO_t value)
 }
 #define AO_HAVE_xor_full
 
+AO_INLINE void
+AO_char_and_full(volatile unsigned char *p, unsigned char value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p &= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_char_and_full
+
+AO_INLINE void
+AO_char_or_full(volatile unsigned char *p, unsigned char value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p |= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_char_or_full
+
+AO_INLINE void
+AO_char_xor_full(volatile unsigned char *p, unsigned char value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p ^= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_char_xor_full
+
+AO_INLINE void
+AO_short_and_full(volatile unsigned short *p, unsigned short value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p &= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_short_and_full
+
+AO_INLINE void
+AO_short_or_full(volatile unsigned short *p, unsigned short value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p |= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_short_or_full
+
+AO_INLINE void
+AO_short_xor_full(volatile unsigned short *p, unsigned short value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p ^= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_short_xor_full
+
+AO_INLINE void
+AO_int_and_full(volatile unsigned *p, unsigned value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p &= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_int_and_full
+
+AO_INLINE void
+AO_int_or_full(volatile unsigned *p, unsigned value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p |= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_int_or_full
+
+AO_INLINE void
+AO_int_xor_full(volatile unsigned *p, unsigned value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  *p ^= value;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_int_xor_full
+
 AO_INLINE AO_t
 AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                                AO_t new_val)

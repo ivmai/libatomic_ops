@@ -654,6 +654,253 @@
 #   define AO_HAVE_char_fetch_and_sub1_dd_acquire_read
 # endif
 #endif /* !AO_NO_DD_ORDERING */
+
+/* char_and */
+#if defined(AO_HAVE_char_compare_and_swap_full) \
+    && !defined(AO_HAVE_char_and_full)
+  AO_INLINE void
+  AO_char_and_full(volatile unsigned/**/char *addr, unsigned/**/char value)
+  {
+    unsigned/**/char old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(addr, old,
+                                                           old & value)));
+  }
+# define AO_HAVE_char_and_full
+#endif
+
+#if defined(AO_HAVE_char_and_full)
+# if !defined(AO_HAVE_char_and_release)
+#   define AO_char_and_release(addr, val) AO_char_and_full(addr, val)
+#   define AO_HAVE_char_and_release
+# endif
+# if !defined(AO_HAVE_char_and_acquire)
+#   define AO_char_and_acquire(addr, val) AO_char_and_full(addr, val)
+#   define AO_HAVE_char_and_acquire
+# endif
+# if !defined(AO_HAVE_char_and_write)
+#   define AO_char_and_write(addr, val) AO_char_and_full(addr, val)
+#   define AO_HAVE_char_and_write
+# endif
+# if !defined(AO_HAVE_char_and_read)
+#   define AO_char_and_read(addr, val) AO_char_and_full(addr, val)
+#   define AO_HAVE_char_and_read
+# endif
+#endif /* AO_HAVE_char_and_full */
+
+#if !defined(AO_HAVE_char_and) && defined(AO_HAVE_char_and_release)
+# define AO_char_and(addr, val) AO_char_and_release(addr, val)
+# define AO_HAVE_char_and
+#endif
+#if !defined(AO_HAVE_char_and) && defined(AO_HAVE_char_and_acquire)
+# define AO_char_and(addr, val) AO_char_and_acquire(addr, val)
+# define AO_HAVE_char_and
+#endif
+#if !defined(AO_HAVE_char_and) && defined(AO_HAVE_char_and_write)
+# define AO_char_and(addr, val) AO_char_and_write(addr, val)
+# define AO_HAVE_char_and
+#endif
+#if !defined(AO_HAVE_char_and) && defined(AO_HAVE_char_and_read)
+# define AO_char_and(addr, val) AO_char_and_read(addr, val)
+# define AO_HAVE_char_and
+#endif
+
+#if defined(AO_HAVE_char_and_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_char_and_full)
+# define AO_char_and_full(addr, val) \
+                        (AO_nop_full(), AO_char_and_acquire(addr, val))
+# define AO_HAVE_char_and_full
+#endif
+
+#if !defined(AO_HAVE_char_and_release_write) \
+    && defined(AO_HAVE_char_and_write)
+# define AO_char_and_release_write(addr, val) AO_char_and_write(addr, val)
+# define AO_HAVE_char_and_release_write
+#endif
+#if !defined(AO_HAVE_char_and_release_write) \
+    && defined(AO_HAVE_char_and_release)
+# define AO_char_and_release_write(addr, val) AO_char_and_release(addr, val)
+# define AO_HAVE_char_and_release_write
+#endif
+#if !defined(AO_HAVE_char_and_acquire_read) \
+    && defined(AO_HAVE_char_and_read)
+# define AO_char_and_acquire_read(addr, val) AO_char_and_read(addr, val)
+# define AO_HAVE_char_and_acquire_read
+#endif
+#if !defined(AO_HAVE_char_and_acquire_read) \
+    && defined(AO_HAVE_char_and_acquire)
+# define AO_char_and_acquire_read(addr, val) AO_char_and_acquire(addr, val)
+# define AO_HAVE_char_and_acquire_read
+#endif
+
+/* char_or */
+#if defined(AO_HAVE_char_compare_and_swap_full) \
+    && !defined(AO_HAVE_char_or_full)
+  AO_INLINE void
+  AO_char_or_full(volatile unsigned/**/char *addr, unsigned/**/char value)
+  {
+    unsigned/**/char old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(addr, old,
+                                                           old | value)));
+  }
+# define AO_HAVE_char_or_full
+#endif
+
+#if defined(AO_HAVE_char_or_full)
+# if !defined(AO_HAVE_char_or_release)
+#   define AO_char_or_release(addr, val) AO_char_or_full(addr, val)
+#   define AO_HAVE_char_or_release
+# endif
+# if !defined(AO_HAVE_char_or_acquire)
+#   define AO_char_or_acquire(addr, val) AO_char_or_full(addr, val)
+#   define AO_HAVE_char_or_acquire
+# endif
+# if !defined(AO_HAVE_char_or_write)
+#   define AO_char_or_write(addr, val) AO_char_or_full(addr, val)
+#   define AO_HAVE_char_or_write
+# endif
+# if !defined(AO_HAVE_char_or_read)
+#   define AO_char_or_read(addr, val) AO_char_or_full(addr, val)
+#   define AO_HAVE_char_or_read
+# endif
+#endif /* AO_HAVE_char_or_full */
+
+#if !defined(AO_HAVE_char_or) && defined(AO_HAVE_char_or_release)
+# define AO_char_or(addr, val) AO_char_or_release(addr, val)
+# define AO_HAVE_char_or
+#endif
+#if !defined(AO_HAVE_char_or) && defined(AO_HAVE_char_or_acquire)
+# define AO_char_or(addr, val) AO_char_or_acquire(addr, val)
+# define AO_HAVE_char_or
+#endif
+#if !defined(AO_HAVE_char_or) && defined(AO_HAVE_char_or_write)
+# define AO_char_or(addr, val) AO_char_or_write(addr, val)
+# define AO_HAVE_char_or
+#endif
+#if !defined(AO_HAVE_char_or) && defined(AO_HAVE_char_or_read)
+# define AO_char_or(addr, val) AO_char_or_read(addr, val)
+# define AO_HAVE_char_or
+#endif
+
+#if defined(AO_HAVE_char_or_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_char_or_full)
+# define AO_char_or_full(addr, val) \
+                        (AO_nop_full(), AO_char_or_acquire(addr, val))
+# define AO_HAVE_char_or_full
+#endif
+
+#if !defined(AO_HAVE_char_or_release_write) \
+    && defined(AO_HAVE_char_or_write)
+# define AO_char_or_release_write(addr, val) AO_char_or_write(addr, val)
+# define AO_HAVE_char_or_release_write
+#endif
+#if !defined(AO_HAVE_char_or_release_write) \
+    && defined(AO_HAVE_char_or_release)
+# define AO_char_or_release_write(addr, val) AO_char_or_release(addr, val)
+# define AO_HAVE_char_or_release_write
+#endif
+#if !defined(AO_HAVE_char_or_acquire_read) && defined(AO_HAVE_char_or_read)
+# define AO_char_or_acquire_read(addr, val) AO_char_or_read(addr, val)
+# define AO_HAVE_char_or_acquire_read
+#endif
+#if !defined(AO_HAVE_char_or_acquire_read) \
+    && defined(AO_HAVE_char_or_acquire)
+# define AO_char_or_acquire_read(addr, val) AO_char_or_acquire(addr, val)
+# define AO_HAVE_char_or_acquire_read
+#endif
+
+/* char_xor */
+#if defined(AO_HAVE_char_compare_and_swap_full) \
+    && !defined(AO_HAVE_char_xor_full)
+  AO_INLINE void
+  AO_char_xor_full(volatile unsigned/**/char *addr, unsigned/**/char value)
+  {
+    unsigned/**/char old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(addr, old,
+                                                           old ^ value)));
+  }
+# define AO_HAVE_char_xor_full
+#endif
+
+#if defined(AO_HAVE_char_xor_full)
+# if !defined(AO_HAVE_char_xor_release)
+#   define AO_char_xor_release(addr, val) AO_char_xor_full(addr, val)
+#   define AO_HAVE_char_xor_release
+# endif
+# if !defined(AO_HAVE_char_xor_acquire)
+#   define AO_char_xor_acquire(addr, val) AO_char_xor_full(addr, val)
+#   define AO_HAVE_char_xor_acquire
+# endif
+# if !defined(AO_HAVE_char_xor_write)
+#   define AO_char_xor_write(addr, val) AO_char_xor_full(addr, val)
+#   define AO_HAVE_char_xor_write
+# endif
+# if !defined(AO_HAVE_char_xor_read)
+#   define AO_char_xor_read(addr, val) AO_char_xor_full(addr, val)
+#   define AO_HAVE_char_xor_read
+# endif
+#endif /* AO_HAVE_char_xor_full */
+
+#if !defined(AO_HAVE_char_xor) && defined(AO_HAVE_char_xor_release)
+# define AO_char_xor(addr, val) AO_char_xor_release(addr, val)
+# define AO_HAVE_char_xor
+#endif
+#if !defined(AO_HAVE_char_xor) && defined(AO_HAVE_char_xor_acquire)
+# define AO_char_xor(addr, val) AO_char_xor_acquire(addr, val)
+# define AO_HAVE_char_xor
+#endif
+#if !defined(AO_HAVE_char_xor) && defined(AO_HAVE_char_xor_write)
+# define AO_char_xor(addr, val) AO_char_xor_write(addr, val)
+# define AO_HAVE_char_xor
+#endif
+#if !defined(AO_HAVE_char_xor) && defined(AO_HAVE_char_xor_read)
+# define AO_char_xor(addr, val) AO_char_xor_read(addr, val)
+# define AO_HAVE_char_xor
+#endif
+
+#if defined(AO_HAVE_char_xor_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_char_xor_full)
+# define AO_char_xor_full(addr, val) \
+                        (AO_nop_full(), AO_char_xor_acquire(addr, val))
+# define AO_HAVE_char_xor_full
+#endif
+
+#if !defined(AO_HAVE_char_xor_release_write) \
+    && defined(AO_HAVE_char_xor_write)
+# define AO_char_xor_release_write(addr, val) AO_char_xor_write(addr, val)
+# define AO_HAVE_char_xor_release_write
+#endif
+#if !defined(AO_HAVE_char_xor_release_write) \
+    && defined(AO_HAVE_char_xor_release)
+# define AO_char_xor_release_write(addr, val) AO_char_xor_release(addr, val)
+# define AO_HAVE_char_xor_release_write
+#endif
+#if !defined(AO_HAVE_char_xor_acquire_read) \
+    && defined(AO_HAVE_char_xor_read)
+# define AO_char_xor_acquire_read(addr, val) AO_char_xor_read(addr, val)
+# define AO_HAVE_char_xor_acquire_read
+#endif
+#if !defined(AO_HAVE_char_xor_acquire_read) \
+    && defined(AO_HAVE_char_xor_acquire)
+# define AO_char_xor_acquire_read(addr, val) AO_char_xor_acquire(addr, val)
+# define AO_HAVE_char_xor_acquire_read
+#endif
+
+/* char_and/or/xor_dd_aquire_read are meaningless.     */
 /*
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
@@ -1310,6 +1557,253 @@
 #   define AO_HAVE_short_fetch_and_sub1_dd_acquire_read
 # endif
 #endif /* !AO_NO_DD_ORDERING */
+
+/* short_and */
+#if defined(AO_HAVE_short_compare_and_swap_full) \
+    && !defined(AO_HAVE_short_and_full)
+  AO_INLINE void
+  AO_short_and_full(volatile unsigned/**/short *addr, unsigned/**/short value)
+  {
+    unsigned/**/short old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(addr, old,
+                                                           old & value)));
+  }
+# define AO_HAVE_short_and_full
+#endif
+
+#if defined(AO_HAVE_short_and_full)
+# if !defined(AO_HAVE_short_and_release)
+#   define AO_short_and_release(addr, val) AO_short_and_full(addr, val)
+#   define AO_HAVE_short_and_release
+# endif
+# if !defined(AO_HAVE_short_and_acquire)
+#   define AO_short_and_acquire(addr, val) AO_short_and_full(addr, val)
+#   define AO_HAVE_short_and_acquire
+# endif
+# if !defined(AO_HAVE_short_and_write)
+#   define AO_short_and_write(addr, val) AO_short_and_full(addr, val)
+#   define AO_HAVE_short_and_write
+# endif
+# if !defined(AO_HAVE_short_and_read)
+#   define AO_short_and_read(addr, val) AO_short_and_full(addr, val)
+#   define AO_HAVE_short_and_read
+# endif
+#endif /* AO_HAVE_short_and_full */
+
+#if !defined(AO_HAVE_short_and) && defined(AO_HAVE_short_and_release)
+# define AO_short_and(addr, val) AO_short_and_release(addr, val)
+# define AO_HAVE_short_and
+#endif
+#if !defined(AO_HAVE_short_and) && defined(AO_HAVE_short_and_acquire)
+# define AO_short_and(addr, val) AO_short_and_acquire(addr, val)
+# define AO_HAVE_short_and
+#endif
+#if !defined(AO_HAVE_short_and) && defined(AO_HAVE_short_and_write)
+# define AO_short_and(addr, val) AO_short_and_write(addr, val)
+# define AO_HAVE_short_and
+#endif
+#if !defined(AO_HAVE_short_and) && defined(AO_HAVE_short_and_read)
+# define AO_short_and(addr, val) AO_short_and_read(addr, val)
+# define AO_HAVE_short_and
+#endif
+
+#if defined(AO_HAVE_short_and_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_short_and_full)
+# define AO_short_and_full(addr, val) \
+                        (AO_nop_full(), AO_short_and_acquire(addr, val))
+# define AO_HAVE_short_and_full
+#endif
+
+#if !defined(AO_HAVE_short_and_release_write) \
+    && defined(AO_HAVE_short_and_write)
+# define AO_short_and_release_write(addr, val) AO_short_and_write(addr, val)
+# define AO_HAVE_short_and_release_write
+#endif
+#if !defined(AO_HAVE_short_and_release_write) \
+    && defined(AO_HAVE_short_and_release)
+# define AO_short_and_release_write(addr, val) AO_short_and_release(addr, val)
+# define AO_HAVE_short_and_release_write
+#endif
+#if !defined(AO_HAVE_short_and_acquire_read) \
+    && defined(AO_HAVE_short_and_read)
+# define AO_short_and_acquire_read(addr, val) AO_short_and_read(addr, val)
+# define AO_HAVE_short_and_acquire_read
+#endif
+#if !defined(AO_HAVE_short_and_acquire_read) \
+    && defined(AO_HAVE_short_and_acquire)
+# define AO_short_and_acquire_read(addr, val) AO_short_and_acquire(addr, val)
+# define AO_HAVE_short_and_acquire_read
+#endif
+
+/* short_or */
+#if defined(AO_HAVE_short_compare_and_swap_full) \
+    && !defined(AO_HAVE_short_or_full)
+  AO_INLINE void
+  AO_short_or_full(volatile unsigned/**/short *addr, unsigned/**/short value)
+  {
+    unsigned/**/short old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(addr, old,
+                                                           old | value)));
+  }
+# define AO_HAVE_short_or_full
+#endif
+
+#if defined(AO_HAVE_short_or_full)
+# if !defined(AO_HAVE_short_or_release)
+#   define AO_short_or_release(addr, val) AO_short_or_full(addr, val)
+#   define AO_HAVE_short_or_release
+# endif
+# if !defined(AO_HAVE_short_or_acquire)
+#   define AO_short_or_acquire(addr, val) AO_short_or_full(addr, val)
+#   define AO_HAVE_short_or_acquire
+# endif
+# if !defined(AO_HAVE_short_or_write)
+#   define AO_short_or_write(addr, val) AO_short_or_full(addr, val)
+#   define AO_HAVE_short_or_write
+# endif
+# if !defined(AO_HAVE_short_or_read)
+#   define AO_short_or_read(addr, val) AO_short_or_full(addr, val)
+#   define AO_HAVE_short_or_read
+# endif
+#endif /* AO_HAVE_short_or_full */
+
+#if !defined(AO_HAVE_short_or) && defined(AO_HAVE_short_or_release)
+# define AO_short_or(addr, val) AO_short_or_release(addr, val)
+# define AO_HAVE_short_or
+#endif
+#if !defined(AO_HAVE_short_or) && defined(AO_HAVE_short_or_acquire)
+# define AO_short_or(addr, val) AO_short_or_acquire(addr, val)
+# define AO_HAVE_short_or
+#endif
+#if !defined(AO_HAVE_short_or) && defined(AO_HAVE_short_or_write)
+# define AO_short_or(addr, val) AO_short_or_write(addr, val)
+# define AO_HAVE_short_or
+#endif
+#if !defined(AO_HAVE_short_or) && defined(AO_HAVE_short_or_read)
+# define AO_short_or(addr, val) AO_short_or_read(addr, val)
+# define AO_HAVE_short_or
+#endif
+
+#if defined(AO_HAVE_short_or_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_short_or_full)
+# define AO_short_or_full(addr, val) \
+                        (AO_nop_full(), AO_short_or_acquire(addr, val))
+# define AO_HAVE_short_or_full
+#endif
+
+#if !defined(AO_HAVE_short_or_release_write) \
+    && defined(AO_HAVE_short_or_write)
+# define AO_short_or_release_write(addr, val) AO_short_or_write(addr, val)
+# define AO_HAVE_short_or_release_write
+#endif
+#if !defined(AO_HAVE_short_or_release_write) \
+    && defined(AO_HAVE_short_or_release)
+# define AO_short_or_release_write(addr, val) AO_short_or_release(addr, val)
+# define AO_HAVE_short_or_release_write
+#endif
+#if !defined(AO_HAVE_short_or_acquire_read) && defined(AO_HAVE_short_or_read)
+# define AO_short_or_acquire_read(addr, val) AO_short_or_read(addr, val)
+# define AO_HAVE_short_or_acquire_read
+#endif
+#if !defined(AO_HAVE_short_or_acquire_read) \
+    && defined(AO_HAVE_short_or_acquire)
+# define AO_short_or_acquire_read(addr, val) AO_short_or_acquire(addr, val)
+# define AO_HAVE_short_or_acquire_read
+#endif
+
+/* short_xor */
+#if defined(AO_HAVE_short_compare_and_swap_full) \
+    && !defined(AO_HAVE_short_xor_full)
+  AO_INLINE void
+  AO_short_xor_full(volatile unsigned/**/short *addr, unsigned/**/short value)
+  {
+    unsigned/**/short old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(addr, old,
+                                                           old ^ value)));
+  }
+# define AO_HAVE_short_xor_full
+#endif
+
+#if defined(AO_HAVE_short_xor_full)
+# if !defined(AO_HAVE_short_xor_release)
+#   define AO_short_xor_release(addr, val) AO_short_xor_full(addr, val)
+#   define AO_HAVE_short_xor_release
+# endif
+# if !defined(AO_HAVE_short_xor_acquire)
+#   define AO_short_xor_acquire(addr, val) AO_short_xor_full(addr, val)
+#   define AO_HAVE_short_xor_acquire
+# endif
+# if !defined(AO_HAVE_short_xor_write)
+#   define AO_short_xor_write(addr, val) AO_short_xor_full(addr, val)
+#   define AO_HAVE_short_xor_write
+# endif
+# if !defined(AO_HAVE_short_xor_read)
+#   define AO_short_xor_read(addr, val) AO_short_xor_full(addr, val)
+#   define AO_HAVE_short_xor_read
+# endif
+#endif /* AO_HAVE_short_xor_full */
+
+#if !defined(AO_HAVE_short_xor) && defined(AO_HAVE_short_xor_release)
+# define AO_short_xor(addr, val) AO_short_xor_release(addr, val)
+# define AO_HAVE_short_xor
+#endif
+#if !defined(AO_HAVE_short_xor) && defined(AO_HAVE_short_xor_acquire)
+# define AO_short_xor(addr, val) AO_short_xor_acquire(addr, val)
+# define AO_HAVE_short_xor
+#endif
+#if !defined(AO_HAVE_short_xor) && defined(AO_HAVE_short_xor_write)
+# define AO_short_xor(addr, val) AO_short_xor_write(addr, val)
+# define AO_HAVE_short_xor
+#endif
+#if !defined(AO_HAVE_short_xor) && defined(AO_HAVE_short_xor_read)
+# define AO_short_xor(addr, val) AO_short_xor_read(addr, val)
+# define AO_HAVE_short_xor
+#endif
+
+#if defined(AO_HAVE_short_xor_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_short_xor_full)
+# define AO_short_xor_full(addr, val) \
+                        (AO_nop_full(), AO_short_xor_acquire(addr, val))
+# define AO_HAVE_short_xor_full
+#endif
+
+#if !defined(AO_HAVE_short_xor_release_write) \
+    && defined(AO_HAVE_short_xor_write)
+# define AO_short_xor_release_write(addr, val) AO_short_xor_write(addr, val)
+# define AO_HAVE_short_xor_release_write
+#endif
+#if !defined(AO_HAVE_short_xor_release_write) \
+    && defined(AO_HAVE_short_xor_release)
+# define AO_short_xor_release_write(addr, val) AO_short_xor_release(addr, val)
+# define AO_HAVE_short_xor_release_write
+#endif
+#if !defined(AO_HAVE_short_xor_acquire_read) \
+    && defined(AO_HAVE_short_xor_read)
+# define AO_short_xor_acquire_read(addr, val) AO_short_xor_read(addr, val)
+# define AO_HAVE_short_xor_acquire_read
+#endif
+#if !defined(AO_HAVE_short_xor_acquire_read) \
+    && defined(AO_HAVE_short_xor_acquire)
+# define AO_short_xor_acquire_read(addr, val) AO_short_xor_acquire(addr, val)
+# define AO_HAVE_short_xor_acquire_read
+#endif
+
+/* short_and/or/xor_dd_aquire_read are meaningless.     */
 /*
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
@@ -1966,6 +2460,253 @@
 #   define AO_HAVE_int_fetch_and_sub1_dd_acquire_read
 # endif
 #endif /* !AO_NO_DD_ORDERING */
+
+/* int_and */
+#if defined(AO_HAVE_int_compare_and_swap_full) \
+    && !defined(AO_HAVE_int_and_full)
+  AO_INLINE void
+  AO_int_and_full(volatile unsigned *addr, unsigned value)
+  {
+    unsigned old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(addr, old,
+                                                           old & value)));
+  }
+# define AO_HAVE_int_and_full
+#endif
+
+#if defined(AO_HAVE_int_and_full)
+# if !defined(AO_HAVE_int_and_release)
+#   define AO_int_and_release(addr, val) AO_int_and_full(addr, val)
+#   define AO_HAVE_int_and_release
+# endif
+# if !defined(AO_HAVE_int_and_acquire)
+#   define AO_int_and_acquire(addr, val) AO_int_and_full(addr, val)
+#   define AO_HAVE_int_and_acquire
+# endif
+# if !defined(AO_HAVE_int_and_write)
+#   define AO_int_and_write(addr, val) AO_int_and_full(addr, val)
+#   define AO_HAVE_int_and_write
+# endif
+# if !defined(AO_HAVE_int_and_read)
+#   define AO_int_and_read(addr, val) AO_int_and_full(addr, val)
+#   define AO_HAVE_int_and_read
+# endif
+#endif /* AO_HAVE_int_and_full */
+
+#if !defined(AO_HAVE_int_and) && defined(AO_HAVE_int_and_release)
+# define AO_int_and(addr, val) AO_int_and_release(addr, val)
+# define AO_HAVE_int_and
+#endif
+#if !defined(AO_HAVE_int_and) && defined(AO_HAVE_int_and_acquire)
+# define AO_int_and(addr, val) AO_int_and_acquire(addr, val)
+# define AO_HAVE_int_and
+#endif
+#if !defined(AO_HAVE_int_and) && defined(AO_HAVE_int_and_write)
+# define AO_int_and(addr, val) AO_int_and_write(addr, val)
+# define AO_HAVE_int_and
+#endif
+#if !defined(AO_HAVE_int_and) && defined(AO_HAVE_int_and_read)
+# define AO_int_and(addr, val) AO_int_and_read(addr, val)
+# define AO_HAVE_int_and
+#endif
+
+#if defined(AO_HAVE_int_and_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_int_and_full)
+# define AO_int_and_full(addr, val) \
+                        (AO_nop_full(), AO_int_and_acquire(addr, val))
+# define AO_HAVE_int_and_full
+#endif
+
+#if !defined(AO_HAVE_int_and_release_write) \
+    && defined(AO_HAVE_int_and_write)
+# define AO_int_and_release_write(addr, val) AO_int_and_write(addr, val)
+# define AO_HAVE_int_and_release_write
+#endif
+#if !defined(AO_HAVE_int_and_release_write) \
+    && defined(AO_HAVE_int_and_release)
+# define AO_int_and_release_write(addr, val) AO_int_and_release(addr, val)
+# define AO_HAVE_int_and_release_write
+#endif
+#if !defined(AO_HAVE_int_and_acquire_read) \
+    && defined(AO_HAVE_int_and_read)
+# define AO_int_and_acquire_read(addr, val) AO_int_and_read(addr, val)
+# define AO_HAVE_int_and_acquire_read
+#endif
+#if !defined(AO_HAVE_int_and_acquire_read) \
+    && defined(AO_HAVE_int_and_acquire)
+# define AO_int_and_acquire_read(addr, val) AO_int_and_acquire(addr, val)
+# define AO_HAVE_int_and_acquire_read
+#endif
+
+/* int_or */
+#if defined(AO_HAVE_int_compare_and_swap_full) \
+    && !defined(AO_HAVE_int_or_full)
+  AO_INLINE void
+  AO_int_or_full(volatile unsigned *addr, unsigned value)
+  {
+    unsigned old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(addr, old,
+                                                           old | value)));
+  }
+# define AO_HAVE_int_or_full
+#endif
+
+#if defined(AO_HAVE_int_or_full)
+# if !defined(AO_HAVE_int_or_release)
+#   define AO_int_or_release(addr, val) AO_int_or_full(addr, val)
+#   define AO_HAVE_int_or_release
+# endif
+# if !defined(AO_HAVE_int_or_acquire)
+#   define AO_int_or_acquire(addr, val) AO_int_or_full(addr, val)
+#   define AO_HAVE_int_or_acquire
+# endif
+# if !defined(AO_HAVE_int_or_write)
+#   define AO_int_or_write(addr, val) AO_int_or_full(addr, val)
+#   define AO_HAVE_int_or_write
+# endif
+# if !defined(AO_HAVE_int_or_read)
+#   define AO_int_or_read(addr, val) AO_int_or_full(addr, val)
+#   define AO_HAVE_int_or_read
+# endif
+#endif /* AO_HAVE_int_or_full */
+
+#if !defined(AO_HAVE_int_or) && defined(AO_HAVE_int_or_release)
+# define AO_int_or(addr, val) AO_int_or_release(addr, val)
+# define AO_HAVE_int_or
+#endif
+#if !defined(AO_HAVE_int_or) && defined(AO_HAVE_int_or_acquire)
+# define AO_int_or(addr, val) AO_int_or_acquire(addr, val)
+# define AO_HAVE_int_or
+#endif
+#if !defined(AO_HAVE_int_or) && defined(AO_HAVE_int_or_write)
+# define AO_int_or(addr, val) AO_int_or_write(addr, val)
+# define AO_HAVE_int_or
+#endif
+#if !defined(AO_HAVE_int_or) && defined(AO_HAVE_int_or_read)
+# define AO_int_or(addr, val) AO_int_or_read(addr, val)
+# define AO_HAVE_int_or
+#endif
+
+#if defined(AO_HAVE_int_or_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_int_or_full)
+# define AO_int_or_full(addr, val) \
+                        (AO_nop_full(), AO_int_or_acquire(addr, val))
+# define AO_HAVE_int_or_full
+#endif
+
+#if !defined(AO_HAVE_int_or_release_write) \
+    && defined(AO_HAVE_int_or_write)
+# define AO_int_or_release_write(addr, val) AO_int_or_write(addr, val)
+# define AO_HAVE_int_or_release_write
+#endif
+#if !defined(AO_HAVE_int_or_release_write) \
+    && defined(AO_HAVE_int_or_release)
+# define AO_int_or_release_write(addr, val) AO_int_or_release(addr, val)
+# define AO_HAVE_int_or_release_write
+#endif
+#if !defined(AO_HAVE_int_or_acquire_read) && defined(AO_HAVE_int_or_read)
+# define AO_int_or_acquire_read(addr, val) AO_int_or_read(addr, val)
+# define AO_HAVE_int_or_acquire_read
+#endif
+#if !defined(AO_HAVE_int_or_acquire_read) \
+    && defined(AO_HAVE_int_or_acquire)
+# define AO_int_or_acquire_read(addr, val) AO_int_or_acquire(addr, val)
+# define AO_HAVE_int_or_acquire_read
+#endif
+
+/* int_xor */
+#if defined(AO_HAVE_int_compare_and_swap_full) \
+    && !defined(AO_HAVE_int_xor_full)
+  AO_INLINE void
+  AO_int_xor_full(volatile unsigned *addr, unsigned value)
+  {
+    unsigned old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(addr, old,
+                                                           old ^ value)));
+  }
+# define AO_HAVE_int_xor_full
+#endif
+
+#if defined(AO_HAVE_int_xor_full)
+# if !defined(AO_HAVE_int_xor_release)
+#   define AO_int_xor_release(addr, val) AO_int_xor_full(addr, val)
+#   define AO_HAVE_int_xor_release
+# endif
+# if !defined(AO_HAVE_int_xor_acquire)
+#   define AO_int_xor_acquire(addr, val) AO_int_xor_full(addr, val)
+#   define AO_HAVE_int_xor_acquire
+# endif
+# if !defined(AO_HAVE_int_xor_write)
+#   define AO_int_xor_write(addr, val) AO_int_xor_full(addr, val)
+#   define AO_HAVE_int_xor_write
+# endif
+# if !defined(AO_HAVE_int_xor_read)
+#   define AO_int_xor_read(addr, val) AO_int_xor_full(addr, val)
+#   define AO_HAVE_int_xor_read
+# endif
+#endif /* AO_HAVE_int_xor_full */
+
+#if !defined(AO_HAVE_int_xor) && defined(AO_HAVE_int_xor_release)
+# define AO_int_xor(addr, val) AO_int_xor_release(addr, val)
+# define AO_HAVE_int_xor
+#endif
+#if !defined(AO_HAVE_int_xor) && defined(AO_HAVE_int_xor_acquire)
+# define AO_int_xor(addr, val) AO_int_xor_acquire(addr, val)
+# define AO_HAVE_int_xor
+#endif
+#if !defined(AO_HAVE_int_xor) && defined(AO_HAVE_int_xor_write)
+# define AO_int_xor(addr, val) AO_int_xor_write(addr, val)
+# define AO_HAVE_int_xor
+#endif
+#if !defined(AO_HAVE_int_xor) && defined(AO_HAVE_int_xor_read)
+# define AO_int_xor(addr, val) AO_int_xor_read(addr, val)
+# define AO_HAVE_int_xor
+#endif
+
+#if defined(AO_HAVE_int_xor_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_int_xor_full)
+# define AO_int_xor_full(addr, val) \
+                        (AO_nop_full(), AO_int_xor_acquire(addr, val))
+# define AO_HAVE_int_xor_full
+#endif
+
+#if !defined(AO_HAVE_int_xor_release_write) \
+    && defined(AO_HAVE_int_xor_write)
+# define AO_int_xor_release_write(addr, val) AO_int_xor_write(addr, val)
+# define AO_HAVE_int_xor_release_write
+#endif
+#if !defined(AO_HAVE_int_xor_release_write) \
+    && defined(AO_HAVE_int_xor_release)
+# define AO_int_xor_release_write(addr, val) AO_int_xor_release(addr, val)
+# define AO_HAVE_int_xor_release_write
+#endif
+#if !defined(AO_HAVE_int_xor_acquire_read) \
+    && defined(AO_HAVE_int_xor_read)
+# define AO_int_xor_acquire_read(addr, val) AO_int_xor_read(addr, val)
+# define AO_HAVE_int_xor_acquire_read
+#endif
+#if !defined(AO_HAVE_int_xor_acquire_read) \
+    && defined(AO_HAVE_int_xor_acquire)
+# define AO_int_xor_acquire_read(addr, val) AO_int_xor_acquire(addr, val)
+# define AO_HAVE_int_xor_acquire_read
+#endif
+
+/* int_and/or/xor_dd_aquire_read are meaningless.     */
 /*
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
@@ -2622,3 +3363,250 @@
 #   define AO_HAVE_fetch_and_sub1_dd_acquire_read
 # endif
 #endif /* !AO_NO_DD_ORDERING */
+
+/* and */
+#if defined(AO_HAVE_compare_and_swap_full) \
+    && !defined(AO_HAVE_and_full)
+  AO_INLINE void
+  AO_and_full(volatile AO_t *addr, AO_t value)
+  {
+    AO_t old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old,
+                                                           old & value)));
+  }
+# define AO_HAVE_and_full
+#endif
+
+#if defined(AO_HAVE_and_full)
+# if !defined(AO_HAVE_and_release)
+#   define AO_and_release(addr, val) AO_and_full(addr, val)
+#   define AO_HAVE_and_release
+# endif
+# if !defined(AO_HAVE_and_acquire)
+#   define AO_and_acquire(addr, val) AO_and_full(addr, val)
+#   define AO_HAVE_and_acquire
+# endif
+# if !defined(AO_HAVE_and_write)
+#   define AO_and_write(addr, val) AO_and_full(addr, val)
+#   define AO_HAVE_and_write
+# endif
+# if !defined(AO_HAVE_and_read)
+#   define AO_and_read(addr, val) AO_and_full(addr, val)
+#   define AO_HAVE_and_read
+# endif
+#endif /* AO_HAVE_and_full */
+
+#if !defined(AO_HAVE_and) && defined(AO_HAVE_and_release)
+# define AO_and(addr, val) AO_and_release(addr, val)
+# define AO_HAVE_and
+#endif
+#if !defined(AO_HAVE_and) && defined(AO_HAVE_and_acquire)
+# define AO_and(addr, val) AO_and_acquire(addr, val)
+# define AO_HAVE_and
+#endif
+#if !defined(AO_HAVE_and) && defined(AO_HAVE_and_write)
+# define AO_and(addr, val) AO_and_write(addr, val)
+# define AO_HAVE_and
+#endif
+#if !defined(AO_HAVE_and) && defined(AO_HAVE_and_read)
+# define AO_and(addr, val) AO_and_read(addr, val)
+# define AO_HAVE_and
+#endif
+
+#if defined(AO_HAVE_and_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_and_full)
+# define AO_and_full(addr, val) \
+                        (AO_nop_full(), AO_and_acquire(addr, val))
+# define AO_HAVE_and_full
+#endif
+
+#if !defined(AO_HAVE_and_release_write) \
+    && defined(AO_HAVE_and_write)
+# define AO_and_release_write(addr, val) AO_and_write(addr, val)
+# define AO_HAVE_and_release_write
+#endif
+#if !defined(AO_HAVE_and_release_write) \
+    && defined(AO_HAVE_and_release)
+# define AO_and_release_write(addr, val) AO_and_release(addr, val)
+# define AO_HAVE_and_release_write
+#endif
+#if !defined(AO_HAVE_and_acquire_read) \
+    && defined(AO_HAVE_and_read)
+# define AO_and_acquire_read(addr, val) AO_and_read(addr, val)
+# define AO_HAVE_and_acquire_read
+#endif
+#if !defined(AO_HAVE_and_acquire_read) \
+    && defined(AO_HAVE_and_acquire)
+# define AO_and_acquire_read(addr, val) AO_and_acquire(addr, val)
+# define AO_HAVE_and_acquire_read
+#endif
+
+/* or */
+#if defined(AO_HAVE_compare_and_swap_full) \
+    && !defined(AO_HAVE_or_full)
+  AO_INLINE void
+  AO_or_full(volatile AO_t *addr, AO_t value)
+  {
+    AO_t old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old,
+                                                           old | value)));
+  }
+# define AO_HAVE_or_full
+#endif
+
+#if defined(AO_HAVE_or_full)
+# if !defined(AO_HAVE_or_release)
+#   define AO_or_release(addr, val) AO_or_full(addr, val)
+#   define AO_HAVE_or_release
+# endif
+# if !defined(AO_HAVE_or_acquire)
+#   define AO_or_acquire(addr, val) AO_or_full(addr, val)
+#   define AO_HAVE_or_acquire
+# endif
+# if !defined(AO_HAVE_or_write)
+#   define AO_or_write(addr, val) AO_or_full(addr, val)
+#   define AO_HAVE_or_write
+# endif
+# if !defined(AO_HAVE_or_read)
+#   define AO_or_read(addr, val) AO_or_full(addr, val)
+#   define AO_HAVE_or_read
+# endif
+#endif /* AO_HAVE_or_full */
+
+#if !defined(AO_HAVE_or) && defined(AO_HAVE_or_release)
+# define AO_or(addr, val) AO_or_release(addr, val)
+# define AO_HAVE_or
+#endif
+#if !defined(AO_HAVE_or) && defined(AO_HAVE_or_acquire)
+# define AO_or(addr, val) AO_or_acquire(addr, val)
+# define AO_HAVE_or
+#endif
+#if !defined(AO_HAVE_or) && defined(AO_HAVE_or_write)
+# define AO_or(addr, val) AO_or_write(addr, val)
+# define AO_HAVE_or
+#endif
+#if !defined(AO_HAVE_or) && defined(AO_HAVE_or_read)
+# define AO_or(addr, val) AO_or_read(addr, val)
+# define AO_HAVE_or
+#endif
+
+#if defined(AO_HAVE_or_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_or_full)
+# define AO_or_full(addr, val) \
+                        (AO_nop_full(), AO_or_acquire(addr, val))
+# define AO_HAVE_or_full
+#endif
+
+#if !defined(AO_HAVE_or_release_write) \
+    && defined(AO_HAVE_or_write)
+# define AO_or_release_write(addr, val) AO_or_write(addr, val)
+# define AO_HAVE_or_release_write
+#endif
+#if !defined(AO_HAVE_or_release_write) \
+    && defined(AO_HAVE_or_release)
+# define AO_or_release_write(addr, val) AO_or_release(addr, val)
+# define AO_HAVE_or_release_write
+#endif
+#if !defined(AO_HAVE_or_acquire_read) && defined(AO_HAVE_or_read)
+# define AO_or_acquire_read(addr, val) AO_or_read(addr, val)
+# define AO_HAVE_or_acquire_read
+#endif
+#if !defined(AO_HAVE_or_acquire_read) \
+    && defined(AO_HAVE_or_acquire)
+# define AO_or_acquire_read(addr, val) AO_or_acquire(addr, val)
+# define AO_HAVE_or_acquire_read
+#endif
+
+/* xor */
+#if defined(AO_HAVE_compare_and_swap_full) \
+    && !defined(AO_HAVE_xor_full)
+  AO_INLINE void
+  AO_xor_full(volatile AO_t *addr, AO_t value)
+  {
+    AO_t old;
+
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old,
+                                                           old ^ value)));
+  }
+# define AO_HAVE_xor_full
+#endif
+
+#if defined(AO_HAVE_xor_full)
+# if !defined(AO_HAVE_xor_release)
+#   define AO_xor_release(addr, val) AO_xor_full(addr, val)
+#   define AO_HAVE_xor_release
+# endif
+# if !defined(AO_HAVE_xor_acquire)
+#   define AO_xor_acquire(addr, val) AO_xor_full(addr, val)
+#   define AO_HAVE_xor_acquire
+# endif
+# if !defined(AO_HAVE_xor_write)
+#   define AO_xor_write(addr, val) AO_xor_full(addr, val)
+#   define AO_HAVE_xor_write
+# endif
+# if !defined(AO_HAVE_xor_read)
+#   define AO_xor_read(addr, val) AO_xor_full(addr, val)
+#   define AO_HAVE_xor_read
+# endif
+#endif /* AO_HAVE_xor_full */
+
+#if !defined(AO_HAVE_xor) && defined(AO_HAVE_xor_release)
+# define AO_xor(addr, val) AO_xor_release(addr, val)
+# define AO_HAVE_xor
+#endif
+#if !defined(AO_HAVE_xor) && defined(AO_HAVE_xor_acquire)
+# define AO_xor(addr, val) AO_xor_acquire(addr, val)
+# define AO_HAVE_xor
+#endif
+#if !defined(AO_HAVE_xor) && defined(AO_HAVE_xor_write)
+# define AO_xor(addr, val) AO_xor_write(addr, val)
+# define AO_HAVE_xor
+#endif
+#if !defined(AO_HAVE_xor) && defined(AO_HAVE_xor_read)
+# define AO_xor(addr, val) AO_xor_read(addr, val)
+# define AO_HAVE_xor
+#endif
+
+#if defined(AO_HAVE_xor_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_xor_full)
+# define AO_xor_full(addr, val) \
+                        (AO_nop_full(), AO_xor_acquire(addr, val))
+# define AO_HAVE_xor_full
+#endif
+
+#if !defined(AO_HAVE_xor_release_write) \
+    && defined(AO_HAVE_xor_write)
+# define AO_xor_release_write(addr, val) AO_xor_write(addr, val)
+# define AO_HAVE_xor_release_write
+#endif
+#if !defined(AO_HAVE_xor_release_write) \
+    && defined(AO_HAVE_xor_release)
+# define AO_xor_release_write(addr, val) AO_xor_release(addr, val)
+# define AO_HAVE_xor_release_write
+#endif
+#if !defined(AO_HAVE_xor_acquire_read) \
+    && defined(AO_HAVE_xor_read)
+# define AO_xor_acquire_read(addr, val) AO_xor_read(addr, val)
+# define AO_HAVE_xor_acquire_read
+#endif
+#if !defined(AO_HAVE_xor_acquire_read) \
+    && defined(AO_HAVE_xor_acquire)
+# define AO_xor_acquire_read(addr, val) AO_xor_acquire(addr, val)
+# define AO_HAVE_xor_acquire_read
+#endif
+
+/* and/or/xor_dd_aquire_read are meaningless.     */
