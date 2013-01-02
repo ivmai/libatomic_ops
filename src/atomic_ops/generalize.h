@@ -165,18 +165,6 @@
     }
 #   define AO_HAVE_test_and_set
 # endif /* AO_HAVE_compare_and_swap */
-
-# if defined(AO_HAVE_test_and_set) && defined(AO_HAVE_nop_full) \
-     && !defined(AO_HAVE_test_and_set_acquire)
-    AO_INLINE AO_TS_VAL_t
-    AO_test_and_set_acquire(volatile AO_TS_t *addr)
-    {
-      AO_TS_VAL_t result = AO_test_and_set(addr);
-      AO_nop_full();
-      return result;
-    }
-#   define AO_HAVE_test_and_set_acquire
-# endif
 #endif /* No prior test and set */
 
 /* Nop */
@@ -212,7 +200,7 @@
 # define AO_HAVE_nop_write
 #endif
 
-/* NEC LE-IT: Test and set */
+/* Test_and_set */
 #if defined(AO_HAVE_test_and_set) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_test_and_set_release)
 # define AO_test_and_set_release(addr) (AO_nop_full(), AO_test_and_set(addr))
@@ -231,7 +219,6 @@
 # define AO_HAVE_test_and_set_acquire
 #endif
 
-/* Test_and_set */
 #if defined(AO_HAVE_test_and_set_full)
 # if !defined(AO_HAVE_test_and_set_release)
 #   define AO_test_and_set_release(addr) AO_test_and_set_full(addr)
