@@ -249,6 +249,23 @@
 # define AO_HAVE_char_fetch_and_add_release
 #endif
 
+#if defined(AO_HAVE_char_compare_and_swap) \
+    && !defined(AO_HAVE_char_fetch_and_add)
+  AO_INLINE unsigned char
+  AO_char_fetch_and_add(volatile unsigned char *addr, unsigned char incr)
+  {
+    unsigned char old;
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_char_compare_and_swap(addr, old,
+                                                      old + incr)));
+    return old;
+  }
+# define AO_HAVE_char_fetch_and_add
+#endif
+
 #if defined(AO_HAVE_char_fetch_and_add_full)
 # if !defined(AO_HAVE_char_fetch_and_add_release)
 #   define AO_char_fetch_and_add_release(addr, val) \
@@ -875,6 +892,23 @@
 # define AO_HAVE_short_fetch_and_add_release
 #endif
 
+#if defined(AO_HAVE_short_compare_and_swap) \
+    && !defined(AO_HAVE_short_fetch_and_add)
+  AO_INLINE unsigned short
+  AO_short_fetch_and_add(volatile unsigned short *addr, unsigned short incr)
+  {
+    unsigned short old;
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_short_compare_and_swap(addr, old,
+                                                      old + incr)));
+    return old;
+  }
+# define AO_HAVE_short_fetch_and_add
+#endif
+
 #if defined(AO_HAVE_short_fetch_and_add_full)
 # if !defined(AO_HAVE_short_fetch_and_add_release)
 #   define AO_short_fetch_and_add_release(addr, val) \
@@ -1499,6 +1533,23 @@
     return old;
   }
 # define AO_HAVE_int_fetch_and_add_release
+#endif
+
+#if defined(AO_HAVE_int_compare_and_swap) \
+    && !defined(AO_HAVE_int_fetch_and_add)
+  AO_INLINE unsigned int
+  AO_int_fetch_and_add(volatile unsigned int *addr, unsigned int incr)
+  {
+    unsigned int old;
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_int_compare_and_swap(addr, old,
+                                                      old + incr)));
+    return old;
+  }
+# define AO_HAVE_int_fetch_and_add
 #endif
 
 #if defined(AO_HAVE_int_fetch_and_add_full)

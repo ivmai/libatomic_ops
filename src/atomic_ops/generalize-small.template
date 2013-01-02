@@ -249,6 +249,23 @@
 # define AO_HAVE_XSIZE_fetch_and_add_release
 #endif
 
+#if defined(AO_HAVE_XSIZE_compare_and_swap) \
+    && !defined(AO_HAVE_XSIZE_fetch_and_add)
+  AO_INLINE unsigned XCTYPE
+  AO_XSIZE_fetch_and_add(volatile unsigned XCTYPE *addr, unsigned XCTYPE incr)
+  {
+    unsigned XCTYPE old;
+    do
+      {
+        old = *addr;
+      }
+    while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap(addr, old,
+                                                      old + incr)));
+    return old;
+  }
+# define AO_HAVE_XSIZE_fetch_and_add
+#endif
+
 #if defined(AO_HAVE_XSIZE_fetch_and_add_full)
 # if !defined(AO_HAVE_XSIZE_fetch_and_add_release)
 #   define AO_XSIZE_fetch_and_add_release(addr, val) \
