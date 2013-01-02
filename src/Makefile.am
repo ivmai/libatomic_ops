@@ -82,3 +82,4 @@ atomic_ops/generalize-small.h: atomic_ops/generalize-small.template
 	sed -e s:XSIZE_:char_:g -e s:XCTYPE:unsigned/**/char:g $? > $@
 	sed -e s:XSIZE_:short_:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
 	sed -e s:XSIZE_:int_:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
