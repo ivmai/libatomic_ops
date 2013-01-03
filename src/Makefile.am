@@ -14,12 +14,14 @@ libatomic_ops_gpl_la_SOURCES = atomic_ops_stack.c atomic_ops_malloc.c
 libatomic_ops_gpl_la_LDFLAGS = -version-info 1:3:0 -no-undefined
 
 EXTRA_DIST=Makefile.msft atomic_ops/sysdeps/README \
+        atomic_ops/generalize-arithm.template \
         atomic_ops/generalize-small.template atomic_ops/sysdeps/sunc/sparc.S
 
 #Private Headers
 privatedir=${includedir}/
 nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/generalize.h \
+          atomic_ops/generalize-arithm.h \
           atomic_ops/generalize-small.h \
         \
           atomic_ops/sysdeps/acquire_release_volatile.h \
@@ -79,6 +81,12 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/sunc/x86.h
 
 atomic_ops/generalize-small.h: atomic_ops/generalize-small.template
+	sed -e s:XSIZE_:char_:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE_:short_:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XSIZE_:int_:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+
+atomic_ops/generalize-arithm.h: atomic_ops/generalize-arithm.template
 	sed -e s:XSIZE_:char_:g -e s:XCTYPE:unsigned/**/char:g $? > $@
 	sed -e s:XSIZE_:short_:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
 	sed -e s:XSIZE_:int_:g -e s:XCTYPE:unsigned:g $? >> $@

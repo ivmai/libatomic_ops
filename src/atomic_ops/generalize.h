@@ -298,6 +298,8 @@
 
 #include "generalize-small.h"
 
+#include "generalize-arithm.h"
+
 /* Compare_double_and_swap_double based on double_compare_and_swap.     */
 #ifdef AO_HAVE_DOUBLE_PTR_STORAGE
 # if defined(AO_HAVE_double_compare_and_swap) \
