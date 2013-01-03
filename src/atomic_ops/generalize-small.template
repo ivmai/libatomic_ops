@@ -20,142 +20,6 @@
  * SOFTWARE.
  */
 
-/* XSIZE_load */
-#if defined(AO_HAVE_XSIZE_load_full) && !defined(AO_HAVE_XSIZE_load_acquire)
-# define AO_XSIZE_load_acquire(addr) AO_XSIZE_load_full(addr)
-# define AO_HAVE_XSIZE_load_acquire
-#endif
-
-#if defined(AO_HAVE_XSIZE_load_acquire) && !defined(AO_HAVE_XSIZE_load)
-# define AO_XSIZE_load(addr) AO_XSIZE_load_acquire(addr)
-# define AO_HAVE_XSIZE_load
-#endif
-
-#if defined(AO_HAVE_XSIZE_load_full) && !defined(AO_HAVE_XSIZE_load_read)
-# define AO_XSIZE_load_read(addr) AO_XSIZE_load_full(addr)
-# define AO_HAVE_XSIZE_load_read
-#endif
-
-#if !defined(AO_HAVE_XSIZE_load_acquire_read) \
-    && defined(AO_HAVE_XSIZE_load_acquire)
-# define AO_XSIZE_load_acquire_read(addr) AO_XSIZE_load_acquire(addr)
-# define AO_HAVE_XSIZE_load_acquire_read
-#endif
-
-#if defined(AO_HAVE_XSIZE_load) && defined(AO_HAVE_nop_full) \
-    && !defined(AO_HAVE_XSIZE_load_acquire)
-  AO_INLINE XCTYPE
-  AO_XSIZE_load_acquire(const volatile XCTYPE *addr)
-  {
-    XCTYPE result = AO_XSIZE_load(addr);
-
-    /* Acquire barrier would be useless, since the load could be delayed    */
-    /* beyond it.                                                           */
-    AO_nop_full();
-    return result;
-  }
-# define AO_HAVE_XSIZE_load_acquire
-#endif
-
-#if defined(AO_HAVE_XSIZE_load) && defined(AO_HAVE_nop_read) \
-    && !defined(AO_HAVE_XSIZE_load_read)
-  AO_INLINE XCTYPE
-  AO_XSIZE_load_read(const volatile XCTYPE *addr)
-  {
-    XCTYPE result = AO_XSIZE_load(addr);
-
-    /* Acquire barrier would be useless, since the load could be delayed    */
-    /* beyond it.                                                           */
-    AO_nop_read();
-    return result;
-  }
-# define AO_HAVE_XSIZE_load_read
-#endif
-
-#if defined(AO_HAVE_XSIZE_load_acquire) && defined(AO_HAVE_nop_full) \
-    && !defined(AO_HAVE_XSIZE_load_full)
-# define AO_XSIZE_load_full(addr) (AO_nop_full(), AO_XSIZE_load_acquire(addr))
-# define AO_HAVE_XSIZE_load_full
-#endif
-
-#if !defined(AO_HAVE_XSIZE_load_acquire_read) \
-    && defined(AO_HAVE_XSIZE_load_read)
-# define AO_XSIZE_load_acquire_read(addr) AO_XSIZE_load_read(addr)
-# define AO_HAVE_XSIZE_load_acquire_read
-#endif
-
-#if defined(AO_HAVE_XSIZE_load_acquire_read) && !defined(AO_HAVE_XSIZE_load)
-# define AO_XSIZE_load(addr) AO_XSIZE_load_acquire_read(addr)
-# define AO_HAVE_XSIZE_load
-#endif
-
-#ifdef AO_NO_DD_ORDERING
-# if defined(AO_HAVE_XSIZE_load_acquire_read)
-#   define AO_XSIZE_load_dd_acquire_read(addr) AO_XSIZE_load_acquire_read(addr)
-#   define AO_HAVE_XSIZE_load_dd_acquire_read
-# endif
-#else
-# if defined(AO_HAVE_XSIZE_load)
-#   define AO_XSIZE_load_dd_acquire_read(addr) AO_XSIZE_load(addr)
-#   define AO_HAVE_XSIZE_load_dd_acquire_read
-# endif
-#endif /* !AO_NO_DD_ORDERING */
-
-/* XSIZE_store */
-#if defined(AO_HAVE_XSIZE_store_full) && !defined(AO_HAVE_XSIZE_store_release)
-# define AO_XSIZE_store_release(addr,val) AO_XSIZE_store_full(addr,val)
-# define AO_HAVE_XSIZE_store_release
-#endif
-
-#if defined(AO_HAVE_XSIZE_store_release) && !defined(AO_HAVE_XSIZE_store)
-# define AO_XSIZE_store(addr, val) AO_XSIZE_store_release(addr,val)
-# define AO_HAVE_XSIZE_store
-#endif
-
-#if defined(AO_HAVE_XSIZE_store_full) && !defined(AO_HAVE_XSIZE_store_write)
-# define AO_XSIZE_store_write(addr,val) AO_XSIZE_store_full(addr,val)
-# define AO_HAVE_XSIZE_store_write
-#endif
-
-#if defined(AO_HAVE_XSIZE_store_release) \
-    && !defined(AO_HAVE_XSIZE_store_release_write)
-# define AO_XSIZE_store_release_write(addr, val) \
-                            AO_XSIZE_store_release(addr,val)
-# define AO_HAVE_XSIZE_store_release_write
-#endif
-
-#if defined(AO_HAVE_XSIZE_store_write) && !defined(AO_HAVE_XSIZE_store)
-# define AO_XSIZE_store(addr, val) AO_XSIZE_store_write(addr,val)
-# define AO_HAVE_XSIZE_store
-#endif
-
-#if defined(AO_HAVE_XSIZE_store) && defined(AO_HAVE_nop_full) \
-    && !defined(AO_HAVE_XSIZE_store_release)
-# define AO_XSIZE_store_release(addr,val) \
-                                (AO_nop_full(), AO_XSIZE_store(addr,val))
-# define AO_HAVE_XSIZE_store_release
-#endif
-
-#if defined(AO_HAVE_nop_write) && defined(AO_HAVE_XSIZE_store) \
-    && !defined(AO_HAVE_XSIZE_store_write)
-# define AO_XSIZE_store_write(addr, val) \
-                                (AO_nop_write(), AO_XSIZE_store(addr,val))
-# define AO_HAVE_XSIZE_store_write
-#endif
-
-#if defined(AO_HAVE_XSIZE_store_write) \
-    && !defined(AO_HAVE_XSIZE_store_release_write)
-# define AO_XSIZE_store_release_write(addr, val) AO_XSIZE_store_write(addr,val)
-# define AO_HAVE_XSIZE_store_release_write
-#endif
-
-#if defined(AO_HAVE_XSIZE_store_release) && defined(AO_HAVE_nop_full) \
-    && !defined(AO_HAVE_XSIZE_store_full)
-# define AO_XSIZE_store_full(addr, val) \
-                        (AO_XSIZE_store_release(addr, val), AO_nop_full())
-# define AO_HAVE_XSIZE_store_full
-#endif
-
 /* XSIZE_fetch_compare_and_swap */
 #if defined(AO_HAVE_XSIZE_fetch_compare_and_swap) \
     && defined(AO_HAVE_nop_full) \
@@ -388,3 +252,212 @@
 #   define AO_HAVE_XSIZE_compare_and_swap_dd_acquire_read
 # endif
 #endif /* !AO_NO_DD_ORDERING */
+
+/* XSIZE_load */
+#if defined(AO_HAVE_XSIZE_load_full) && !defined(AO_HAVE_XSIZE_load_acquire)
+# define AO_XSIZE_load_acquire(addr) AO_XSIZE_load_full(addr)
+# define AO_HAVE_XSIZE_load_acquire
+#endif
+
+#if defined(AO_HAVE_XSIZE_load_acquire) && !defined(AO_HAVE_XSIZE_load)
+# define AO_XSIZE_load(addr) AO_XSIZE_load_acquire(addr)
+# define AO_HAVE_XSIZE_load
+#endif
+
+#if defined(AO_HAVE_XSIZE_load_full) && !defined(AO_HAVE_XSIZE_load_read)
+# define AO_XSIZE_load_read(addr) AO_XSIZE_load_full(addr)
+# define AO_HAVE_XSIZE_load_read
+#endif
+
+#if !defined(AO_HAVE_XSIZE_load_acquire_read) \
+    && defined(AO_HAVE_XSIZE_load_acquire)
+# define AO_XSIZE_load_acquire_read(addr) AO_XSIZE_load_acquire(addr)
+# define AO_HAVE_XSIZE_load_acquire_read
+#endif
+
+#if defined(AO_HAVE_XSIZE_load) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_XSIZE_load_acquire)
+  AO_INLINE XCTYPE
+  AO_XSIZE_load_acquire(const volatile XCTYPE *addr)
+  {
+    XCTYPE result = AO_XSIZE_load(addr);
+
+    /* Acquire barrier would be useless, since the load could be delayed    */
+    /* beyond it.                                                           */
+    AO_nop_full();
+    return result;
+  }
+# define AO_HAVE_XSIZE_load_acquire
+#endif
+
+#if defined(AO_HAVE_XSIZE_load) && defined(AO_HAVE_nop_read) \
+    && !defined(AO_HAVE_XSIZE_load_read)
+  AO_INLINE XCTYPE
+  AO_XSIZE_load_read(const volatile XCTYPE *addr)
+  {
+    XCTYPE result = AO_XSIZE_load(addr);
+
+    /* Acquire barrier would be useless, since the load could be delayed    */
+    /* beyond it.                                                           */
+    AO_nop_read();
+    return result;
+  }
+# define AO_HAVE_XSIZE_load_read
+#endif
+
+#if defined(AO_HAVE_XSIZE_load_acquire) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_XSIZE_load_full)
+# define AO_XSIZE_load_full(addr) (AO_nop_full(), AO_XSIZE_load_acquire(addr))
+# define AO_HAVE_XSIZE_load_full
+#endif
+
+#if defined(AO_HAVE_XSIZE_compare_and_swap_read) \
+    && !defined(AO_HAVE_XSIZE_load_read)
+# define AO_XSIZE_CAS_BASED_LOAD_READ
+  AO_INLINE XCTYPE
+  AO_XSIZE_load_read(const volatile XCTYPE *addr)
+  {
+    XCTYPE result;
+
+    do {
+      result = *addr;
+    } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_read(
+                                                (volatile XCTYPE *)addr,
+                                                result, result)));
+    return result;
+  }
+# define AO_HAVE_XSIZE_load_read
+#endif
+
+#if !defined(AO_HAVE_XSIZE_load_acquire_read) \
+    && defined(AO_HAVE_XSIZE_load_read)
+# define AO_XSIZE_load_acquire_read(addr) AO_XSIZE_load_read(addr)
+# define AO_HAVE_XSIZE_load_acquire_read
+#endif
+
+#if defined(AO_HAVE_XSIZE_load_acquire_read) && !defined(AO_HAVE_XSIZE_load) \
+    && (!defined(AO_XSIZE_CAS_BASED_LOAD_READ) \
+        || !defined(AO_HAVE_XSIZE_compare_and_swap))
+# define AO_XSIZE_load(addr) AO_XSIZE_load_acquire_read(addr)
+# define AO_HAVE_XSIZE_load
+#endif
+
+#if defined(AO_HAVE_XSIZE_compare_and_swap_full) \
+    && !defined(AO_HAVE_XSIZE_load_full)
+  AO_INLINE XCTYPE
+  AO_XSIZE_load_full(const volatile XCTYPE *addr)
+  {
+    XCTYPE result;
+
+    do {
+      result = *addr;
+    } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_full(
+                                                (volatile XCTYPE *)addr,
+                                                result, result)));
+    return result;
+  }
+# define AO_HAVE_XSIZE_load_full
+#endif
+
+#if defined(AO_HAVE_XSIZE_compare_and_swap_acquire) \
+    && !defined(AO_HAVE_XSIZE_load_acquire)
+  AO_INLINE XCTYPE
+  AO_XSIZE_load_acquire(const volatile XCTYPE *addr)
+  {
+    XCTYPE result;
+
+    do {
+      result = *addr;
+    } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_acquire(
+                                                (volatile XCTYPE *)addr,
+                                                result, result)));
+    return result;
+  }
+# define AO_HAVE_XSIZE_load_acquire
+#endif
+
+#if defined(AO_HAVE_XSIZE_compare_and_swap) && !defined(AO_HAVE_XSIZE_load)
+  AO_INLINE XCTYPE
+  AO_XSIZE_load(const volatile XCTYPE *addr)
+  {
+    XCTYPE result;
+
+    do {
+      result = *addr;
+    } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap(
+                                                (volatile XCTYPE *)addr,
+                                                result, result)));
+    return result;
+  }
+# define AO_HAVE_XSIZE_load
+#endif
+
+#ifdef AO_NO_DD_ORDERING
+# if defined(AO_HAVE_XSIZE_load_acquire_read)
+#   define AO_XSIZE_load_dd_acquire_read(addr) \
+                                AO_XSIZE_load_acquire_read(addr)
+#   define AO_HAVE_XSIZE_load_dd_acquire_read
+# endif
+#else
+# if defined(AO_HAVE_XSIZE_load)
+#   define AO_XSIZE_load_dd_acquire_read(addr) AO_XSIZE_load(addr)
+#   define AO_HAVE_XSIZE_load_dd_acquire_read
+# endif
+#endif /* !AO_NO_DD_ORDERING */
+
+/* XSIZE_store */
+#if defined(AO_HAVE_XSIZE_store_full) && !defined(AO_HAVE_XSIZE_store_release)
+# define AO_XSIZE_store_release(addr, val) AO_XSIZE_store_full(addr, val)
+# define AO_HAVE_XSIZE_store_release
+#endif
+
+#if defined(AO_HAVE_XSIZE_store_release) && !defined(AO_HAVE_XSIZE_store)
+# define AO_XSIZE_store(addr, val) AO_XSIZE_store_release(addr, val)
+# define AO_HAVE_XSIZE_store
+#endif
+
+#if defined(AO_HAVE_XSIZE_store_full) && !defined(AO_HAVE_XSIZE_store_write)
+# define AO_XSIZE_store_write(addr, val) AO_XSIZE_store_full(addr, val)
+# define AO_HAVE_XSIZE_store_write
+#endif
+
+#if defined(AO_HAVE_XSIZE_store_release) \
+    && !defined(AO_HAVE_XSIZE_store_release_write)
+# define AO_XSIZE_store_release_write(addr, val) \
+                                AO_XSIZE_store_release(addr, val)
+# define AO_HAVE_XSIZE_store_release_write
+#endif
+
+#if defined(AO_HAVE_XSIZE_store_write) && !defined(AO_HAVE_XSIZE_store)
+# define AO_XSIZE_store(addr, val) AO_XSIZE_store_write(addr, val)
+# define AO_HAVE_XSIZE_store
+#endif
+
+#if defined(AO_HAVE_XSIZE_store) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_XSIZE_store_release)
+# define AO_XSIZE_store_release(addr, val) \
+                                (AO_nop_full(), AO_XSIZE_store(addr, val))
+# define AO_HAVE_XSIZE_store_release
+#endif
+
+#if defined(AO_HAVE_nop_write) && defined(AO_HAVE_XSIZE_store) \
+    && !defined(AO_HAVE_XSIZE_store_write)
+# define AO_XSIZE_store_write(addr, val) \
+                                (AO_nop_write(), AO_XSIZE_store(addr, val))
+# define AO_HAVE_XSIZE_store_write
+#endif
+
+#if defined(AO_HAVE_XSIZE_store_write) \
+    && !defined(AO_HAVE_XSIZE_store_release_write)
+# define AO_XSIZE_store_release_write(addr, val) \
+                                AO_XSIZE_store_write(addr, val)
+# define AO_HAVE_XSIZE_store_release_write
+#endif
+
+#if defined(AO_HAVE_XSIZE_store_release) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_XSIZE_store_full)
+# define AO_XSIZE_store_full(addr, val) \
+                                (AO_XSIZE_store_release(addr, val), \
+                                 AO_nop_full())
+# define AO_HAVE_XSIZE_store_full
+#endif
