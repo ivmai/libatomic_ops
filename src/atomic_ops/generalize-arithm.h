@@ -57,6 +57,30 @@
 # define AO_HAVE_char_compare_and_swap_release
 #endif
 
+#if defined(AO_HAVE_char_fetch_compare_and_swap_write) \
+    && !defined(AO_HAVE_char_compare_and_swap_write)
+  AO_INLINE int
+  AO_char_compare_and_swap_write(volatile unsigned/**/char *addr, unsigned/**/char old_val,
+                                  unsigned/**/char new_val)
+  {
+    return AO_char_fetch_compare_and_swap_write(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_char_compare_and_swap_write
+#endif
+
+#if defined(AO_HAVE_char_fetch_compare_and_swap_read) \
+    && !defined(AO_HAVE_char_compare_and_swap_read)
+  AO_INLINE int
+  AO_char_compare_and_swap_read(volatile unsigned/**/char *addr, unsigned/**/char old_val,
+                                 unsigned/**/char new_val)
+  {
+    return AO_char_fetch_compare_and_swap_read(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_char_compare_and_swap_read
+#endif
+
 #if defined(AO_HAVE_char_fetch_compare_and_swap) \
     && !defined(AO_HAVE_char_compare_and_swap)
   AO_INLINE int
@@ -66,6 +90,42 @@
     return AO_char_fetch_compare_and_swap(addr, old_val, new_val) == old_val;
   }
 # define AO_HAVE_char_compare_and_swap
+#endif
+
+#if defined(AO_HAVE_char_fetch_compare_and_swap_release_write) \
+    && !defined(AO_HAVE_char_compare_and_swap_release_write)
+  AO_INLINE int
+  AO_char_compare_and_swap_release_write(volatile unsigned/**/char *addr,
+                                          unsigned/**/char old_val, unsigned/**/char new_val)
+  {
+    return AO_char_fetch_compare_and_swap_release_write(addr, old_val,
+                                                         new_val) == old_val;
+  }
+# define AO_HAVE_char_compare_and_swap_release_write
+#endif
+
+#if defined(AO_HAVE_char_fetch_compare_and_swap_acquire_read) \
+    && !defined(AO_HAVE_char_compare_and_swap_acquire_read)
+  AO_INLINE int
+  AO_char_compare_and_swap_acquire_read(volatile unsigned/**/char *addr,
+                                         unsigned/**/char old_val, unsigned/**/char new_val)
+  {
+    return AO_char_fetch_compare_and_swap_acquire_read(addr, old_val,
+                                                        new_val) == old_val;
+  }
+# define AO_HAVE_char_compare_and_swap_acquire_read
+#endif
+
+#if defined(AO_HAVE_char_fetch_compare_and_swap_dd_acquire_read) \
+    && !defined(AO_HAVE_char_compare_and_swap_dd_acquire_read)
+  AO_INLINE int
+  AO_char_compare_and_swap_dd_acquire_read(volatile unsigned/**/char *addr,
+                                            unsigned/**/char old_val, unsigned/**/char new_val)
+  {
+    return AO_char_fetch_compare_and_swap_dd_acquire_read(addr, old_val,
+                                                           new_val) == old_val;
+  }
+# define AO_HAVE_char_compare_and_swap_dd_acquire_read
 #endif
 
 /* char_fetch_and_add */
@@ -824,6 +884,30 @@
 # define AO_HAVE_short_compare_and_swap_release
 #endif
 
+#if defined(AO_HAVE_short_fetch_compare_and_swap_write) \
+    && !defined(AO_HAVE_short_compare_and_swap_write)
+  AO_INLINE int
+  AO_short_compare_and_swap_write(volatile unsigned/**/short *addr, unsigned/**/short old_val,
+                                  unsigned/**/short new_val)
+  {
+    return AO_short_fetch_compare_and_swap_write(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_short_compare_and_swap_write
+#endif
+
+#if defined(AO_HAVE_short_fetch_compare_and_swap_read) \
+    && !defined(AO_HAVE_short_compare_and_swap_read)
+  AO_INLINE int
+  AO_short_compare_and_swap_read(volatile unsigned/**/short *addr, unsigned/**/short old_val,
+                                 unsigned/**/short new_val)
+  {
+    return AO_short_fetch_compare_and_swap_read(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_short_compare_and_swap_read
+#endif
+
 #if defined(AO_HAVE_short_fetch_compare_and_swap) \
     && !defined(AO_HAVE_short_compare_and_swap)
   AO_INLINE int
@@ -833,6 +917,42 @@
     return AO_short_fetch_compare_and_swap(addr, old_val, new_val) == old_val;
   }
 # define AO_HAVE_short_compare_and_swap
+#endif
+
+#if defined(AO_HAVE_short_fetch_compare_and_swap_release_write) \
+    && !defined(AO_HAVE_short_compare_and_swap_release_write)
+  AO_INLINE int
+  AO_short_compare_and_swap_release_write(volatile unsigned/**/short *addr,
+                                          unsigned/**/short old_val, unsigned/**/short new_val)
+  {
+    return AO_short_fetch_compare_and_swap_release_write(addr, old_val,
+                                                         new_val) == old_val;
+  }
+# define AO_HAVE_short_compare_and_swap_release_write
+#endif
+
+#if defined(AO_HAVE_short_fetch_compare_and_swap_acquire_read) \
+    && !defined(AO_HAVE_short_compare_and_swap_acquire_read)
+  AO_INLINE int
+  AO_short_compare_and_swap_acquire_read(volatile unsigned/**/short *addr,
+                                         unsigned/**/short old_val, unsigned/**/short new_val)
+  {
+    return AO_short_fetch_compare_and_swap_acquire_read(addr, old_val,
+                                                        new_val) == old_val;
+  }
+# define AO_HAVE_short_compare_and_swap_acquire_read
+#endif
+
+#if defined(AO_HAVE_short_fetch_compare_and_swap_dd_acquire_read) \
+    && !defined(AO_HAVE_short_compare_and_swap_dd_acquire_read)
+  AO_INLINE int
+  AO_short_compare_and_swap_dd_acquire_read(volatile unsigned/**/short *addr,
+                                            unsigned/**/short old_val, unsigned/**/short new_val)
+  {
+    return AO_short_fetch_compare_and_swap_dd_acquire_read(addr, old_val,
+                                                           new_val) == old_val;
+  }
+# define AO_HAVE_short_compare_and_swap_dd_acquire_read
 #endif
 
 /* short_fetch_and_add */
@@ -1591,6 +1711,30 @@
 # define AO_HAVE_int_compare_and_swap_release
 #endif
 
+#if defined(AO_HAVE_int_fetch_compare_and_swap_write) \
+    && !defined(AO_HAVE_int_compare_and_swap_write)
+  AO_INLINE int
+  AO_int_compare_and_swap_write(volatile unsigned *addr, unsigned old_val,
+                                  unsigned new_val)
+  {
+    return AO_int_fetch_compare_and_swap_write(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_int_compare_and_swap_write
+#endif
+
+#if defined(AO_HAVE_int_fetch_compare_and_swap_read) \
+    && !defined(AO_HAVE_int_compare_and_swap_read)
+  AO_INLINE int
+  AO_int_compare_and_swap_read(volatile unsigned *addr, unsigned old_val,
+                                 unsigned new_val)
+  {
+    return AO_int_fetch_compare_and_swap_read(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_int_compare_and_swap_read
+#endif
+
 #if defined(AO_HAVE_int_fetch_compare_and_swap) \
     && !defined(AO_HAVE_int_compare_and_swap)
   AO_INLINE int
@@ -1600,6 +1744,42 @@
     return AO_int_fetch_compare_and_swap(addr, old_val, new_val) == old_val;
   }
 # define AO_HAVE_int_compare_and_swap
+#endif
+
+#if defined(AO_HAVE_int_fetch_compare_and_swap_release_write) \
+    && !defined(AO_HAVE_int_compare_and_swap_release_write)
+  AO_INLINE int
+  AO_int_compare_and_swap_release_write(volatile unsigned *addr,
+                                          unsigned old_val, unsigned new_val)
+  {
+    return AO_int_fetch_compare_and_swap_release_write(addr, old_val,
+                                                         new_val) == old_val;
+  }
+# define AO_HAVE_int_compare_and_swap_release_write
+#endif
+
+#if defined(AO_HAVE_int_fetch_compare_and_swap_acquire_read) \
+    && !defined(AO_HAVE_int_compare_and_swap_acquire_read)
+  AO_INLINE int
+  AO_int_compare_and_swap_acquire_read(volatile unsigned *addr,
+                                         unsigned old_val, unsigned new_val)
+  {
+    return AO_int_fetch_compare_and_swap_acquire_read(addr, old_val,
+                                                        new_val) == old_val;
+  }
+# define AO_HAVE_int_compare_and_swap_acquire_read
+#endif
+
+#if defined(AO_HAVE_int_fetch_compare_and_swap_dd_acquire_read) \
+    && !defined(AO_HAVE_int_compare_and_swap_dd_acquire_read)
+  AO_INLINE int
+  AO_int_compare_and_swap_dd_acquire_read(volatile unsigned *addr,
+                                            unsigned old_val, unsigned new_val)
+  {
+    return AO_int_fetch_compare_and_swap_dd_acquire_read(addr, old_val,
+                                                           new_val) == old_val;
+  }
+# define AO_HAVE_int_compare_and_swap_dd_acquire_read
 #endif
 
 /* int_fetch_and_add */
@@ -2358,6 +2538,30 @@
 # define AO_HAVE_compare_and_swap_release
 #endif
 
+#if defined(AO_HAVE_fetch_compare_and_swap_write) \
+    && !defined(AO_HAVE_compare_and_swap_write)
+  AO_INLINE int
+  AO_compare_and_swap_write(volatile AO_t *addr, AO_t old_val,
+                                  AO_t new_val)
+  {
+    return AO_fetch_compare_and_swap_write(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_compare_and_swap_write
+#endif
+
+#if defined(AO_HAVE_fetch_compare_and_swap_read) \
+    && !defined(AO_HAVE_compare_and_swap_read)
+  AO_INLINE int
+  AO_compare_and_swap_read(volatile AO_t *addr, AO_t old_val,
+                                 AO_t new_val)
+  {
+    return AO_fetch_compare_and_swap_read(addr, old_val, new_val)
+             == old_val;
+  }
+# define AO_HAVE_compare_and_swap_read
+#endif
+
 #if defined(AO_HAVE_fetch_compare_and_swap) \
     && !defined(AO_HAVE_compare_and_swap)
   AO_INLINE int
@@ -2367,6 +2571,42 @@
     return AO_fetch_compare_and_swap(addr, old_val, new_val) == old_val;
   }
 # define AO_HAVE_compare_and_swap
+#endif
+
+#if defined(AO_HAVE_fetch_compare_and_swap_release_write) \
+    && !defined(AO_HAVE_compare_and_swap_release_write)
+  AO_INLINE int
+  AO_compare_and_swap_release_write(volatile AO_t *addr,
+                                          AO_t old_val, AO_t new_val)
+  {
+    return AO_fetch_compare_and_swap_release_write(addr, old_val,
+                                                         new_val) == old_val;
+  }
+# define AO_HAVE_compare_and_swap_release_write
+#endif
+
+#if defined(AO_HAVE_fetch_compare_and_swap_acquire_read) \
+    && !defined(AO_HAVE_compare_and_swap_acquire_read)
+  AO_INLINE int
+  AO_compare_and_swap_acquire_read(volatile AO_t *addr,
+                                         AO_t old_val, AO_t new_val)
+  {
+    return AO_fetch_compare_and_swap_acquire_read(addr, old_val,
+                                                        new_val) == old_val;
+  }
+# define AO_HAVE_compare_and_swap_acquire_read
+#endif
+
+#if defined(AO_HAVE_fetch_compare_and_swap_dd_acquire_read) \
+    && !defined(AO_HAVE_compare_and_swap_dd_acquire_read)
+  AO_INLINE int
+  AO_compare_and_swap_dd_acquire_read(volatile AO_t *addr,
+                                            AO_t old_val, AO_t new_val)
+  {
+    return AO_fetch_compare_and_swap_dd_acquire_read(addr, old_val,
+                                                           new_val) == old_val;
+  }
+# define AO_HAVE_compare_and_swap_dd_acquire_read
 #endif
 
 /* fetch_and_add */
