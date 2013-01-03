@@ -1,3 +1,19 @@
+2013-01-02  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/generalize-small.template (AO_XSIZE_fetch_and_add):
+	Add missed definition based on CAS.
+	* src/atomic_ops/generalize-small.h: Regenerate.
+
+2013-01-02  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/generalize-small.template (AO_XSIZE_load): Move
+	definition (which is based on AO_XSIZE_load_acquire) down to be after
+	AO_XSIZE_load_acquire definition.
+	* src/atomic_ops/generalize-small.template (AO_XSIZE_store): Move
+	definition (which is based on AO_XSIZE_store_release) down to be after
+	AO_XSIZE_store_release definition.
+	* src/atomic_ops/generalize-small.h : Regenerate.
+
 2012-10-09  Ivan Maidanski <ivmai@mail.ru>
 
 	* tests/test_stack.c (run_one_test): Change type of "index" local
