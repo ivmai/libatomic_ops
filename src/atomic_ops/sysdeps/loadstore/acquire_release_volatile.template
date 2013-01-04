@@ -40,22 +40,22 @@
 # endif
 #endif
 
-AO_INLINE AO_t
-AO_load_acquire(const volatile AO_t *addr)
+AO_INLINE XCTYPE
+AO_XSIZE_load_acquire(const volatile XCTYPE *addr)
 {
-  AO_t result = *addr;
+  XCTYPE result = *addr;
 
   /* A normal volatile load generates an ld.acq (on IA-64).     */
   AO_GCC_BARRIER();
   return result;
 }
-#define AO_HAVE_load_acquire
+#define AO_HAVE_XSIZE_load_acquire
 
 AO_INLINE void
-AO_store_release(volatile AO_t *addr, AO_t new_val)
+AO_XSIZE_store_release(volatile XCTYPE *addr, XCTYPE new_val)
 {
   AO_GCC_BARRIER();
   /* A normal volatile store generates an st.rel (on IA-64).    */
   *addr = new_val;
 }
-#define AO_HAVE_store_release
+#define AO_HAVE_XSIZE_store_release

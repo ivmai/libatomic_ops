@@ -23,18 +23,18 @@
 /* Definitions for architectures on which loads and stores of given     */
 /* type are atomic for all legal alignments.                            */
 
-AO_INLINE unsigned/**/char
-AO_char_load(const volatile unsigned/**/char *addr)
+AO_INLINE XCTYPE
+AO_XSIZE_load(const volatile XCTYPE *addr)
 {
   /* Cast away the volatile for architectures like IA64 where   */
   /* volatile adds barrier semantics.                           */
-  return *(const unsigned/**/char *)addr;
+  return *(const XCTYPE *)addr;
 }
-#define AO_HAVE_char_load
+#define AO_HAVE_XSIZE_load
 
 AO_INLINE void
-AO_char_store(volatile unsigned/**/char *addr, unsigned/**/char new_val)
+AO_XSIZE_store(volatile XCTYPE *addr, XCTYPE new_val)
 {
-  *(unsigned/**/char *)addr = new_val;
+  *(XCTYPE *)addr = new_val;
 }
-#define AO_HAVE_char_store
+#define AO_HAVE_XSIZE_store

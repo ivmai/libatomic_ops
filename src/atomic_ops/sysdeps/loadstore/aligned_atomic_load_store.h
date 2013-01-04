@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2004 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,14 +20,14 @@
  * SOFTWARE.
  */
 
-/* Definitions for architectures on which loads and stores of AO_t are  */
-/* atomic fo all legal alignments.                                      */
+/* Definitions for architectures on which loads and stores of given     */
+/* type are atomic for all legal alignments.                            */
 
 AO_INLINE AO_t
 AO_load(const volatile AO_t *addr)
 {
-  assert(((size_t)addr & (sizeof(AO_t) - 1)) == 0);
-  /* Cast away the volatile for architectures where             */
+  assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
+  /* Cast away the volatile for architectures like IA64 where   */
   /* volatile adds barrier semantics.                           */
   return *(AO_t *)addr;
 }
@@ -36,7 +36,7 @@ AO_load(const volatile AO_t *addr)
 AO_INLINE void
 AO_store(volatile AO_t *addr, AO_t new_val)
 {
-  assert(((size_t)addr & (sizeof(AO_t) - 1)) == 0);
-  (*(AO_t *)addr) = new_val;
+  assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
+  *(AO_t *)addr = new_val;
 }
 #define AO_HAVE_store

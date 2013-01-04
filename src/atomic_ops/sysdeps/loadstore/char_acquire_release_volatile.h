@@ -20,34 +20,42 @@
  * SOFTWARE.
  */
 
-/*
- * This file adds definitions appropriate for environments in which an unsigned char
- * volatile load has acquire semantics, and an unsigned char volatile store has release
- * semantics.  This is true with the standard Itanium ABI.
- */
-#if !defined(AO_GCC_BARRIER)
-#  if defined(__GNUC__)
-#    define AO_GCC_BARRIER() AO_compiler_barrier()
-#  else
-#    define AO_GCC_BARRIER()
-#  endif
+/* This file adds definitions appropriate for environments in which     */
+/* volatile load of a given type has acquire semantics, and volatile    */
+/* store of a given type has release semantics.  This is arguably       */
+/* supposed to be true with the standard Itanium software conventions.  */
+/* Empirically gcc/ia64 does some reordering of ordinary operations     */
+/* around volatiles even when we think it should not.  GCC v3.3 and     */
+/* earlier could reorder a volatile store with another store.  As of    */
+/* March 2005, gcc pre-4 reuses some previously computed common         */
+/* subexpressions across a volatile load; hence, we now add compiler    */
+/* barriers for gcc.                                                    */
+
+#ifndef AO_GCC_BARRIER
+  /* TODO: Check GCC version (if workaround not needed for modern GCC). */
+# if defined(__GNUC__)
+#   define AO_GCC_BARRIER() AO_compiler_barrier()
+# else
+#   define AO_GCC_BARRIER() (void)0
+# endif
 #endif
 
-AO_INLINE unsigned char
-AO_char_load_acquire(const volatile unsigned char *p)
+AO_INLINE unsigned/**/char
+AO_char_load_acquire(const volatile unsigned/**/char *addr)
 {
-  unsigned char result = *p;
-  /* A normal volatile load generates an ld.acq         */
+  unsigned/**/char result = *addr;
+
+  /* A normal volatile load generates an ld.acq (on IA-64).     */
   AO_GCC_BARRIER();
   return result;
 }
 #define AO_HAVE_char_load_acquire
 
 AO_INLINE void
-AO_char_store_release(volatile unsigned char *p, unsigned char val)
+AO_char_store_release(volatile unsigned/**/char *addr, unsigned/**/char new_val)
 {
   AO_GCC_BARRIER();
-  /* A normal volatile store generates an st.rel        */
-  *p = val;
+  /* A normal volatile store generates an st.rel (on IA-64).    */
+  *addr = new_val;
 }
 #define AO_HAVE_char_store_release
