@@ -20,12 +20,11 @@
  * SOFTWARE.
  */
 
-/*
- * Describes architectures on which AO_t, unsigned char, unsigned short,
- * and unsigned int loads and stores are atomic for all normally legal
- * alignments.
- */
-#include "aligned_atomic_load_store.h"
-#include "char_atomic_load_store.h"
-#include "short_aligned_atomic_load_store.h"
-#include "int_aligned_atomic_load_store.h"
+/* Describes architectures on which AO_t, unsigned char, unsigned       */
+/* short, and unsigned int loads and stores are atomic for all normally */
+/* legal alignments.                                                    */
+
+#include "loadstore/aligned_atomic_load_store.h"
+#include "loadstore/char_atomic_load_store.h"
+#include "loadstore/short_aligned_atomic_load_store.h"
+#include "loadstore/int_aligned_atomic_load_store.h"

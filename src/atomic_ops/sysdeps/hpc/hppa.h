@@ -22,7 +22,7 @@
  * Derived from the corresponding header file for gcc.
  */
 
-#include "../atomic_load_store.h"
+#include "../loadstore/atomic_load_store.h"
 
 /* Some architecture set descriptions include special "ordered" memory  */
 /* operations.  As far as we can tell, no existing processors actually  */

@@ -20,12 +20,11 @@
  * SOFTWARE.
  */
 
-/*
- * Describes architectures on which volatile AO_t, unsigned char, unsigned
- * short, and unsigned int loads and stores have acquire/release semantics for
- * all normally legal alignments.
- */
-#include "acquire_release_volatile.h"
-#include "char_acquire_release_volatile.h"
-#include "short_acquire_release_volatile.h"
-#include "int_acquire_release_volatile.h"
+/* Describes architectures on which volatile AO_t, unsigned char,       */
+/* unsigned short, and unsigned int loads and stores have               */
+/* acquire/release semantics for all normally legal alignments.         */
+
+#include "loadstore/acquire_release_volatile.h"
+#include "loadstore/char_acquire_release_volatile.h"
+#include "loadstore/short_acquire_release_volatile.h"
+#include "loadstore/int_acquire_release_volatile.h"

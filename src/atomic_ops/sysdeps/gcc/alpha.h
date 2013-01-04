@@ -15,7 +15,7 @@
  *
  */
 
-#include "../atomic_load_store.h"
+#include "../loadstore/atomic_load_store.h"
 
 #include "../test_and_set_t_is_ao_t.h"
 

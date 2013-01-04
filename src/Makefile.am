@@ -27,29 +27,30 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/generalize-arithm.h \
           atomic_ops/generalize-small.h \
         \
-          atomic_ops/sysdeps/acquire_release_volatile.h \
-          atomic_ops/sysdeps/aligned_atomic_load_store.h \
           atomic_ops/sysdeps/all_acquire_release_volatile.h \
           atomic_ops/sysdeps/all_aligned_atomic_load_store.h \
           atomic_ops/sysdeps/all_atomic_load_store.h \
           atomic_ops/sysdeps/ao_t_is_int.h \
-          atomic_ops/sysdeps/atomic_load_store.h \
-          atomic_ops/sysdeps/char_acquire_release_volatile.h \
-          atomic_ops/sysdeps/char_atomic_load_store.h \
           atomic_ops/sysdeps/emul_cas.h \
           atomic_ops/sysdeps/generic_pthread.h \
-          atomic_ops/sysdeps/int_acquire_release_volatile.h \
-          atomic_ops/sysdeps/int_aligned_atomic_load_store.h \
-          atomic_ops/sysdeps/int_atomic_load_store.h \
           atomic_ops/sysdeps/ordered.h \
           atomic_ops/sysdeps/ordered_except_wr.h \
           atomic_ops/sysdeps/read_ordered.h \
-          atomic_ops/sysdeps/short_acquire_release_volatile.h \
-          atomic_ops/sysdeps/short_aligned_atomic_load_store.h \
-          atomic_ops/sysdeps/short_atomic_load_store.h \
           atomic_ops/sysdeps/standard_ao_double_t.h \
           atomic_ops/sysdeps/test_and_set_t_is_ao_t.h \
           atomic_ops/sysdeps/test_and_set_t_is_char.h \
+        \
+          atomic_ops/sysdeps/loadstore/acquire_release_volatile.h \
+          atomic_ops/sysdeps/loadstore/aligned_atomic_load_store.h \
+          atomic_ops/sysdeps/loadstore/atomic_load_store.h \
+          atomic_ops/sysdeps/loadstore/char_acquire_release_volatile.h \
+          atomic_ops/sysdeps/loadstore/char_atomic_load_store.h \
+          atomic_ops/sysdeps/loadstore/int_acquire_release_volatile.h \
+          atomic_ops/sysdeps/loadstore/int_aligned_atomic_load_store.h \
+          atomic_ops/sysdeps/loadstore/int_atomic_load_store.h \
+          atomic_ops/sysdeps/loadstore/short_acquire_release_volatile.h \
+          atomic_ops/sysdeps/loadstore/short_aligned_atomic_load_store.h \
+          atomic_ops/sysdeps/loadstore/short_atomic_load_store.h \
         \
           atomic_ops/sysdeps/armcc/arm_v6.h \
         \
