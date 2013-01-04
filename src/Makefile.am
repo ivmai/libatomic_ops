@@ -17,6 +17,9 @@ EXTRA_DIST=Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-arithm.template \
         atomic_ops/generalize-small.template atomic_ops/sysdeps/sunc/sparc.S
 
+BUILT_SOURCES = atomic_ops/generalize-arithm.h \
+        atomic_ops/generalize-small.h
+
 #Private Headers
 privatedir=${includedir}/
 nobase_private_HEADERS = atomic_ops/ao_version.h \
