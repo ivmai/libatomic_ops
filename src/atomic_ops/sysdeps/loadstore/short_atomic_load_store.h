@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
+ * Copyright (c) 2004 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,17 @@
  */
 
 /* Definitions for architectures on which loads and stores of given     */
-/* type are atomic for all legal alignments.                            */
+/* type are atomic (either for suitably aligned data only or for any    */
+/* legal alignment).                                                    */
 
 AO_INLINE unsigned/**/short
 AO_short_load(const volatile unsigned/**/short *addr)
 {
+# ifdef AO_ACCESS_short_CHECK_ALIGNED
+    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
+# endif
   /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
+  /* volatile adds barrier (fence) semantics.                   */
   return *(const unsigned/**/short *)addr;
 }
 #define AO_HAVE_short_load
@@ -35,6 +39,9 @@ AO_short_load(const volatile unsigned/**/short *addr)
 AO_INLINE void
 AO_short_store(volatile unsigned/**/short *addr, unsigned/**/short new_val)
 {
+# ifdef AO_ACCESS_short_CHECK_ALIGNED
+    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
+# endif
   *(unsigned/**/short *)addr = new_val;
 }
 #define AO_HAVE_short_store
