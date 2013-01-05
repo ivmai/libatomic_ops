@@ -83,15 +83,15 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/sunc/x86.h
 
 atomic_ops/generalize-small.h: atomic_ops/generalize-small.template
-	sed -e s:XSIZE_:char_:g -e s:XCTYPE:unsigned/**/char:g $? > $@
-	sed -e s:XSIZE_:short_:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
-	sed -e s:XSIZE_:int_:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
 	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
 
 atomic_ops/generalize-arithm.h: atomic_ops/generalize-arithm.template
-	sed -e s:XSIZE_:char_:g -e s:XCTYPE:unsigned/**/char:g $? > $@
-	sed -e s:XSIZE_:short_:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
-	sed -e s:XSIZE_:int_:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
 	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
 
 atomic_ops/sysdeps/loadstore/acquire_release_volatile.h: \
@@ -100,15 +100,15 @@ atomic_ops/sysdeps/loadstore/acquire_release_volatile.h: \
 
 atomic_ops/sysdeps/loadstore/char_acquire_release_volatile.h: \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.template
-	sed -e s:XSIZE_:char_:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
 
 atomic_ops/sysdeps/loadstore/int_acquire_release_volatile.h: \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.template
-	sed -e s:XSIZE_:int_:g -e s:XCTYPE:unsigned:g $? > $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? > $@
 
 atomic_ops/sysdeps/loadstore/short_acquire_release_volatile.h: \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.template
-	sed -e s:XSIZE_:short_:g -e s:XCTYPE:unsigned/**/short:g $? > $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? > $@
 
 atomic_ops/sysdeps/loadstore/atomic_load_store.h: \
         atomic_ops/sysdeps/loadstore/atomic_load_store.template
@@ -116,12 +116,12 @@ atomic_ops/sysdeps/loadstore/atomic_load_store.h: \
 
 atomic_ops/sysdeps/loadstore/char_atomic_load_store.h: \
         atomic_ops/sysdeps/loadstore/atomic_load_store.template
-	sed -e s:XSIZE_:char_:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
 
 atomic_ops/sysdeps/loadstore/int_atomic_load_store.h: \
         atomic_ops/sysdeps/loadstore/atomic_load_store.template
-	sed -e s:XSIZE_:int_:g -e s:XCTYPE:unsigned:g $? > $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? > $@
 
 atomic_ops/sysdeps/loadstore/short_atomic_load_store.h: \
         atomic_ops/sysdeps/loadstore/atomic_load_store.template
-	sed -e s:XSIZE_:short_:g -e s:XCTYPE:unsigned/**/short:g $? > $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? > $@
