@@ -35,8 +35,7 @@ BUILT_SOURCES = atomic_ops/generalize-arithm.h \
 privatedir=${includedir}/
 nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/generalize.h \
-          atomic_ops/generalize-arithm.h \
-          atomic_ops/generalize-small.h \
+          $(BUILT_SOURCES) \
         \
           atomic_ops/sysdeps/all_acquire_release_volatile.h \
           atomic_ops/sysdeps/all_aligned_atomic_load_store.h \
@@ -50,15 +49,6 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/standard_ao_double_t.h \
           atomic_ops/sysdeps/test_and_set_t_is_ao_t.h \
           atomic_ops/sysdeps/test_and_set_t_is_char.h \
-        \
-          atomic_ops/sysdeps/loadstore/acquire_release_volatile.h \
-          atomic_ops/sysdeps/loadstore/atomic_load_store.h \
-          atomic_ops/sysdeps/loadstore/char_acquire_release_volatile.h \
-          atomic_ops/sysdeps/loadstore/char_atomic_load_store.h \
-          atomic_ops/sysdeps/loadstore/int_acquire_release_volatile.h \
-          atomic_ops/sysdeps/loadstore/int_atomic_load_store.h \
-          atomic_ops/sysdeps/loadstore/short_acquire_release_volatile.h \
-          atomic_ops/sysdeps/loadstore/short_atomic_load_store.h \
         \
           atomic_ops/sysdeps/armcc/arm_v6.h \
         \
