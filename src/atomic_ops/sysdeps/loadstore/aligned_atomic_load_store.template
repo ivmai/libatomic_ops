@@ -28,8 +28,8 @@ AO_XSIZE_load(const volatile XCTYPE *addr)
 {
   assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
   /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return *(XCTYPE *)addr;
+  /* volatile adds barrier (fence) semantics.                   */
+  return *(const XCTYPE *)addr;
 }
 #define AO_HAVE_XSIZE_load
 

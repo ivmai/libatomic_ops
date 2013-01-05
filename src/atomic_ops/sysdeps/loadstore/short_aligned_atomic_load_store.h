@@ -28,8 +28,8 @@ AO_short_load(const volatile unsigned/**/short *addr)
 {
   assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
   /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return *(unsigned/**/short *)addr;
+  /* volatile adds barrier (fence) semantics.                   */
+  return *(const unsigned/**/short *)addr;
 }
 #define AO_HAVE_short_load
 

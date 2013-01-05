@@ -28,8 +28,8 @@ AO_load(const volatile AO_t *addr)
 {
   assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
   /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return *(AO_t *)addr;
+  /* volatile adds barrier (fence) semantics.                   */
+  return *(const AO_t *)addr;
 }
 #define AO_HAVE_load
 
