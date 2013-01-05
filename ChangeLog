@@ -1,3 +1,14 @@
+2013-01-05  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/Makefile.in: Regenerate (by autoreconf -vif).
+
+2013-01-04  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/Makefile.am (BUILT_SOURCES): Define to force
+	regeneration of generalize-small.h (if the corresponding
+	source template is changed) before compilation of .c files (that use
+	atomic_ops.h).
+
 2013-01-02  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/generalize-small.template (AO_XSIZE_fetch_and_add):
