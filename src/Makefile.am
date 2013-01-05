@@ -74,6 +74,8 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
         \
           atomic_ops/sysdeps/icc/ia64.h \
         \
+          atomic_ops/sysdeps/loadstore/double_atomic_load_store.h \
+        \
           atomic_ops/sysdeps/msftc/arm.h \
           atomic_ops/sysdeps/msftc/common32_defs.h \
           atomic_ops/sysdeps/msftc/x86.h \
@@ -87,6 +89,7 @@ atomic_ops/generalize-small.h: atomic_ops/generalize-small.template
 	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
 	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
 	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g $? >> $@
 
 atomic_ops/generalize-arithm.h: atomic_ops/generalize-arithm.template
 	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
