@@ -337,7 +337,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
         "       ldrexd  %0, [%1]\n"     /* get original to r1 & r2 */
         : "=&r"(tmp)
         : "r"(addr)
-        : "cc");
+        /* : no clobber */);
       if (tmp != old_val.AO_whole)
         break;
       __asm__ __volatile__(
