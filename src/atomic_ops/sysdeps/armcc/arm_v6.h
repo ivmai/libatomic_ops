@@ -50,6 +50,8 @@ AO_nop_full(void)
     __asm {
             mcr p15,0,dest,c7,c10,5
             };
+# else
+    AO_compiler_barrier();
 # endif
 }
 #define AO_HAVE_nop_full

@@ -97,6 +97,8 @@ AO_nop_full(void)
       : "=&r"(dest)
       : /* empty */
       : AO_THUMB_SWITCH_CLOBBERS "memory");
+# else
+    AO_compiler_barrier();
 # endif
 }
 #define AO_HAVE_nop_full
