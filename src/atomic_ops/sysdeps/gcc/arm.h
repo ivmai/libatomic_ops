@@ -193,7 +193,6 @@ AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
 # define AO_HAVE_test_and_set
 #endif /* !AO_FORCE_USE_SWP */
 
-/* NEC LE-IT: fetch and add for ARMv6 */
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 {
@@ -215,7 +214,6 @@ AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 }
 #define AO_HAVE_fetch_and_add
 
-/* NEC LE-IT: fetch and add1 for ARMv6 */
 AO_INLINE AO_t
 AO_fetch_and_add1(volatile AO_t *p)
 {
@@ -237,7 +235,6 @@ AO_fetch_and_add1(volatile AO_t *p)
 }
 #define AO_HAVE_fetch_and_add1
 
-/* NEC LE-IT: fetch and sub for ARMv6 */
 AO_INLINE AO_t
 AO_fetch_and_sub1(volatile AO_t *p)
 {
@@ -260,7 +257,6 @@ AO_fetch_and_sub1(volatile AO_t *p)
 #define AO_HAVE_fetch_and_sub1
 #endif /* !AO_PREFER_GENERALIZED */
 
-/* NEC LE-IT: compare and swap */
 #ifndef AO_GENERALIZE_ASM_BOOL_CAS
   /* Returns nonzero if the comparison succeeded.       */
   AO_INLINE int
@@ -314,6 +310,20 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 
 #ifdef AO_ARM_HAVE_LDREXD
 # include "../standard_ao_double_t.h"
+
+  AO_INLINE AO_double_t
+  AO_double_load(const volatile AO_double_t *addr)
+  {
+    AO_double_t result;
+
+    __asm__ __volatile__("@AO_double_load\n"
+      "       ldrexd  %0, [%1]"
+      : "=&r" (result.AO_whole)
+      : "r" (addr)
+      /* : no clobber */);
+    return result;
+  }
+# define AO_HAVE_double_load
 
   AO_INLINE int
   AO_double_compare_and_swap(volatile AO_double_t *addr,

@@ -221,7 +221,7 @@ __asm__ {
 /* helper functions for the Realview compiler: LDREXD is not usable
  * with inline assembler, so use the "embedded" assembler as
  * suggested by ARM Dev. support (June 2008). */
-__asm inline double_ptr_storage AO_load_ex(volatile AO_double_t *addr) {
+__asm inline double_ptr_storage AO_load_ex(const volatile AO_double_t *addr) {
         LDREXD r0,r1,[r0]
 }
 
@@ -229,6 +229,16 @@ __asm inline int AO_store_ex(AO_t val1, AO_t val2, volatile AO_double_t *addr) {
         STREXD r3,r0,r1,[r2]
         MOV    r0,r3
 }
+
+AO_INLINE AO_double_t
+AO_double_load(const volatile AO_double_t *addr)
+{
+  AO_double_t result;
+
+  result.AO_whole = AO_load_ex(addr);
+  return result;
+}
+#define AO_HAVE_double_load
 
 AO_INLINE int
 AO_compare_double_and_swap_double(volatile AO_double_t *addr,
