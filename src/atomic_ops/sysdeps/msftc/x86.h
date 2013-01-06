@@ -119,6 +119,11 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 #ifdef AO_ASSUME_VISTA
 # include "../standard_ao_double_t.h"
 
+  /* Reading or writing a quadword aligned on a 64-bit boundary is      */
+  /* always carried out atomically (requires at least a Pentium).       */
+# define AO_ACCESS_double_CHECK_ALIGNED
+# include "../loadstore/double_atomic_load_store.h"
+
   /* Whenever we run on a Pentium class machine, we have that certain   */
   /* function.                                                          */
 # pragma intrinsic (_InterlockedCompareExchange64)

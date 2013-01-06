@@ -168,6 +168,11 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 # ifndef AO_NO_CMPXCHG8B
 #   include "../standard_ao_double_t.h"
 
+    /* Reading or writing a quadword aligned on a 64-bit boundary is    */
+    /* always carried out atomically (requires at least a Pentium).     */
+#   define AO_ACCESS_double_CHECK_ALIGNED
+#   include "../loadstore/double_atomic_load_store.h"
+
     /* Returns nonzero if the comparison succeeded.     */
     /* Really requires at least a Pentium.              */
     AO_INLINE int
