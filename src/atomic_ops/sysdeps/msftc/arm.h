@@ -35,10 +35,12 @@
 
 #include "../standard_ao_double_t.h"
 
-/* If only a single processor is used, we can define AO_UNIPROCESSOR    */
-/* and do not need to access CP15 for ensuring a DMB at all.            */
+/* If only a single processor is used, we can define AO_UNIPROCESSOR.   */
 #ifdef AO_UNIPROCESSOR
-  AO_INLINE void AO_nop_full(void) {}
+  AO_INLINE void AO_nop_full(void)
+  {
+    AO_compiler_barrier();
+  }
 # define AO_HAVE_nop_full
 #else
 /* AO_nop_full() is emulated using AO_test_and_set_full().              */
