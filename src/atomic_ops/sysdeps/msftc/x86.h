@@ -26,15 +26,6 @@
 
 #include "../all_aligned_atomic_load_store.h"
 
-/* Real X86 implementations, except for some old WinChips, appear       */
-/* to enforce ordering between memory operations, EXCEPT that a later   */
-/* read can pass earlier writes, presumably due to the visible          */
-/* presence of store buffers.                                           */
-/* We ignore both the WinChips, and the fact that the official specs    */
-/* seem to be much weaker (and arguably too weak to be usable).         */
-
-#include "../ordered_except_wr.h"
-
 #include "../test_and_set_t_is_char.h"
 
 #if defined(AO_ASSUME_VISTA) && !defined(AO_ASSUME_WINDOWS98)
@@ -142,3 +133,11 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
 #endif /* AO_ASSUME_VISTA */
 
 #define AO_T_IS_INT
+
+/* Real X86 implementations, except for some old WinChips, appear       */
+/* to enforce ordering between memory operations, EXCEPT that a later   */
+/* read can pass earlier writes, presumably due to the visible          */
+/* presence of store buffers.                                           */
+/* We ignore both the WinChips, and the fact that the official specs    */
+/* seem to be much weaker (and arguably too weak to be usable).         */
+#include "../ordered_except_wr.h"

@@ -107,6 +107,7 @@ atomic_ops/sysdeps/loadstore/ordered_loads_only.h: \
 	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
 	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
 	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g $? >> $@
 
 atomic_ops/sysdeps/loadstore/ordered_stores_only.h: \
         atomic_ops/sysdeps/loadstore/ordered_stores_only.template
@@ -114,6 +115,7 @@ atomic_ops/sysdeps/loadstore/ordered_stores_only.h: \
 	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
 	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
 	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g $? >> $@
 
 atomic_ops/sysdeps/loadstore/acquire_release_volatile.h: \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.template
