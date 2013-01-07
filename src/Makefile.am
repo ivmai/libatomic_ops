@@ -18,6 +18,8 @@ EXTRA_DIST = Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-small.template \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.template \
         atomic_ops/sysdeps/loadstore/atomic_load_store.template \
+        atomic_ops/sysdeps/loadstore/ordered_loads_only.template \
+        atomic_ops/sysdeps/loadstore/ordered_stores_only.template \
         atomic_ops/sysdeps/sunc/sparc.S
 
 BUILT_SOURCES = atomic_ops/generalize-arithm.h \
@@ -28,6 +30,8 @@ BUILT_SOURCES = atomic_ops/generalize-arithm.h \
         atomic_ops/sysdeps/loadstore/char_atomic_load_store.h \
         atomic_ops/sysdeps/loadstore/int_acquire_release_volatile.h \
         atomic_ops/sysdeps/loadstore/int_atomic_load_store.h \
+        atomic_ops/sysdeps/loadstore/ordered_loads_only.h \
+        atomic_ops/sysdeps/loadstore/ordered_stores_only.h \
         atomic_ops/sysdeps/loadstore/short_acquire_release_volatile.h \
         atomic_ops/sysdeps/loadstore/short_atomic_load_store.h
 
@@ -75,8 +79,6 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/icc/ia64.h \
         \
           atomic_ops/sysdeps/loadstore/double_atomic_load_store.h \
-          atomic_ops/sysdeps/loadstore/ordered_loads_only.h \
-          atomic_ops/sysdeps/loadstore/ordered_stores_only.h \
         \
           atomic_ops/sysdeps/msftc/arm.h \
           atomic_ops/sysdeps/msftc/common32_defs.h \
@@ -94,6 +96,20 @@ atomic_ops/generalize-small.h: atomic_ops/generalize-small.template
 	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g $? >> $@
 
 atomic_ops/generalize-arithm.h: atomic_ops/generalize-arithm.template
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+
+atomic_ops/sysdeps/loadstore/ordered_loads_only.h: \
+        atomic_ops/sysdeps/loadstore/ordered_loads_only.template
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+
+atomic_ops/sysdeps/loadstore/ordered_stores_only.h: \
+        atomic_ops/sysdeps/loadstore/ordered_stores_only.template
 	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
 	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
 	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
