@@ -19,17 +19,6 @@
 
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
 
-/* NEC LE-IT: ARMv6 is the first architecture providing support for     */
-/* simple LL/SC.  A data memory barrier must be raised via CP15 command */
-/* (see documentation).                                                 */
-/* ARMv7 is compatible to ARMv6 but has a simpler command for issuing   */
-/* a memory barrier (DMB). Raising it via CP15 should still work as     */
-/* told me by the support engineers. If it turns out to be much quicker */
-/* than we should implement custom code for ARMv7 using the asm { dmb } */
-/* instruction.                                                         */
-/* If only a single processor is used, we can define AO_UNIPROCESSOR    */
-/* and do not need to access CP15 for ensuring a DMB.                   */
-
 #if defined(__thumb__) && !defined(__thumb2__)
   /* Thumb One mode does not have ARM "mcr", "swp" and some load/store  */
   /* instructions, so we temporarily switch to ARM mode and go back     */
@@ -64,13 +53,19 @@
 # define AO_ARM_HAVE_LDREX
 # if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
      && !defined(__ARM_ARCH_6T2__) && !defined(__ARM_ARCH_6Z__) \
-     && !defined(__ARM_ARCH_6ZT2__) && (!defined(__thumb__) \
-              || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
-                  && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__)))
-    /* LDREXD/STREXD present in ARMv6K/M+ (see gas/config/tc-arm.c)       */
-    /* In the Thumb mode, this works only starting from ARMv7 (except for */
-    /* the base and 'M' models).                                          */
-#   define AO_ARM_HAVE_LDREXD
+     && !defined(__ARM_ARCH_6ZT2__)
+#   if !defined(__ARM_ARCH_6K__) && !defined(__ARM_ARCH_6ZK__)
+      /* DMB is present in ARMv6M and ARMv7+.   */
+#     define AO_ARM_HAVE_DMB
+#   endif
+#   if !defined(__thumb__) \
+       || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
+           && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__))
+      /* LDREXD/STREXD present in ARMv6K/M+ (see gas/config/tc-arm.c).  */
+      /* In the Thumb mode, this works only starting from ARMv7 (except */
+      /* for the base and 'M' models).                                  */
+#     define AO_ARM_HAVE_LDREXD
+#   endif /* !thumb || ARMv7A || ARMv7R+ */
 # endif /* ARMv7+ */
 #endif /* ARMv6+ */
 
@@ -82,26 +77,55 @@
 
 #ifdef AO_ARM_HAVE_LDREX
 
-AO_INLINE void
-AO_nop_full(void)
-{
-# ifndef AO_UNIPROCESSOR
-    unsigned dest = 0;
+  /* ARMv6 is the first architecture providing support for simple       */
+  /* LL/SC.  A data memory barrier must be raised via CP15 command (see */
+  /* documentation).  ARMv7 is compatible to ARMv6 but has a simpler    */
+  /* command for issuing a memory barrier (DMB).  Raising it via CP15   */
+  /* should still work (but slightly less efficient because it requires */
+  /* the use of a general-purpose register).  If only a single          */
+  /* processor (core) is used, AO_UNIPROCESSOR could be defined by      */
+  /* client to avoid unnecessary memory barrier.                        */
 
-    /* Issue a data memory barrier (keeps ordering of memory    */
-    /* transactions before and after this operation).           */
-    __asm__ __volatile__("@AO_nop_full\n"
-      AO_THUMB_GO_ARM
-      "       mcr p15,0,%0,c7,c10,5\n"
-      AO_THUMB_RESTORE_MODE
-      : "=&r"(dest)
-      : /* empty */
-      : AO_THUMB_SWITCH_CLOBBERS "memory");
+# if defined(AO_ARM_HAVE_DMB) && !defined(AO_UNIPROCESSOR)
+
+    AO_INLINE void
+    AO_nop_full(void)
+    {
+      __asm__ __volatile__("dmb" : : : "memory");
+    }
+#   define AO_HAVE_nop_full
+
+    AO_INLINE void
+    AO_nop_write(void)
+    {
+      __asm__ __volatile__("dmb st" : : : "memory");
+    }
+#   define AO_HAVE_nop_write
+
 # else
-    AO_compiler_barrier();
-# endif
-}
-#define AO_HAVE_nop_full
+
+    AO_INLINE void
+    AO_nop_full(void)
+    {
+#     ifndef AO_UNIPROCESSOR
+        unsigned dest = 0;
+
+        /* Issue a data memory barrier (keeps ordering of memory        */
+        /* transactions before and after this operation).               */
+        __asm__ __volatile__("@AO_nop_full\n"
+          AO_THUMB_GO_ARM
+          "       mcr p15,0,%0,c7,c10,5\n"
+          AO_THUMB_RESTORE_MODE
+          : "=&r"(dest)
+          : /* empty */
+          : AO_THUMB_SWITCH_CLOBBERS "memory");
+#     else
+        AO_compiler_barrier();
+#     endif
+    }
+#   define AO_HAVE_nop_full
+
+# endif /* !AO_ARM_HAVE_DMB */
 
 /* NEC LE-IT: AO_t load is simple reading */
 AO_INLINE AO_t
