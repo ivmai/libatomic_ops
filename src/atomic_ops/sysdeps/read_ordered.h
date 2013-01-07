@@ -27,65 +27,11 @@
  * except apparently for some IDT WinChips, which we ignore.
  */
 
+#include "loadstore/ordered_loads_only.h"
+
 AO_INLINE void
 AO_nop_read(void)
 {
   AO_compiler_barrier();
 }
 #define AO_HAVE_nop_read
-
-#ifdef AO_HAVE_load
-  AO_INLINE AO_t
-  AO_load_read(const volatile AO_t *addr)
-  {
-    AO_t result = AO_load(addr);
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_load_read
-
-# define AO_load_acquire(addr) AO_load_read(addr)
-# define AO_HAVE_load_acquire
-#endif /* AO_HAVE_load */
-
-#ifdef AO_HAVE_char_load
-  AO_INLINE unsigned char
-  AO_char_load_read(const volatile unsigned char *addr)
-  {
-    unsigned char result = AO_char_load(addr);
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_char_load_read
-
-# define AO_char_load_acquire(addr) AO_char_load_read(addr)
-# define AO_HAVE_char_load_acquire
-#endif /* AO_HAVE_char_load */
-
-#ifdef AO_HAVE_short_load
-  AO_INLINE unsigned short
-  AO_short_load_read(const volatile unsigned short *addr)
-  {
-    unsigned short result = AO_short_load(addr);
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_short_load_read
-
-# define AO_short_load_acquire(addr) AO_short_load_read(addr)
-# define AO_HAVE_short_load_acquire
-#endif /* AO_HAVE_short_load */
-
-#ifdef AO_HAVE_int_load
-  AO_INLINE unsigned int
-  AO_int_load_read(const volatile unsigned int *addr)
-  {
-    unsigned int result = AO_int_load(addr);
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_int_load_read
-
-# define AO_int_load_acquire(addr) AO_int_load_read(addr)
-# define AO_HAVE_int_load_acquire
-#endif /* AO_HAVE_int_load */

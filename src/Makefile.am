@@ -75,6 +75,8 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/icc/ia64.h \
         \
           atomic_ops/sysdeps/loadstore/double_atomic_load_store.h \
+          atomic_ops/sysdeps/loadstore/ordered_loads_only.h \
+          atomic_ops/sysdeps/loadstore/ordered_stores_only.h \
         \
           atomic_ops/sysdeps/msftc/arm.h \
           atomic_ops/sysdeps/msftc/common32_defs.h \
