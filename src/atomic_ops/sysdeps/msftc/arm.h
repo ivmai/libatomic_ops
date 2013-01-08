@@ -76,7 +76,7 @@ AO_store_full(volatile AO_t *addr, AO_t value)
 #define AO_HAVE_store_full
 
 /* #include "../standard_ao_double_t.h" */
-/* TODO: implement AO_compare_double_and_swap_double (similar to x86).  */
+/* TODO: implement double-wide operations (similar to x86).  */
 
 #else /* _M_ARM < 6 */
 

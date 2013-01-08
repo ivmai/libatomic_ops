@@ -163,7 +163,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
 #define AO_HAVE_fetch_compare_and_swap
 
 /* #include "../standard_ao_double_t.h" */
-/* TODO: implement AO_compare_double_and_swap_double if available.      */
+/* TODO: Implement double-wide operations if available. */
 
 /* CAS primitives with acquire, release and full semantics are  */
 /* generated automatically (and AO_int_... primitives are       */

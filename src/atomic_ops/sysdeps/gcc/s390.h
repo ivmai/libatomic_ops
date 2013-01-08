@@ -61,4 +61,4 @@ AO_INLINE int AO_compare_and_swap_full(volatile AO_t *addr,
 
 /* TODO: implement AO_fetch_compare_and_swap.   */
 
-/* TODO: Add double-wide compare-and-swap for 32-bit executables.       */
+/* TODO: Add double-wide operations for 32-bit executables.       */
