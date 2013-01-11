@@ -1,3 +1,18 @@
+2013-01-07  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/read_ordered.h (AO_char_load_read,
+	AO_short_load_read, AO_int_load_read): Change return type (and the
+	type of "result" local variable) from AO_t to the type matching the
+	name of the function (i.e., unsigned char/short/int, respectively).
+
+2013-01-06  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h (AO_nop_full): Insert
+	AO_compiler_barrier for AO_UNIPROCESSOR case.
+	* src/atomic_ops/sysdeps/gcc/arm.h (AO_nop_full): Likewise.
+	* src/atomic_ops/sysdeps/msftc/arm.h (AO_nop_full): Likewise.
+	* src/atomic_ops/sysdeps/msftc/arm.h (AO_nop_full): Refine comment.
+
 2013-01-05  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/Makefile.in: Regenerate (by autoreconf -vif).
