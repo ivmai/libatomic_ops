@@ -454,11 +454,70 @@
 # define AO_HAVE_char_store_release_write
 #endif
 
+#if defined(AO_HAVE_char_compare_and_swap_write) \
+    && !defined(AO_HAVE_char_store_write)
+  AO_INLINE void
+  AO_char_store_write(volatile unsigned/**/char *addr, unsigned/**/char new_val)
+  {
+    unsigned/**/char old_val;
+
+    do {
+      old_val = *(unsigned/**/char *)addr;
+    } while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_write(addr, old_val,
+                                                              new_val)));
+  }
+# define AO_HAVE_char_store_write
+#endif
+
 #if defined(AO_HAVE_char_store_release) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_char_store_full)
 # define AO_char_store_full(addr, val) \
                                 (AO_char_store_release(addr, val), \
                                  AO_nop_full())
+# define AO_HAVE_char_store_full
+#endif
+
+#if defined(AO_HAVE_char_compare_and_swap) && !defined(AO_HAVE_char_store)
+  AO_INLINE void
+  AO_char_store(volatile unsigned/**/char *addr, unsigned/**/char new_val)
+  {
+    unsigned/**/char old_val;
+
+    do {
+      old_val = *(unsigned/**/char *)addr;
+    } while (AO_EXPECT_FALSE(!AO_char_compare_and_swap(addr,
+                                                        old_val, new_val)));
+  }
+# define AO_HAVE_char_store
+#endif
+
+#if defined(AO_HAVE_char_compare_and_swap_release) \
+    && !defined(AO_HAVE_char_store_release)
+  AO_INLINE void
+  AO_char_store_release(volatile unsigned/**/char *addr, unsigned/**/char new_val)
+  {
+    unsigned/**/char old_val;
+
+    do {
+      old_val = *(unsigned/**/char *)addr;
+    } while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_release(addr, old_val,
+                                                                new_val)));
+  }
+# define AO_HAVE_char_store_release
+#endif
+
+#if defined(AO_HAVE_char_compare_and_swap_full) \
+    && !defined(AO_HAVE_char_store_full)
+  AO_INLINE void
+  AO_char_store_full(volatile unsigned/**/char *addr, unsigned/**/char new_val)
+  {
+    unsigned/**/char old_val;
+
+    do {
+      old_val = *(unsigned/**/char *)addr;
+    } while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(addr, old_val,
+                                                             new_val)));
+  }
 # define AO_HAVE_char_store_full
 #endif
 /*
@@ -917,11 +976,70 @@
 # define AO_HAVE_short_store_release_write
 #endif
 
+#if defined(AO_HAVE_short_compare_and_swap_write) \
+    && !defined(AO_HAVE_short_store_write)
+  AO_INLINE void
+  AO_short_store_write(volatile unsigned/**/short *addr, unsigned/**/short new_val)
+  {
+    unsigned/**/short old_val;
+
+    do {
+      old_val = *(unsigned/**/short *)addr;
+    } while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_write(addr, old_val,
+                                                              new_val)));
+  }
+# define AO_HAVE_short_store_write
+#endif
+
 #if defined(AO_HAVE_short_store_release) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_short_store_full)
 # define AO_short_store_full(addr, val) \
                                 (AO_short_store_release(addr, val), \
                                  AO_nop_full())
+# define AO_HAVE_short_store_full
+#endif
+
+#if defined(AO_HAVE_short_compare_and_swap) && !defined(AO_HAVE_short_store)
+  AO_INLINE void
+  AO_short_store(volatile unsigned/**/short *addr, unsigned/**/short new_val)
+  {
+    unsigned/**/short old_val;
+
+    do {
+      old_val = *(unsigned/**/short *)addr;
+    } while (AO_EXPECT_FALSE(!AO_short_compare_and_swap(addr,
+                                                        old_val, new_val)));
+  }
+# define AO_HAVE_short_store
+#endif
+
+#if defined(AO_HAVE_short_compare_and_swap_release) \
+    && !defined(AO_HAVE_short_store_release)
+  AO_INLINE void
+  AO_short_store_release(volatile unsigned/**/short *addr, unsigned/**/short new_val)
+  {
+    unsigned/**/short old_val;
+
+    do {
+      old_val = *(unsigned/**/short *)addr;
+    } while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_release(addr, old_val,
+                                                                new_val)));
+  }
+# define AO_HAVE_short_store_release
+#endif
+
+#if defined(AO_HAVE_short_compare_and_swap_full) \
+    && !defined(AO_HAVE_short_store_full)
+  AO_INLINE void
+  AO_short_store_full(volatile unsigned/**/short *addr, unsigned/**/short new_val)
+  {
+    unsigned/**/short old_val;
+
+    do {
+      old_val = *(unsigned/**/short *)addr;
+    } while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(addr, old_val,
+                                                             new_val)));
+  }
 # define AO_HAVE_short_store_full
 #endif
 /*
@@ -1380,11 +1498,70 @@
 # define AO_HAVE_int_store_release_write
 #endif
 
+#if defined(AO_HAVE_int_compare_and_swap_write) \
+    && !defined(AO_HAVE_int_store_write)
+  AO_INLINE void
+  AO_int_store_write(volatile unsigned *addr, unsigned new_val)
+  {
+    unsigned old_val;
+
+    do {
+      old_val = *(unsigned *)addr;
+    } while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_write(addr, old_val,
+                                                              new_val)));
+  }
+# define AO_HAVE_int_store_write
+#endif
+
 #if defined(AO_HAVE_int_store_release) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_int_store_full)
 # define AO_int_store_full(addr, val) \
                                 (AO_int_store_release(addr, val), \
                                  AO_nop_full())
+# define AO_HAVE_int_store_full
+#endif
+
+#if defined(AO_HAVE_int_compare_and_swap) && !defined(AO_HAVE_int_store)
+  AO_INLINE void
+  AO_int_store(volatile unsigned *addr, unsigned new_val)
+  {
+    unsigned old_val;
+
+    do {
+      old_val = *(unsigned *)addr;
+    } while (AO_EXPECT_FALSE(!AO_int_compare_and_swap(addr,
+                                                        old_val, new_val)));
+  }
+# define AO_HAVE_int_store
+#endif
+
+#if defined(AO_HAVE_int_compare_and_swap_release) \
+    && !defined(AO_HAVE_int_store_release)
+  AO_INLINE void
+  AO_int_store_release(volatile unsigned *addr, unsigned new_val)
+  {
+    unsigned old_val;
+
+    do {
+      old_val = *(unsigned *)addr;
+    } while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_release(addr, old_val,
+                                                                new_val)));
+  }
+# define AO_HAVE_int_store_release
+#endif
+
+#if defined(AO_HAVE_int_compare_and_swap_full) \
+    && !defined(AO_HAVE_int_store_full)
+  AO_INLINE void
+  AO_int_store_full(volatile unsigned *addr, unsigned new_val)
+  {
+    unsigned old_val;
+
+    do {
+      old_val = *(unsigned *)addr;
+    } while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(addr, old_val,
+                                                             new_val)));
+  }
 # define AO_HAVE_int_store_full
 #endif
 /*
@@ -1843,11 +2020,70 @@
 # define AO_HAVE_store_release_write
 #endif
 
+#if defined(AO_HAVE_compare_and_swap_write) \
+    && !defined(AO_HAVE_store_write)
+  AO_INLINE void
+  AO_store_write(volatile AO_t *addr, AO_t new_val)
+  {
+    AO_t old_val;
+
+    do {
+      old_val = *(AO_t *)addr;
+    } while (AO_EXPECT_FALSE(!AO_compare_and_swap_write(addr, old_val,
+                                                              new_val)));
+  }
+# define AO_HAVE_store_write
+#endif
+
 #if defined(AO_HAVE_store_release) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_store_full)
 # define AO_store_full(addr, val) \
                                 (AO_store_release(addr, val), \
                                  AO_nop_full())
+# define AO_HAVE_store_full
+#endif
+
+#if defined(AO_HAVE_compare_and_swap) && !defined(AO_HAVE_store)
+  AO_INLINE void
+  AO_store(volatile AO_t *addr, AO_t new_val)
+  {
+    AO_t old_val;
+
+    do {
+      old_val = *(AO_t *)addr;
+    } while (AO_EXPECT_FALSE(!AO_compare_and_swap(addr,
+                                                        old_val, new_val)));
+  }
+# define AO_HAVE_store
+#endif
+
+#if defined(AO_HAVE_compare_and_swap_release) \
+    && !defined(AO_HAVE_store_release)
+  AO_INLINE void
+  AO_store_release(volatile AO_t *addr, AO_t new_val)
+  {
+    AO_t old_val;
+
+    do {
+      old_val = *(AO_t *)addr;
+    } while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(addr, old_val,
+                                                                new_val)));
+  }
+# define AO_HAVE_store_release
+#endif
+
+#if defined(AO_HAVE_compare_and_swap_full) \
+    && !defined(AO_HAVE_store_full)
+  AO_INLINE void
+  AO_store_full(volatile AO_t *addr, AO_t new_val)
+  {
+    AO_t old_val;
+
+    do {
+      old_val = *(AO_t *)addr;
+    } while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old_val,
+                                                             new_val)));
+  }
 # define AO_HAVE_store_full
 #endif
 /*
@@ -2306,10 +2542,69 @@
 # define AO_HAVE_double_store_release_write
 #endif
 
+#if defined(AO_HAVE_double_compare_and_swap_write) \
+    && !defined(AO_HAVE_double_store_write)
+  AO_INLINE void
+  AO_double_store_write(volatile AO_double_t *addr, AO_double_t new_val)
+  {
+    AO_double_t old_val;
+
+    do {
+      old_val = *(AO_double_t *)addr;
+    } while (AO_EXPECT_FALSE(!AO_double_compare_and_swap_write(addr, old_val,
+                                                              new_val)));
+  }
+# define AO_HAVE_double_store_write
+#endif
+
 #if defined(AO_HAVE_double_store_release) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_double_store_full)
 # define AO_double_store_full(addr, val) \
                                 (AO_double_store_release(addr, val), \
                                  AO_nop_full())
+# define AO_HAVE_double_store_full
+#endif
+
+#if defined(AO_HAVE_double_compare_and_swap) && !defined(AO_HAVE_double_store)
+  AO_INLINE void
+  AO_double_store(volatile AO_double_t *addr, AO_double_t new_val)
+  {
+    AO_double_t old_val;
+
+    do {
+      old_val = *(AO_double_t *)addr;
+    } while (AO_EXPECT_FALSE(!AO_double_compare_and_swap(addr,
+                                                        old_val, new_val)));
+  }
+# define AO_HAVE_double_store
+#endif
+
+#if defined(AO_HAVE_double_compare_and_swap_release) \
+    && !defined(AO_HAVE_double_store_release)
+  AO_INLINE void
+  AO_double_store_release(volatile AO_double_t *addr, AO_double_t new_val)
+  {
+    AO_double_t old_val;
+
+    do {
+      old_val = *(AO_double_t *)addr;
+    } while (AO_EXPECT_FALSE(!AO_double_compare_and_swap_release(addr, old_val,
+                                                                new_val)));
+  }
+# define AO_HAVE_double_store_release
+#endif
+
+#if defined(AO_HAVE_double_compare_and_swap_full) \
+    && !defined(AO_HAVE_double_store_full)
+  AO_INLINE void
+  AO_double_store_full(volatile AO_double_t *addr, AO_double_t new_val)
+  {
+    AO_double_t old_val;
+
+    do {
+      old_val = *(AO_double_t *)addr;
+    } while (AO_EXPECT_FALSE(!AO_double_compare_and_swap_full(addr, old_val,
+                                                             new_val)));
+  }
 # define AO_HAVE_double_store_full
 #endif

@@ -454,10 +454,69 @@
 # define AO_HAVE_XSIZE_store_release_write
 #endif
 
+#if defined(AO_HAVE_XSIZE_compare_and_swap_write) \
+    && !defined(AO_HAVE_XSIZE_store_write)
+  AO_INLINE void
+  AO_XSIZE_store_write(volatile XCTYPE *addr, XCTYPE new_val)
+  {
+    XCTYPE old_val;
+
+    do {
+      old_val = *(XCTYPE *)addr;
+    } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_write(addr, old_val,
+                                                              new_val)));
+  }
+# define AO_HAVE_XSIZE_store_write
+#endif
+
 #if defined(AO_HAVE_XSIZE_store_release) && defined(AO_HAVE_nop_full) \
     && !defined(AO_HAVE_XSIZE_store_full)
 # define AO_XSIZE_store_full(addr, val) \
                                 (AO_XSIZE_store_release(addr, val), \
                                  AO_nop_full())
+# define AO_HAVE_XSIZE_store_full
+#endif
+
+#if defined(AO_HAVE_XSIZE_compare_and_swap) && !defined(AO_HAVE_XSIZE_store)
+  AO_INLINE void
+  AO_XSIZE_store(volatile XCTYPE *addr, XCTYPE new_val)
+  {
+    XCTYPE old_val;
+
+    do {
+      old_val = *(XCTYPE *)addr;
+    } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap(addr,
+                                                        old_val, new_val)));
+  }
+# define AO_HAVE_XSIZE_store
+#endif
+
+#if defined(AO_HAVE_XSIZE_compare_and_swap_release) \
+    && !defined(AO_HAVE_XSIZE_store_release)
+  AO_INLINE void
+  AO_XSIZE_store_release(volatile XCTYPE *addr, XCTYPE new_val)
+  {
+    XCTYPE old_val;
+
+    do {
+      old_val = *(XCTYPE *)addr;
+    } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_release(addr, old_val,
+                                                                new_val)));
+  }
+# define AO_HAVE_XSIZE_store_release
+#endif
+
+#if defined(AO_HAVE_XSIZE_compare_and_swap_full) \
+    && !defined(AO_HAVE_XSIZE_store_full)
+  AO_INLINE void
+  AO_XSIZE_store_full(volatile XCTYPE *addr, XCTYPE new_val)
+  {
+    XCTYPE old_val;
+
+    do {
+      old_val = *(XCTYPE *)addr;
+    } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_full(addr, old_val,
+                                                             new_val)));
+  }
 # define AO_HAVE_XSIZE_store_full
 #endif
