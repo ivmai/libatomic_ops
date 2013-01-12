@@ -140,7 +140,7 @@
 
     do
       {
-        old = *addr;
+        old = *(XCTYPE *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_full(addr, old,
                                                            old + incr)));
@@ -158,7 +158,7 @@
 
     do
       {
-        old = *addr;
+        old = *(XCTYPE *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_acquire(addr, old,
                                                               old + incr)));
@@ -176,7 +176,7 @@
 
     do
       {
-        old = *addr;
+        old = *(XCTYPE *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_release(addr, old,
                                                               old + incr)));
@@ -194,7 +194,7 @@
 
     do
       {
-        old = *addr;
+        old = *(XCTYPE *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap(addr, old,
                                                       old + incr)));
@@ -589,7 +589,7 @@
 
     do
       {
-        old = *addr;
+        old = *(XCTYPE *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_full(addr, old,
                                                            old & value)));
@@ -671,7 +671,7 @@
 
     do
       {
-        old = *addr;
+        old = *(XCTYPE *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_full(addr, old,
                                                            old | value)));
@@ -752,7 +752,7 @@
 
     do
       {
-        old = *addr;
+        old = *(XCTYPE *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_full(addr, old,
                                                            old ^ value)));

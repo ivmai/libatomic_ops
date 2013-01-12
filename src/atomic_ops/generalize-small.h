@@ -320,7 +320,7 @@
     unsigned/**/char result;
 
     do {
-      result = *addr;
+      result = *(const unsigned/**/char *)addr;
     } while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_read(
                                                 (volatile unsigned/**/char *)addr,
                                                 result, result)));
@@ -350,7 +350,7 @@
     unsigned/**/char result;
 
     do {
-      result = *addr;
+      result = *(const unsigned/**/char *)addr;
     } while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(
                                                 (volatile unsigned/**/char *)addr,
                                                 result, result)));
@@ -367,7 +367,7 @@
     unsigned/**/char result;
 
     do {
-      result = *addr;
+      result = *(const unsigned/**/char *)addr;
     } while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_acquire(
                                                 (volatile unsigned/**/char *)addr,
                                                 result, result)));
@@ -383,7 +383,7 @@
     unsigned/**/char result;
 
     do {
-      result = *addr;
+      result = *(const unsigned/**/char *)addr;
     } while (AO_EXPECT_FALSE(!AO_char_compare_and_swap(
                                                 (volatile unsigned/**/char *)addr,
                                                 result, result)));
@@ -783,7 +783,7 @@
     unsigned/**/short result;
 
     do {
-      result = *addr;
+      result = *(const unsigned/**/short *)addr;
     } while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_read(
                                                 (volatile unsigned/**/short *)addr,
                                                 result, result)));
@@ -813,7 +813,7 @@
     unsigned/**/short result;
 
     do {
-      result = *addr;
+      result = *(const unsigned/**/short *)addr;
     } while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(
                                                 (volatile unsigned/**/short *)addr,
                                                 result, result)));
@@ -830,7 +830,7 @@
     unsigned/**/short result;
 
     do {
-      result = *addr;
+      result = *(const unsigned/**/short *)addr;
     } while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_acquire(
                                                 (volatile unsigned/**/short *)addr,
                                                 result, result)));
@@ -846,7 +846,7 @@
     unsigned/**/short result;
 
     do {
-      result = *addr;
+      result = *(const unsigned/**/short *)addr;
     } while (AO_EXPECT_FALSE(!AO_short_compare_and_swap(
                                                 (volatile unsigned/**/short *)addr,
                                                 result, result)));
@@ -1246,7 +1246,7 @@
     unsigned result;
 
     do {
-      result = *addr;
+      result = *(const unsigned *)addr;
     } while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_read(
                                                 (volatile unsigned *)addr,
                                                 result, result)));
@@ -1276,7 +1276,7 @@
     unsigned result;
 
     do {
-      result = *addr;
+      result = *(const unsigned *)addr;
     } while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(
                                                 (volatile unsigned *)addr,
                                                 result, result)));
@@ -1293,7 +1293,7 @@
     unsigned result;
 
     do {
-      result = *addr;
+      result = *(const unsigned *)addr;
     } while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_acquire(
                                                 (volatile unsigned *)addr,
                                                 result, result)));
@@ -1309,7 +1309,7 @@
     unsigned result;
 
     do {
-      result = *addr;
+      result = *(const unsigned *)addr;
     } while (AO_EXPECT_FALSE(!AO_int_compare_and_swap(
                                                 (volatile unsigned *)addr,
                                                 result, result)));
@@ -1709,7 +1709,7 @@
     AO_t result;
 
     do {
-      result = *addr;
+      result = *(const AO_t *)addr;
     } while (AO_EXPECT_FALSE(!AO_compare_and_swap_read(
                                                 (volatile AO_t *)addr,
                                                 result, result)));
@@ -1739,7 +1739,7 @@
     AO_t result;
 
     do {
-      result = *addr;
+      result = *(const AO_t *)addr;
     } while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(
                                                 (volatile AO_t *)addr,
                                                 result, result)));
@@ -1756,7 +1756,7 @@
     AO_t result;
 
     do {
-      result = *addr;
+      result = *(const AO_t *)addr;
     } while (AO_EXPECT_FALSE(!AO_compare_and_swap_acquire(
                                                 (volatile AO_t *)addr,
                                                 result, result)));
@@ -1772,7 +1772,7 @@
     AO_t result;
 
     do {
-      result = *addr;
+      result = *(const AO_t *)addr;
     } while (AO_EXPECT_FALSE(!AO_compare_and_swap(
                                                 (volatile AO_t *)addr,
                                                 result, result)));
@@ -2172,7 +2172,7 @@
     AO_double_t result;
 
     do {
-      result = *addr;
+      result = *(const AO_double_t *)addr;
     } while (AO_EXPECT_FALSE(!AO_double_compare_and_swap_read(
                                                 (volatile AO_double_t *)addr,
                                                 result, result)));
@@ -2202,7 +2202,7 @@
     AO_double_t result;
 
     do {
-      result = *addr;
+      result = *(const AO_double_t *)addr;
     } while (AO_EXPECT_FALSE(!AO_double_compare_and_swap_full(
                                                 (volatile AO_double_t *)addr,
                                                 result, result)));
@@ -2219,7 +2219,7 @@
     AO_double_t result;
 
     do {
-      result = *addr;
+      result = *(const AO_double_t *)addr;
     } while (AO_EXPECT_FALSE(!AO_double_compare_and_swap_acquire(
                                                 (volatile AO_double_t *)addr,
                                                 result, result)));
@@ -2235,7 +2235,7 @@
     AO_double_t result;
 
     do {
-      result = *addr;
+      result = *(const AO_double_t *)addr;
     } while (AO_EXPECT_FALSE(!AO_double_compare_and_swap(
                                                 (volatile AO_double_t *)addr,
                                                 result, result)));

@@ -140,7 +140,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/char *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(addr, old,
                                                            old + incr)));
@@ -158,7 +158,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/char *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_acquire(addr, old,
                                                               old + incr)));
@@ -176,7 +176,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/char *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_release(addr, old,
                                                               old + incr)));
@@ -194,7 +194,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/char *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_char_compare_and_swap(addr, old,
                                                       old + incr)));
@@ -589,7 +589,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/char *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(addr, old,
                                                            old & value)));
@@ -671,7 +671,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/char *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(addr, old,
                                                            old | value)));
@@ -752,7 +752,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/char *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_char_compare_and_swap_full(addr, old,
                                                            old ^ value)));
@@ -967,7 +967,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/short *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(addr, old,
                                                            old + incr)));
@@ -985,7 +985,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/short *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_acquire(addr, old,
                                                               old + incr)));
@@ -1003,7 +1003,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/short *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_release(addr, old,
                                                               old + incr)));
@@ -1021,7 +1021,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/short *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_short_compare_and_swap(addr, old,
                                                       old + incr)));
@@ -1416,7 +1416,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/short *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(addr, old,
                                                            old & value)));
@@ -1498,7 +1498,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/short *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(addr, old,
                                                            old | value)));
@@ -1579,7 +1579,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned/**/short *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_short_compare_and_swap_full(addr, old,
                                                            old ^ value)));
@@ -1794,7 +1794,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(addr, old,
                                                            old + incr)));
@@ -1812,7 +1812,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_acquire(addr, old,
                                                               old + incr)));
@@ -1830,7 +1830,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_release(addr, old,
                                                               old + incr)));
@@ -1848,7 +1848,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_int_compare_and_swap(addr, old,
                                                       old + incr)));
@@ -2243,7 +2243,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(addr, old,
                                                            old & value)));
@@ -2325,7 +2325,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(addr, old,
                                                            old | value)));
@@ -2406,7 +2406,7 @@
 
     do
       {
-        old = *addr;
+        old = *(unsigned *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_int_compare_and_swap_full(addr, old,
                                                            old ^ value)));
@@ -2621,7 +2621,7 @@
 
     do
       {
-        old = *addr;
+        old = *(AO_t *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old,
                                                            old + incr)));
@@ -2639,7 +2639,7 @@
 
     do
       {
-        old = *addr;
+        old = *(AO_t *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_compare_and_swap_acquire(addr, old,
                                                               old + incr)));
@@ -2657,7 +2657,7 @@
 
     do
       {
-        old = *addr;
+        old = *(AO_t *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(addr, old,
                                                               old + incr)));
@@ -2675,7 +2675,7 @@
 
     do
       {
-        old = *addr;
+        old = *(AO_t *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_compare_and_swap(addr, old,
                                                       old + incr)));
@@ -3070,7 +3070,7 @@
 
     do
       {
-        old = *addr;
+        old = *(AO_t *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old,
                                                            old & value)));
@@ -3152,7 +3152,7 @@
 
     do
       {
-        old = *addr;
+        old = *(AO_t *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old,
                                                            old | value)));
@@ -3233,7 +3233,7 @@
 
     do
       {
-        old = *addr;
+        old = *(AO_t *)addr;
       }
     while (AO_EXPECT_FALSE(!AO_compare_and_swap_full(addr, old,
                                                            old ^ value)));

@@ -320,7 +320,7 @@
     XCTYPE result;
 
     do {
-      result = *addr;
+      result = *(const XCTYPE *)addr;
     } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_read(
                                                 (volatile XCTYPE *)addr,
                                                 result, result)));
@@ -350,7 +350,7 @@
     XCTYPE result;
 
     do {
-      result = *addr;
+      result = *(const XCTYPE *)addr;
     } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_full(
                                                 (volatile XCTYPE *)addr,
                                                 result, result)));
@@ -367,7 +367,7 @@
     XCTYPE result;
 
     do {
-      result = *addr;
+      result = *(const XCTYPE *)addr;
     } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap_acquire(
                                                 (volatile XCTYPE *)addr,
                                                 result, result)));
@@ -383,7 +383,7 @@
     XCTYPE result;
 
     do {
-      result = *addr;
+      result = *(const XCTYPE *)addr;
     } while (AO_EXPECT_FALSE(!AO_XSIZE_compare_and_swap(
                                                 (volatile XCTYPE *)addr,
                                                 result, result)));
