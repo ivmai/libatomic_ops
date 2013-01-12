@@ -383,6 +383,16 @@ AO_double_load_full(const volatile AO_double_t *addr)
 }
 #define AO_HAVE_double_load_full
 
+AO_INLINE void
+AO_double_store_full(volatile AO_double_t *addr, AO_double_t value)
+{
+  pthread_mutex_lock(&AO_pt_lock);
+  addr->AO_val1 = value.AO_val1;
+  addr->AO_val2 = value.AO_val2;
+  pthread_mutex_unlock(&AO_pt_lock);
+}
+#define AO_HAVE_double_store_full
+
 AO_INLINE int
 AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                        AO_t old1, AO_t old2,
