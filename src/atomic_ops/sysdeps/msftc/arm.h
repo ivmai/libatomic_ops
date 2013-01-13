@@ -20,8 +20,6 @@
  * SOFTWARE.
  */
 
-#include "../read_ordered.h"
-
 #ifndef AO_ASSUME_WINDOWS98
   /* CAS is always available */
 # define AO_ASSUME_WINDOWS98
@@ -90,3 +88,5 @@ AO_store_full(volatile AO_t *addr, AO_t value)
 /* AO_test_and_set_full() is emulated using CAS.                        */
 
 #endif /* _M_ARM < 6 */
+
+#include "../read_ordered.h"
