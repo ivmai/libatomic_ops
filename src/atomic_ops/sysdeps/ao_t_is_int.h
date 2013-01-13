@@ -20,13 +20,8 @@
  * SOFTWARE.
  */
 
-/*
- * Inclusion of this file signifies that AO_t is in fact int.  Hence
- * any AO_... operations can also serve as AO_int_... operations.
- * We currently define only the more important ones here, and allow for
- * the normal generalization process to define the others.
- * TODO: Probably add others in the future.
- */
+/* Inclusion of this file signifies that AO_t is in fact int.           */
+/* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
 #if defined(AO_HAVE_load) && !defined(AO_HAVE_int_load)
 # define AO_int_load(addr) \
@@ -60,6 +55,24 @@
 # define AO_int_fetch_and_sub1(addr) \
                 (unsigned)AO_fetch_and_sub1((volatile AO_t *)(addr))
 # define AO_HAVE_int_fetch_and_sub1
+#endif
+
+#if defined(AO_HAVE_and) && !defined(AO_HAVE_int_and)
+# define AO_int_and(addr, val) \
+                AO_and((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_and
+#endif
+
+#if defined(AO_HAVE_or) && !defined(AO_HAVE_int_or)
+# define AO_int_or(addr, val) \
+                AO_or((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_or
+#endif
+
+#if defined(AO_HAVE_xor) && !defined(AO_HAVE_int_xor)
+# define AO_int_xor(addr, val) \
+                AO_xor((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_xor
 #endif
 
 #if defined(AO_HAVE_fetch_compare_and_swap) \
@@ -99,13 +112,8 @@
  * SOFTWARE.
  */
 
-/*
- * Inclusion of this file signifies that AO_t is in fact int.  Hence
- * any AO_... operations can also serve as AO_int_... operations.
- * We currently define only the more important ones here, and allow for
- * the normal generalization process to define the others.
- * TODO: Probably add others in the future.
- */
+/* Inclusion of this file signifies that AO_t is in fact int.           */
+/* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
 #if defined(AO_HAVE_load_full) && !defined(AO_HAVE_int_load_full)
 # define AO_int_load_full(addr) \
@@ -139,6 +147,24 @@
 # define AO_int_fetch_and_sub1_full(addr) \
                 (unsigned)AO_fetch_and_sub1_full((volatile AO_t *)(addr))
 # define AO_HAVE_int_fetch_and_sub1_full
+#endif
+
+#if defined(AO_HAVE_and_full) && !defined(AO_HAVE_int_and_full)
+# define AO_int_and_full(addr, val) \
+                AO_and_full((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_and_full
+#endif
+
+#if defined(AO_HAVE_or_full) && !defined(AO_HAVE_int_or_full)
+# define AO_int_or_full(addr, val) \
+                AO_or_full((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_or_full
+#endif
+
+#if defined(AO_HAVE_xor_full) && !defined(AO_HAVE_int_xor_full)
+# define AO_int_xor_full(addr, val) \
+                AO_xor_full((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_xor_full
 #endif
 
 #if defined(AO_HAVE_fetch_compare_and_swap_full) \
@@ -178,13 +204,8 @@
  * SOFTWARE.
  */
 
-/*
- * Inclusion of this file signifies that AO_t is in fact int.  Hence
- * any AO_... operations can also serve as AO_int_... operations.
- * We currently define only the more important ones here, and allow for
- * the normal generalization process to define the others.
- * TODO: Probably add others in the future.
- */
+/* Inclusion of this file signifies that AO_t is in fact int.           */
+/* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
 #if defined(AO_HAVE_load_acquire) && !defined(AO_HAVE_int_load_acquire)
 # define AO_int_load_acquire(addr) \
@@ -218,6 +239,24 @@
 # define AO_int_fetch_and_sub1_acquire(addr) \
                 (unsigned)AO_fetch_and_sub1_acquire((volatile AO_t *)(addr))
 # define AO_HAVE_int_fetch_and_sub1_acquire
+#endif
+
+#if defined(AO_HAVE_and_acquire) && !defined(AO_HAVE_int_and_acquire)
+# define AO_int_and_acquire(addr, val) \
+                AO_and_acquire((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_and_acquire
+#endif
+
+#if defined(AO_HAVE_or_acquire) && !defined(AO_HAVE_int_or_acquire)
+# define AO_int_or_acquire(addr, val) \
+                AO_or_acquire((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_or_acquire
+#endif
+
+#if defined(AO_HAVE_xor_acquire) && !defined(AO_HAVE_int_xor_acquire)
+# define AO_int_xor_acquire(addr, val) \
+                AO_xor_acquire((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_xor_acquire
 #endif
 
 #if defined(AO_HAVE_fetch_compare_and_swap_acquire) \
@@ -257,13 +296,8 @@
  * SOFTWARE.
  */
 
-/*
- * Inclusion of this file signifies that AO_t is in fact int.  Hence
- * any AO_... operations can also serve as AO_int_... operations.
- * We currently define only the more important ones here, and allow for
- * the normal generalization process to define the others.
- * TODO: Probably add others in the future.
- */
+/* Inclusion of this file signifies that AO_t is in fact int.           */
+/* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
 #if defined(AO_HAVE_load_release) && !defined(AO_HAVE_int_load_release)
 # define AO_int_load_release(addr) \
@@ -297,6 +331,24 @@
 # define AO_int_fetch_and_sub1_release(addr) \
                 (unsigned)AO_fetch_and_sub1_release((volatile AO_t *)(addr))
 # define AO_HAVE_int_fetch_and_sub1_release
+#endif
+
+#if defined(AO_HAVE_and_release) && !defined(AO_HAVE_int_and_release)
+# define AO_int_and_release(addr, val) \
+                AO_and_release((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_and_release
+#endif
+
+#if defined(AO_HAVE_or_release) && !defined(AO_HAVE_int_or_release)
+# define AO_int_or_release(addr, val) \
+                AO_or_release((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_or_release
+#endif
+
+#if defined(AO_HAVE_xor_release) && !defined(AO_HAVE_int_xor_release)
+# define AO_int_xor_release(addr, val) \
+                AO_xor_release((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_xor_release
 #endif
 
 #if defined(AO_HAVE_fetch_compare_and_swap_release) \
@@ -336,13 +388,8 @@
  * SOFTWARE.
  */
 
-/*
- * Inclusion of this file signifies that AO_t is in fact int.  Hence
- * any AO_... operations can also serve as AO_int_... operations.
- * We currently define only the more important ones here, and allow for
- * the normal generalization process to define the others.
- * TODO: Probably add others in the future.
- */
+/* Inclusion of this file signifies that AO_t is in fact int.           */
+/* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
 #if defined(AO_HAVE_load_write) && !defined(AO_HAVE_int_load_write)
 # define AO_int_load_write(addr) \
@@ -376,6 +423,24 @@
 # define AO_int_fetch_and_sub1_write(addr) \
                 (unsigned)AO_fetch_and_sub1_write((volatile AO_t *)(addr))
 # define AO_HAVE_int_fetch_and_sub1_write
+#endif
+
+#if defined(AO_HAVE_and_write) && !defined(AO_HAVE_int_and_write)
+# define AO_int_and_write(addr, val) \
+                AO_and_write((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_and_write
+#endif
+
+#if defined(AO_HAVE_or_write) && !defined(AO_HAVE_int_or_write)
+# define AO_int_or_write(addr, val) \
+                AO_or_write((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_or_write
+#endif
+
+#if defined(AO_HAVE_xor_write) && !defined(AO_HAVE_int_xor_write)
+# define AO_int_xor_write(addr, val) \
+                AO_xor_write((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_xor_write
 #endif
 
 #if defined(AO_HAVE_fetch_compare_and_swap_write) \
@@ -415,13 +480,8 @@
  * SOFTWARE.
  */
 
-/*
- * Inclusion of this file signifies that AO_t is in fact int.  Hence
- * any AO_... operations can also serve as AO_int_... operations.
- * We currently define only the more important ones here, and allow for
- * the normal generalization process to define the others.
- * TODO: Probably add others in the future.
- */
+/* Inclusion of this file signifies that AO_t is in fact int.           */
+/* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
 #if defined(AO_HAVE_load_read) && !defined(AO_HAVE_int_load_read)
 # define AO_int_load_read(addr) \
@@ -455,6 +515,24 @@
 # define AO_int_fetch_and_sub1_read(addr) \
                 (unsigned)AO_fetch_and_sub1_read((volatile AO_t *)(addr))
 # define AO_HAVE_int_fetch_and_sub1_read
+#endif
+
+#if defined(AO_HAVE_and_read) && !defined(AO_HAVE_int_and_read)
+# define AO_int_and_read(addr, val) \
+                AO_and_read((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_and_read
+#endif
+
+#if defined(AO_HAVE_or_read) && !defined(AO_HAVE_int_or_read)
+# define AO_int_or_read(addr, val) \
+                AO_or_read((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_or_read
+#endif
+
+#if defined(AO_HAVE_xor_read) && !defined(AO_HAVE_int_xor_read)
+# define AO_int_xor_read(addr, val) \
+                AO_xor_read((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_xor_read
 #endif
 
 #if defined(AO_HAVE_fetch_compare_and_swap_read) \

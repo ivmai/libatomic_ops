@@ -20,13 +20,8 @@
  * SOFTWARE.
  */
 
-/*
- * Inclusion of this file signifies that AO_t is in fact int.  Hence
- * any AO_... operations can also serve as AO_int_... operations.
- * We currently define only the more important ones here, and allow for
- * the normal generalization process to define the others.
- * TODO: Probably add others in the future.
- */
+/* Inclusion of this file signifies that AO_t is in fact int.           */
+/* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
 #if defined(AO_HAVE_load_XBAR) && !defined(AO_HAVE_int_load_XBAR)
 # define AO_int_load_XBAR(addr) \
@@ -60,6 +55,24 @@
 # define AO_int_fetch_and_sub1_XBAR(addr) \
                 (unsigned)AO_fetch_and_sub1_XBAR((volatile AO_t *)(addr))
 # define AO_HAVE_int_fetch_and_sub1_XBAR
+#endif
+
+#if defined(AO_HAVE_and_XBAR) && !defined(AO_HAVE_int_and_XBAR)
+# define AO_int_and_XBAR(addr, val) \
+                AO_and_XBAR((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_and_XBAR
+#endif
+
+#if defined(AO_HAVE_or_XBAR) && !defined(AO_HAVE_int_or_XBAR)
+# define AO_int_or_XBAR(addr, val) \
+                AO_or_XBAR((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_or_XBAR
+#endif
+
+#if defined(AO_HAVE_xor_XBAR) && !defined(AO_HAVE_int_xor_XBAR)
+# define AO_int_xor_XBAR(addr, val) \
+                AO_xor_XBAR((volatile AO_t *)(addr), (AO_t)(val))
+# define AO_HAVE_int_xor_XBAR
 #endif
 
 #if defined(AO_HAVE_fetch_compare_and_swap_XBAR) \
