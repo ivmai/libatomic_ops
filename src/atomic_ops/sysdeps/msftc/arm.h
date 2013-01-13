@@ -55,25 +55,8 @@ AO_load(const volatile AO_t *addr)
 }
 #define AO_HAVE_load
 
-AO_INLINE void
-AO_store_full(volatile AO_t *addr, AO_t value)
-{
-  /* Emulate atomic store using CAS.    */
-  AO_t old = AO_load(addr);
-  AO_t current;
-# ifdef AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE
-    while ((current = (AO_t)_InterlockedCompareExchange(
-                                (PVOID AO_INTERLOCKED_VOLATILE *)addr,
-                                (PVOID)value, (PVOID)old)) != old)
-      old = current;
-# else
-    while ((current = (AO_t)_InterlockedCompareExchange(
-                                (LONG AO_INTERLOCKED_VOLATILE *)addr,
-                                (LONG)value, (LONG)old)) != old)
-      old = current;
-# endif
-}
-#define AO_HAVE_store_full
+/* TODO: Implement AO_store() using ordinary store provided Windows     */
+/* interrupt handlers clear the LL/SC reservation flag.                 */
 
 /* #include "../standard_ao_double_t.h" */
 /* TODO: implement double-wide operations (similar to x86).  */
