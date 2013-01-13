@@ -22,7 +22,7 @@
 
 /*
  * Inclusion of this file signifies that AO_t is in fact int.  Hence
- * any AO_... operations can also server as AO_int_... operations.
+ * any AO_... operations can also serve as AO_int_... operations.
  * We currently define only the more important ones here, and allow for
  * the normal generalization process to define the others.
  * TODO: Probably add others in the future.
