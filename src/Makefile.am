@@ -16,6 +16,7 @@ libatomic_ops_gpl_la_LDFLAGS = -version-info 1:3:0 -no-undefined
 EXTRA_DIST = Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-arithm.template \
         atomic_ops/generalize-small.template \
+        atomic_ops/sysdeps/ao_t_is_int.template \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.template \
         atomic_ops/sysdeps/loadstore/atomic_load_store.template \
         atomic_ops/sysdeps/loadstore/ordered_loads_only.template \
@@ -24,6 +25,7 @@ EXTRA_DIST = Makefile.msft atomic_ops/sysdeps/README \
 
 BUILT_SOURCES = atomic_ops/generalize-arithm.h \
         atomic_ops/generalize-small.h \
+        atomic_ops/sysdeps/ao_t_is_int.h \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.h \
         atomic_ops/sysdeps/loadstore/atomic_load_store.h \
         atomic_ops/sysdeps/loadstore/char_acquire_release_volatile.h \
@@ -44,7 +46,6 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/all_acquire_release_volatile.h \
           atomic_ops/sysdeps/all_aligned_atomic_load_store.h \
           atomic_ops/sysdeps/all_atomic_load_store.h \
-          atomic_ops/sysdeps/ao_t_is_int.h \
           atomic_ops/sysdeps/emul_cas.h \
           atomic_ops/sysdeps/generic_pthread.h \
           atomic_ops/sysdeps/ordered.h \
@@ -100,6 +101,14 @@ atomic_ops/generalize-arithm.h: atomic_ops/generalize-arithm.template
 	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
 	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
 	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+
+atomic_ops/sysdeps/ao_t_is_int.h: atomic_ops/sysdeps/ao_t_is_int.template
+	sed -e s:_XBAR::g $? > $@
+	sed -e s:XBAR:full:g $? >> $@
+	sed -e s:XBAR:acquire:g $? >> $@
+	sed -e s:XBAR:release:g $? >> $@
+	sed -e s:XBAR:write:g $? >> $@
+	sed -e s:XBAR:read:g $? >> $@
 
 atomic_ops/sysdeps/loadstore/ordered_loads_only.h: \
         atomic_ops/sysdeps/loadstore/ordered_loads_only.template
