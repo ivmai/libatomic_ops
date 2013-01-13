@@ -19,7 +19,7 @@
  * modified is included with the above copyright notice.
  *
  */
-#include "../read_ordered.h"
+
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
 
 #if __TARGET_ARCH_ARM < 6
@@ -264,3 +264,5 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
 #endif /* __TARGET_ARCH_ARM >= 6 */
 
 #define AO_T_IS_INT
+
+#include "../read_ordered.h"
