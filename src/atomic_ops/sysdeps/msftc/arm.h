@@ -81,9 +81,9 @@ AO_store_full(volatile AO_t *addr, AO_t value)
 
 #else /* _M_ARM < 6 */
 
-/* Some slide set, if it has been red correctly, claims that Loads      */
+/* Some ARM slide set, if it has been read correctly, claims that Loads */
 /* followed by either a Load or a Store are ordered, but nothing        */
-/* else is. It appears that SWP is the only simple memory barrier.      */
+/* else is.  It appears that SWP is the only simple memory barrier.     */
 #include "../all_atomic_load_store.h"
 
 #include "../test_and_set_t_is_ao_t.h"
