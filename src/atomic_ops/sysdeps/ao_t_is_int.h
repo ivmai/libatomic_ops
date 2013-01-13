@@ -79,7 +79,7 @@
 #if defined(AO_HAVE_load_acquire) && \
     !defined(AO_HAVE_int_load_acquire)
 #  define AO_int_load_acquire(addr) \
-        (int)AO_load_acquire((const volatile AO_t *)(addr))
+        (unsigned)AO_load_acquire((const volatile AO_t *)(addr))
 #  define AO_HAVE_int_load_acquire
 # endif
 
@@ -93,34 +93,34 @@
 #if defined(AO_HAVE_fetch_and_add_full) && \
     !defined(AO_HAVE_int_fetch_and_add_full)
 #  define AO_int_fetch_and_add_full(addr, incr) \
-        (int)AO_fetch_and_add_full((volatile AO_t *)(addr), (AO_t)(incr))
+        (unsigned)AO_fetch_and_add_full((volatile AO_t *)(addr), (AO_t)(incr))
 #  define AO_HAVE_int_fetch_and_add_full
 # endif
 
 #if defined(AO_HAVE_fetch_and_add1_acquire) && \
     !defined(AO_HAVE_int_fetch_and_add1_acquire)
 #  define AO_int_fetch_and_add1_acquire(addr) \
-        (int)AO_fetch_and_add1_acquire((volatile AO_t *)(addr))
+        (unsigned)AO_fetch_and_add1_acquire((volatile AO_t *)(addr))
 #  define AO_HAVE_int_fetch_and_add1_acquire
 # endif
 
 #if defined(AO_HAVE_fetch_and_add1_release) && \
     !defined(AO_HAVE_int_fetch_and_add1_release)
 #  define AO_int_fetch_and_add1_release(addr) \
-        (int)AO_fetch_and_add1_release((volatile AO_t *)(addr))
+        (unsigned)AO_fetch_and_add1_release((volatile AO_t *)(addr))
 #  define AO_HAVE_int_fetch_and_add1_release
 # endif
 
 #if defined(AO_HAVE_fetch_and_sub1_acquire) && \
     !defined(AO_HAVE_int_fetch_and_sub1_acquire)
 #  define AO_int_fetch_and_sub1_acquire(addr) \
-        (int)AO_fetch_and_sub1_acquire((volatile AO_t *)(addr))
+        (unsigned)AO_fetch_and_sub1_acquire((volatile AO_t *)(addr))
 #  define AO_HAVE_int_fetch_and_sub1_acquire
 # endif
 
 #if defined(AO_HAVE_fetch_and_sub1_release) && \
     !defined(AO_HAVE_int_fetch_and_sub1_release)
 #  define AO_int_fetch_and_sub1_release(addr) \
-        (int)AO_fetch_and_sub1_release((volatile AO_t *)(addr))
+        (unsigned)AO_fetch_and_sub1_release((volatile AO_t *)(addr))
 #  define AO_HAVE_int_fetch_and_sub1_release
 # endif
