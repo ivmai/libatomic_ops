@@ -166,6 +166,8 @@ _full: Ordered with respect to both earlier and later memory ops.
 _release_write: Ordered with respect to earlier writes.  This is
                 normally implemented as either a _write or _release
                 barrier.
+_acquire_read: Ordered with respect to later reads. This is
+                normally implemented as either a _read or _acquire barrier.
 _dd_acquire_read: Ordered with respect to later reads that are data
                dependent on this one.  This is needed on
                a pointer read, which is later dereferenced to read a
@@ -177,10 +179,6 @@ _dd_acquire_read: Ordered with respect to later reads that are data
                eliminate dependencies from the generated code, since
                dependencies force the hardware to execute the code
                serially.)
-_release_read: Ordered with respect to earlier reads.  Useful for
-               implementing read locks.  Can be implemented as _release,
-               but not as _read, since _read groups the current operation
-               with the earlier ones.
 
 We assume that if a store is data-dependent on an a previous load, then
 the two are always implicitly ordered.
