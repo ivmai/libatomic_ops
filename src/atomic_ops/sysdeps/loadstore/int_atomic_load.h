@@ -20,28 +20,18 @@
  * SOFTWARE.
  */
 
-/* Definitions for architectures on which loads and stores of given     */
-/* type are atomic (either for suitably aligned data only or for any    */
-/* legal alignment).                                                    */
+/* Definitions for architectures on which loads of given type are       */
+/* atomic (either for suitably aligned data only or for any legal       */
+/* alignment).                                                          */
 
-AO_INLINE XCTYPE
-AO_XSIZE_load(const volatile XCTYPE *addr)
+AO_INLINE unsigned
+AO_int_load(const volatile unsigned *addr)
 {
-# ifdef AO_ACCESS_XSIZE_CHECK_ALIGNED
+# ifdef AO_ACCESS_int_CHECK_ALIGNED
     assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
 # endif
   /* Cast away the volatile for architectures like IA64 where   */
   /* volatile adds barrier (fence) semantics.                   */
-  return *(const XCTYPE *)addr;
+  return *(const unsigned *)addr;
 }
-#define AO_HAVE_XSIZE_load
-
-AO_INLINE void
-AO_XSIZE_store(volatile XCTYPE *addr, XCTYPE new_val)
-{
-# ifdef AO_ACCESS_XSIZE_CHECK_ALIGNED
-    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
-# endif
-  *(XCTYPE *)addr = new_val;
-}
-#define AO_HAVE_XSIZE_store
+#define AO_HAVE_int_load

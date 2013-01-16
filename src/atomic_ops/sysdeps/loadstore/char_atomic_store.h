@@ -20,28 +20,16 @@
  * SOFTWARE.
  */
 
-/* Definitions for architectures on which loads and stores of given     */
-/* type are atomic (either for suitably aligned data only or for any    */
-/* legal alignment).                                                    */
-
-AO_INLINE unsigned
-AO_int_load(const volatile unsigned *addr)
-{
-# ifdef AO_ACCESS_int_CHECK_ALIGNED
-    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
-# endif
-  /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier (fence) semantics.                   */
-  return *(const unsigned *)addr;
-}
-#define AO_HAVE_int_load
+/* Definitions for architectures on which stores of given type are      */
+/* atomic (either for suitably aligned data only or for any legal       */
+/* alignment).                                                          */
 
 AO_INLINE void
-AO_int_store(volatile unsigned *addr, unsigned new_val)
+AO_char_store(volatile unsigned/**/char *addr, unsigned/**/char new_val)
 {
-# ifdef AO_ACCESS_int_CHECK_ALIGNED
+# ifdef AO_ACCESS_char_CHECK_ALIGNED
     assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
 # endif
-  *(unsigned *)addr = new_val;
+  *(unsigned/**/char *)addr = new_val;
 }
-#define AO_HAVE_int_store
+#define AO_HAVE_char_store

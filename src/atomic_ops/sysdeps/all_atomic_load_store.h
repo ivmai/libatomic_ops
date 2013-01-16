@@ -24,7 +24,11 @@
 /* short, and unsigned int loads and stores are atomic for all normally */
 /* legal alignments.                                                    */
 
-#include "loadstore/atomic_load_store.h"
-#include "loadstore/char_atomic_load_store.h"
-#include "loadstore/short_atomic_load_store.h"
-#include "loadstore/int_atomic_load_store.h"
+#include "loadstore/atomic_load.h"
+#include "loadstore/atomic_store.h"
+#include "loadstore/char_atomic_load.h"
+#include "loadstore/char_atomic_store.h"
+#include "loadstore/short_atomic_load.h"
+#include "loadstore/short_atomic_store.h"
+#include "loadstore/int_atomic_load.h"
+#include "loadstore/int_atomic_store.h"

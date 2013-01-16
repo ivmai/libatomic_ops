@@ -18,7 +18,8 @@ EXTRA_DIST = Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-small.template \
         atomic_ops/sysdeps/ao_t_is_int.template \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.template \
-        atomic_ops/sysdeps/loadstore/atomic_load_store.template \
+        atomic_ops/sysdeps/loadstore/atomic_load.template \
+        atomic_ops/sysdeps/loadstore/atomic_store.template \
         atomic_ops/sysdeps/loadstore/ordered_loads_only.template \
         atomic_ops/sysdeps/loadstore/ordered_stores_only.template \
         atomic_ops/sysdeps/sunc/sparc.S
@@ -27,15 +28,19 @@ BUILT_SOURCES = atomic_ops/generalize-arithm.h \
         atomic_ops/generalize-small.h \
         atomic_ops/sysdeps/ao_t_is_int.h \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.h \
-        atomic_ops/sysdeps/loadstore/atomic_load_store.h \
+        atomic_ops/sysdeps/loadstore/atomic_load.h \
+        atomic_ops/sysdeps/loadstore/atomic_store.h \
         atomic_ops/sysdeps/loadstore/char_acquire_release_volatile.h \
-        atomic_ops/sysdeps/loadstore/char_atomic_load_store.h \
+        atomic_ops/sysdeps/loadstore/char_atomic_load.h \
+        atomic_ops/sysdeps/loadstore/char_atomic_store.h \
         atomic_ops/sysdeps/loadstore/int_acquire_release_volatile.h \
-        atomic_ops/sysdeps/loadstore/int_atomic_load_store.h \
+        atomic_ops/sysdeps/loadstore/int_atomic_load.h \
+        atomic_ops/sysdeps/loadstore/int_atomic_store.h \
         atomic_ops/sysdeps/loadstore/ordered_loads_only.h \
         atomic_ops/sysdeps/loadstore/ordered_stores_only.h \
         atomic_ops/sysdeps/loadstore/short_acquire_release_volatile.h \
-        atomic_ops/sysdeps/loadstore/short_atomic_load_store.h
+        atomic_ops/sysdeps/loadstore/short_atomic_load.h \
+        atomic_ops/sysdeps/loadstore/short_atomic_store.h
 
 #Private Headers
 privatedir=${includedir}/
@@ -142,18 +147,34 @@ atomic_ops/sysdeps/loadstore/short_acquire_release_volatile.h: \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.template
 	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? > $@
 
-atomic_ops/sysdeps/loadstore/atomic_load_store.h: \
-        atomic_ops/sysdeps/loadstore/atomic_load_store.template
+atomic_ops/sysdeps/loadstore/atomic_load.h: \
+        atomic_ops/sysdeps/loadstore/atomic_load.template
 	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? > $@
 
-atomic_ops/sysdeps/loadstore/char_atomic_load_store.h: \
-        atomic_ops/sysdeps/loadstore/atomic_load_store.template
+atomic_ops/sysdeps/loadstore/char_atomic_load.h: \
+        atomic_ops/sysdeps/loadstore/atomic_load.template
 	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
 
-atomic_ops/sysdeps/loadstore/int_atomic_load_store.h: \
-        atomic_ops/sysdeps/loadstore/atomic_load_store.template
+atomic_ops/sysdeps/loadstore/int_atomic_load.h: \
+        atomic_ops/sysdeps/loadstore/atomic_load.template
 	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? > $@
 
-atomic_ops/sysdeps/loadstore/short_atomic_load_store.h: \
-        atomic_ops/sysdeps/loadstore/atomic_load_store.template
+atomic_ops/sysdeps/loadstore/short_atomic_load.h: \
+        atomic_ops/sysdeps/loadstore/atomic_load.template
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? > $@
+
+atomic_ops/sysdeps/loadstore/atomic_store.h: \
+        atomic_ops/sysdeps/loadstore/atomic_store.template
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? > $@
+
+atomic_ops/sysdeps/loadstore/char_atomic_store.h: \
+        atomic_ops/sysdeps/loadstore/atomic_store.template
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+
+atomic_ops/sysdeps/loadstore/int_atomic_store.h: \
+        atomic_ops/sysdeps/loadstore/atomic_store.template
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? > $@
+
+atomic_ops/sysdeps/loadstore/short_atomic_store.h: \
+        atomic_ops/sysdeps/loadstore/atomic_store.template
 	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? > $@

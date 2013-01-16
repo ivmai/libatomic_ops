@@ -20,21 +20,9 @@
  * SOFTWARE.
  */
 
-/* Definitions for architectures on which loads and stores of given     */
-/* type are atomic (either for suitably aligned data only or for any    */
-/* legal alignment).                                                    */
-
-AO_INLINE AO_t
-AO_load(const volatile AO_t *addr)
-{
-# ifdef AO_ACCESS_CHECK_ALIGNED
-    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
-# endif
-  /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier (fence) semantics.                   */
-  return *(const AO_t *)addr;
-}
-#define AO_HAVE_load
+/* Definitions for architectures on which stores of given type are      */
+/* atomic (either for suitably aligned data only or for any legal       */
+/* alignment).                                                          */
 
 AO_INLINE void
 AO_store(volatile AO_t *addr, AO_t new_val)
