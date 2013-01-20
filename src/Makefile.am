@@ -51,6 +51,7 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/all_acquire_release_volatile.h \
           atomic_ops/sysdeps/all_aligned_atomic_load_store.h \
           atomic_ops/sysdeps/all_atomic_load_store.h \
+          atomic_ops/sysdeps/all_atomic_only_load.h \
           atomic_ops/sysdeps/emul_cas.h \
           atomic_ops/sysdeps/generic_pthread.h \
           atomic_ops/sysdeps/ordered.h \

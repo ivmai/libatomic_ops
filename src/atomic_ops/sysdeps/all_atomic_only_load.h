@@ -21,11 +21,10 @@
  */
 
 /* Describes architectures on which AO_t, unsigned char, unsigned       */
-/* short, and unsigned int loads and stores are atomic but only if data */
-/* is suitably aligned.                                                 */
+/* short, and unsigned int loads are atomic for all normally legal      */
+/* alignments.                                                          */
 
-#define AO_ACCESS_CHECK_ALIGNED
-/* Check for char type is a misnomer.   */
-#define AO_ACCESS_short_CHECK_ALIGNED
-#define AO_ACCESS_int_CHECK_ALIGNED
-#include "all_atomic_load_store.h"
+#include "loadstore/atomic_load.h"
+#include "loadstore/char_atomic_load.h"
+#include "loadstore/short_atomic_load.h"
+#include "loadstore/int_atomic_load.h"
