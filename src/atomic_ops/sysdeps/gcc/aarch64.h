@@ -15,8 +15,6 @@
  *
  */
 
-#include "../read_ordered.h"
-
 #include "../test_and_set_t_is_ao_t.h"
 
 /* TODO: The rest (platform-neutral) should be moved to gcc/builtin.h. */
@@ -26,6 +24,8 @@ AO_nop_full(void)
 {
 # ifndef AO_UNIPROCESSOR
     __sync_synchronize();
+# else
+    AO_compiler_barrier();
 # endif
 }
 #define AO_HAVE_nop_full
@@ -39,12 +39,14 @@ AO_load(const volatile AO_t *addr)
 }
 #define AO_HAVE_load
 
+/* FIXME: AO_load_acquire is defined by read_ordered.h: which is better?
 AO_INLINE AO_t
 AO_load_acquire(const volatile AO_t *addr)
 {
   return __atomic_load_n(addr, __ATOMIC_ACQUIRE);
 }
 #define AO_HAVE_load_acquire
+*/
 
 AO_INLINE void
 AO_store(volatile AO_t *addr, AO_t value)
@@ -63,28 +65,28 @@ AO_store_release(volatile AO_t *addr, AO_t value)
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set(volatile AO_TS_t *addr)
 {
-  return __atomic_test_and_set(addr, __ATOMIC_RELAXED);
+  return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_RELAXED);
 }
 # define AO_HAVE_test_and_set
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_acquire(volatile AO_TS_t *addr)
 {
-  return __atomic_test_and_set(addr, __ATOMIC_ACQUIRE);
+  return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_ACQUIRE);
 }
 # define AO_HAVE_test_and_set_acquire
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_release(volatile AO_TS_t *addr)
 {
-  return __atomic_test_and_set(addr, __ATOMIC_RELEASE);
+  return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_RELEASE);
 }
 # define AO_HAVE_test_and_set_release
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
 {
-  return __atomic_test_and_set(addr, __ATOMIC_SEQ_CST);
+  return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_SEQ_CST);
 }
 # define AO_HAVE_test_and_set_full
 
@@ -191,3 +193,5 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 /* TODO: Add AO_and/or/xor primitives. */
 /* TODO: Add AO_int_ primitives. */
 /* TODO: Add double-wide primitives. */
+
+#include "../read_ordered.h"
