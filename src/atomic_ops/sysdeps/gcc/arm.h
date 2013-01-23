@@ -389,5 +389,4 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 # define AO_HAVE_test_and_set_full
 #endif /* !AO_HAVE_test_and_set[_full] && AO_ARM_HAVE_SWP */
 
-/* FIXME: 32-bit ABI is assumed.    */
 #define AO_T_IS_INT

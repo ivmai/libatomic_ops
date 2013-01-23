@@ -19,6 +19,8 @@
 
 #include "../test_and_set_t_is_ao_t.h"
 
+/* TODO: The rest (platform-neutral) should be moved to gcc/builtin.h. */
+
 AO_INLINE void
 AO_nop_full(void)
 {
@@ -27,6 +29,8 @@ AO_nop_full(void)
 # endif
 }
 #define AO_HAVE_nop_full
+
+/* TODO: Add AO_nop_write. */
 
 AO_INLINE AO_t
 AO_load(const volatile AO_t *addr)
@@ -112,6 +116,8 @@ AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr)
 }
 #define AO_HAVE_fetch_and_add_full
 
+/* TODO: Remove add1/sub1 primitives (as they could be generalized). */
+
 AO_INLINE AO_t
 AO_fetch_and_add1(volatile AO_t *addr)
 {
@@ -181,3 +187,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
   return __sync_val_compare_and_swap(addr, old_val, new_val);
 }
 #define AO_HAVE_fetch_compare_and_swap
+
+/* TODO: Add AO_and/or/xor primitives. */
+/* TODO: Add AO_int_ primitives. */
+/* TODO: Add double-wide primitives. */
