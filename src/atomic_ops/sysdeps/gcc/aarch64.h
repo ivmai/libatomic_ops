@@ -67,28 +67,28 @@ AO_test_and_set(volatile AO_TS_t *addr)
 {
   return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_RELAXED);
 }
-# define AO_HAVE_test_and_set
+#define AO_HAVE_test_and_set
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_acquire(volatile AO_TS_t *addr)
 {
   return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_ACQUIRE);
 }
-# define AO_HAVE_test_and_set_acquire
+#define AO_HAVE_test_and_set_acquire
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_release(volatile AO_TS_t *addr)
 {
   return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_RELEASE);
 }
-# define AO_HAVE_test_and_set_release
+#define AO_HAVE_test_and_set_release
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
 {
   return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_SEQ_CST);
 }
-# define AO_HAVE_test_and_set_full
+#define AO_HAVE_test_and_set_full
 
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
@@ -117,64 +117,6 @@ AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr)
   return __atomic_fetch_add(addr, incr, __ATOMIC_SEQ_CST);
 }
 #define AO_HAVE_fetch_and_add_full
-
-/* TODO: Remove add1/sub1 primitives (as they could be generalized). */
-
-AO_INLINE AO_t
-AO_fetch_and_add1(volatile AO_t *addr)
-{
-  return __atomic_fetch_add(addr, 1, __ATOMIC_RELAXED);
-}
-#define AO_HAVE_fetch_and_add1
-
-AO_INLINE AO_t
-AO_fetch_and_add1_acquire(volatile AO_t *addr)
-{
-  return __atomic_fetch_add(addr, 1, __ATOMIC_ACQUIRE);
-}
-#define AO_HAVE_fetch_and_add1_acquire
-
-AO_INLINE AO_t
-AO_fetch_and_add1_release(volatile AO_t *addr)
-{
-  return __atomic_fetch_add(addr, 1, __ATOMIC_RELEASE);
-}
-#define AO_HAVE_fetch_and_add1_release
-
-AO_INLINE AO_t
-AO_fetch_and_add1_full(volatile AO_t *addr)
-{
-  return __atomic_fetch_add(addr, 1, __ATOMIC_SEQ_CST);
-}
-#define AO_HAVE_fetch_and_add1_full
-
-AO_INLINE AO_t
-AO_fetch_and_sub1(volatile AO_t *addr)
-{
-  return __atomic_fetch_sub(addr, 1, __ATOMIC_RELAXED);
-}
-#define AO_HAVE_fetch_and_sub1
-
-AO_INLINE AO_t
-AO_fetch_and_sub1_acquire(volatile AO_t *addr)
-{
-  return __atomic_fetch_sub(addr, 1, __ATOMIC_ACQUIRE);
-}
-#define AO_HAVE_fetch_and_sub1_acquire
-
-AO_INLINE AO_t
-AO_fetch_and_sub1_release(volatile AO_t *addr)
-{
-  return __atomic_fetch_sub(addr, 1, __ATOMIC_RELEASE);
-}
-#define AO_HAVE_fetch_and_sub1_release
-
-AO_INLINE AO_t
-AO_fetch_and_sub1_full(volatile AO_t *addr)
-{
-  return __atomic_fetch_sub(addr, 1, __ATOMIC_SEQ_CST);
-}
-#define AO_HAVE_fetch_and_sub1_full
 
 AO_INLINE int
 AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
