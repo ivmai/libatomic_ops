@@ -31,6 +31,8 @@
   }
 # define AO_HAVE_XSIZE_load_read
 
-# define AO_XSIZE_load_acquire(addr) AO_XSIZE_load_read(addr)
-# define AO_HAVE_XSIZE_load_acquire
+# ifndef AO_HAVE_XSIZE_load_acquire
+#   define AO_XSIZE_load_acquire(addr) AO_XSIZE_load_read(addr)
+#   define AO_HAVE_XSIZE_load_acquire
+# endif
 #endif /* AO_HAVE_XSIZE_load */

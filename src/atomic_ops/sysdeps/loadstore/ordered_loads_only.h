@@ -31,8 +31,10 @@
   }
 # define AO_HAVE_char_load_read
 
-# define AO_char_load_acquire(addr) AO_char_load_read(addr)
-# define AO_HAVE_char_load_acquire
+# ifndef AO_HAVE_char_load_acquire
+#   define AO_char_load_acquire(addr) AO_char_load_read(addr)
+#   define AO_HAVE_char_load_acquire
+# endif
 #endif /* AO_HAVE_char_load */
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
@@ -67,8 +69,10 @@
   }
 # define AO_HAVE_short_load_read
 
-# define AO_short_load_acquire(addr) AO_short_load_read(addr)
-# define AO_HAVE_short_load_acquire
+# ifndef AO_HAVE_short_load_acquire
+#   define AO_short_load_acquire(addr) AO_short_load_read(addr)
+#   define AO_HAVE_short_load_acquire
+# endif
 #endif /* AO_HAVE_short_load */
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
@@ -103,8 +107,10 @@
   }
 # define AO_HAVE_int_load_read
 
-# define AO_int_load_acquire(addr) AO_int_load_read(addr)
-# define AO_HAVE_int_load_acquire
+# ifndef AO_HAVE_int_load_acquire
+#   define AO_int_load_acquire(addr) AO_int_load_read(addr)
+#   define AO_HAVE_int_load_acquire
+# endif
 #endif /* AO_HAVE_int_load */
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
@@ -139,8 +145,10 @@
   }
 # define AO_HAVE_load_read
 
-# define AO_load_acquire(addr) AO_load_read(addr)
-# define AO_HAVE_load_acquire
+# ifndef AO_HAVE_load_acquire
+#   define AO_load_acquire(addr) AO_load_read(addr)
+#   define AO_HAVE_load_acquire
+# endif
 #endif /* AO_HAVE_load */
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
@@ -175,6 +183,8 @@
   }
 # define AO_HAVE_double_load_read
 
-# define AO_double_load_acquire(addr) AO_double_load_read(addr)
-# define AO_HAVE_double_load_acquire
+# ifndef AO_HAVE_double_load_acquire
+#   define AO_double_load_acquire(addr) AO_double_load_read(addr)
+#   define AO_HAVE_double_load_acquire
+# endif
 #endif /* AO_HAVE_double_load */
