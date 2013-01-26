@@ -96,6 +96,7 @@
     AO_INLINE void
     AO_nop_full(void)
     {
+      /* AO_THUMB_GO_ARM is empty. */
       __asm__ __volatile__("dmb" : : : "memory");
     }
 #   define AO_HAVE_nop_full
@@ -103,6 +104,7 @@
     AO_INLINE void
     AO_nop_write(void)
     {
+      /* AO_THUMB_GO_ARM is empty. */
       __asm__ __volatile__("dmb st" : : : "memory");
     }
 #   define AO_HAVE_nop_write
@@ -332,11 +334,18 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 #ifdef AO_ARM_HAVE_LDREXD
 # include "../standard_ao_double_t.h"
 
+  /* "ARM Architecture Reference Manual ARMv7-A/R edition" (chapter     */
+  /* A3.5.3) says that memory accesses caused by LDREXD and STREXD      */
+  /* instructions to doubleword-aligned locations are single-copy       */
+  /* atomic; accesses to 64-bit elements by other instructions might    */
+  /* not be single-copy atomic as they are executed as a sequence of    */
+  /* 32-bit accesses.                                                   */
   AO_INLINE AO_double_t
   AO_double_load(const volatile AO_double_t *addr)
   {
     AO_double_t result;
 
+    /* AO_THUMB_GO_ARM is empty. */
     __asm__ __volatile__("@AO_double_load\n"
       "       ldrexd  %0, [%1]"
       : "=&r" (result.AO_whole)
@@ -346,6 +355,24 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
   }
 # define AO_HAVE_double_load
 
+  AO_INLINE void
+  AO_double_store(volatile AO_double_t *addr, AO_double_t new_val)
+  {
+    AO_double_t old_val;
+    int status;
+
+    do {
+      /* AO_THUMB_GO_ARM is empty. */
+      __asm__ __volatile__("@AO_double_store\n"
+        "       ldrexd  %0, [%3]\n"
+        "       strexd  %1, %4, [%3]"
+        : "=&r" (old_val.AO_whole), "=&r" (status), "+m" (*addr)
+        : "r" (addr), "r" (new_val.AO_whole)
+        : "cc");
+    } while (AO_EXPECT_FALSE(status));
+  }
+# define AO_HAVE_double_store
+
   AO_INLINE int
   AO_double_compare_and_swap(volatile AO_double_t *addr,
                              AO_double_t old_val, AO_double_t new_val)
@@ -354,6 +381,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     int result = 1;
 
     do {
+      /* AO_THUMB_GO_ARM is empty. */
       __asm__ __volatile__("@AO_double_compare_and_swap\n"
         "       ldrexd  %0, [%1]\n"     /* get original to r1 & r2 */
         : "=&r"(tmp)
