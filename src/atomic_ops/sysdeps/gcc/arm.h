@@ -75,6 +75,13 @@
 
 #ifdef AO_ARM_HAVE_LDREX
 
+  /* AO_t/char/short/int load is simple reading.                */
+  /* Unaligned accesses are not guaranteed to be atomic.        */
+# define AO_ACCESS_CHECK_ALIGNED
+# define AO_ACCESS_short_CHECK_ALIGNED
+# define AO_ACCESS_int_CHECK_ALIGNED
+# include "../all_atomic_only_load.h"
+
   /* ARMv6 is the first architecture providing support for simple       */
   /* LL/SC.  A data memory barrier must be raised via CP15 command (see */
   /* documentation).  ARMv7 is compatible to ARMv6 but has a simpler    */
@@ -124,16 +131,6 @@
 #   define AO_HAVE_nop_full
 
 # endif /* !AO_ARM_HAVE_DMB */
-
-/* NEC LE-IT: AO_t load is simple reading */
-AO_INLINE AO_t
-AO_load(const volatile AO_t *addr)
-{
-  /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return (*(const AO_t *)addr);
-}
-#define AO_HAVE_load
 
 /* NEC LE-IT: atomic "store" - according to ARM documentation this is
  * the only safe way to set variables also used in LL/SC environment.
@@ -386,7 +383,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 
 /* The code should run correctly on a multi-core ARMv6+ as well.        */
 /* There is only a single concern related to AO_store (defined in       */
-/* atomic_load_store.h file):                                           */
+/* atomic_store.h file):                                                */
 /* HB: Based on subsequent discussion, I think it would be OK to use an */
 /* ordinary store here if we knew that interrupt handlers always        */
 /* cleared the reservation.  They should, but there is some doubt that  */

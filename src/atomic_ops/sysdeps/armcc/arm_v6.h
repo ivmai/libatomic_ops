@@ -26,6 +26,11 @@
 Dont use with ARM instruction sets lower than v6
 #else
 
+#define AO_ACCESS_CHECK_ALIGNED
+#define AO_ACCESS_short_CHECK_ALIGNED
+#define AO_ACCESS_int_CHECK_ALIGNED
+#include "../all_atomic_only_load.h"
+
 #include "../standard_ao_double_t.h"
 
 /* NEC LE-IT: ARMv6 is the first architecture providing support for simple LL/SC
@@ -55,14 +60,6 @@ AO_nop_full(void)
 # endif
 }
 #define AO_HAVE_nop_full
-
-AO_INLINE AO_t
-AO_load(const volatile AO_t *addr)
-{
-        /* Cast away the volatile in case it adds fence semantics */
-        return (*(const AO_t *)addr);
-}
-#define AO_HAVE_load
 
 /* NEC LE-IT: atomic "store" - according to ARM documentation this is
  * the only safe way to set variables also used in LL/SC environment.
