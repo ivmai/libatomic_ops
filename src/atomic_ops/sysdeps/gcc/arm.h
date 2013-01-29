@@ -134,6 +134,14 @@
 
 # endif /* !AO_ARM_HAVE_DMB */
 
+  /* "ARM Architecture Reference Manual" (chapter A3.5.3) says that the */
+  /* single-copy atomic processor accesses are all byte accesses, all   */
+  /* halfword accesses to halfword-aligned locations, all word accesses */
+  /* to word-aligned locations.                                         */
+# include "../loadstore/char_atomic_store.h"
+# include "../loadstore/short_atomic_store.h"
+  /* AO_int_store is defined in ao_t_is_int.h.  */
+
 /* NEC LE-IT: atomic "store" - according to ARM documentation this is
  * the only safe way to set variables also used in LL/SC environment.
  * A direct write won't be recognized by the LL/SC construct on the _same_ CPU.
@@ -407,7 +415,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 /* Loads followed by either a Load or Store are ordered, but nothing    */
 /* else is.                                                             */
 /* It appears that SWP is the only simple memory barrier.               */
-#include "../all_atomic_load_store.h"
+#include "../all_aligned_atomic_load_store.h"
 
 /* The code should run correctly on a multi-core ARMv6+ as well.        */
 /* There is only a single concern related to AO_store (defined in       */
