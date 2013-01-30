@@ -142,48 +142,36 @@
 # include "../loadstore/short_atomic_store.h"
   /* AO_int_store is defined in ao_t_is_int.h.  */
 
-/* NEC LE-IT: atomic "store" - according to ARM documentation this is
- * the only safe way to set variables also used in LL/SC environment.
- * A direct write won't be recognized by the LL/SC construct on the _same_ CPU.
- *
- * Support engineers response for behaviour of ARMv6:
- *
-   Core1        Core2          SUCCESS
-   == == == == == == == == == == == ==
-   LDREX(x)
-   STREX(x)                    Yes
-   -----------------------------------
-   LDREX(x)
-                STR(x)
-   STREX(x)                    No
-   -----------------------------------
-   LDREX(x)
-   STR(x)
-   STREX(x)                    Yes
-   -----------------------------------
- *
- * ARMv7 behaves similar, see documentation CortexA8 TRM, point 8.5
- *
- * HB: I think this is only a problem if interrupt handlers do not clear
- * the reservation, as they almost certainly should.  Probably change this back
- * in a while?
-*/
-AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
-{
-  AO_t flag;
+  /* There is only a single concern related to AO_store: a direct write */
+  /* (by STR instruction) will not be recognized by the LL/SC construct */
+  /* on the same CPU (i.e., according to ARM documentation, e.g., see   */
+  /* documentation CortexA8 TRM, point 8.5, atomic "store" is the only  */
+  /* safe way to set variables also used in LL/SC environment).         */
+  /* This is only a problem if interrupt handlers do not clear the      */
+  /* reservation (by CLREX instruction or a dummy STREX one), as they   */
+  /* almost certainly should (e.g., see "switch_to" routine defined in  */
+  /* arch/arm/kernel/entry-armv.S of Linux.  Nonetheless, there is some */
+  /* doubt this was properly implemented in some ancient OS releases.   */
+# ifdef AO_BROKEN_TASKSWITCH_CLREX
+    AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
+    {
+      AO_t flag;
 
-  __asm__ __volatile__("@AO_store\n"
-    AO_THUMB_GO_ARM
-    "1:     ldrex   %0, [%2]\n"
-    "       strex   %0, %3, [%2]\n"
-    "       teq     %0, #0\n"
-    "       bne     1b\n"
-    AO_THUMB_RESTORE_MODE
-    : "=&r"(flag), "+m"(*addr)
-    : "r" (addr), "r"(value)
-    : AO_THUMB_SWITCH_CLOBBERS "cc");
-}
-#define AO_HAVE_store
+      __asm__ __volatile__("@AO_store\n"
+        AO_THUMB_GO_ARM
+        "1:     ldrex %0, [%2]\n"
+        "       strex %0, %3, [%2]\n"
+        "       teq %0, #0\n"
+        "       bne 1b\n"
+        AO_THUMB_RESTORE_MODE
+        : "=&r" (flag), "+m" (*addr)
+        : "r" (addr), "r" (value)
+        : AO_THUMB_SWITCH_CLOBBERS "cc");
+    }
+#   define AO_HAVE_store
+# else
+#   include "../loadstore/atomic_store.h"
+# endif
 
 /* NEC LE-IT: replace the SWAP as recommended by ARM:
    "Applies to: ARM11 Cores
@@ -418,12 +406,6 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 #include "../all_aligned_atomic_load_store.h"
 
 /* The code should run correctly on a multi-core ARMv6+ as well.        */
-/* There is only a single concern related to AO_store (defined in       */
-/* atomic_store.h file):                                                */
-/* HB: Based on subsequent discussion, I think it would be OK to use an */
-/* ordinary store here if we knew that interrupt handlers always        */
-/* cleared the reservation.  They should, but there is some doubt that  */
-/* this is currently always the case, e.g., for Linux.                  */
 
 #endif /* !AO_ARM_HAVE_LDREX */
 
