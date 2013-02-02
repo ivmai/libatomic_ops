@@ -138,20 +138,17 @@
   /* single-copy atomic processor accesses are all byte accesses, all   */
   /* halfword accesses to halfword-aligned locations, all word accesses */
   /* to word-aligned locations.                                         */
-# include "../loadstore/char_atomic_store.h"
-# include "../loadstore/short_atomic_store.h"
-  /* AO_int_store is defined in ao_t_is_int.h.  */
-
-  /* There is only a single concern related to AO_store: a direct write */
-  /* (by STR instruction) will not be recognized by the LL/SC construct */
-  /* on the same CPU (i.e., according to ARM documentation, e.g., see   */
-  /* documentation CortexA8 TRM, point 8.5, atomic "store" is the only  */
-  /* safe way to set variables also used in LL/SC environment).         */
+  /* There is only a single concern related to AO store operations:     */
+  /* a direct write (by STR[B/H] instruction) will not be recognized    */
+  /* by the LL/SC construct on the same CPU (i.e., according to ARM     */
+  /* documentation, e.g., see CortexA8 TRM reference, point 8.5,        */
+  /* atomic "store" (using LDREX/STREX[B/H]) is the only safe way to    */
+  /* set variables also used in LL/SC environment).                     */
   /* This is only a problem if interrupt handlers do not clear the      */
   /* reservation (by CLREX instruction or a dummy STREX one), as they   */
-  /* almost certainly should (e.g., see "switch_to" routine defined in  */
-  /* arch/arm/kernel/entry-armv.S of Linux.  Nonetheless, there is some */
-  /* doubt this was properly implemented in some ancient OS releases.   */
+  /* almost certainly should (e.g., see restore_user_regs defined in    */
+  /* arch/arm/kernel/entry-header.S of Linux.  Nonetheless, there is    */
+  /* a doubt this was properly implemented in some ancient OS releases. */
 # ifdef AO_BROKEN_TASKSWITCH_CLREX
     AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
     {
@@ -169,9 +166,49 @@
         : AO_THUMB_SWITCH_CLOBBERS "cc");
     }
 #   define AO_HAVE_store
+
+    AO_INLINE void AO_char_store(volatile unsigned char *addr,
+                                 unsigned char value)
+    {
+      int flag;
+
+      __asm__ __volatile__("@AO_char_store\n"
+        AO_THUMB_GO_ARM
+        "1:     ldrexb %0, [%2]\n"
+        "       strexb %0, %3, [%2]\n"
+        "       teq    %0, #0\n"
+        "       bne 1b\n"
+        AO_THUMB_RESTORE_MODE
+        : "=&r" (flag), "+m" (*addr)
+        : "r" (addr), "r" (value)
+        : AO_THUMB_SWITCH_CLOBBERS "cc");
+    }
+#   define AO_HAVE_char_store
+
+    AO_INLINE void AO_short_store(volatile unsigned short *addr,
+                                  unsigned short value)
+    {
+      int flag;
+
+      __asm__ __volatile__("@AO_short_store\n"
+        AO_THUMB_GO_ARM
+        "1:     ldrexh %0, [%2]\n"
+        "       strexh %0, %3, [%2]\n"
+        "       teq    %0, #0\n"
+        "       bne 1b\n"
+        AO_THUMB_RESTORE_MODE
+        : "=&r" (flag), "+m" (*addr)
+        : "r" (addr), "r" (value)
+        : AO_THUMB_SWITCH_CLOBBERS "cc");
+    }
+#   define AO_HAVE_short_store
+
 # else
 #   include "../loadstore/atomic_store.h"
-# endif
+#   include "../loadstore/char_atomic_store.h"
+#   include "../loadstore/short_atomic_store.h"
+    /* AO_int_store is defined in ao_t_is_int.h.    */
+# endif /* !AO_BROKEN_TASKSWITCH_CLREX */
 
 /* NEC LE-IT: replace the SWAP as recommended by ARM:
    "Applies to: ARM11 Cores
@@ -275,6 +312,48 @@ AO_fetch_and_sub1(volatile AO_t *p)
 }
 #define AO_HAVE_fetch_and_sub1
 #endif /* !AO_PREFER_GENERALIZED */
+
+AO_INLINE unsigned char
+AO_char_fetch_and_add(volatile unsigned char *p, unsigned char incr)
+{
+  unsigned char result, tmp;
+  int flag;
+
+  __asm__ __volatile__("@AO_char_fetch_and_add\n"
+    AO_THUMB_GO_ARM
+    "1:     ldrexb  %0, [%5]\n"
+    "       add     %2, %0, %4\n"
+    "       strexb  %1, %2, [%5]\n"
+    "       teq     %1, #0\n"
+    "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
+    : "=&r" (result), "=&r" (flag), "=&r" (tmp), "+m" (*p)
+    : "r" (incr), "r" (p)
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
+  return result;
+}
+#define AO_HAVE_char_fetch_and_add
+
+AO_INLINE unsigned short
+AO_short_fetch_and_add(volatile unsigned short *p, unsigned short incr)
+{
+  unsigned short result, tmp;
+  int flag;
+
+  __asm__ __volatile__("@AO_short_fetch_and_add\n"
+    AO_THUMB_GO_ARM
+    "1:     ldrexh  %0, [%5]\n"
+    "       add     %2, %0, %4\n"
+    "       strexh  %1, %2, [%5]\n"
+    "       teq     %1, #0\n"
+    "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
+    : "=&r" (result), "=&r" (flag), "=&r" (tmp), "+m" (*p)
+    : "r" (incr), "r" (p)
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
+  return result;
+}
+#define AO_HAVE_short_fetch_and_add
 
 #ifndef AO_GENERALIZE_ASM_BOOL_CAS
   /* Returns nonzero if the comparison succeeded.       */
