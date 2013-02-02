@@ -155,7 +155,7 @@
 # ifdef AO_BROKEN_TASKSWITCH_CLREX
     AO_INLINE void AO_store(volatile AO_t *addr, AO_t value)
     {
-      AO_t flag;
+      int flag;
 
       __asm__ __volatile__("@AO_store\n"
         AO_THUMB_GO_ARM
@@ -195,7 +195,7 @@
   AO_test_and_set(volatile AO_TS_t *addr)
   {
     AO_TS_VAL_t oldval;
-    unsigned long flag;
+    int flag;
 
     __asm__ __volatile__("@AO_test_and_set\n"
       AO_THUMB_GO_ARM
@@ -215,8 +215,8 @@
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 {
-  unsigned long flag, tmp;
-  AO_t result;
+  AO_t result, tmp;
+  int flag;
 
   __asm__ __volatile__("@AO_fetch_and_add\n"
     AO_THUMB_GO_ARM
@@ -236,8 +236,8 @@ AO_fetch_and_add(volatile AO_t *p, AO_t incr)
 AO_INLINE AO_t
 AO_fetch_and_add1(volatile AO_t *p)
 {
-  unsigned long flag, tmp;
-  AO_t result;
+  AO_t result, tmp;
+  int flag;
 
   __asm__ __volatile__("@AO_fetch_and_add1\n"
     AO_THUMB_GO_ARM
@@ -257,8 +257,8 @@ AO_fetch_and_add1(volatile AO_t *p)
 AO_INLINE AO_t
 AO_fetch_and_sub1(volatile AO_t *p)
 {
-  unsigned long flag, tmp;
-  AO_t result;
+  AO_t result, tmp;
+  int flag;
 
   __asm__ __volatile__("@AO_fetch_and_sub1\n"
     AO_THUMB_GO_ARM
@@ -306,7 +306,8 @@ AO_fetch_and_sub1(volatile AO_t *p)
 AO_INLINE AO_t
 AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 {
-  AO_t fetched_val, flag;
+  AO_t fetched_val;
+  int flag;
 
   __asm__ __volatile__("@AO_fetch_compare_and_swap\n"
     AO_THUMB_GO_ARM
