@@ -226,6 +226,24 @@
 # endif
 #endif /* AO_HAVE_char_fetch_and_add_full */
 
+#if defined(AO_HAVE_char_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_char_fetch_and_add_acquire)
+  AO_INLINE unsigned/**/char
+  AO_char_fetch_and_add_acquire(volatile unsigned/**/char *addr, unsigned/**/char incr)
+  {
+    unsigned/**/char result = AO_char_fetch_and_add(addr, incr);
+    AO_nop_full();
+    return result;
+  }
+# define AO_HAVE_char_fetch_and_add_acquire
+#endif
+#if defined(AO_HAVE_char_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_char_fetch_and_add_release)
+# define AO_char_fetch_and_add_release(addr, incr) \
+                (AO_nop_full(), AO_char_fetch_and_add(addr, incr))
+# define AO_HAVE_char_fetch_and_add_release
+#endif
+
 #if !defined(AO_HAVE_char_fetch_and_add) \
     && defined(AO_HAVE_char_fetch_and_add_release)
 # define AO_char_fetch_and_add(addr, val) \
@@ -1052,6 +1070,24 @@
 #   define AO_HAVE_short_fetch_and_add_read
 # endif
 #endif /* AO_HAVE_short_fetch_and_add_full */
+
+#if defined(AO_HAVE_short_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_short_fetch_and_add_acquire)
+  AO_INLINE unsigned/**/short
+  AO_short_fetch_and_add_acquire(volatile unsigned/**/short *addr, unsigned/**/short incr)
+  {
+    unsigned/**/short result = AO_short_fetch_and_add(addr, incr);
+    AO_nop_full();
+    return result;
+  }
+# define AO_HAVE_short_fetch_and_add_acquire
+#endif
+#if defined(AO_HAVE_short_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_short_fetch_and_add_release)
+# define AO_short_fetch_and_add_release(addr, incr) \
+                (AO_nop_full(), AO_short_fetch_and_add(addr, incr))
+# define AO_HAVE_short_fetch_and_add_release
+#endif
 
 #if !defined(AO_HAVE_short_fetch_and_add) \
     && defined(AO_HAVE_short_fetch_and_add_release)
@@ -1880,6 +1916,24 @@
 # endif
 #endif /* AO_HAVE_int_fetch_and_add_full */
 
+#if defined(AO_HAVE_int_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_int_fetch_and_add_acquire)
+  AO_INLINE unsigned
+  AO_int_fetch_and_add_acquire(volatile unsigned *addr, unsigned incr)
+  {
+    unsigned result = AO_int_fetch_and_add(addr, incr);
+    AO_nop_full();
+    return result;
+  }
+# define AO_HAVE_int_fetch_and_add_acquire
+#endif
+#if defined(AO_HAVE_int_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_int_fetch_and_add_release)
+# define AO_int_fetch_and_add_release(addr, incr) \
+                (AO_nop_full(), AO_int_fetch_and_add(addr, incr))
+# define AO_HAVE_int_fetch_and_add_release
+#endif
+
 #if !defined(AO_HAVE_int_fetch_and_add) \
     && defined(AO_HAVE_int_fetch_and_add_release)
 # define AO_int_fetch_and_add(addr, val) \
@@ -2706,6 +2760,24 @@
 #   define AO_HAVE_fetch_and_add_read
 # endif
 #endif /* AO_HAVE_fetch_and_add_full */
+
+#if defined(AO_HAVE_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_fetch_and_add_acquire)
+  AO_INLINE AO_t
+  AO_fetch_and_add_acquire(volatile AO_t *addr, AO_t incr)
+  {
+    AO_t result = AO_fetch_and_add(addr, incr);
+    AO_nop_full();
+    return result;
+  }
+# define AO_HAVE_fetch_and_add_acquire
+#endif
+#if defined(AO_HAVE_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_fetch_and_add_release)
+# define AO_fetch_and_add_release(addr, incr) \
+                (AO_nop_full(), AO_fetch_and_add(addr, incr))
+# define AO_HAVE_fetch_and_add_release
+#endif
 
 #if !defined(AO_HAVE_fetch_and_add) \
     && defined(AO_HAVE_fetch_and_add_release)

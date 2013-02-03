@@ -226,6 +226,24 @@
 # endif
 #endif /* AO_HAVE_XSIZE_fetch_and_add_full */
 
+#if defined(AO_HAVE_XSIZE_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_XSIZE_fetch_and_add_acquire)
+  AO_INLINE XCTYPE
+  AO_XSIZE_fetch_and_add_acquire(volatile XCTYPE *addr, XCTYPE incr)
+  {
+    XCTYPE result = AO_XSIZE_fetch_and_add(addr, incr);
+    AO_nop_full();
+    return result;
+  }
+# define AO_HAVE_XSIZE_fetch_and_add_acquire
+#endif
+#if defined(AO_HAVE_XSIZE_fetch_and_add) && defined(AO_HAVE_nop_full) \
+    && !defined(AO_HAVE_XSIZE_fetch_and_add_release)
+# define AO_XSIZE_fetch_and_add_release(addr, incr) \
+                (AO_nop_full(), AO_XSIZE_fetch_and_add(addr, incr))
+# define AO_HAVE_XSIZE_fetch_and_add_release
+#endif
+
 #if !defined(AO_HAVE_XSIZE_fetch_and_add) \
     && defined(AO_HAVE_XSIZE_fetch_and_add_release)
 # define AO_XSIZE_fetch_and_add(addr, val) \
