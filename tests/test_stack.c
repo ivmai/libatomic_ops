@@ -43,6 +43,10 @@
 
 #include "atomic_ops_stack.h" /* includes atomic_ops.h as well */
 
+#if (defined(_WIN32_WCE) || defined(__MINGW32CE__)) && !defined(abort)
+# define abort() _exit(-1) /* there is no abort() in WinCE */
+#endif
+
 #ifndef MAX_NTHREADS
 # define MAX_NTHREADS 100
 #endif

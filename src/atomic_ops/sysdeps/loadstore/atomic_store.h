@@ -20,25 +20,16 @@
  * SOFTWARE.
  */
 
-/*
- * Definitions for architectures on which loads and stores of unsigned short
- * are atomic for all legal alignments.
- */
-
-AO_INLINE unsigned short
-AO_short_load(const volatile unsigned short *addr)
-{
-  assert(((size_t)addr & (sizeof(unsigned short) - 1)) == 0);
-  /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return (*(unsigned short *)addr);
-}
-#define AO_HAVE_short_load
+/* Definitions for architectures on which stores of given type are      */
+/* atomic (either for suitably aligned data only or for any legal       */
+/* alignment).                                                          */
 
 AO_INLINE void
-AO_short_store(volatile unsigned short *addr, unsigned short new_val)
+AO_store(volatile AO_t *addr, AO_t new_val)
 {
-  assert(((size_t)addr & (sizeof(unsigned short) - 1)) == 0);
-  (*(unsigned short *)addr) = new_val;
+# ifdef AO_ACCESS_CHECK_ALIGNED
+    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
+# endif
+  *(AO_t *)addr = new_val;
 }
-#define AO_HAVE_short_store
+#define AO_HAVE_store

@@ -20,15 +20,6 @@
 
 #include "../all_aligned_atomic_load_store.h"
 
-/* Real X86 implementations, except for some old 32-bit WinChips,       */
-/* appear to enforce ordering between memory operations, EXCEPT that    */
-/* a later read can pass earlier writes, presumably due to the visible  */
-/* presence of store buffers.                                           */
-/* We ignore both the WinChips and the fact that the official specs     */
-/* seem to be much weaker (and arguably too weak to be usable).         */
-
-#include "../ordered_except_wr.h"
-
 #include "../test_and_set_t_is_char.h"
 
 #if !defined(AO_USE_PENTIUM4_INSTRS) && !defined(__i386)
@@ -168,6 +159,11 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 # ifndef AO_NO_CMPXCHG8B
 #   include "../standard_ao_double_t.h"
 
+    /* Reading or writing a quadword aligned on a 64-bit boundary is    */
+    /* always carried out atomically (requires at least a Pentium).     */
+#   define AO_ACCESS_double_CHECK_ALIGNED
+#   include "../loadstore/double_atomic_load_store.h"
+
     /* Returns nonzero if the comparison succeeded.     */
     /* Really requires at least a Pentium.              */
     AO_INLINE int
@@ -226,3 +222,11 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 # endif /* !AO_CMPXCHG16B_AVAILABLE */
 
 #endif /* x64 */
+
+/* Real X86 implementations, except for some old 32-bit WinChips,       */
+/* appear to enforce ordering between memory operations, EXCEPT that    */
+/* a later read can pass earlier writes, presumably due to the visible  */
+/* presence of store buffers.                                           */
+/* We ignore both the WinChips and the fact that the official specs     */
+/* seem to be much weaker (and arguably too weak to be usable).         */
+#include "../ordered_except_wr.h"

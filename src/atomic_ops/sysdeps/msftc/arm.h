@@ -20,8 +20,6 @@
  * SOFTWARE.
  */
 
-#include "../read_ordered.h"
-
 #ifndef AO_ASSUME_WINDOWS98
   /* CAS is always available */
 # define AO_ASSUME_WINDOWS98
@@ -33,10 +31,12 @@
 #if _M_ARM >= 6
 /* ARMv6 is the first architecture providing support for simple LL/SC.  */
 
-/* If only a single processor is used, we can define AO_UNIPROCESSOR    */
-/* and do not need to access CP15 for ensuring a DMB at all.            */
+/* If only a single processor is used, we can define AO_UNIPROCESSOR.   */
 #ifdef AO_UNIPROCESSOR
-  AO_INLINE void AO_nop_full(void) {}
+  AO_INLINE void AO_nop_full(void)
+  {
+    AO_compiler_barrier();
+  }
 # define AO_HAVE_nop_full
 #else
 /* AO_nop_full() is emulated using AO_test_and_set_full().              */
@@ -53,34 +53,17 @@ AO_load(const volatile AO_t *addr)
 }
 #define AO_HAVE_load
 
-AO_INLINE void
-AO_store_full(volatile AO_t *addr, AO_t value)
-{
-  /* Emulate atomic store using CAS.    */
-  AO_t old = AO_load(addr);
-  AO_t current;
-# ifdef AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE
-    while ((current = (AO_t)_InterlockedCompareExchange(
-                                (PVOID AO_INTERLOCKED_VOLATILE *)addr,
-                                (PVOID)value, (PVOID)old)) != old)
-      old = current;
-# else
-    while ((current = (AO_t)_InterlockedCompareExchange(
-                                (LONG AO_INTERLOCKED_VOLATILE *)addr,
-                                (LONG)value, (LONG)old)) != old)
-      old = current;
-# endif
-}
-#define AO_HAVE_store_full
+/* TODO: Implement AO_store() using ordinary store provided Windows     */
+/* interrupt handlers clear the LL/SC reservation flag.                 */
 
 /* #include "../standard_ao_double_t.h" */
-/* TODO: implement AO_compare_double_and_swap_double (similar to x86).  */
+/* TODO: implement double-wide operations (similar to x86).  */
 
 #else /* _M_ARM < 6 */
 
-/* Some slide set, if it has been red correctly, claims that Loads      */
+/* Some ARM slide set, if it has been read correctly, claims that Loads */
 /* followed by either a Load or a Store are ordered, but nothing        */
-/* else is. It appears that SWP is the only simple memory barrier.      */
+/* else is.  It appears that SWP is the only simple memory barrier.     */
 #include "../all_atomic_load_store.h"
 
 #include "../test_and_set_t_is_ao_t.h"
@@ -89,3 +72,5 @@ AO_store_full(volatile AO_t *addr, AO_t value)
 #endif /* _M_ARM < 6 */
 
 #define AO_T_IS_INT
+
+#include "../read_ordered.h"

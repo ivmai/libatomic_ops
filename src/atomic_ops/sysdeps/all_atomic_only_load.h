@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2004 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2004 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,34 +20,11 @@
  * SOFTWARE.
  */
 
-/*
- * This file adds definitions appropriate for environments in which an unsigned char
- * volatile load has acquire semantics, and an unsigned char volatile store has release
- * semantics.  This is true with the standard Itanium ABI.
- */
-#if !defined(AO_GCC_BARRIER)
-#  if defined(__GNUC__)
-#    define AO_GCC_BARRIER() AO_compiler_barrier()
-#  else
-#    define AO_GCC_BARRIER()
-#  endif
-#endif
+/* Describes architectures on which AO_t, unsigned char, unsigned       */
+/* short, and unsigned int loads are atomic for all normally legal      */
+/* alignments.                                                          */
 
-AO_INLINE unsigned char
-AO_char_load_acquire(const volatile unsigned char *p)
-{
-  unsigned char result = *p;
-  /* A normal volatile load generates an ld.acq         */
-  AO_GCC_BARRIER();
-  return result;
-}
-#define AO_HAVE_char_load_acquire
-
-AO_INLINE void
-AO_char_store_release(volatile unsigned char *p, unsigned char val)
-{
-  AO_GCC_BARRIER();
-  /* A normal volatile store generates an st.rel        */
-  *p = val;
-}
-#define AO_HAVE_char_store_release
+#include "loadstore/atomic_load.h"
+#include "loadstore/char_atomic_load.h"
+#include "loadstore/short_atomic_load.h"
+#include "loadstore/int_atomic_load.h"

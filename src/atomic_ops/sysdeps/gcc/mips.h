@@ -19,7 +19,9 @@
  */
 
 #include "../all_aligned_atomic_load_store.h"
-#include "../acquire_release_volatile.h"
+
+#include "../loadstore/acquire_release_volatile.h"
+
 #include "../test_and_set_t_is_ao_t.h"
 
 /* Data dependence does not imply read ordering.  */
@@ -161,7 +163,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
 #define AO_HAVE_fetch_compare_and_swap
 
 /* #include "../standard_ao_double_t.h" */
-/* TODO: implement AO_compare_double_and_swap_double if available.      */
+/* TODO: Implement double-wide operations if available. */
 
 /* CAS primitives with acquire, release and full semantics are  */
 /* generated automatically (and AO_int_... primitives are       */

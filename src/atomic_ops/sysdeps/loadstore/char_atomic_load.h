@@ -20,12 +20,18 @@
  * SOFTWARE.
  */
 
-/* Describes architectures on which AO_t, unsigned char, unsigned       */
-/* short, and unsigned int loads and stores are atomic but only if data */
-/* is suitably aligned.                                                 */
+/* Definitions for architectures on which loads of given type are       */
+/* atomic (either for suitably aligned data only or for any legal       */
+/* alignment).                                                          */
 
-#define AO_ACCESS_CHECK_ALIGNED
-/* Check for char type is a misnomer.   */
-#define AO_ACCESS_short_CHECK_ALIGNED
-#define AO_ACCESS_int_CHECK_ALIGNED
-#include "all_atomic_load_store.h"
+AO_INLINE unsigned/**/char
+AO_char_load(const volatile unsigned/**/char *addr)
+{
+# ifdef AO_ACCESS_char_CHECK_ALIGNED
+    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
+# endif
+  /* Cast away the volatile for architectures like IA64 where   */
+  /* volatile adds barrier (fence) semantics.                   */
+  return *(const unsigned/**/char *)addr;
+}
+#define AO_HAVE_char_load

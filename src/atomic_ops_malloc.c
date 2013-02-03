@@ -27,6 +27,10 @@
 # include <pthread.h>
 #endif
 
+#if (defined(_WIN32_WCE) || defined(__MINGW32CE__)) && !defined(abort)
+# define abort() _exit(-1) /* there is no abort() in WinCE */
+#endif
+
 /*
  * We round up each allocation request to the next power of two
  * minus one word.
