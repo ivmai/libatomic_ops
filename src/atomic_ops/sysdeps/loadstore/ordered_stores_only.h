@@ -20,18 +20,11 @@
  * SOFTWARE.
  */
 
-#if defined(AO_HAVE_char_store)
-  AO_INLINE void
-  AO_char_store_write(volatile unsigned/**/char *addr, unsigned/**/char val)
-  {
-    AO_compiler_barrier();
-    AO_char_store(addr, val);
-  }
-# define AO_HAVE_char_store_write
-
-# define AO_char_store_release(addr, val) AO_char_store_write(addr, val)
+#ifdef AO_HAVE_char_store
+# define AO_char_store_release(addr, val) \
+                                (AO_nop_write(), AO_char_store(addr, val))
 # define AO_HAVE_char_store_release
-#endif /* AO_HAVE_char_store */
+#endif
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -54,18 +47,11 @@
  * SOFTWARE.
  */
 
-#if defined(AO_HAVE_short_store)
-  AO_INLINE void
-  AO_short_store_write(volatile unsigned/**/short *addr, unsigned/**/short val)
-  {
-    AO_compiler_barrier();
-    AO_short_store(addr, val);
-  }
-# define AO_HAVE_short_store_write
-
-# define AO_short_store_release(addr, val) AO_short_store_write(addr, val)
+#ifdef AO_HAVE_short_store
+# define AO_short_store_release(addr, val) \
+                                (AO_nop_write(), AO_short_store(addr, val))
 # define AO_HAVE_short_store_release
-#endif /* AO_HAVE_short_store */
+#endif
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -88,18 +74,11 @@
  * SOFTWARE.
  */
 
-#if defined(AO_HAVE_int_store)
-  AO_INLINE void
-  AO_int_store_write(volatile unsigned *addr, unsigned val)
-  {
-    AO_compiler_barrier();
-    AO_int_store(addr, val);
-  }
-# define AO_HAVE_int_store_write
-
-# define AO_int_store_release(addr, val) AO_int_store_write(addr, val)
+#ifdef AO_HAVE_int_store
+# define AO_int_store_release(addr, val) \
+                                (AO_nop_write(), AO_int_store(addr, val))
 # define AO_HAVE_int_store_release
-#endif /* AO_HAVE_int_store */
+#endif
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -122,18 +101,11 @@
  * SOFTWARE.
  */
 
-#if defined(AO_HAVE_store)
-  AO_INLINE void
-  AO_store_write(volatile AO_t *addr, AO_t val)
-  {
-    AO_compiler_barrier();
-    AO_store(addr, val);
-  }
-# define AO_HAVE_store_write
-
-# define AO_store_release(addr, val) AO_store_write(addr, val)
+#ifdef AO_HAVE_store
+# define AO_store_release(addr, val) \
+                                (AO_nop_write(), AO_store(addr, val))
 # define AO_HAVE_store_release
-#endif /* AO_HAVE_store */
+#endif
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -156,15 +128,8 @@
  * SOFTWARE.
  */
 
-#if defined(AO_HAVE_double_store)
-  AO_INLINE void
-  AO_double_store_write(volatile AO_double_t *addr, AO_double_t val)
-  {
-    AO_compiler_barrier();
-    AO_double_store(addr, val);
-  }
-# define AO_HAVE_double_store_write
-
-# define AO_double_store_release(addr, val) AO_double_store_write(addr, val)
+#ifdef AO_HAVE_double_store
+# define AO_double_store_release(addr, val) \
+                                (AO_nop_write(), AO_double_store(addr, val))
 # define AO_HAVE_double_store_release
-#endif /* AO_HAVE_double_store */
+#endif

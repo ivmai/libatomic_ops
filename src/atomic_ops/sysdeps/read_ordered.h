@@ -27,11 +27,11 @@
  * except apparently for some IDT WinChips, which we ignore.
  */
 
-#include "loadstore/ordered_loads_only.h"
-
 AO_INLINE void
 AO_nop_read(void)
 {
   AO_compiler_barrier();
 }
 #define AO_HAVE_nop_read
+
+#include "loadstore/ordered_loads_only.h"

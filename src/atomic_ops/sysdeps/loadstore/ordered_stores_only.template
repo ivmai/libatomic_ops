@@ -20,15 +20,8 @@
  * SOFTWARE.
  */
 
-#if defined(AO_HAVE_XSIZE_store)
-  AO_INLINE void
-  AO_XSIZE_store_write(volatile XCTYPE *addr, XCTYPE val)
-  {
-    AO_compiler_barrier();
-    AO_XSIZE_store(addr, val);
-  }
-# define AO_HAVE_XSIZE_store_write
-
-# define AO_XSIZE_store_release(addr, val) AO_XSIZE_store_write(addr, val)
+#ifdef AO_HAVE_XSIZE_store
+# define AO_XSIZE_store_release(addr, val) \
+                                (AO_nop_write(), AO_XSIZE_store(addr, val))
 # define AO_HAVE_XSIZE_store_release
-#endif /* AO_HAVE_XSIZE_store */
+#endif

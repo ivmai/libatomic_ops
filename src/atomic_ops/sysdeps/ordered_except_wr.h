@@ -29,8 +29,6 @@
 
 #include "read_ordered.h"
 
-#include "loadstore/ordered_stores_only.h"
-
 AO_INLINE void
 AO_nop_write(void)
 {
@@ -40,3 +38,5 @@ AO_nop_write(void)
   /* Unnecessary for cached accesses?                   */
 }
 #define AO_HAVE_nop_write
+
+#include "loadstore/ordered_stores_only.h"

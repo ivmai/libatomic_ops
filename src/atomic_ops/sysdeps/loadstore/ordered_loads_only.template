@@ -21,16 +21,7 @@
  */
 
 #ifdef AO_HAVE_XSIZE_load
-  AO_INLINE XCTYPE
-  AO_XSIZE_load_read(const volatile XCTYPE *addr)
-  {
-    XCTYPE result = AO_XSIZE_load(addr);
-
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_XSIZE_load_read
-
+  /* XSIZE_load_read is defined in generalize-small.    */
 # define AO_XSIZE_load_acquire(addr) AO_XSIZE_load_read(addr)
 # define AO_HAVE_XSIZE_load_acquire
-#endif /* AO_HAVE_XSIZE_load */
+#endif

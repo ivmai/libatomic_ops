@@ -21,19 +21,10 @@
  */
 
 #ifdef AO_HAVE_char_load
-  AO_INLINE unsigned/**/char
-  AO_char_load_read(const volatile unsigned/**/char *addr)
-  {
-    unsigned/**/char result = AO_char_load(addr);
-
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_char_load_read
-
+  /* char_load_read is defined in generalize-small.    */
 # define AO_char_load_acquire(addr) AO_char_load_read(addr)
 # define AO_HAVE_char_load_acquire
-#endif /* AO_HAVE_char_load */
+#endif
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -57,19 +48,10 @@
  */
 
 #ifdef AO_HAVE_short_load
-  AO_INLINE unsigned/**/short
-  AO_short_load_read(const volatile unsigned/**/short *addr)
-  {
-    unsigned/**/short result = AO_short_load(addr);
-
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_short_load_read
-
+  /* short_load_read is defined in generalize-small.    */
 # define AO_short_load_acquire(addr) AO_short_load_read(addr)
 # define AO_HAVE_short_load_acquire
-#endif /* AO_HAVE_short_load */
+#endif
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -93,19 +75,10 @@
  */
 
 #ifdef AO_HAVE_int_load
-  AO_INLINE unsigned
-  AO_int_load_read(const volatile unsigned *addr)
-  {
-    unsigned result = AO_int_load(addr);
-
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_int_load_read
-
+  /* int_load_read is defined in generalize-small.    */
 # define AO_int_load_acquire(addr) AO_int_load_read(addr)
 # define AO_HAVE_int_load_acquire
-#endif /* AO_HAVE_int_load */
+#endif
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -129,19 +102,10 @@
  */
 
 #ifdef AO_HAVE_load
-  AO_INLINE AO_t
-  AO_load_read(const volatile AO_t *addr)
-  {
-    AO_t result = AO_load(addr);
-
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_load_read
-
+  /* load_read is defined in generalize-small.    */
 # define AO_load_acquire(addr) AO_load_read(addr)
 # define AO_HAVE_load_acquire
-#endif /* AO_HAVE_load */
+#endif
 /*
  * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
@@ -165,16 +129,7 @@
  */
 
 #ifdef AO_HAVE_double_load
-  AO_INLINE AO_double_t
-  AO_double_load_read(const volatile AO_double_t *addr)
-  {
-    AO_double_t result = AO_double_load(addr);
-
-    AO_compiler_barrier();
-    return result;
-  }
-# define AO_HAVE_double_load_read
-
+  /* double_load_read is defined in generalize-small.    */
 # define AO_double_load_acquire(addr) AO_double_load_read(addr)
 # define AO_HAVE_double_load_acquire
-#endif /* AO_HAVE_double_load */
+#endif
