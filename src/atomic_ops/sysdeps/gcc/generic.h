@@ -68,63 +68,65 @@ AO_store_release(volatile AO_t *addr, AO_t value)
 }
 #define AO_HAVE_store_release
 
-/* test_and_set */
-AO_INLINE AO_TS_VAL_t
-AO_test_and_set(volatile AO_TS_t *addr)
-{
-  return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_RELAXED);
-}
-#define AO_HAVE_test_and_set
+#ifndef AO_PREFER_GENERALIZED
+  /* test_and_set */
+  AO_INLINE AO_TS_VAL_t
+  AO_test_and_set(volatile AO_TS_t *addr)
+  {
+    return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_RELAXED);
+  }
+# define AO_HAVE_test_and_set
 
-AO_INLINE AO_TS_VAL_t
-AO_test_and_set_acquire(volatile AO_TS_t *addr)
-{
-  return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_ACQUIRE);
-}
-#define AO_HAVE_test_and_set_acquire
+  AO_INLINE AO_TS_VAL_t
+  AO_test_and_set_acquire(volatile AO_TS_t *addr)
+  {
+    return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_ACQUIRE);
+  }
+# define AO_HAVE_test_and_set_acquire
 
-AO_INLINE AO_TS_VAL_t
-AO_test_and_set_release(volatile AO_TS_t *addr)
-{
-  return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_RELEASE);
-}
-#define AO_HAVE_test_and_set_release
+  AO_INLINE AO_TS_VAL_t
+  AO_test_and_set_release(volatile AO_TS_t *addr)
+  {
+    return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_RELEASE);
+  }
+# define AO_HAVE_test_and_set_release
 
-AO_INLINE AO_TS_VAL_t
-AO_test_and_set_full(volatile AO_TS_t *addr)
-{
-  return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_SEQ_CST);
-}
-#define AO_HAVE_test_and_set_full
+  AO_INLINE AO_TS_VAL_t
+  AO_test_and_set_full(volatile AO_TS_t *addr)
+  {
+    return (AO_TS_VAL_t)__atomic_test_and_set(addr, __ATOMIC_SEQ_CST);
+  }
+# define AO_HAVE_test_and_set_full
 
-/* fetch_and_add */
-AO_INLINE AO_t
-AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
-{
-  return __atomic_fetch_add(addr, incr, __ATOMIC_RELAXED);
-}
-#define AO_HAVE_fetch_and_add
+  /* fetch_and_add */
+  AO_INLINE AO_t
+  AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
+  {
+    return __atomic_fetch_add(addr, incr, __ATOMIC_RELAXED);
+  }
+# define AO_HAVE_fetch_and_add
 
-AO_INLINE AO_t
-AO_fetch_and_add_acquire(volatile AO_t *addr, AO_t incr)
-{
-  return __atomic_fetch_add(addr, incr, __ATOMIC_ACQUIRE);
-}
-#define AO_HAVE_fetch_and_add_acquire
+  AO_INLINE AO_t
+  AO_fetch_and_add_acquire(volatile AO_t *addr, AO_t incr)
+  {
+    return __atomic_fetch_add(addr, incr, __ATOMIC_ACQUIRE);
+  }
+# define AO_HAVE_fetch_and_add_acquire
 
-AO_INLINE AO_t
-AO_fetch_and_add_release(volatile AO_t *addr, AO_t incr)
-{
-  return __atomic_fetch_add(addr, incr, __ATOMIC_RELEASE);
-}
-#define AO_HAVE_fetch_and_add_release
+  AO_INLINE AO_t
+  AO_fetch_and_add_release(volatile AO_t *addr, AO_t incr)
+  {
+    return __atomic_fetch_add(addr, incr, __ATOMIC_RELEASE);
+  }
+# define AO_HAVE_fetch_and_add_release
 
-AO_INLINE AO_t
-AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr)
-{
-  return __atomic_fetch_add(addr, incr, __ATOMIC_SEQ_CST);
-}
-#define AO_HAVE_fetch_and_add_full
+  AO_INLINE AO_t
+  AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr)
+  {
+    return __atomic_fetch_add(addr, incr, __ATOMIC_SEQ_CST);
+  }
+# define AO_HAVE_fetch_and_add_full
+#endif /* !AO_PREFER_GENERALIZED */
 
 /* TODO: Add AO_and/or/xor primitives. */
 
@@ -137,15 +139,17 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 }
 #define AO_HAVE_fetch_compare_and_swap
 
-AO_INLINE int
-AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
-{
-  return __sync_bool_compare_and_swap(addr, old_val, new_val
-                                      /* empty protection list */);
-}
-#define AO_HAVE_compare_and_swap
-
 /* TODO: Add CAS _acquire/release/full primitives. */
+
+#ifndef AO_GENERALIZE_ASM_BOOL_CAS
+  AO_INLINE int
+  AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
+  {
+    return __sync_bool_compare_and_swap(addr, old_val, new_val
+                                        /* empty protection list */);
+  }
+# define AO_HAVE_compare_and_swap
+#endif /* !AO_GENERALIZE_ASM_BOOL_CAS */
 
 /* TODO: Add AO_int_ primitives. */
 /* TODO: Include standard_ao_double_t.h, add double-wide primitives. */
