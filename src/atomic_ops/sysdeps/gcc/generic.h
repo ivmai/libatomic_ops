@@ -15,7 +15,9 @@
  *
  */
 
-/* The following implementation assumes GCC 4.7 or later. */
+/* The following implementation assumes GCC 4.7 or later.               */
+/* For the details, see GNU Manual, chapter 6.52 (Built-in functions    */
+/* for memory model aware atomic operations).                           */
 
 #ifdef AO_UNIPROCESSOR
   /* If only a single processor (core) is used, AO_UNIPROCESSOR could   */
@@ -29,16 +31,28 @@
 
 #else
   AO_INLINE void
+  AO_nop_read(void)
+  {
+    __atomic_thread_fence(__ATOMIC_ACQUIRE);
+  }
+# define AO_HAVE_nop_read
+
+  AO_INLINE void
+  AO_nop_write(void)
+  {
+    __atomic_thread_fence(__ATOMIC_RELEASE);
+  }
+# define AO_HAVE_nop_write
+
+  AO_INLINE void
   AO_nop_full(void)
   {
-    __sync_synchronize();
+    /* __sync_synchronize() could be used instead.      */
+    __atomic_thread_fence(__ATOMIC_SEQ_CST);
   }
 # define AO_HAVE_nop_full
-
-  /* TODO: Add AO_nop_write/read. */
 #endif /* !AO_UNIPROCESSOR */
 
-/* load */
 AO_INLINE AO_t
 AO_load(const volatile AO_t *addr)
 {
@@ -53,7 +67,9 @@ AO_load_acquire(const volatile AO_t *addr)
 }
 #define AO_HAVE_load_acquire
 
-/* store */
+/* AO_load_full is generalized using AO_load and AO_nop_full, so that   */
+/* AO_load_read is defined using AO_load and AO_nop_read.               */
+
 AO_INLINE void
 AO_store(volatile AO_t *addr, AO_t value)
 {
@@ -68,8 +84,9 @@ AO_store_release(volatile AO_t *addr, AO_t value)
 }
 #define AO_HAVE_store_release
 
+/* AO_store_full definition is omitted similar to AO_load_full reason.  */
+
 #ifndef AO_PREFER_GENERALIZED
-  /* test_and_set */
   AO_INLINE AO_TS_VAL_t
   AO_test_and_set(volatile AO_TS_t *addr)
   {
@@ -98,7 +115,6 @@ AO_store_release(volatile AO_t *addr, AO_t value)
   }
 # define AO_HAVE_test_and_set_full
 
-  /* fetch_and_add */
   AO_INLINE AO_t
   AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
   {
@@ -126,9 +142,91 @@ AO_store_release(volatile AO_t *addr, AO_t value)
     return __atomic_fetch_add(addr, incr, __ATOMIC_SEQ_CST);
   }
 # define AO_HAVE_fetch_and_add_full
-#endif /* !AO_PREFER_GENERALIZED */
 
-/* TODO: Add AO_and/or/xor primitives. */
+  AO_INLINE void
+  AO_and(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_and_fetch(addr, value, __ATOMIC_RELAXED);
+  }
+# define AO_HAVE_and
+
+  AO_INLINE void
+  AO_and_acquire(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_and_fetch(addr, value, __ATOMIC_ACQUIRE);
+  }
+# define AO_HAVE_and_acquire
+
+  AO_INLINE void
+  AO_and_release(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_and_fetch(addr, value, __ATOMIC_RELEASE);
+  }
+# define AO_HAVE_and_release
+
+  AO_INLINE void
+  AO_and_full(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_and_fetch(addr, value, __ATOMIC_SEQ_CST);
+  }
+# define AO_HAVE_and_full
+
+  AO_INLINE void
+  AO_or(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_or_fetch(addr, value, __ATOMIC_RELAXED);
+  }
+# define AO_HAVE_or
+
+  AO_INLINE void
+  AO_or_acquire(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_or_fetch(addr, value, __ATOMIC_ACQUIRE);
+  }
+# define AO_HAVE_or_acquire
+
+  AO_INLINE void
+  AO_or_release(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_or_fetch(addr, value, __ATOMIC_RELEASE);
+  }
+# define AO_HAVE_or_release
+
+  AO_INLINE void
+  AO_or_full(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_or_fetch(addr, value, __ATOMIC_SEQ_CST);
+  }
+# define AO_HAVE_or_full
+
+  AO_INLINE void
+  AO_xor(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_xor_fetch(addr, value, __ATOMIC_RELAXED);
+  }
+# define AO_HAVE_xor
+
+  AO_INLINE void
+  AO_xor_acquire(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_xor_fetch(addr, value, __ATOMIC_ACQUIRE);
+  }
+# define AO_HAVE_xor_acquire
+
+  AO_INLINE void
+  AO_xor_release(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_xor_fetch(addr, value, __ATOMIC_RELEASE);
+  }
+# define AO_HAVE_xor_release
+
+  AO_INLINE void
+  AO_xor_full(volatile AO_t *addr, AO_t value)
+  {
+    (void)__atomic_xor_fetch(addr, value, __ATOMIC_SEQ_CST);
+  }
+# define AO_HAVE_xor_full
+#endif /* !AO_PREFER_GENERALIZED */
 
 /* CAS primitives */
 AO_INLINE AO_t
@@ -151,5 +249,6 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 # define AO_HAVE_compare_and_swap
 #endif /* !AO_GENERALIZE_ASM_BOOL_CAS */
 
-/* TODO: Add AO_int_ primitives. */
-/* TODO: Include standard_ao_double_t.h, add double-wide primitives. */
+/* TODO: Add AO_char/short/int_ primitives. */
+/* TODO: Include standard_ao_double_t.h in aarch64.h. */
+/* TODO: add double-wide primitives if AO_double_t present. */
