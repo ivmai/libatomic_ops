@@ -30,7 +30,7 @@ AO_nop_full(void)
 }
 #define AO_HAVE_nop_full
 
-/* TODO: Add AO_nop_write. */
+/* TODO: Add AO_nop_write/read. */
 
 AO_INLINE AO_t
 AO_load(const volatile AO_t *addr)
@@ -39,14 +39,12 @@ AO_load(const volatile AO_t *addr)
 }
 #define AO_HAVE_load
 
-/* FIXME: AO_load_acquire is defined by read_ordered.h: which is better?
 AO_INLINE AO_t
 AO_load_acquire(const volatile AO_t *addr)
 {
   return __atomic_load_n(addr, __ATOMIC_ACQUIRE);
 }
 #define AO_HAVE_load_acquire
-*/
 
 AO_INLINE void
 AO_store(volatile AO_t *addr, AO_t value)
@@ -135,5 +133,3 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 /* TODO: Add AO_and/or/xor primitives. */
 /* TODO: Add AO_int_ primitives. */
 /* TODO: Add double-wide primitives. */
-
-#include "../read_ordered.h"
