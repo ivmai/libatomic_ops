@@ -33,6 +33,10 @@
 
 #include "atomic_ops.h"
 
+#if (defined(_WIN32_WCE) || defined(__MINGW32CE__)) && !defined(abort)
+# define abort() _exit(-1) /* there is no abort() in WinCE */
+#endif
+
 #ifndef _WIN64
 # define AO_PTRDIFF_T long
 #elif defined(__int64)

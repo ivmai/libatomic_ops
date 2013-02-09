@@ -355,3 +355,5 @@ AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr) {
 #else
 # define AO_T_IS_INT
 #endif
+
+/* TODO: Implement double-wide operations if available. */

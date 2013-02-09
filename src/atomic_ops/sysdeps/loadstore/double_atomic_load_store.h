@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
+ * Copyright (c) 2004 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,23 +20,30 @@
  * SOFTWARE.
  */
 
-/*
- * Definitions for architectures on which loads and stores of unsigned short
- * are atomic for all legal alignments.
- */
+/* Definitions for architectures on which AO_double_t loads and stores  */
+/* are atomic (either for suitably aligned data only or for any legal   */
+/* alignment).                                                          */
 
-AO_INLINE unsigned short
-AO_short_load(const volatile unsigned short *addr)
+AO_INLINE AO_double_t
+AO_double_load(const volatile AO_double_t *addr)
 {
-  /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return (*(const unsigned short *)addr);
+  AO_double_t result;
+
+# ifdef AO_ACCESS_double_CHECK_ALIGNED
+    assert(((size_t)addr & (sizeof(AO_double_t) - 1)) == 0);
+# endif
+  /* Cast away the volatile in case it adds fence semantics.  */
+  result.AO_whole = ((const AO_double_t *)addr)->AO_whole;
+  return result;
 }
-#define AO_HAVE_short_load
+#define AO_HAVE_double_load
 
 AO_INLINE void
-AO_short_store(volatile unsigned short *addr, unsigned short new_val)
+AO_double_store(volatile AO_double_t *addr, AO_double_t new_val)
 {
-  (*(unsigned short *)addr) = new_val;
+# ifdef AO_ACCESS_double_CHECK_ALIGNED
+    assert(((size_t)addr & (sizeof(AO_double_t) - 1)) == 0);
+# endif
+  ((AO_double_t *)addr)->AO_whole = new_val.AO_whole;
 }
-#define AO_HAVE_short_store
+#define AO_HAVE_double_store

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2004 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2004 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,34 +20,18 @@
  * SOFTWARE.
  */
 
-/*
- * This file adds definitions appropriate for environments in which an unsigned char
- * volatile load has acquire semantics, and an unsigned char volatile store has release
- * semantics.  This is true with the standard Itanium ABI.
- */
-#if !defined(AO_GCC_BARRIER)
-#  if defined(__GNUC__)
-#    define AO_GCC_BARRIER() AO_compiler_barrier()
-#  else
-#    define AO_GCC_BARRIER()
-#  endif
-#endif
+/* Definitions for architectures on which loads of given type are       */
+/* atomic (either for suitably aligned data only or for any legal       */
+/* alignment).                                                          */
 
-AO_INLINE unsigned char
-AO_char_load_acquire(const volatile unsigned char *p)
+AO_INLINE unsigned
+AO_int_load(const volatile unsigned *addr)
 {
-  unsigned char result = *p;
-  /* A normal volatile load generates an ld.acq         */
-  AO_GCC_BARRIER();
-  return result;
+# ifdef AO_ACCESS_int_CHECK_ALIGNED
+    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
+# endif
+  /* Cast away the volatile for architectures like IA64 where   */
+  /* volatile adds barrier (fence) semantics.                   */
+  return *(const unsigned *)addr;
 }
-#define AO_HAVE_char_load_acquire
-
-AO_INLINE void
-AO_char_store_release(volatile unsigned char *p, unsigned char val)
-{
-  AO_GCC_BARRIER();
-  /* A normal volatile store generates an st.rel        */
-  *p = val;
-}
-#define AO_HAVE_char_store_release
+#define AO_HAVE_int_load

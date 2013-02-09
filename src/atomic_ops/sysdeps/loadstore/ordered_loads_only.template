@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,25 +20,8 @@
  * SOFTWARE.
  */
 
-/*
- * Definitions for architectures on which loads and stores of unsigned short
- * are atomic for all legal alignments.
- */
-
-AO_INLINE unsigned short
-AO_short_load(const volatile unsigned short *addr)
-{
-  assert(((size_t)addr & (sizeof(unsigned short) - 1)) == 0);
-  /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return (*(unsigned short *)addr);
-}
-#define AO_HAVE_short_load
-
-AO_INLINE void
-AO_short_store(volatile unsigned short *addr, unsigned short new_val)
-{
-  assert(((size_t)addr & (sizeof(unsigned short) - 1)) == 0);
-  (*(unsigned short *)addr) = new_val;
-}
-#define AO_HAVE_short_store
+#ifdef AO_HAVE_XSIZE_load
+  /* XSIZE_load_read is defined in generalize-small.    */
+# define AO_XSIZE_load_acquire(addr) AO_XSIZE_load_read(addr)
+# define AO_HAVE_XSIZE_load_acquire
+#endif

@@ -19,12 +19,17 @@
  * modified is included with the above copyright notice.
  *
  */
-#include "../read_ordered.h"
+
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
 
 #if __TARGET_ARCH_ARM < 6
 Dont use with ARM instruction sets lower than v6
 #else
+
+#define AO_ACCESS_CHECK_ALIGNED
+#define AO_ACCESS_short_CHECK_ALIGNED
+#define AO_ACCESS_int_CHECK_ALIGNED
+#include "../all_atomic_only_load.h"
 
 #include "../standard_ao_double_t.h"
 
@@ -50,17 +55,11 @@ AO_nop_full(void)
     __asm {
             mcr p15,0,dest,c7,c10,5
             };
+# else
+    AO_compiler_barrier();
 # endif
 }
 #define AO_HAVE_nop_full
-
-AO_INLINE AO_t
-AO_load(const volatile AO_t *addr)
-{
-        /* Cast away the volatile in case it adds fence semantics */
-        return (*(const AO_t *)addr);
-}
-#define AO_HAVE_load
 
 /* NEC LE-IT: atomic "store" - according to ARM documentation this is
  * the only safe way to set variables also used in LL/SC environment.
@@ -221,7 +220,7 @@ __asm__ {
 /* helper functions for the Realview compiler: LDREXD is not usable
  * with inline assembler, so use the "embedded" assembler as
  * suggested by ARM Dev. support (June 2008). */
-__asm inline double_ptr_storage AO_load_ex(volatile AO_double_t *addr) {
+__asm inline double_ptr_storage AO_load_ex(const volatile AO_double_t *addr) {
         LDREXD r0,r1,[r0]
 }
 
@@ -229,6 +228,16 @@ __asm inline int AO_store_ex(AO_t val1, AO_t val2, volatile AO_double_t *addr) {
         STREXD r3,r0,r1,[r2]
         MOV    r0,r3
 }
+
+AO_INLINE AO_double_t
+AO_double_load(const volatile AO_double_t *addr)
+{
+  AO_double_t result;
+
+  result.AO_whole = AO_load_ex(addr);
+  return result;
+}
+#define AO_HAVE_double_load
 
 AO_INLINE int
 AO_compare_double_and_swap_double(volatile AO_double_t *addr,
@@ -252,3 +261,5 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
 #endif /* __TARGET_ARCH_ARM >= 6 */
 
 #define AO_T_IS_INT
+
+#include "../read_ordered.h"

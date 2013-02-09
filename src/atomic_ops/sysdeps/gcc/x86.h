@@ -23,15 +23,6 @@
 
 #include "../all_aligned_atomic_load_store.h"
 
-/* Real X86 implementations, except for some old 32-bit WinChips,       */
-/* appear to enforce ordering between memory operations, EXCEPT that    */
-/* a later read can pass earlier writes, presumably due to the visible  */
-/* presence of store buffers.                                           */
-/* We ignore both the WinChips and the fact that the official specs     */
-/* seem to be much weaker (and arguably too weak to be usable).         */
-
-#include "../ordered_except_wr.h"
-
 #include "../test_and_set_t_is_char.h"
 
 #if defined(__x86_64__) && !defined(AO_USE_PENTIUM4_INSTRS)
@@ -182,6 +173,12 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 #if !defined(__x86_64__) && !defined(AO_USE_SYNC_CAS_BUILTIN)
 # include "../standard_ao_double_t.h"
 
+  /* Reading or writing a quadword aligned on a 64-bit boundary is      */
+  /* always carried out atomically on at least a Pentium according to   */
+  /* Chapter 8.1.1 of Volume 3A Part 1 of Intel processor manuals.      */
+# define AO_ACCESS_double_CHECK_ALIGNED
+# include "../loadstore/double_atomic_load_store.h"
+
   /* Returns nonzero if the comparison succeeded.       */
   /* Really requires at least a Pentium.                */
   AO_INLINE int
@@ -248,6 +245,11 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 
 #elif defined(__ILP32__) || !defined(__x86_64__)
 # include "../standard_ao_double_t.h"
+
+  /* Reading or writing a quadword aligned on a 64-bit boundary is      */
+  /* always carried out atomically (requires at least a Pentium).       */
+# define AO_ACCESS_double_CHECK_ALIGNED
+# include "../loadstore/double_atomic_load_store.h"
 
   /* X32 has native support for 64-bit integer operations (AO_double_t  */
   /* is a 64-bit integer and we could use 64-bit cmpxchg).              */
@@ -330,3 +332,11 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 # endif /* AO_WEAK_DOUBLE_CAS_EMULATION && !AO_CMPXCHG16B_AVAILABLE */
 
 #endif /* x86_64 && !ILP32 */
+
+/* Real X86 implementations, except for some old 32-bit WinChips,       */
+/* appear to enforce ordering between memory operations, EXCEPT that    */
+/* a later read can pass earlier writes, presumably due to the visible  */
+/* presence of store buffers.                                           */
+/* We ignore both the WinChips and the fact that the official specs     */
+/* seem to be much weaker (and arguably too weak to be usable).         */
+#include "../ordered_except_wr.h"

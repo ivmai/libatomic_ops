@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
+ * Copyright (c) 2004 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,21 +20,11 @@
  * SOFTWARE.
  */
 
-/* Definitions for architectures on which loads and stores of unsigned  */
-/* char are atomic for all legal alignments.                            */
+/* Describes architectures on which AO_t, unsigned char, unsigned       */
+/* short, and unsigned int loads are atomic for all normally legal      */
+/* alignments.                                                          */
 
-AO_INLINE unsigned char
-AO_char_load(const volatile unsigned char *addr)
-{
-  /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return (*(const unsigned char *)addr);
-}
-#define AO_HAVE_char_load
-
-AO_INLINE void
-AO_char_store(volatile unsigned char *addr, unsigned char new_val)
-{
-  (*(unsigned char *)addr) = new_val;
-}
-#define AO_HAVE_char_store
+#include "loadstore/atomic_load.h"
+#include "loadstore/char_atomic_load.h"
+#include "loadstore/short_atomic_load.h"
+#include "loadstore/int_atomic_load.h"

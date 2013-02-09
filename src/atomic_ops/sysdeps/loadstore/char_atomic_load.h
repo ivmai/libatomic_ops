@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
+ * Copyright (c) 2004 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,18 +20,18 @@
  * SOFTWARE.
  */
 
-/*
- * These are common definitions for architectures that provide processor
- * ordered memory operations except that a later read may pass an
- * earlier write.  Real x86 implementations seem to be in this category,
- * except apparently for some IDT WinChips, which we ignore.
- */
+/* Definitions for architectures on which loads of given type are       */
+/* atomic (either for suitably aligned data only or for any legal       */
+/* alignment).                                                          */
 
-AO_INLINE void
-AO_nop_read(void)
+AO_INLINE unsigned/**/char
+AO_char_load(const volatile unsigned/**/char *addr)
 {
-  AO_compiler_barrier();
+# ifdef AO_ACCESS_char_CHECK_ALIGNED
+    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
+# endif
+  /* Cast away the volatile for architectures like IA64 where   */
+  /* volatile adds barrier (fence) semantics.                   */
+  return *(const unsigned/**/char *)addr;
 }
-#define AO_HAVE_nop_read
-
-#include "loadstore/ordered_loads_only.h"
+#define AO_HAVE_char_load

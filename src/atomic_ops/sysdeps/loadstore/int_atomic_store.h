@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 by Hewlett-Packard Company.  All rights reserved.
+ * Copyright (c) 2004 Hewlett-Packard Development Company, L.P.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,21 +20,16 @@
  * SOFTWARE.
  */
 
-/* Definitions for architectures on which loads and stores of unsigned  */
-/* int are atomic for all legal alignments.                             */
-
-AO_INLINE unsigned int
-AO_int_load(const volatile unsigned int *addr)
-{
-  /* Cast away the volatile for architectures like IA64 where   */
-  /* volatile adds barrier semantics.                           */
-  return (*(const unsigned int *)addr);
-}
-#define AO_HAVE_int_load
+/* Definitions for architectures on which stores of given type are      */
+/* atomic (either for suitably aligned data only or for any legal       */
+/* alignment).                                                          */
 
 AO_INLINE void
-AO_int_store(volatile unsigned int *addr, unsigned int new_val)
+AO_int_store(volatile unsigned *addr, unsigned new_val)
 {
-  (*(unsigned int *)addr) = new_val;
+# ifdef AO_ACCESS_int_CHECK_ALIGNED
+    assert(((size_t)addr & (sizeof(*addr) - 1)) == 0);
+# endif
+  *(unsigned *)addr = new_val;
 }
 #define AO_HAVE_int_store
