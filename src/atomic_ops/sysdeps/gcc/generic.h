@@ -249,6 +249,53 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 # define AO_HAVE_compare_and_swap
 #endif /* !AO_GENERALIZE_ASM_BOOL_CAS */
 
-/* TODO: Add AO_char/short/int_ primitives. */
-/* TODO: Include standard_ao_double_t.h in aarch64.h. */
-/* TODO: add double-wide primitives if AO_double_t present. */
+/* TODO: Add AO_char/short/int_ primitives (via template header). */
+
+#ifdef AO_HAVE_DOUBLE_PTR_STORAGE
+
+  AO_INLINE AO_double_t
+  AO_double_load(const volatile AO_double_t *addr)
+  {
+    AO_double_t result;
+
+    result.AO_whole = __atomic_load_n(&addr->AO_whole, __ATOMIC_RELAXED);
+    return result;
+  }
+# define AO_HAVE_double_load
+
+  AO_INLINE AO_double_t
+  AO_double_load_acquire(const volatile AO_double_t *addr)
+  {
+    AO_double_t result;
+
+    result.AO_whole = __atomic_load_n(&addr->AO_whole, __ATOMIC_ACQUIRE);
+    return result;
+  }
+# define AO_HAVE_double_load_acquire
+
+  AO_INLINE void
+  AO_double_store(volatile AO_double_t *addr, AO_double_t value)
+  {
+    __atomic_store_n(&addr->AO_whole, value.AO_whole, __ATOMIC_RELAXED);
+  }
+# define AO_HAVE_double_store
+
+  AO_INLINE void
+  AO_double_store_release(volatile AO_double_t *addr, AO_double_t value)
+  {
+    __atomic_store_n(&addr->AO_whole, value.AO_whole, __ATOMIC_RELEASE);
+  }
+# define AO_HAVE_double_store_release
+
+  AO_INLINE int
+  AO_double_compare_and_swap(volatile AO_double_t *addr,
+                             AO_double_t old_val, AO_double_t new_val)
+  {
+    return __sync_bool_compare_and_swap(&addr->AO_whole,
+                                        old_val.AO_whole, new_val.AO_whole
+                                        /* empty protection list */);
+  }
+# define AO_HAVE_double_compare_and_swap
+
+  /* TODO: Add double CAS _acquire/release/full primitives. */
+#endif /* AO_HAVE_DOUBLE_PTR_STORAGE */

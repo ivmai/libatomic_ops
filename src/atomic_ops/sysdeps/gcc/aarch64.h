@@ -17,4 +17,6 @@
 
 #include "../test_and_set_t_is_ao_t.h"
 
+#include "../standard_ao_double_t.h"
+
 #include "generic.h"
