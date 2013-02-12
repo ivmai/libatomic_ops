@@ -19,6 +19,8 @@
 /* For the details, see GNU Manual, chapter 6.52 (Built-in functions    */
 /* for memory model aware atomic operations).                           */
 
+/* TODO: Include this file for other targets if gcc 4.7+ */
+
 #ifdef AO_UNIPROCESSOR
   /* If only a single processor (core) is used, AO_UNIPROCESSOR could   */
   /* be defined by the client to avoid unnecessary memory barrier.      */

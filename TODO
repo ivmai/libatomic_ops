@@ -1,8 +1,5 @@
 == TODO tasks ==
 
-Move all primitives based on __sync intrinsic from gcc/x86.h to gcc/generic.h;
-offer more sync-base alternatives if AO_USE_SYNC_BUILTINS defined.
-
 Add C++0x ATM (atomic memory operations) layer.
 
 
