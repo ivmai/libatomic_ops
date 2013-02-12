@@ -293,9 +293,12 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
   AO_double_compare_and_swap(volatile AO_double_t *addr,
                              AO_double_t old_val, AO_double_t new_val)
   {
-    return __sync_bool_compare_and_swap(&addr->AO_whole,
-                                        old_val.AO_whole, new_val.AO_whole
-                                        /* empty protection list */);
+    return (int)__atomic_compare_exchange_n(&addr->AO_whole,
+                                &old_val->AO_whole /* p_expected */,
+                                new_val.AO_whole /* desired */,
+                                0 /* is_weak: false */,
+                                __ATOMIC_RELAXED /* success */,
+                                __ATOMIC_RELAXED /* failure */);
   }
 # define AO_HAVE_double_compare_and_swap
 
