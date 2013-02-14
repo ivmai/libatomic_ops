@@ -20,8 +20,6 @@
  * SOFTWARE.
  */
 
-#include "../read_ordered.h"
-
 #ifndef AO_ASSUME_WINDOWS98
   /* CAS is always available */
 # define AO_ASSUME_WINDOWS98

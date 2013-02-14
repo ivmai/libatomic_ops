@@ -15,8 +15,6 @@
  *
  */
 
-#include "../read_ordered.h"
-
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
 
 #if defined(__thumb__) && !defined(__thumb2__)
