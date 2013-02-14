@@ -20,6 +20,8 @@
  * SOFTWARE.
  */
 
+#include "../read_ordered.h"
+
 #ifndef AO_ASSUME_WINDOWS98
   /* CAS is always available */
 # define AO_ASSUME_WINDOWS98
@@ -61,5 +63,3 @@
 #endif /* _M_ARM < 6 */
 
 #define AO_T_IS_INT
-
-#include "../read_ordered.h"

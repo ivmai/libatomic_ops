@@ -15,6 +15,8 @@
  *
  */
 
+#include "../read_ordered.h"
+
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
 
 #if defined(__thumb__) && !defined(__thumb2__)
@@ -535,5 +537,3 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 
 /* FIXME: 32-bit ABI is assumed.    */
 #define AO_T_IS_INT
-
-#include "../read_ordered.h"
