@@ -19,7 +19,7 @@
  * modified is included with the above copyright notice.
  *
  */
-#include "../read_ordered.h"
+
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
 
 #if __TARGET_ARCH_ARM < 6

@@ -15,8 +15,6 @@
  *
  */
 
-#include "../read_ordered.h"
-
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
 
 /* NEC LE-IT: ARMv6 is the first architecture providing support for     */
