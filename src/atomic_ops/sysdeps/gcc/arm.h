@@ -78,6 +78,61 @@
                 /* Note: ARMv6M is excluded due to no ARM mode support. */
 #endif /* !__thumb2__ */
 
+#ifdef AO_UNIPROCESSOR
+  /* If only a single processor (core) is used, AO_UNIPROCESSOR could   */
+  /* be defined by the client to avoid unnecessary memory barrier.      */
+  AO_INLINE void
+  AO_nop_full(void)
+  {
+    AO_compiler_barrier();
+  }
+# define AO_HAVE_nop_full
+
+#elif defined(AO_ARM_HAVE_DMB)
+  /* ARMv7 is compatible to ARMv6 but has a simpler command for issuing */
+  /* a memory barrier (DMB).  Raising it via CP15 should still work     */
+  /* (but slightly less efficient because it requires the use of        */
+  /* a general-purpose register).                                       */
+  AO_INLINE void
+  AO_nop_full(void)
+  {
+    /* AO_THUMB_GO_ARM is empty. */
+    __asm__ __volatile__("dmb" : : : "memory");
+  }
+# define AO_HAVE_nop_full
+
+  AO_INLINE void
+  AO_nop_write(void)
+  {
+    /* AO_THUMB_GO_ARM is empty. */
+    __asm__ __volatile__("dmb st" : : : "memory");
+  }
+# define AO_HAVE_nop_write
+
+#elif defined(AO_ARM_HAVE_LDREX)
+  /* ARMv6 is the first architecture providing support for a simple     */
+  /* LL/SC.  A data memory barrier must be raised via CP15 command.     */
+  AO_INLINE void
+  AO_nop_full(void)
+  {
+    unsigned dest = 0;
+
+    /* Issue a data memory barrier (keeps ordering of memory    */
+    /* transactions before and after this operation).           */
+    __asm__ __volatile__("@AO_nop_full\n"
+      AO_THUMB_GO_ARM
+      "       mcr p15,0,%0,c7,c10,5\n"
+      AO_THUMB_RESTORE_MODE
+      : "=&r"(dest)
+      : /* empty */
+      : AO_THUMB_SWITCH_CLOBBERS "memory");
+  }
+# define AO_HAVE_nop_full
+
+#else
+  /* AO_nop_full() is emulated using AO_test_and_set_full().    */
+#endif /* !AO_UNIPROCESSOR && !AO_ARM_HAVE_LDREX */
+
 #ifdef AO_ARM_HAVE_LDREX
 
   /* AO_t/char/short/int load is simple reading.                */
@@ -86,58 +141,6 @@
 # define AO_ACCESS_short_CHECK_ALIGNED
 # define AO_ACCESS_int_CHECK_ALIGNED
 # include "../all_atomic_only_load.h"
-
-  /* ARMv6 is the first architecture providing support for simple       */
-  /* LL/SC.  A data memory barrier must be raised via CP15 command (see */
-  /* documentation).  ARMv7 is compatible to ARMv6 but has a simpler    */
-  /* command for issuing a memory barrier (DMB).  Raising it via CP15   */
-  /* should still work (but slightly less efficient because it requires */
-  /* the use of a general-purpose register).  If only a single          */
-  /* processor (core) is used, AO_UNIPROCESSOR could be defined by      */
-  /* client to avoid unnecessary memory barrier.                        */
-
-# if defined(AO_ARM_HAVE_DMB) && !defined(AO_UNIPROCESSOR)
-
-    AO_INLINE void
-    AO_nop_full(void)
-    {
-      /* AO_THUMB_GO_ARM is empty. */
-      __asm__ __volatile__("dmb" : : : "memory");
-    }
-#   define AO_HAVE_nop_full
-
-    AO_INLINE void
-    AO_nop_write(void)
-    {
-      /* AO_THUMB_GO_ARM is empty. */
-      __asm__ __volatile__("dmb st" : : : "memory");
-    }
-#   define AO_HAVE_nop_write
-
-# else
-
-    AO_INLINE void
-    AO_nop_full(void)
-    {
-#     ifndef AO_UNIPROCESSOR
-        unsigned dest = 0;
-
-        /* Issue a data memory barrier (keeps ordering of memory        */
-        /* transactions before and after this operation).               */
-        __asm__ __volatile__("@AO_nop_full\n"
-          AO_THUMB_GO_ARM
-          "       mcr p15,0,%0,c7,c10,5\n"
-          AO_THUMB_RESTORE_MODE
-          : "=&r"(dest)
-          : /* empty */
-          : AO_THUMB_SWITCH_CLOBBERS "memory");
-#     else
-        AO_compiler_barrier();
-#     endif
-    }
-#   define AO_HAVE_nop_full
-
-# endif /* !AO_ARM_HAVE_DMB */
 
   /* "ARM Architecture Reference Manual" (chapter A3.5.3) says that the */
   /* single-copy atomic processor accesses are all byte accesses, all   */
