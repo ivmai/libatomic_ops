@@ -49,6 +49,11 @@ typedef union {
 } AO_double_t;
 #define AO_HAVE_double_t
 
+/* Dummy declaration as a compile-time assertion for AO_double_t size.  */
+struct AO_double_t_size_static_assert {
+    char dummy[sizeof(AO_double_t) == 2 * sizeof(AO_t) ? 1 : -1];
+};
+
 #define AO_DOUBLE_T_INITIALIZER { { (AO_t)0, (AO_t)0 } }
 
 #define AO_val1 AO_parts.AO_v1
