@@ -324,6 +324,63 @@ AO_fetch_and_sub1(volatile AO_t *p)
   return result;
 }
 #define AO_HAVE_fetch_and_sub1
+
+AO_INLINE void
+AO_and(volatile AO_t *p, AO_t value)
+{
+  AO_t tmp, result;
+
+  __asm__ __volatile__("@AO_and\n"
+    AO_THUMB_GO_ARM
+    "1:     ldrex   %0, [%4]\n"
+    "       and     %1, %0, %3\n"
+    "       strex   %0, %1, [%4]\n"
+    "       teq     %0, #0\n"
+    "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
+    : "=&r" (tmp), "=&r" (result), "+m" (*p)
+    : "r" (value), "r" (p)
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
+}
+#define AO_HAVE_and
+
+AO_INLINE void
+AO_or(volatile AO_t *p, AO_t value)
+{
+  AO_t tmp, result;
+
+  __asm__ __volatile__("@AO_or\n"
+    AO_THUMB_GO_ARM
+    "1:     ldrex   %0, [%4]\n"
+    "       orr     %1, %0, %3\n"
+    "       strex   %0, %1, [%4]\n"
+    "       teq     %0, #0\n"
+    "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
+    : "=&r" (tmp), "=&r" (result), "+m" (*p)
+    : "r" (value), "r" (p)
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
+}
+#define AO_HAVE_or
+
+AO_INLINE void
+AO_xor(volatile AO_t *p, AO_t value)
+{
+  AO_t tmp, result;
+
+  __asm__ __volatile__("@AO_xor\n"
+    AO_THUMB_GO_ARM
+    "1:     ldrex   %0, [%4]\n"
+    "       eor     %1, %0, %3\n"
+    "       strex   %0, %1, [%4]\n"
+    "       teq     %0, #0\n"
+    "       bne     1b\n"
+    AO_THUMB_RESTORE_MODE
+    : "=&r" (tmp), "=&r" (result), "+m" (*p)
+    : "r" (value), "r" (p)
+    : AO_THUMB_SWITCH_CLOBBERS "cc");
+}
+#define AO_HAVE_xor
 #endif /* !AO_PREFER_GENERALIZED */
 
 #ifdef AO_ARM_HAVE_LDREXBH
