@@ -1,3 +1,13 @@
+2013-02-14  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/arm.h: Do not include read_ordered.h
+	(because load_acquire should contain a DMB instruction in a multi-core
+	case, new load_acquire/read primitives implementation is generalized
+	using nop_full/read which either contain a DMB instruction, or is just
+	a compiler barrier for uniprocessor).
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h: Likewise.
+	* src/atomic_ops/sysdeps/msftc/arm.h: Likewise.
+
 2013-01-15  Ivan Maidanski <ivmai@mail.ru>
 
 	* doc/README.txt (_acquire_read): Add information about memory
@@ -23,14 +33,6 @@
 	ordered_except_wr.h down to be after all_aligned_atomic_load_store.h
 	inclusion (since the latter defines AO_X_load/store primitives used by
 	the former header).
-
-2013-01-13  Ivan Maidanski <ivmai@mail.ru>
-
-	* src/atomic_ops/sysdeps/armcc/arm_v6.h: Move include of read_ordered.h
-	down to the end of the file to be after AO_load/store definition
-	(since read_ordered.h depends on these primitives).
-	* src/atomic_ops/sysdeps/gcc/arm.h: Likewise.
-	* src/atomic_ops/sysdeps/msftc/arm.h: Likewise.
 
 2013-01-13  Ivan Maidanski <ivmai@mail.ru>
 
