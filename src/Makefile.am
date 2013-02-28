@@ -17,6 +17,8 @@ EXTRA_DIST = Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-arithm.template \
         atomic_ops/generalize-small.template \
         atomic_ops/sysdeps/ao_t_is_int.template \
+        atomic_ops/sysdeps/gcc/generic-arithm.template \
+        atomic_ops/sysdeps/gcc/generic-small.template \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.template \
         atomic_ops/sysdeps/loadstore/atomic_load.template \
         atomic_ops/sysdeps/loadstore/atomic_store.template \
@@ -27,6 +29,8 @@ EXTRA_DIST = Makefile.msft atomic_ops/sysdeps/README \
 BUILT_SOURCES = atomic_ops/generalize-arithm.h \
         atomic_ops/generalize-small.h \
         atomic_ops/sysdeps/ao_t_is_int.h \
+        atomic_ops/sysdeps/gcc/generic-arithm.h \
+        atomic_ops/sysdeps/gcc/generic-small.h \
         atomic_ops/sysdeps/loadstore/acquire_release_volatile.h \
         atomic_ops/sysdeps/loadstore/atomic_load.h \
         atomic_ops/sysdeps/loadstore/atomic_store.h \
@@ -68,8 +72,6 @@ nobase_private_HEADERS = atomic_ops/ao_version.h \
           atomic_ops/sysdeps/gcc/arm.h \
           atomic_ops/sysdeps/gcc/avr32.h \
           atomic_ops/sysdeps/gcc/cris.h \
-          atomic_ops/sysdeps/gcc/generic-arithm.h \
-          atomic_ops/sysdeps/gcc/generic-small.h \
           atomic_ops/sysdeps/gcc/generic.h \
           atomic_ops/sysdeps/gcc/hexagon.h \
           atomic_ops/sysdeps/gcc/hppa.h \
@@ -119,6 +121,20 @@ atomic_ops/sysdeps/ao_t_is_int.h: atomic_ops/sysdeps/ao_t_is_int.template
 	sed -e s:XBAR:release:g $? >> $@
 	sed -e s:XBAR:write:g $? >> $@
 	sed -e s:XBAR:read:g $? >> $@
+
+atomic_ops/sysdeps/gcc/generic-arithm.h: \
+        atomic_ops/sysdeps/gcc/generic-arithm.template
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+
+atomic_ops/sysdeps/gcc/generic-small.h: \
+        atomic_ops/sysdeps/gcc/generic-small.template
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
 
 atomic_ops/sysdeps/loadstore/ordered_loads_only.h: \
         atomic_ops/sysdeps/loadstore/ordered_loads_only.template
