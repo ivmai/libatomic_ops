@@ -124,10 +124,38 @@ atomic_ops/sysdeps/ao_t_is_int.h: atomic_ops/sysdeps/ao_t_is_int.template
 
 atomic_ops/sysdeps/gcc/generic-arithm.h: \
         atomic_ops/sysdeps/gcc/generic-arithm.template
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+	sed -e s:_XBAR::g -e s:XGCCBAR:RELAXED:g \
+		-e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? > $@
+	sed -e s:_XBAR::g -e s:XGCCBAR:RELAXED:g \
+		-e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:_XBAR::g -e s:XGCCBAR:RELAXED:g \
+		-e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:_XBAR::g -e s:XGCCBAR:RELAXED:g \
+		-e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+	sed -e s:XBAR:acquire:g -e s:XGCCBAR:ACQUIRE:g \
+		-e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? >> $@
+	sed -e s:XBAR:acquire:g -e s:XGCCBAR:ACQUIRE:g \
+		-e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XBAR:acquire:g -e s:XGCCBAR:ACQUIRE:g \
+		-e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XBAR:acquire:g -e s:XGCCBAR:ACQUIRE:g \
+		-e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+	sed -e s:XBAR:release:g -e s:XGCCBAR:RELEASE:g \
+		-e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? >> $@
+	sed -e s:XBAR:release:g -e s:XGCCBAR:RELEASE:g \
+		-e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XBAR:release:g -e s:XGCCBAR:RELEASE:g \
+		-e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XBAR:release:g -e s:XGCCBAR:RELEASE:g \
+		-e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
+	sed -e s:XBAR:full:g -e s:XGCCBAR:SEQ_CST:g \
+		-e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g $? >> $@
+	sed -e s:XBAR:full:g -e s:XGCCBAR:SEQ_CST:g \
+		-e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g $? >> $@
+	sed -e s:XBAR:full:g -e s:XGCCBAR:SEQ_CST:g \
+		-e s:XSIZE:int:g -e s:XCTYPE:unsigned:g $? >> $@
+	sed -e s:XBAR:full:g -e s:XGCCBAR:SEQ_CST:g \
+		-e s:XSIZE_::g -e s:XCTYPE:AO_t:g $? >> $@
 
 atomic_ops/sysdeps/gcc/generic-small.h: \
         atomic_ops/sysdeps/gcc/generic-small.template

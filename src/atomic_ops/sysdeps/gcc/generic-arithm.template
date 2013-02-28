@@ -16,113 +16,29 @@
  */
 
 AO_INLINE XCTYPE
-AO_XSIZE_fetch_and_add(volatile XCTYPE *addr, XCTYPE incr)
+AO_XSIZE_fetch_and_add_XBAR(volatile XCTYPE *addr, XCTYPE incr)
 {
-  return __atomic_fetch_add(addr, incr, __ATOMIC_RELAXED);
+  return __atomic_fetch_add(addr, incr, __ATOMIC_XGCCBAR);
 }
-#define AO_HAVE_XSIZE_fetch_and_add
-
-AO_INLINE XCTYPE
-AO_XSIZE_fetch_and_add_acquire(volatile XCTYPE *addr, XCTYPE incr)
-{
-  return __atomic_fetch_add(addr, incr, __ATOMIC_ACQUIRE);
-}
-#define AO_HAVE_XSIZE_fetch_and_add_acquire
-
-AO_INLINE XCTYPE
-AO_XSIZE_fetch_and_add_release(volatile XCTYPE *addr, XCTYPE incr)
-{
-  return __atomic_fetch_add(addr, incr, __ATOMIC_RELEASE);
-}
-#define AO_HAVE_XSIZE_fetch_and_add_release
-
-AO_INLINE XCTYPE
-AO_XSIZE_fetch_and_add_full(volatile XCTYPE *addr, XCTYPE incr)
-{
-  return __atomic_fetch_add(addr, incr, __ATOMIC_SEQ_CST);
-}
-#define AO_HAVE_XSIZE_fetch_and_add_full
+#define AO_HAVE_XSIZE_fetch_and_add_XBAR
 
 AO_INLINE void
-AO_XSIZE_and(volatile XCTYPE *addr, XCTYPE value)
+AO_XSIZE_and_XBAR(volatile XCTYPE *addr, XCTYPE value)
 {
-  (void)__atomic_and_fetch(addr, value, __ATOMIC_RELAXED);
+  (void)__atomic_and_fetch(addr, value, __ATOMIC_XGCCBAR);
 }
-#define AO_HAVE_XSIZE_and
+#define AO_HAVE_XSIZE_and_XBAR
 
 AO_INLINE void
-AO_XSIZE_and_acquire(volatile XCTYPE *addr, XCTYPE value)
+AO_XSIZE_or_XBAR(volatile XCTYPE *addr, XCTYPE value)
 {
-  (void)__atomic_and_fetch(addr, value, __ATOMIC_ACQUIRE);
+  (void)__atomic_or_fetch(addr, value, __ATOMIC_XGCCBAR);
 }
-#define AO_HAVE_XSIZE_and_acquire
+#define AO_HAVE_XSIZE_or_XBAR
 
 AO_INLINE void
-AO_XSIZE_and_release(volatile XCTYPE *addr, XCTYPE value)
+AO_XSIZE_xor_XBAR(volatile XCTYPE *addr, XCTYPE value)
 {
-  (void)__atomic_and_fetch(addr, value, __ATOMIC_RELEASE);
+  (void)__atomic_xor_fetch(addr, value, __ATOMIC_XGCCBAR);
 }
-#define AO_HAVE_XSIZE_and_release
-
-AO_INLINE void
-AO_XSIZE_and_full(volatile XCTYPE *addr, XCTYPE value)
-{
-  (void)__atomic_and_fetch(addr, value, __ATOMIC_SEQ_CST);
-}
-#define AO_HAVE_XSIZE_and_full
-
-AO_INLINE void
-AO_XSIZE_or(volatile XCTYPE *addr, XCTYPE value)
-{
-  (void)__atomic_or_fetch(addr, value, __ATOMIC_RELAXED);
-}
-#define AO_HAVE_XSIZE_or
-
-AO_INLINE void
-AO_XSIZE_or_acquire(volatile XCTYPE *addr, XCTYPE value)
-{
-  (void)__atomic_or_fetch(addr, value, __ATOMIC_ACQUIRE);
-}
-#define AO_HAVE_XSIZE_or_acquire
-
-AO_INLINE void
-AO_XSIZE_or_release(volatile XCTYPE *addr, XCTYPE value)
-{
-  (void)__atomic_or_fetch(addr, value, __ATOMIC_RELEASE);
-}
-#define AO_HAVE_XSIZE_or_release
-
-AO_INLINE void
-AO_XSIZE_or_full(volatile XCTYPE *addr, XCTYPE value)
-{
-  (void)__atomic_or_fetch(addr, value, __ATOMIC_SEQ_CST);
-}
-#define AO_HAVE_XSIZE_or_full
-
-AO_INLINE void
-AO_XSIZE_xor(volatile XCTYPE *addr, XCTYPE value)
-{
-  (void)__atomic_xor_fetch(addr, value, __ATOMIC_RELAXED);
-}
-#define AO_HAVE_XSIZE_xor
-
-AO_INLINE void
-AO_XSIZE_xor_acquire(volatile XCTYPE *addr, XCTYPE value)
-{
-  (void)__atomic_xor_fetch(addr, value, __ATOMIC_ACQUIRE);
-}
-#define AO_HAVE_XSIZE_xor_acquire
-
-AO_INLINE void
-AO_XSIZE_xor_release(volatile XCTYPE *addr, XCTYPE value)
-{
-  (void)__atomic_xor_fetch(addr, value, __ATOMIC_RELEASE);
-}
-#define AO_HAVE_XSIZE_xor_release
-
-AO_INLINE void
-AO_XSIZE_xor_full(volatile XCTYPE *addr, XCTYPE value)
-{
-  (void)__atomic_xor_fetch(addr, value, __ATOMIC_SEQ_CST);
-}
-#define AO_HAVE_XSIZE_xor_full
+#define AO_HAVE_XSIZE_xor_XBAR
