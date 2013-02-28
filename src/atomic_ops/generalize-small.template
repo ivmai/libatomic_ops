@@ -297,8 +297,6 @@
   {
     XCTYPE result = AO_XSIZE_load(addr);
 
-    /* Acquire barrier would be useless, since the load could be delayed    */
-    /* beyond it.                                                           */
     AO_nop_read();
     return result;
   }
@@ -440,7 +438,7 @@
 # define AO_HAVE_XSIZE_store_release
 #endif
 
-#if defined(AO_HAVE_nop_write) && defined(AO_HAVE_XSIZE_store) \
+#if defined(AO_HAVE_XSIZE_store) && defined(AO_HAVE_nop_write) \
     && !defined(AO_HAVE_XSIZE_store_write)
 # define AO_XSIZE_store_write(addr, val) \
                                 (AO_nop_write(), AO_XSIZE_store(addr, val))

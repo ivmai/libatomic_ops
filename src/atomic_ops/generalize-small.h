@@ -297,8 +297,6 @@
   {
     unsigned/**/char result = AO_char_load(addr);
 
-    /* Acquire barrier would be useless, since the load could be delayed    */
-    /* beyond it.                                                           */
     AO_nop_read();
     return result;
   }
@@ -440,7 +438,7 @@
 # define AO_HAVE_char_store_release
 #endif
 
-#if defined(AO_HAVE_nop_write) && defined(AO_HAVE_char_store) \
+#if defined(AO_HAVE_char_store) && defined(AO_HAVE_nop_write) \
     && !defined(AO_HAVE_char_store_write)
 # define AO_char_store_write(addr, val) \
                                 (AO_nop_write(), AO_char_store(addr, val))
@@ -819,8 +817,6 @@
   {
     unsigned/**/short result = AO_short_load(addr);
 
-    /* Acquire barrier would be useless, since the load could be delayed    */
-    /* beyond it.                                                           */
     AO_nop_read();
     return result;
   }
@@ -962,7 +958,7 @@
 # define AO_HAVE_short_store_release
 #endif
 
-#if defined(AO_HAVE_nop_write) && defined(AO_HAVE_short_store) \
+#if defined(AO_HAVE_short_store) && defined(AO_HAVE_nop_write) \
     && !defined(AO_HAVE_short_store_write)
 # define AO_short_store_write(addr, val) \
                                 (AO_nop_write(), AO_short_store(addr, val))
@@ -1341,8 +1337,6 @@
   {
     unsigned result = AO_int_load(addr);
 
-    /* Acquire barrier would be useless, since the load could be delayed    */
-    /* beyond it.                                                           */
     AO_nop_read();
     return result;
   }
@@ -1484,7 +1478,7 @@
 # define AO_HAVE_int_store_release
 #endif
 
-#if defined(AO_HAVE_nop_write) && defined(AO_HAVE_int_store) \
+#if defined(AO_HAVE_int_store) && defined(AO_HAVE_nop_write) \
     && !defined(AO_HAVE_int_store_write)
 # define AO_int_store_write(addr, val) \
                                 (AO_nop_write(), AO_int_store(addr, val))
@@ -1863,8 +1857,6 @@
   {
     AO_t result = AO_load(addr);
 
-    /* Acquire barrier would be useless, since the load could be delayed    */
-    /* beyond it.                                                           */
     AO_nop_read();
     return result;
   }
@@ -2006,7 +1998,7 @@
 # define AO_HAVE_store_release
 #endif
 
-#if defined(AO_HAVE_nop_write) && defined(AO_HAVE_store) \
+#if defined(AO_HAVE_store) && defined(AO_HAVE_nop_write) \
     && !defined(AO_HAVE_store_write)
 # define AO_store_write(addr, val) \
                                 (AO_nop_write(), AO_store(addr, val))
@@ -2385,8 +2377,6 @@
   {
     AO_double_t result = AO_double_load(addr);
 
-    /* Acquire barrier would be useless, since the load could be delayed    */
-    /* beyond it.                                                           */
     AO_nop_read();
     return result;
   }
@@ -2528,7 +2518,7 @@
 # define AO_HAVE_double_store_release
 #endif
 
-#if defined(AO_HAVE_nop_write) && defined(AO_HAVE_double_store) \
+#if defined(AO_HAVE_double_store) && defined(AO_HAVE_nop_write) \
     && !defined(AO_HAVE_double_store_write)
 # define AO_double_store_write(addr, val) \
                                 (AO_nop_write(), AO_double_store(addr, val))
