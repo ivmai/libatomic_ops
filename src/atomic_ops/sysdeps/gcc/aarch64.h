@@ -15,10 +15,17 @@
  *
  */
 
-/* TODO: Remove this file, directly include headers from atomic_ops.h */
-
 #include "../test_and_set_t_is_ao_t.h"
 
 #include "../standard_ao_double_t.h"
+
+#ifndef AO_UNIPROCESSOR
+  AO_INLINE void
+  AO_nop_write(void)
+  {
+    __asm__ __volatile__("dmb st" : : : "memory");
+  }
+# define AO_HAVE_nop_write
+#endif
 
 #include "generic.h"

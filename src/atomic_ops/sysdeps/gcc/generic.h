@@ -39,12 +39,14 @@
   }
 # define AO_HAVE_nop_read
 
-  AO_INLINE void
-  AO_nop_write(void)
-  {
-    __atomic_thread_fence(__ATOMIC_RELEASE);
-  }
-# define AO_HAVE_nop_write
+# ifndef AO_HAVE_nop_write
+    AO_INLINE void
+    AO_nop_write(void)
+    {
+      __atomic_thread_fence(__ATOMIC_RELEASE);
+    }
+#   define AO_HAVE_nop_write
+# endif
 
   AO_INLINE void
   AO_nop_full(void)
