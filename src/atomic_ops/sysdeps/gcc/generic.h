@@ -294,7 +294,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
                              AO_double_t old_val, AO_double_t new_val)
   {
     return (int)__atomic_compare_exchange_n(&addr->AO_whole,
-                                &old_val->AO_whole /* p_expected */,
+                                &old_val.AO_whole /* p_expected */,
                                 new_val.AO_whole /* desired */,
                                 0 /* is_weak: false */,
                                 __ATOMIC_RELAXED /* success */,
