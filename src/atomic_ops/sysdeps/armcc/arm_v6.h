@@ -261,5 +261,3 @@ AO_compare_double_and_swap_double(volatile AO_double_t *addr,
 #endif /* __TARGET_ARCH_ARM >= 6 */
 
 #define AO_T_IS_INT
-
-#include "../read_ordered.h"

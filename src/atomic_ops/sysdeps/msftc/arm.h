@@ -28,8 +28,14 @@
 /* FIXME: Do _InterlockedOps really have a full memory barrier?         */
 /* (MSDN WinCE docs say nothing about it.)                              */
 
-#if _M_ARM >= 6
-/* ARMv6 is the first architecture providing support for simple LL/SC.  */
+#include "../test_and_set_t_is_ao_t.h"
+/* AO_test_and_set_full() is emulated using CAS.                        */
+
+/* Some ARM slide set, if it has been read correctly, claims that Loads */
+/* followed by either a Load or a Store are ordered, but nothing else.  */
+/* It is assumed that Windows interrupt handlers clear the LL/SC flag.  */
+/* Unaligned accesses are not guaranteed to be atomic.                  */
+#include "../all_aligned_atomic_load_store.h"
 
 /* If only a single processor is used, we can define AO_UNIPROCESSOR.   */
 #ifdef AO_UNIPROCESSOR
@@ -39,38 +45,19 @@
   }
 # define AO_HAVE_nop_full
 #else
-/* AO_nop_full() is emulated using AO_test_and_set_full().              */
+  /* AO_nop_full() is emulated using AO_test_and_set_full().            */
 #endif
 
-#include "../test_and_set_t_is_ao_t.h"
-/* AO_test_and_set() is emulated using CAS.                             */
-
-AO_INLINE AO_t
-AO_load(const volatile AO_t *addr)
-{
-  /* Cast away the volatile in case it adds fence semantics */
-  return (*(const AO_t *)addr);
-}
-#define AO_HAVE_load
-
-/* TODO: Implement AO_store() using ordinary store provided Windows     */
-/* interrupt handlers clear the LL/SC reservation flag.                 */
+#if _M_ARM >= 6
+/* ARMv6 is the first architecture providing support for simple LL/SC.  */
 
 /* #include "../standard_ao_double_t.h" */
-/* TODO: implement double-wide operations (similar to x86).  */
+/* TODO: implement double-wide operations (similar to x86).     */
 
 #else /* _M_ARM < 6 */
 
-/* Some ARM slide set, if it has been read correctly, claims that Loads */
-/* followed by either a Load or a Store are ordered, but nothing        */
-/* else is.  It appears that SWP is the only simple memory barrier.     */
-#include "../all_atomic_load_store.h"
-
-#include "../test_and_set_t_is_ao_t.h"
-/* AO_test_and_set_full() is emulated using CAS.                        */
+/* TODO: implement AO_test_and_set_full using SWP.      */
 
 #endif /* _M_ARM < 6 */
 
 #define AO_T_IS_INT
-
-#include "../read_ordered.h"
