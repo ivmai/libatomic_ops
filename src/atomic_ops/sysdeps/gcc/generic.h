@@ -92,52 +92,63 @@
 #endif /* !AO_PREFER_GENERALIZED */
 
 #ifdef AO_HAVE_DOUBLE_PTR_STORAGE
-  AO_INLINE AO_double_t
-  AO_double_load(const volatile AO_double_t *addr)
-  {
-    AO_double_t result;
 
-    result.AO_whole = __atomic_load_n(&addr->AO_whole, __ATOMIC_RELAXED);
-    return result;
-  }
-# define AO_HAVE_double_load
+# ifndef AO_HAVE_double_load
+    AO_INLINE AO_double_t
+    AO_double_load(const volatile AO_double_t *addr)
+    {
+      AO_double_t result;
 
-  AO_INLINE AO_double_t
-  AO_double_load_acquire(const volatile AO_double_t *addr)
-  {
-    AO_double_t result;
+      result.AO_whole = __atomic_load_n(&addr->AO_whole, __ATOMIC_RELAXED);
+      return result;
+    }
+#   define AO_HAVE_double_load
+# endif
 
-    result.AO_whole = __atomic_load_n(&addr->AO_whole, __ATOMIC_ACQUIRE);
-    return result;
-  }
-# define AO_HAVE_double_load_acquire
+# ifndef AO_HAVE_double_load_acquire
+    AO_INLINE AO_double_t
+    AO_double_load_acquire(const volatile AO_double_t *addr)
+    {
+      AO_double_t result;
 
-  AO_INLINE void
-  AO_double_store(volatile AO_double_t *addr, AO_double_t value)
-  {
-    __atomic_store_n(&addr->AO_whole, value.AO_whole, __ATOMIC_RELAXED);
-  }
-# define AO_HAVE_double_store
+      result.AO_whole = __atomic_load_n(&addr->AO_whole, __ATOMIC_ACQUIRE);
+      return result;
+    }
+#   define AO_HAVE_double_load_acquire
+# endif
 
-  AO_INLINE void
-  AO_double_store_release(volatile AO_double_t *addr, AO_double_t value)
-  {
-    __atomic_store_n(&addr->AO_whole, value.AO_whole, __ATOMIC_RELEASE);
-  }
-# define AO_HAVE_double_store_release
+# ifndef AO_HAVE_double_store
+    AO_INLINE void
+    AO_double_store(volatile AO_double_t *addr, AO_double_t value)
+    {
+      __atomic_store_n(&addr->AO_whole, value.AO_whole, __ATOMIC_RELAXED);
+    }
+#   define AO_HAVE_double_store
+# endif
 
-  AO_INLINE int
-  AO_double_compare_and_swap(volatile AO_double_t *addr,
-                             AO_double_t old_val, AO_double_t new_val)
-  {
-    return (int)__atomic_compare_exchange_n(&addr->AO_whole,
-                                &old_val.AO_whole /* p_expected */,
-                                new_val.AO_whole /* desired */,
-                                0 /* is_weak: false */,
-                                __ATOMIC_RELAXED /* success */,
-                                __ATOMIC_RELAXED /* failure */);
-  }
-# define AO_HAVE_double_compare_and_swap
+# ifndef AO_HAVE_double_store_release
+    AO_INLINE void
+    AO_double_store_release(volatile AO_double_t *addr, AO_double_t value)
+    {
+      __atomic_store_n(&addr->AO_whole, value.AO_whole, __ATOMIC_RELEASE);
+    }
+#   define AO_HAVE_double_store_release
+# endif
+
+# ifndef AO_HAVE_double_compare_and_swap
+    AO_INLINE int
+    AO_double_compare_and_swap(volatile AO_double_t *addr,
+                               AO_double_t old_val, AO_double_t new_val)
+    {
+      return (int)__atomic_compare_exchange_n(&addr->AO_whole,
+                                  &old_val.AO_whole /* p_expected */,
+                                  new_val.AO_whole /* desired */,
+                                  0 /* is_weak: false */,
+                                  __ATOMIC_RELAXED /* success */,
+                                  __ATOMIC_RELAXED /* failure */);
+    }
+#   define AO_HAVE_double_compare_and_swap
+# endif
 
   /* TODO: Add double CAS _acquire/release/full primitives. */
 #endif /* AO_HAVE_DOUBLE_PTR_STORAGE */
