@@ -28,7 +28,10 @@
 # define AO_HAVE_nop_write
 #endif
 
-#ifdef AO_HAVE_DOUBLE_PTR_STORAGE
+/* TODO: Adjust version check on fixing double-wide AO support in GCC. */
+#if __GNUC__ == 4
+
+  /* TODO: Adjust clobber lists. */
 
   AO_INLINE AO_double_t
   AO_double_load(const volatile AO_double_t *addr)
@@ -36,14 +39,15 @@
     AO_double_t result;
     int status;
 
+    /* TODO: Could we discard stxp like for 32-bit ARM? */
     do {
-      __asm__ __volatile__("//AO_double_load\n"
+      __asm__ __volatile__("@AO_double_load\n"
       "       ldxp  %0, %1, [%3]\n"
       "       stxp %w2, %0, %1, [%3]"
       : "=&r" (result.AO_val1), "=&r" (result.AO_val2), "=&r" (status)
       : "r" (addr)
       );
-    } while (status);
+    } while (AO_EXPECT_FALSE(status));
     return result;
   }
 # define AO_HAVE_double_load
@@ -55,13 +59,13 @@
     int status;
 
     do {
-      __asm__ __volatile__("//AO_double_load_acquire\n"
+      __asm__ __volatile__("@AO_double_load_acquire\n"
       "       ldaxp  %0, %1, [%3]\n"
       "       stxp %w2, %0, %1, [%3]"
       : "=&r" (result.AO_val1), "=&r" (result.AO_val2), "=&r" (status)
       : "r" (addr)
       );
-    } while (status);
+    } while (AO_EXPECT_FALSE(status));
     return result;
   }
 # define AO_HAVE_double_load_acquire
@@ -73,13 +77,14 @@
     int status;
 
     do {
-      __asm__ __volatile__("//AO_double_store\n"
+      __asm__ __volatile__("@AO_double_store\n"
       "       ldxp  %0, %1, %3\n"
       "       stxp %w2, %4, %5, %3"
-      : "=&r" (old_val.AO_val1), "=&r" (old_val.AO_val2), "=&r" (status), "+Q" (*addr)
+      : "=&r" (old_val.AO_val1), "=&r" (old_val.AO_val2), "=&r" (status),
+        "+Q" (*addr)
       : "r" (value.AO_val1), "r" (value.AO_val2)
       );
-    } while (status);
+    } while (AO_EXPECT_FALSE(status));
   }
 # define AO_HAVE_double_store
 
@@ -90,13 +95,14 @@
     int status;
 
     do {
-      __asm__ __volatile__("//AO_double_store\n"
+      __asm__ __volatile__("@AO_double_store_release\n"
       "       ldxp  %0, %1, %3\n"
       "       stlxp %w2, %4, %5, %3"
-      : "=&r" (old_val.AO_val1), "=&r" (old_val.AO_val2), "=&r" (status), "+Q" (*addr)
+      : "=&r" (old_val.AO_val1), "=&r" (old_val.AO_val2), "=&r" (status),
+        "+Q" (*addr)
       : "r" (value.AO_val1), "r" (value.AO_val2)
       );
-    } while (status);
+    } while (AO_EXPECT_FALSE(status));
   }
 # define AO_HAVE_double_store_release
 
@@ -108,7 +114,7 @@
     int result = 1;
 
     do {
-      __asm__ __volatile__("//AO_double_compare_and_swap\n"
+      __asm__ __volatile__("@AO_double_compare_and_swap\n"
         "       ldxp  %0, %1, [%2]\n"
         : "=&r" (tmp.AO_val1), "=&r" (tmp.AO_val2)
         : "r" (addr)
@@ -133,7 +139,7 @@
     int result = 1;
 
     do {
-      __asm__ __volatile__("//AO_double_compare_and_swap_acquire\n"
+      __asm__ __volatile__("@AO_double_compare_and_swap_acquire\n"
         "       ldaxp  %0, %1, [%2]\n"
         : "=&r" (tmp.AO_val1), "=&r" (tmp.AO_val2)
         : "r" (addr)
@@ -158,7 +164,7 @@
     int result = 1;
 
     do {
-      __asm__ __volatile__("//AO_double_compare_and_swap_release\n"
+      __asm__ __volatile__("@AO_double_compare_and_swap_release\n"
         "       ldxp  %0, %1, [%2]\n"
         : "=&r" (tmp.AO_val1), "=&r" (tmp.AO_val2)
         : "r" (addr)
