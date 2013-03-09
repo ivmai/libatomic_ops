@@ -25,9 +25,8 @@
 
 #include "../test_and_set_t_is_char.h"
 
-/* TODO: Test __SSE2__ macro instead of AO_USE_PENTIUM4_INSTRS. */
-#if defined(__x86_64__) && !defined(AO_USE_PENTIUM4_INSTRS)
-  /* "mfence" (SSE2) is supported on all x86_64/amd64 chips.            */
+#if defined(__SSE2__) && !defined(AO_USE_PENTIUM4_INSTRS)
+  /* "mfence" is a part of SSE2 set (introduced on Intel Pentium 4).    */
 # define AO_USE_PENTIUM4_INSTRS
 #endif
 
