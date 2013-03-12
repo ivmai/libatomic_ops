@@ -127,7 +127,7 @@ AO_test_and_set(volatile AO_TS_t *addr)
         "       beqz    %0, 1b      \n"
         "       li      %2, 1       \n"
         "2:                           "
-        : "=&r" (temp), "+R" (*addr), "+r" (was_equal)
+        : "=&r" (temp), "+m" (*addr), "+r" (was_equal)
         : "r" (new_val), "r" (old)
         : "memory");
     return was_equal;
