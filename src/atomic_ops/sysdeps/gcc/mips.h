@@ -59,7 +59,6 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
   register int temp;
 
   __asm__ __volatile__(
-
       "       .set push\n"
       "       .set mips2\n"
       "       .set noreorder\n"
@@ -71,7 +70,7 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
       "       beqz %1, 1b\n"
       "       nop\n"
       "       .set pop "
-      : "=&r" (result), "=&r" (temp), "=m" (*addr)
+      : "=&r" (result), "=&r" (temp), "+m" (*addr)
       : "Ir" (incr)
       : "memory");
   return (AO_t)result;
@@ -96,7 +95,7 @@ AO_test_and_set(volatile AO_TS_t *addr)
       "       beqz %1, 1b\n"
       "       nop\n"
       "       .set pop "
-      : "=&r" (oldval), "=&r" (temp), "=m" (*addr)
+      : "=&r" (oldval), "=&r" (temp), "+m" (*addr)
       : "r" (1)
       : "memory");
   return (AO_TS_VAL_t)oldval;
@@ -155,7 +154,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old, AO_t new_val)
       "       nop\n"
       "       .set pop\n"
       "2:"
-      : "=&r" (fetched_val), "=&r" (temp), "=m" (*addr)
+      : "=&r" (fetched_val), "=&r" (temp), "+m" (*addr)
       : "r" (new_val), "Jr" (old)
       : "memory");
   return (AO_t)fetched_val;
