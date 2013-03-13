@@ -57,7 +57,7 @@ AO_compare_and_swap(volatile AO_t *addr,
                      "       stq_c %0,%1\n"
                      "       beq %0,1b\n"
                      "2:\n"
-                     :"=&r" (temp), "=m" (*addr), "=&r" (was_equal)
+                     : "=&r" (temp), "+m" (*addr), "=&r" (was_equal)
                      : "r" (new_val), "Ir" (old)
                      :"memory");
   return (int)was_equal;
