@@ -25,8 +25,8 @@
 
 #include "../test_and_set_t_is_char.h"
 
-#if defined(__x86_64__) && !defined(AO_USE_PENTIUM4_INSTRS)
-  /* "mfence" (SSE2) is supported on all x86_64/amd64 chips.            */
+#if defined(__SSE2__) && !defined(AO_USE_PENTIUM4_INSTRS)
+  /* "mfence" is a part of SSE2 set (introduced on Intel Pentium 4).    */
 # define AO_USE_PENTIUM4_INSTRS
 #endif
 
@@ -281,6 +281,9 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
     return result;
   }
 # define AO_HAVE_int_fetch_and_add_full
+
+/* TODO: Implement double_load/store. */
+/* TODO: Test some gcc macro to detect presence of cmpxchg16b. */
 
 # ifdef AO_CMPXCHG16B_AVAILABLE
 #   include "../standard_ao_double_t.h"
