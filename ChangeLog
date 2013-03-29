@@ -1,3 +1,30 @@
+2013-03-29  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/generalize-small.template (AO_XSIZE_fetch_and_add):
+	Do not use AO_EXPECT_FALSE (since defined only in v7.3+).
+	* src/atomic_ops/generalize-small.h: Regenerate.
+
+2013-03-29  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/sunc/x86.h (AO_fetch_and_add_full,
+	AO_char_fetch_and_add_full, AO_short_fetch_and_add_full, AO_or_full,
+	AO_test_and_set_full,
+	AO_compare_and_swap_full): Use "+m" asm constraint for *addr instead
+	of "=m" (because the value pointed by addr is read and written by the
+	code).
+
+2013-03-13  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/alpha.h (AO_compare_and_swap): Use "+m"
+	asm constraint for *addr instead of "=m" (because the value pointed by
+	addr is read and written by the code).
+
+2013-03-12  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/gcc/mips.h (AO_compare_and_swap): Use "+m"
+	asm constraint for *addr instead of "+R" (the letter is unsupported
+	by clang3.1 resulting in "invalid output constraint in asm" error).
+
 2013-02-14  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/gcc/arm.h: Do not include read_ordered.h
