@@ -51,8 +51,9 @@
   {
     AO_t result;
 
-    __asm__ __volatile__ ("lock; xadd %0, %1" :
-                        "=r" (result), "+m" (*p) : "0" (incr)
+    __asm__ __volatile__ ("lock; xadd %0, %1"
+                        : "=r" (result), "+m" (*p)
+                        : "0" (incr)
                         : "memory");
     return result;
   }
@@ -64,8 +65,9 @@ AO_char_fetch_and_add_full (volatile unsigned char *p, unsigned char incr)
 {
   unsigned char result;
 
-  __asm__ __volatile__ ("lock; xaddb %0, %1" :
-                        "=q" (result), "+m" (*p) : "0" (incr)
+  __asm__ __volatile__ ("lock; xaddb %0, %1"
+                        : "=q" (result), "+m" (*p)
+                        : "0" (incr)
                         : "memory");
   return result;
 }
@@ -76,8 +78,9 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
 {
   unsigned short result;
 
-  __asm__ __volatile__ ("lock; xaddw %0, %1" :
-                        "=r" (result), "+m" (*p) : "0" (incr)
+  __asm__ __volatile__ ("lock; xaddw %0, %1"
+                        : "=r" (result), "+m" (*p)
+                        : "0" (incr)
                         : "memory");
   return result;
 }
@@ -88,8 +91,9 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
   AO_INLINE void
   AO_and_full (volatile AO_t *p, AO_t value)
   {
-    __asm__ __volatile__ ("lock; and %1, %0" :
-                        "+m" (*p) : "r" (value)
+    __asm__ __volatile__ ("lock; and %1, %0"
+                        : "+m" (*p)
+                        : "r" (value)
                         : "memory");
   }
 # define AO_HAVE_and_full
@@ -97,8 +101,9 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
   AO_INLINE void
   AO_or_full (volatile AO_t *p, AO_t value)
   {
-    __asm__ __volatile__ ("lock; or %1, %0" :
-                        "+m" (*p) : "r" (value)
+    __asm__ __volatile__ ("lock; or %1, %0"
+                        : "+m" (*p)
+                        : "r" (value)
                         : "memory");
   }
 # define AO_HAVE_or_full
@@ -106,8 +111,9 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
   AO_INLINE void
   AO_xor_full (volatile AO_t *p, AO_t value)
   {
-    __asm__ __volatile__ ("lock; xor %1, %0" :
-                        "+m" (*p) : "r" (value)
+    __asm__ __volatile__ ("lock; xor %1, %0"
+                        : "+m" (*p)
+                        : "r" (value)
                         : "memory");
   }
 # define AO_HAVE_xor_full
@@ -134,7 +140,7 @@ AO_test_and_set_full (volatile AO_TS_t *addr)
     char result;
     __asm__ __volatile__ ("lock; cmpxchg %2, %0; setz %1"
                         : "+m" (*addr), "=a" (result)
-                        : "r" (new_val), "a"(old)
+                        : "r" (new_val), "a" (old)
                         : "memory");
     return (int) result;
   }
