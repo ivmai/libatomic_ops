@@ -216,8 +216,7 @@
       {
         old = *addr;
       }
-    while (AO_EXPECT_FALSE(!AO_char_compare_and_swap(addr, old,
-                                                      old + incr)));
+    while (!AO_char_compare_and_swap(addr, old, old + incr));
     return old;
   }
 # define AO_HAVE_char_fetch_and_add
@@ -816,8 +815,7 @@
       {
         old = *addr;
       }
-    while (AO_EXPECT_FALSE(!AO_short_compare_and_swap(addr, old,
-                                                      old + incr)));
+    while (!AO_short_compare_and_swap(addr, old, old + incr));
     return old;
   }
 # define AO_HAVE_short_fetch_and_add
@@ -1416,8 +1414,7 @@
       {
         old = *addr;
       }
-    while (AO_EXPECT_FALSE(!AO_int_compare_and_swap(addr, old,
-                                                      old + incr)));
+    while (!AO_int_compare_and_swap(addr, old, old + incr));
     return old;
   }
 # define AO_HAVE_int_fetch_and_add
