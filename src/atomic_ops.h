@@ -391,6 +391,12 @@
 /* of iterations, usually one.                                          */
 #include "atomic_ops/generalize.h"
 
+#if !defined(AO_GENERALIZE_TWICE) \
+    && defined(AO_HAVE_compare_double_and_swap_double) \
+    && (!defined(AO_HAVE_double_load) || !defined(AO_HAVE_double_store))
+# define AO_GENERALIZE_TWICE
+#endif
+
 #ifdef AO_T_IS_INT
   /* Included after the first generalization pass.      */
 # include "atomic_ops/sysdeps/ao_t_is_int.h"
