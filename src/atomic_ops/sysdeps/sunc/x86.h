@@ -52,7 +52,7 @@
     AO_t result;
 
     __asm__ __volatile__ ("lock; xadd %0, %1" :
-                        "=r" (result), "=m" (*p) : "0" (incr) /* , "m" (*p) */
+                        "=r" (result), "+m" (*p) : "0" (incr)
                         : "memory");
     return result;
   }
@@ -65,7 +65,7 @@ AO_char_fetch_and_add_full (volatile unsigned char *p, unsigned char incr)
   unsigned char result;
 
   __asm__ __volatile__ ("lock; xaddb %0, %1" :
-                        "=q" (result), "=m" (*p) : "0" (incr) /* , "m" (*p) */
+                        "=q" (result), "+m" (*p) : "0" (incr)
                         : "memory");
   return result;
 }
@@ -77,7 +77,7 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
   unsigned short result;
 
   __asm__ __volatile__ ("lock; xaddw %0, %1" :
-                        "=r" (result), "=m" (*p) : "0" (incr) /* , "m" (*p) */
+                        "=r" (result), "+m" (*p) : "0" (incr)
                         : "memory");
   return result;
 }
@@ -89,7 +89,7 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
   AO_and_full (volatile AO_t *p, AO_t value)
   {
     __asm__ __volatile__ ("lock; and %1, %0" :
-                        "=m" (*p) : "r" (value) /* , "m" (*p) */
+                        "+m" (*p) : "r" (value)
                         : "memory");
   }
 # define AO_HAVE_and_full
@@ -98,7 +98,7 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
   AO_or_full (volatile AO_t *p, AO_t value)
   {
     __asm__ __volatile__ ("lock; or %1, %0" :
-                        "=m" (*p) : "r" (value) /* , "m" (*p) */
+                        "+m" (*p) : "r" (value)
                         : "memory");
   }
 # define AO_HAVE_or_full
@@ -107,7 +107,7 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
   AO_xor_full (volatile AO_t *p, AO_t value)
   {
     __asm__ __volatile__ ("lock; xor %1, %0" :
-                        "=m" (*p) : "r" (value) /* , "m" (*p) */
+                        "+m" (*p) : "r" (value)
                         : "memory");
   }
 # define AO_HAVE_xor_full
@@ -119,8 +119,8 @@ AO_test_and_set_full (volatile AO_TS_t *addr)
   AO_TS_t oldval;
   /* Note: the "xchg" instruction does not need a "lock" prefix */
   __asm__ __volatile__ ("xchg %b0, %1"
-                        : "=q"(oldval), "=m"(*addr)
-                        : "0"(0xff) /* , "m"(*addr) */
+                        : "=q" (oldval), "+m" (*addr)
+                        : "0" (0xff)
                         : "memory");
   return (AO_TS_VAL_t)oldval;
 }
@@ -133,7 +133,7 @@ AO_test_and_set_full (volatile AO_TS_t *addr)
   {
     char result;
     __asm__ __volatile__ ("lock; cmpxchg %2, %0; setz %1"
-                        : "=m"(*addr), "=a"(result)
+                        : "+m" (*addr), "=a" (result)
                         : "r" (new_val), "a"(old)
                         : "memory");
     return (int) result;
@@ -146,9 +146,9 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                                AO_t new_val)
 {
   AO_t fetched_val;
-  __asm__ __volatile__ ("lock; cmpxchg %1, %2"
-                        : "=a" (fetched_val)
-                        : "r" (new_val), "m" (*addr), "0" (old_val)
+  __asm__ __volatile__ ("lock; cmpxchg %2, %0"
+                        : "+m" (*addr), "=a" (fetched_val)
+                        : "r" (new_val), "a" (old_val)
                         : "memory");
   return fetched_val;
 }
@@ -174,8 +174,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
       char result;
 
       __asm__ __volatile__ ("lock; cmpxchg8b %0; setz %1"
-                        : "=m" (*addr), "=a" (result)
-                        : /* "m" (*addr), */ "d" (old_val2), "a" (old_val1),
+                        : "+m" (*addr), "=a" (result)
+                        : "d" (old_val2), "a" (old_val1),
                           "c" (new_val2), "b" (new_val1)
                         : "memory");
       return (int) result;
@@ -193,8 +193,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
     unsigned int result;
 
     __asm__ __volatile__ ("lock; xaddl %0, %1"
-                        : "=r" (result), "=m" (*p)
-                        : "0" (incr) /* , "m" (*p) */
+                        : "=r" (result), "+m" (*p)
+                        : "0" (incr)
                         : "memory");
     return result;
   }
@@ -212,8 +212,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
     {
       char result;
       __asm__ __volatile__ ("lock; cmpxchg16b %0; setz %1"
-                        : "=m"(*addr), "=a"(result)
-                        : /* "m" (*addr), */ "d" (old_val2), "a" (old_val1),
+                        : "+m" (*addr), "=a" (result)
+                        : "d" (old_val2), "a" (old_val1),
                           "c" (new_val2), "b" (new_val1)
                         : "memory");
       return (int) result;
