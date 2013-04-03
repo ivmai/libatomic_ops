@@ -8,7 +8,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign dist-bzip2 nostdinc])
 AM_MAINTAINER_MODE
 
-AM_CONFIG_HEADER(src/config.h)
+AC_CONFIG_HEADERS([src/config.h])
 
 # Checks for programs.
 AM_PROG_CC_C_O
