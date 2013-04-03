@@ -6,7 +6,7 @@ AC_CONFIG_SRCDIR(src/atomic_ops.c)
 AM_INIT_AUTOMAKE
 AC_PROG_RANLIB
 
-AM_CONFIG_HEADER(src/config.h)
+AC_CONFIG_HEADERS([src/config.h])
 
 # Checks for programs.
 AM_PROG_CC_C_O
