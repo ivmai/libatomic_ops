@@ -282,7 +282,18 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
   }
 # define AO_HAVE_int_fetch_and_add_full
 
-/* TODO: Implement double_load/store. */
+  /* The Intel and AMD Architecture Programmer Manuals state roughly    */
+  /* the following:                                                     */
+  /* - CMPXCHG16B (with a LOCK prefix) can be used to perform 16-byte   */
+  /* atomic accesses in 64-bit mode (with certain alignment             */
+  /* restrictions);                                                     */
+  /* - SSE instructions that access data larger than a quadword (like   */
+  /* MOVDQA) may be implemented using multiple memory accesses;         */
+  /* - LOCK prefix causes an invalid-opcode exception when used with    */
+  /* 128-bit media (SSE) instructions.                                  */
+  /* Thus, currently, the only way to implement lock-free double_load   */
+  /* and double_store on x86_64 is to use CMPXCHG16B (if available).    */
+
 /* TODO: Test some gcc macro to detect presence of cmpxchg16b. */
 
 # ifdef AO_CMPXCHG16B_AVAILABLE
