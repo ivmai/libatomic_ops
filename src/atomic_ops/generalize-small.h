@@ -445,13 +445,6 @@
 # define AO_HAVE_char_store_write
 #endif
 
-#if defined(AO_HAVE_char_store_write) \
-    && !defined(AO_HAVE_char_store_release_write)
-# define AO_char_store_release_write(addr, val) \
-                                AO_char_store_write(addr, val)
-# define AO_HAVE_char_store_release_write
-#endif
-
 #if defined(AO_HAVE_char_compare_and_swap_write) \
     && !defined(AO_HAVE_char_store_write)
   AO_INLINE void
@@ -465,6 +458,13 @@
                                                               new_val)));
   }
 # define AO_HAVE_char_store_write
+#endif
+
+#if defined(AO_HAVE_char_store_write) \
+    && !defined(AO_HAVE_char_store_release_write)
+# define AO_char_store_release_write(addr, val) \
+                                AO_char_store_write(addr, val)
+# define AO_HAVE_char_store_release_write
 #endif
 
 #if defined(AO_HAVE_char_store_release) && defined(AO_HAVE_nop_full) \
@@ -965,13 +965,6 @@
 # define AO_HAVE_short_store_write
 #endif
 
-#if defined(AO_HAVE_short_store_write) \
-    && !defined(AO_HAVE_short_store_release_write)
-# define AO_short_store_release_write(addr, val) \
-                                AO_short_store_write(addr, val)
-# define AO_HAVE_short_store_release_write
-#endif
-
 #if defined(AO_HAVE_short_compare_and_swap_write) \
     && !defined(AO_HAVE_short_store_write)
   AO_INLINE void
@@ -985,6 +978,13 @@
                                                               new_val)));
   }
 # define AO_HAVE_short_store_write
+#endif
+
+#if defined(AO_HAVE_short_store_write) \
+    && !defined(AO_HAVE_short_store_release_write)
+# define AO_short_store_release_write(addr, val) \
+                                AO_short_store_write(addr, val)
+# define AO_HAVE_short_store_release_write
 #endif
 
 #if defined(AO_HAVE_short_store_release) && defined(AO_HAVE_nop_full) \
@@ -1485,13 +1485,6 @@
 # define AO_HAVE_int_store_write
 #endif
 
-#if defined(AO_HAVE_int_store_write) \
-    && !defined(AO_HAVE_int_store_release_write)
-# define AO_int_store_release_write(addr, val) \
-                                AO_int_store_write(addr, val)
-# define AO_HAVE_int_store_release_write
-#endif
-
 #if defined(AO_HAVE_int_compare_and_swap_write) \
     && !defined(AO_HAVE_int_store_write)
   AO_INLINE void
@@ -1505,6 +1498,13 @@
                                                               new_val)));
   }
 # define AO_HAVE_int_store_write
+#endif
+
+#if defined(AO_HAVE_int_store_write) \
+    && !defined(AO_HAVE_int_store_release_write)
+# define AO_int_store_release_write(addr, val) \
+                                AO_int_store_write(addr, val)
+# define AO_HAVE_int_store_release_write
 #endif
 
 #if defined(AO_HAVE_int_store_release) && defined(AO_HAVE_nop_full) \
@@ -2005,13 +2005,6 @@
 # define AO_HAVE_store_write
 #endif
 
-#if defined(AO_HAVE_store_write) \
-    && !defined(AO_HAVE_store_release_write)
-# define AO_store_release_write(addr, val) \
-                                AO_store_write(addr, val)
-# define AO_HAVE_store_release_write
-#endif
-
 #if defined(AO_HAVE_compare_and_swap_write) \
     && !defined(AO_HAVE_store_write)
   AO_INLINE void
@@ -2025,6 +2018,13 @@
                                                               new_val)));
   }
 # define AO_HAVE_store_write
+#endif
+
+#if defined(AO_HAVE_store_write) \
+    && !defined(AO_HAVE_store_release_write)
+# define AO_store_release_write(addr, val) \
+                                AO_store_write(addr, val)
+# define AO_HAVE_store_release_write
 #endif
 
 #if defined(AO_HAVE_store_release) && defined(AO_HAVE_nop_full) \
@@ -2525,13 +2525,6 @@
 # define AO_HAVE_double_store_write
 #endif
 
-#if defined(AO_HAVE_double_store_write) \
-    && !defined(AO_HAVE_double_store_release_write)
-# define AO_double_store_release_write(addr, val) \
-                                AO_double_store_write(addr, val)
-# define AO_HAVE_double_store_release_write
-#endif
-
 #if defined(AO_HAVE_double_compare_and_swap_write) \
     && !defined(AO_HAVE_double_store_write)
   AO_INLINE void
@@ -2545,6 +2538,13 @@
                                                               new_val)));
   }
 # define AO_HAVE_double_store_write
+#endif
+
+#if defined(AO_HAVE_double_store_write) \
+    && !defined(AO_HAVE_double_store_release_write)
+# define AO_double_store_release_write(addr, val) \
+                                AO_double_store_write(addr, val)
+# define AO_HAVE_double_store_release_write
 #endif
 
 #if defined(AO_HAVE_double_store_release) && defined(AO_HAVE_nop_full) \
