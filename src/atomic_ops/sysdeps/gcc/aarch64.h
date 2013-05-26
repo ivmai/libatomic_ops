@@ -171,6 +171,29 @@
     return !result;
   }
 # define AO_HAVE_double_compare_and_swap_release
-#endif
+
+  AO_INLINE int
+  AO_double_compare_and_swap_full(volatile AO_double_t *addr,
+                                  AO_double_t old_val, AO_double_t new_val)
+  {
+    AO_double_t tmp;
+    int result = 1;
+
+    do {
+      __asm__ __volatile__("//AO_double_compare_and_swap_full\n"
+        "       ldaxp  %0, %1, %2\n"
+        : "=&r" (tmp.AO_val1), "=&r" (tmp.AO_val2)
+        : "Q" (*addr));
+      if (tmp.AO_val1 != old_val.AO_val1 || tmp.AO_val2 != old_val.AO_val2)
+        break;
+      __asm__ __volatile__(
+        "       stlxp %w0, %2, %3, %1\n"
+        : "=&r" (result), "=Q" (*addr)
+        : "r" (new_val.AO_val1), "r" (new_val.AO_val2));
+    } while (AO_EXPECT_FALSE(result));
+    return !result;
+  }
+# define AO_HAVE_double_compare_and_swap_full
+#endif /* __GNUC__ == 4 */
 
 #include "generic.h"
