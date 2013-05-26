@@ -141,10 +141,11 @@ AH_TEMPLATE([AO_WEAK_DOUBLE_CAS_EMULATION],
 AC_DEFINE(_REENTRANT, 1, [Required define if using POSIX threads.])
 
 # Libraries needed to support threads (if any).
-THREADDLLIBS=
-have_pthreads=true
-AC_CHECK_LIB(pthread, pthread_self, THREADDLLIBS="-lpthread",,)
-case "$host" in
+have_pthreads=false
+AC_CHECK_LIB(pthread, pthread_self, have_pthreads=true)
+if test x$have_pthreads = xtrue; then
+  THREADDLLIBS=-lpthread
+  case "$host" in
     *-*-netbsd*)
       # Indicates the use of pthreads.
       AC_DEFINE(_PTHREADS)
@@ -163,7 +164,12 @@ case "$host" in
       # Skip test_atomic_pthreads.
       have_pthreads=false
       ;;
-esac
+  esac
+else
+  AC_DEFINE([AO_NO_PTHREADS], 1, [No pthreads library available])
+  # Assume VxWorks or Win32.
+  THREADDLLIBS=
+fi
 AC_SUBST(THREADDLLIBS)
 
 AM_CONDITIONAL(HAVE_PTHREAD_H, test x$have_pthreads = xtrue)
