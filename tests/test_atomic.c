@@ -15,6 +15,16 @@
 # include "config.h"
 #endif
 
+#if defined(AO_NO_PTHREADS) && defined(AO_USE_PTHREAD_DEFS)
+# include <stdio.h>
+
+  int main(void)
+  {
+    printf("test skipped\n");
+    return 0;
+  }
+
+#else
 
 #include "run_parallel.h"
 
@@ -190,3 +200,5 @@ int main(void)
 # endif
   return 0;
 }
+
+#endif /* !AO_NO_PTHREADS || !AO_USE_PTHREAD_DEFS */

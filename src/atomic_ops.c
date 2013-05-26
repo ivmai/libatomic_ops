@@ -49,7 +49,9 @@
 #if !defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__BORLANDC__) \
     || defined(AO_USE_NO_SIGNALS)
 
-#include <pthread.h>
+#ifndef AO_NO_PTHREADS
+# include <pthread.h>
+#endif
 
 #ifndef AO_USE_NO_SIGNALS
 # include <signal.h>
@@ -71,11 +73,10 @@
 # include "atomic_ops/sysdeps/standard_ao_double_t.h"
 #endif
 
-/*
- * Lock for pthreads-based implementation.
- */
-
-pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
+/* Lock for pthreads-based implementation.      */
+#ifndef AO_NO_PTHREADS
+  pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
+#endif
 
 /*
  * Out of line compare-and-swap emulation based on test and set.
