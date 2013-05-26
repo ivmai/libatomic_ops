@@ -138,23 +138,29 @@ AH_TEMPLATE([AO_WEAK_DOUBLE_CAS_EMULATION],
         [Emulate double-width CAS via pthread locking in case of no hardware \
          support (only gcc/x86_64, the emulation is unsafe)])
 
+AC_DEFINE(_REENTRANT, 1, [Required define if using POSIX threads.])
+
+# Libraries needed to support threads (if any).
 THREADDLLIBS=
 have_pthreads=true
-## Libraries needed to support threads.
 AC_CHECK_LIB(pthread, pthread_self, THREADDLLIBS="-lpthread",,)
-AC_DEFINE(_REENTRANT, 1, [Required define if using POSIX threads.])
 case "$host" in
     *-*-netbsd*)
+      # Indicates the use of pthreads.
       AC_DEFINE(_PTHREADS)
       ;;
     *-*-openbsd* | *-*-kfreebsd*-gnu | *-*-dgux*)
       THREADDLLIBS=-pthread
       ;;
     *-*-cygwin* | *-*-darwin*)
+      # Cygwin does not have a real libpthread, so Libtool cannot link
+      # against it.
       THREADDLLIBS=
       ;;
     *-*-mingw*)
+      # Use Win32 threads for tests anyway.
       THREADDLLIBS=
+      # Skip test_atomic_pthreads.
       have_pthreads=false
       ;;
 esac
