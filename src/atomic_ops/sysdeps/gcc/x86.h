@@ -114,6 +114,10 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
                         : "memory");
   }
 # define AO_HAVE_xor_full
+
+  /* AO_store_full could be implemented directly using "xchg" but it    */
+  /* could be generalized efficiently as an ordinary store accomplished */
+  /* with AO_nop_full ("mfence" instruction).                           */
 #endif /* !AO_PREFER_GENERALIZED */
 
 AO_INLINE AO_TS_VAL_t
