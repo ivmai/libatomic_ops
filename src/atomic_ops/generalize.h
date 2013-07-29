@@ -784,7 +784,7 @@
 # define AO_HAVE_or_acquire_read
 #endif
 
-/* dd_aquire_read is meaningless.       */
+/* dd_acquire_read is meaningless.      */
 
 /* Test_and_set */
 #if defined(AO_HAVE_test_and_set_full)
