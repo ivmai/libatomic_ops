@@ -842,4 +842,4 @@
 # define AO_HAVE_XSIZE_xor_acquire_read
 #endif
 
-/* XSIZE_and/or/xor_dd_aquire_read are meaningless.     */
+/* XSIZE_and/or/xor_dd_acquire_read are meaningless.    */

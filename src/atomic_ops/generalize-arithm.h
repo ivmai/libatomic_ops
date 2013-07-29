@@ -842,7 +842,7 @@
 # define AO_HAVE_char_xor_acquire_read
 #endif
 
-/* char_and/or/xor_dd_aquire_read are meaningless.     */
+/* char_and/or/xor_dd_acquire_read are meaningless.    */
 /*
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
@@ -1687,7 +1687,7 @@
 # define AO_HAVE_short_xor_acquire_read
 #endif
 
-/* short_and/or/xor_dd_aquire_read are meaningless.     */
+/* short_and/or/xor_dd_acquire_read are meaningless.    */
 /*
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
@@ -2532,7 +2532,7 @@
 # define AO_HAVE_int_xor_acquire_read
 #endif
 
-/* int_and/or/xor_dd_aquire_read are meaningless.     */
+/* int_and/or/xor_dd_acquire_read are meaningless.    */
 /*
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
@@ -3377,4 +3377,4 @@
 # define AO_HAVE_xor_acquire_read
 #endif
 
-/* and/or/xor_dd_aquire_read are meaningless.     */
+/* and/or/xor_dd_acquire_read are meaningless.    */
