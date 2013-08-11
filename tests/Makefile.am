@@ -3,8 +3,8 @@ EXTRA_DIST=test_atomic_include.template list_atomic.template run_parallel.h \
 # We distribute test_atomic_include.h and list_atomic.c, since it is hard
 # to regenerate them on Windows without sed.
 
-BUILT_SOURCES = test_atomic_include.h list_atomic.i
-CLEANFILES = list_atomic.i
+BUILT_SOURCES = test_atomic_include.h list_atomic.i list_atomic.o
+CLEANFILES = list_atomic.i list_atomic.o
 
 AM_CPPFLAGS = \
         -I$(top_builddir)/src -I$(top_srcdir)/src \
@@ -56,4 +56,8 @@ list_atomic.c: list_atomic.template
 	sed -e s/XX/_acquire_read/ $? >> $@
 
 list_atomic.i: list_atomic.c
-	$(COMPILE) $? -E > list_atomic.i
+	$(COMPILE) $? -E > $@
+
+# Verify list_atomic.c syntax:
+list_atomic.o: list_atomic.c
+	$(COMPILE) -c -o $@ $?

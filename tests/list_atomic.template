@@ -13,63 +13,76 @@
 
 void list_atomicXX(void)
 {
-  AO_t val;
-  AO_t newval = 0, oldval = 0;
-  AO_TS_t ts;
-  long incr = 0;
-
-# if defined(AO_HAVE_nopXX)
-    "AO_nopXX(): ";
-    AO_nopXX();
-# else
-    "No AO_nopXX";
+  volatile AO_t val;
+# if defined(AO_HAVE_compare_and_swapXX) \
+     || defined(AO_HAVE_fetch_compare_and_swapXX)
+    static AO_t oldval /* = 0 */;
 # endif
-# if defined(AO_HAVE_loadXX)
-    "AO_loadXX(&val):";
-    AO_loadXX(&val);
-# else
-    "No AO_loadXX";
-# endif
-# if defined(AO_HAVE_storeXX)
-    "AO_storeXX(&val, newval):";
-    AO_storeXX(&val, newval);
-# else
-    "No AO_storeXX";
+# if defined(AO_HAVE_storeXX) || defined(AO_HAVE_compare_and_swapXX) \
+     || defined(AO_HAVE_fetch_compare_and_swapXX)
+    static AO_t newval /* = 0 */;
 # endif
 # if defined(AO_HAVE_test_and_setXX)
-    "AO_test_and_setXX(&ts):";
-    AO_test_and_setXX(&ts);
-# else
-    "No AO_test_and_setXX";
-# endif
-# if defined(AO_HAVE_fetch_and_add1XX)
-    "AO_fetch_and_add1XX(&val):";
-    AO_fetch_and_add1XX(&val);
-# else
-    "No AO_fetch_and_add1XX";
-# endif
-# if defined(AO_HAVE_fetch_and_sub1XX)
-    "AO_fetch_and_sub1XX(&val):";
-    AO_fetch_and_sub1XX(&val);
-# else
-    "No AO_fetch_and_sub1XX";
+    AO_TS_t ts;
 # endif
 # if defined(AO_HAVE_fetch_and_addXX)
-    "AO_fetch_and_addXX(&val, incr):";
+    static AO_t incr /* = 0 */;
+# endif
+
+# if defined(AO_HAVE_nopXX)
+    (void)"AO_nopXX(): ";
+    AO_nopXX();
+# else
+    (void)"No AO_nopXX";
+# endif
+
+# if defined(AO_HAVE_loadXX)
+    (void)"AO_loadXX(&val):";
+    AO_loadXX(&val);
+# else
+    (void)"No AO_loadXX";
+# endif
+# if defined(AO_HAVE_storeXX)
+    (void)"AO_storeXX(&val, newval):";
+    AO_storeXX(&val, newval);
+# else
+    (void)"No AO_storeXX";
+# endif
+# if defined(AO_HAVE_fetch_and_addXX)
+    (void)"AO_fetch_and_addXX(&val, incr):";
     AO_fetch_and_addXX(&val, incr);
 # else
-    "No AO_fetch_and_addXX";
+    (void)"No AO_fetch_and_addXX";
+# endif
+# if defined(AO_HAVE_fetch_and_add1XX)
+    (void)"AO_fetch_and_add1XX(&val):";
+    AO_fetch_and_add1XX(&val);
+# else
+    (void)"No AO_fetch_and_add1XX";
+# endif
+# if defined(AO_HAVE_fetch_and_sub1XX)
+    (void)"AO_fetch_and_sub1XX(&val):";
+    AO_fetch_and_sub1XX(&val);
+# else
+    (void)"No AO_fetch_and_sub1XX";
 # endif
 # if defined(AO_HAVE_compare_and_swapXX)
-    "AO_compare_and_swapXX(&val, oldval, newval):";
+    (void)"AO_compare_and_swapXX(&val, oldval, newval):";
     AO_compare_and_swapXX(&val, oldval, newval);
 # else
-    "No AO_compare_and_swapXX";
+    (void)"No AO_compare_and_swapXX";
 # endif
 # if defined(AO_HAVE_fetch_compare_and_swapXX)
-    "AO_fetch_compare_and_swapXX(&val, oldval, newval):";
+    (void)"AO_fetch_compare_and_swapXX(&val, oldval, newval):";
     AO_fetch_compare_and_swapXX(&val, oldval, newval);
 # else
-    "No AO_fetch_compare_and_swapXX";
+    (void)"No AO_fetch_compare_and_swapXX";
+# endif
+
+# if defined(AO_HAVE_test_and_setXX)
+    (void)"AO_test_and_setXX(&ts):";
+    AO_test_and_setXX(&ts);
+# else
+    (void)"No AO_test_and_setXX";
 # endif
 }
