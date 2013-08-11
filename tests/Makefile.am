@@ -46,14 +46,14 @@ test_atomic_include.h: test_atomic_include.template
 
 list_atomic.c: list_atomic.template
 	echo "#include \"atomic_ops.h\" " > $@
-	sed -e s/XX// $? >> $@
-	sed -e s/XX/_release/ $? >> $@
-	sed -e s/XX/_acquire/ $? >> $@
-	sed -e s/XX/_read/ $? >> $@
-	sed -e s/XX/_write/ $? >> $@
-	sed -e s/XX/_full/ $? >> $@
-	sed -e s/XX/_release_write/ $? >> $@
-	sed -e s/XX/_acquire_read/ $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX// $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_release/ $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_acquire/ $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_read/ $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_write/ $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_full/ $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_release_write/ $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_acquire_read/ $? >> $@
 
 list_atomic.i: list_atomic.c
 	$(COMPILE) $? -E > $@

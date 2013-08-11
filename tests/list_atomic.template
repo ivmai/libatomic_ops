@@ -11,22 +11,23 @@
 
 /* The result will not link or run.                                     */
 
-void list_atomicXX(void)
+void XSIZE_list_atomicXX(void)
 {
-  volatile AO_t val;
-# if defined(AO_HAVE_compare_and_swapXX) \
-     || defined(AO_HAVE_fetch_compare_and_swapXX)
-    static AO_t oldval /* = 0 */;
+  volatile XCTYPE val;
+# if defined(AO_HAVE_XSIZE_compare_and_swapXX) \
+     || defined(AO_HAVE_XSIZE_fetch_compare_and_swapXX)
+    static XCTYPE oldval /* = 0 */;
 # endif
-# if defined(AO_HAVE_storeXX) || defined(AO_HAVE_compare_and_swapXX) \
-     || defined(AO_HAVE_fetch_compare_and_swapXX)
-    static AO_t newval /* = 0 */;
+# if defined(AO_HAVE_XSIZE_storeXX) \
+     || defined(AO_HAVE_XSIZE_compare_and_swapXX) \
+     || defined(AO_HAVE_XSIZE_fetch_compare_and_swapXX)
+    static XCTYPE newval /* = 0 */;
 # endif
 # if defined(AO_HAVE_test_and_setXX)
     AO_TS_t ts;
 # endif
-# if defined(AO_HAVE_fetch_and_addXX)
-    static AO_t incr /* = 0 */;
+# if defined(AO_HAVE_XSIZE_fetch_and_addXX)
+    static XCTYPE incr /* = 0 */;
 # endif
 
 # if defined(AO_HAVE_nopXX)
@@ -36,47 +37,47 @@ void list_atomicXX(void)
     (void)"No AO_nopXX";
 # endif
 
-# if defined(AO_HAVE_loadXX)
-    (void)"AO_loadXX(&val):";
-    AO_loadXX(&val);
+# ifdef AO_HAVE_XSIZE_loadXX
+    (void)"AO_XSIZE_loadXX(&val):";
+    AO_XSIZE_loadXX(&val);
 # else
-    (void)"No AO_loadXX";
+    (void)"No AO_XSIZE_loadXX";
 # endif
-# if defined(AO_HAVE_storeXX)
-    (void)"AO_storeXX(&val, newval):";
-    AO_storeXX(&val, newval);
+# ifdef AO_HAVE_XSIZE_storeXX
+    (void)"AO_XSIZE_storeXX(&val, newval):";
+    AO_XSIZE_storeXX(&val, newval);
 # else
-    (void)"No AO_storeXX";
+    (void)"No AO_XSIZE_storeXX";
 # endif
-# if defined(AO_HAVE_fetch_and_addXX)
-    (void)"AO_fetch_and_addXX(&val, incr):";
-    AO_fetch_and_addXX(&val, incr);
+# ifdef AO_HAVE_XSIZE_fetch_and_addXX
+    (void)"AO_XSIZE_fetch_and_addXX(&val, incr):";
+    AO_XSIZE_fetch_and_addXX(&val, incr);
 # else
-    (void)"No AO_fetch_and_addXX";
+    (void)"No AO_XSIZE_fetch_and_addXX";
 # endif
-# if defined(AO_HAVE_fetch_and_add1XX)
-    (void)"AO_fetch_and_add1XX(&val):";
-    AO_fetch_and_add1XX(&val);
+# ifdef AO_HAVE_XSIZE_fetch_and_add1XX
+    (void)"AO_XSIZE_fetch_and_add1XX(&val):";
+    AO_XSIZE_fetch_and_add1XX(&val);
 # else
-    (void)"No AO_fetch_and_add1XX";
+    (void)"No AO_XSIZE_fetch_and_add1XX";
 # endif
-# if defined(AO_HAVE_fetch_and_sub1XX)
-    (void)"AO_fetch_and_sub1XX(&val):";
-    AO_fetch_and_sub1XX(&val);
+# ifdef AO_HAVE_XSIZE_fetch_and_sub1XX
+    (void)"AO_XSIZE_fetch_and_sub1XX(&val):";
+    AO_XSIZE_fetch_and_sub1XX(&val);
 # else
-    (void)"No AO_fetch_and_sub1XX";
+    (void)"No AO_XSIZE_fetch_and_sub1XX";
 # endif
-# if defined(AO_HAVE_compare_and_swapXX)
-    (void)"AO_compare_and_swapXX(&val, oldval, newval):";
-    AO_compare_and_swapXX(&val, oldval, newval);
+# ifdef AO_HAVE_XSIZE_compare_and_swapXX
+    (void)"AO_XSIZE_compare_and_swapXX(&val, oldval, newval):";
+    AO_XSIZE_compare_and_swapXX(&val, oldval, newval);
 # else
-    (void)"No AO_compare_and_swapXX";
+    (void)"No AO_XSIZE_compare_and_swapXX";
 # endif
-# if defined(AO_HAVE_fetch_compare_and_swapXX)
-    (void)"AO_fetch_compare_and_swapXX(&val, oldval, newval):";
-    AO_fetch_compare_and_swapXX(&val, oldval, newval);
+# ifdef AO_HAVE_XSIZE_fetch_compare_and_swapXX
+    (void)"AO_XSIZE_fetch_compare_and_swapXX(&val, oldval, newval):";
+    AO_XSIZE_fetch_compare_and_swapXX(&val, oldval, newval);
 # else
-    (void)"No AO_fetch_compare_and_swapXX";
+    (void)"No AO_XSIZE_fetch_compare_and_swapXX";
 # endif
 
 # if defined(AO_HAVE_test_and_setXX)
