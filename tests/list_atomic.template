@@ -13,8 +13,9 @@
 
 void list_atomicXX(void)
 {
-  AO_T val, newval = 0, oldval = 0;
-  AO_TS_T ts;
+  AO_t val;
+  AO_t newval = 0, oldval = 0;
+  AO_TS_t ts;
   long incr = 0;
 
 # if defined(AO_HAVE_nopXX)

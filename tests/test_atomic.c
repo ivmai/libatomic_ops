@@ -132,7 +132,7 @@ int acqrel_test(void)
 
 #if defined(AO_HAVE_test_and_set_acquire)
 
-AO_TS_T lock = AO_TS_INITIALIZER;
+AO_TS_t lock = AO_TS_INITIALIZER;
 
 unsigned long locked_counter;
 volatile unsigned long junk = 13;
