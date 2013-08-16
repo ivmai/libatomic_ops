@@ -35,62 +35,62 @@ test_malloc_LDADD = $(THREADDLLIBS) \
         $(top_builddir)/src/libatomic_ops.la
 
 test_atomic_include.h: test_atomic_include.template
-	sed -e s/XX// $? > $@
-	sed -e s/XX/_release/ $? >> $@
-	sed -e s/XX/_acquire/ $? >> $@
-	sed -e s/XX/_read/ $? >> $@
-	sed -e s/XX/_write/ $? >> $@
-	sed -e s/XX/_full/ $? >> $@
-	sed -e s/XX/_release_write/ $? >> $@
-	sed -e s/XX/_acquire_read/ $? >> $@
+	sed -e s:XX::g $? > $@
+	sed -e s:XX:_release:g $? >> $@
+	sed -e s:XX:_acquire:g $? >> $@
+	sed -e s:XX:_read:g $? >> $@
+	sed -e s:XX:_write:g $? >> $@
+	sed -e s:XX:_full:g $? >> $@
+	sed -e s:XX:_release_write:g $? >> $@
+	sed -e s:XX:_acquire_read:g $? >> $@
 
 list_atomic.c: list_atomic.template
 	echo "#include \"atomic_ops.h\"" > $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX// $? >> $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_release/ $? >> $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_acquire/ $? >> $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_read/ $? >> $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_write/ $? >> $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_full/ $? >> $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_release_write/ $? >> $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_acquire_read/ $? >> $@
-	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s/XX/_dd_acquire_read/ $? >> $@
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s/XX// $? >> $@
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s/XX/_release/ $? >> $@
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s/XX/_acquire/ $? >> $@
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s/XX/_read/ $? >> $@
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s/XX/_write/ $? >> $@
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s/XX/_full/ $? >> $@
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s/XX/_release_write/ $? >> $@
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s/XX/_acquire_read/ $? >> $@
-	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s/XX/_dd_acquire_read/ $? >> $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s/XX// $? >> $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s/XX/_release/ $? >> $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s/XX/_acquire/ $? >> $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s/XX/_read/ $? >> $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s/XX/_write/ $? >> $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s/XX/_full/ $? >> $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s/XX/_release_write/ $? >> $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s/XX/_acquire_read/ $? >> $@
-	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s/XX/_dd_acquire_read/ $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s/XX// $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s/XX/_release/ $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s/XX/_acquire/ $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s/XX/_read/ $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s/XX/_write/ $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s/XX/_full/ $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s/XX/_release_write/ $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s/XX/_acquire_read/ $? >> $@
-	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s/XX/_dd_acquire_read/ $? >> $@
-	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s/XX// $? >> $@
-	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s/XX/_release/ $? >> $@
-	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s/XX/_acquire/ $? >> $@
-	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s/XX/_read/ $? >> $@
-	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s/XX/_write/ $? >> $@
-	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s/XX/_full/ $? >> $@
-	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s/XX/_release_write/ $? >> $@
-	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s/XX/_acquire_read/ $? >> $@
-	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s/XX/_dd_acquire_read/ $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s:XX::g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s:XX:_release:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s:XX:_acquire:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s:XX:_read:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s:XX:_write:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s:XX:_full:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s:XX:_release_write:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s:XX:_acquire_read:g $? >> $@
+	sed -e s:XSIZE_::g -e s:XCTYPE:AO_t:g -e s:XX:_dd_acquire_read:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s:XX::g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s:XX:_release:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s:XX:_acquire:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s:XX:_read:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s:XX:_write:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s:XX:_full:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s:XX:_release_write:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s:XX:_acquire_read:g $? >> $@
+	sed -e s:XSIZE:char:g -e s:XCTYPE:unsigned/**/char:g -e s:XX:_dd_acquire_read:g $? >> $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s:XX::g $? >> $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s:XX:_release:g $? >> $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s:XX:_acquire:g $? >> $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s:XX:_read:g $? >> $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s:XX:_write:g $? >> $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s:XX:_full:g $? >> $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s:XX:_release_write:g $? >> $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s:XX:_acquire_read:g $? >> $@
+	sed -e s:XSIZE:short:g -e s:XCTYPE:unsigned/**/short:g -e s:XX:_dd_acquire_read:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s:XX::g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s:XX:_release:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s:XX:_acquire:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s:XX:_read:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s:XX:_write:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s:XX:_full:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s:XX:_release_write:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s:XX:_acquire_read:g $? >> $@
+	sed -e s:XSIZE:int:g -e s:XCTYPE:unsigned:g -e s:XX:_dd_acquire_read:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s:XX::g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s:XX:_release:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s:XX:_acquire:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s:XX:_read:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s:XX:_write:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s:XX:_full:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s:XX:_release_write:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s:XX:_acquire_read:g $? >> $@
+	sed -e s:XSIZE:double:g -e s:XCTYPE:AO_double_t:g -e s:XX:_dd_acquire_read:g $? >> $@
 
 list_atomic.i: list_atomic.c
 	$(COMPILE) $? -E > $@
