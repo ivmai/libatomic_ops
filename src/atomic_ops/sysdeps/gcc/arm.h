@@ -62,12 +62,16 @@
       /* DMB is present in ARMv6M and ARMv7+.   */
 #     define AO_ARM_HAVE_DMB
 #   endif
-#   if !defined(__thumb__) \
-       || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
-           && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__))
+#   if (!defined(__thumb__) \
+        || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
+            && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__))) \
+       && (!defined(__clang__) || (__clang_major__ > 3) \
+            || (__clang_major__ == 3 && __clang_minor__ >= 3))
       /* LDREXD/STREXD present in ARMv6K/M+ (see gas/config/tc-arm.c).  */
       /* In the Thumb mode, this works only starting from ARMv7 (except */
-      /* for the base and 'M' models).                                  */
+      /* for the base and 'M' models).  Clang3.2 (and earlier) does not */
+      /* allocate register pairs for LDREXD/STREXD properly (besides,   */
+      /* Clang3.1 does not support "%H<r>" operand specification).      */
 #     define AO_ARM_HAVE_LDREXD
 #   endif /* !thumb || ARMv7A || ARMv7R+ */
 # endif /* ARMv7+ */
