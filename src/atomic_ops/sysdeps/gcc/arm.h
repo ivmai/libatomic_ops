@@ -269,11 +269,15 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 #if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
     && !defined(__ARM_ARCH_6T2__) && !defined(__ARM_ARCH_6Z__) \
     && !defined(__ARM_ARCH_6ZT2__) && (!defined(__thumb__) \
-              || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
-                  && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__)))
+        || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
+            && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__))) \
+    && (!defined(__clang__) || (__clang_major__ > 3) \
+         || (__clang_major__ == 3 && __clang_minor__ >= 3))
   /* LDREXD/STREXD present in ARMv6K/M+ (see gas/config/tc-arm.c)       */
   /* In the Thumb mode, this works only starting from ARMv7 (except for */
-  /* the base and 'M' models).                                          */
+  /* the base and 'M' models).  Clang3.2 (and earlier) does not         */
+  /* allocate register pairs for LDREXD/STREXD properly (besides,       */
+  /* Clang3.1 does not support "%H<r>" operand specification).          */
   AO_INLINE int
   AO_compare_double_and_swap_double(volatile AO_double_t *addr,
                                     AO_t old_val1, AO_t old_val2,
