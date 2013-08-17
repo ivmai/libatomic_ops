@@ -19,7 +19,7 @@ void XSIZE_list_atomicXX(void)
      || defined(AO_HAVE_XSIZE_andXX) \
      || defined(AO_HAVE_XSIZE_compare_and_swapXX) \
      || defined(AO_HAVE_XSIZE_fetch_compare_and_swapXX)
-    volatile XCTYPE val;
+    static volatile XCTYPE val /* = 0 */;
 # endif
 # if defined(AO_HAVE_XSIZE_compare_and_swapXX) \
      || defined(AO_HAVE_XSIZE_fetch_compare_and_swapXX)
