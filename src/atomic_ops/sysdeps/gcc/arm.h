@@ -389,7 +389,7 @@ AO_xor(volatile AO_t *p, AO_t value)
   AO_INLINE unsigned char
   AO_char_fetch_and_add(volatile unsigned char *p, unsigned char incr)
   {
-    unsigned char result, tmp;
+    unsigned result, tmp;
     int flag;
 
     __asm__ __volatile__("@AO_char_fetch_and_add\n"
@@ -401,16 +401,16 @@ AO_xor(volatile AO_t *p, AO_t value)
       "       bne     1b\n"
       AO_THUMB_RESTORE_MODE
       : "=&r" (result), "=&r" (flag), "=&r" (tmp), "+m" (*p)
-      : "r" (incr), "r" (p)
+      : "r" ((unsigned)incr), "r" (p)
       : AO_THUMB_SWITCH_CLOBBERS "cc");
-    return result;
+    return (unsigned char)result;
   }
 # define AO_HAVE_char_fetch_and_add
 
   AO_INLINE unsigned short
   AO_short_fetch_and_add(volatile unsigned short *p, unsigned short incr)
   {
-    unsigned short result, tmp;
+    unsigned result, tmp;
     int flag;
 
     __asm__ __volatile__("@AO_short_fetch_and_add\n"
@@ -422,9 +422,9 @@ AO_xor(volatile AO_t *p, AO_t value)
       "       bne     1b\n"
       AO_THUMB_RESTORE_MODE
       : "=&r" (result), "=&r" (flag), "=&r" (tmp), "+m" (*p)
-      : "r" (incr), "r" (p)
+      : "r" ((unsigned)incr), "r" (p)
       : AO_THUMB_SWITCH_CLOBBERS "cc");
-    return result;
+    return (unsigned short)result;
   }
 # define AO_HAVE_short_fetch_and_add
 #endif /* AO_ARM_HAVE_LDREXBH */
@@ -542,9 +542,9 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
       if (tmp != old_val.AO_whole)
         break;
       __asm__ __volatile__(
-        "       strexd  %0, %2, %H2, [%3]\n" /* store new one if matched */
+        "       strexd  %0, %3, %H3, [%2]\n" /* store new one if matched */
         : "=&r"(result), "+m"(*addr)
-        : "r"(new_val.AO_whole), "r"(addr)
+        : "r" (addr), "r" (new_val.AO_whole)
         : "cc");
     } while (AO_EXPECT_FALSE(result));
     return !result;   /* if succeded, return 1 else 0 */
