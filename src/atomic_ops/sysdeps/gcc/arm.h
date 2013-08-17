@@ -499,7 +499,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 
     /* AO_THUMB_GO_ARM is empty. */
     __asm__ __volatile__("@AO_double_load\n"
-      "       ldrexd  %0, [%1]"
+      "       ldrexd  %0, %H0, [%1]"
       : "=&r" (result.AO_whole)
       : "r" (addr)
       /* : no clobber */);
@@ -516,8 +516,8 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     do {
       /* AO_THUMB_GO_ARM is empty. */
       __asm__ __volatile__("@AO_double_store\n"
-        "       ldrexd  %0, [%3]\n"
-        "       strexd  %1, %4, [%3]"
+        "       ldrexd  %0, %H0, [%3]\n"
+        "       strexd  %1, %4, %H4, [%3]"
         : "=&r" (old_val.AO_whole), "=&r" (status), "+m" (*addr)
         : "r" (addr), "r" (new_val.AO_whole)
         : "cc");
@@ -535,14 +535,14 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     do {
       /* AO_THUMB_GO_ARM is empty. */
       __asm__ __volatile__("@AO_double_compare_and_swap\n"
-        "       ldrexd  %0, [%1]\n"     /* get original to r1 & r2 */
+        "       ldrexd  %0, %H0, [%1]\n" /* get original to r1 & r2 */
         : "=&r"(tmp)
         : "r"(addr)
         /* : no clobber */);
       if (tmp != old_val.AO_whole)
         break;
       __asm__ __volatile__(
-        "       strexd  %0, %2, [%3]\n" /* store new one if matched */
+        "       strexd  %0, %2, %H2, [%3]\n" /* store new one if matched */
         : "=&r"(result), "+m"(*addr)
         : "r"(new_val.AO_whole), "r"(addr)
         : "cc");
