@@ -295,9 +295,9 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
       if (tmp != old_val)
         break;
       __asm__ __volatile__(
-        "       strexd  %0, %2, %H2, [%3]\n" /* store new one if matched */
+        "       strexd  %0, %3, %H3, [%2]\n" /* store new one if matched */
         : "=&r"(result), "+m"(*addr)
-        : "r"(new_val), "r"(addr)
+        : "r" (addr), "r" (new_val)
         : "cc");
     } while (result);
     return !result;   /* if succeded, return 1 else 0 */
