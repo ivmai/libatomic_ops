@@ -288,14 +288,14 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 
     do {
       __asm__ __volatile__("@AO_compare_double_and_swap_double\n"
-        "       ldrexd  %0, [%1]\n"     /* get original to r1 & r2 */
+        "       ldrexd  %0, %H0, [%1]\n" /* get original to r1 & r2 */
         : "=&r"(tmp)
         : "r"(addr)
         : "cc");
       if (tmp != old_val)
         break;
       __asm__ __volatile__(
-        "       strexd  %0, %2, [%3]\n" /* store new one if matched */
+        "       strexd  %0, %2, %H2, [%3]\n" /* store new one if matched */
         : "=&r"(result), "+m"(*addr)
         : "r"(new_val), "r"(addr)
         : "cc");
