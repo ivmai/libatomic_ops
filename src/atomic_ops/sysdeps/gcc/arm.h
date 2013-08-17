@@ -47,7 +47,8 @@
     && ((!defined(__ARM_ARCH_5__) && !defined(__ARM_ARCH_5E__) \
          && !defined(__ARM_ARCH_5T__) && !defined(__ARM_ARCH_5TE__) \
          && !defined(__ARM_ARCH_5TEJ__) && !defined(__ARM_ARCH_6M__)) \
-        || defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__))
+        || defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) \
+        || defined(__ARM_ARCH_8A__))
 # define AO_ARM_HAVE_LDREX
 # if !defined(__ARM_ARCH_6__) && !defined(__ARM_ARCH_6J__) \
      && !defined(__ARM_ARCH_6T2__)
@@ -73,9 +74,10 @@
 #endif /* ARMv6+ */
 
 #if !defined(__ARM_ARCH_2__) && !defined(__ARM_ARCH_6M__) \
-    && !defined(__thumb2__)
+    && !defined(__ARM_ARCH_8A__) && !defined(__thumb2__)
 # define AO_ARM_HAVE_SWP
                 /* Note: ARMv6M is excluded due to no ARM mode support. */
+                /* Also, SWP is obsoleted for ARMv8+.                   */
 #endif /* !__thumb2__ */
 
 #ifdef AO_UNIPROCESSOR
@@ -440,6 +442,8 @@ AO_xor(volatile AO_t *p, AO_t value)
       "       ldrex   %1, [%3]\n"       /* get original */
       "       teq     %1, %4\n"         /* see if match */
 #     ifdef __thumb2__
+        /* TODO: Eliminate warning: it blocks containing wide Thumb */
+        /* instructions are deprecated in ARMv8.                    */
         "       it      eq\n"
 #     endif
       "       strexeq %0, %5, [%3]\n"   /* store new one if matched */
