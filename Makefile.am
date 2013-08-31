@@ -8,4 +8,6 @@ noinst_DATA = pkgconfig/atomic_ops-uninstalled.pc
 
 dist_pkgdata_DATA = COPYING
 
+EXTRA_DIST = autogen.sh
+
 #distclean-local:
