@@ -1,3 +1,24 @@
+2013-08-31  Ivan Maidanski <ivmai@mail.ru>
+
+	* configure: Regenerate (by autoreconf -vif using autoconf-2.69,
+	automake-1.13.4 and libtool-2.4.2).
+	* INSTALL: Likewise.
+	* Makefile.in: Likewise.
+	* aclocal.m4: Likewise.
+	* compile: Likewise.
+	* config.guess: Likewise.
+	* config.sub: Likewise.
+	* depcomp: Likewise.
+	* doc/Makefile.in: Likewise.
+	* install-sh: Likewise.
+	* missing: Likewise.
+	* mkinstalldirs: Likewise.
+	* src/Makefile.in: Likewise.
+	* src/atomic_ops/Makefile.in: Likewise.
+	* src/atomic_ops/sysdeps/Makefile.in: Likewise.
+	* tests/Makefile.in: Likewise.
+	* test-driver: New generated file.
+
 2013-08-18  Ivan Maidanski <ivmai@mail.ru>
 
 	* aclocal.m4: Regenerate (by autoreconf -vif).
