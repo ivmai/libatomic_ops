@@ -37,8 +37,11 @@ Makefile
 /tests/test_malloc
 /tests/test_stack
 
+/pthreads-w32*
+
 /libtool
 /ltmain.sh
 /m4/*.m4
 
-/pthreads-w32*
+/tests/test*.log
+/tests/test*.trs
