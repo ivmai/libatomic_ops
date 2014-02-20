@@ -19,11 +19,11 @@ This is version 7.2f of libatomic_ops.
 
 You might find a more recent version of this at
 
-http://www.hpl.hp.com/personal/Hans_Boehm/gc
+http://www.hboehm.info/gc/
 
 or
 
-http://www.hpl.hp.com/research/linux/atomic_ops/
+https://github.com/ivmai/libatomic_ops
 
 
 Installation and Usage
