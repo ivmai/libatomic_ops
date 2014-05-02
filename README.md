@@ -1,6 +1,6 @@
 # The atomic_ops library (libatomic_ops)
 
-This is version 7.4.0 of libatomic_ops.
+This is version 7.4.2 of libatomic_ops.
 
 You might find a more recent version
 [here](http://www.hboehm.info/gc/), or
