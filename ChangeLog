@@ -1,3 +1,7 @@
+2014-03-28  Jan-Erik Rediger <badboy@archlinux.us>
+
+	* doc/README.txt: Remove redundant "an" article (fix typo).
+
 [7.2e]
 
 2013-11-10  Ivan Maidanski <ivmai@mail.ru>
