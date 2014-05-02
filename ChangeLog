@@ -1,3 +1,9 @@
+[7.2f]
+
+2014-05-02  Ivan Maidanski <ivmai@mail.ru>
+
+	* README: Bump version to 7.2f (rev. F).
+
 2014-05-02  Ivan Maidanski <ivmai@mail.ru>
 
 	* configure: Regenerate (by autoreconf -vif using autoconf-2.69,
