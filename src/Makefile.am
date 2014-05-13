@@ -12,6 +12,7 @@ libatomic_ops_la_LDFLAGS = -version-info 1:3:0 -no-undefined
 
 libatomic_ops_gpl_la_SOURCES = atomic_ops_stack.c atomic_ops_malloc.c
 libatomic_ops_gpl_la_LDFLAGS = -version-info 1:3:0 -no-undefined
+libatomic_ops_gpl_la_LIBADD = libatomic_ops.la
 
 EXTRA_DIST = Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-arithm.template \
