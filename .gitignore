@@ -30,6 +30,7 @@ Makefile
 /src/stamp-h1
 
 /tests/.deps/
+/tests/.libs/
 /tests/core
 /tests/list_atomic.i
 /tests/test_atomic
