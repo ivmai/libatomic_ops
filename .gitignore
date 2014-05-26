@@ -24,12 +24,14 @@ Makefile
 *.so
 
 /src/.deps/
+/src/.dirstamp
 /src/.libs/
 /src/config.h
 /src/config.h.in~
 /src/stamp-h1
 
 /tests/.deps/
+/tests/.dirstamp
 /tests/.libs/
 /tests/core
 /tests/list_atomic.i
