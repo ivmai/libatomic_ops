@@ -118,7 +118,7 @@ AO_test_and_set(volatile AO_TS_t *addr)
         "1:     ll      %0, %1      \n"
         AO_MIPS_LL_FIX("%0, %1")
         "       bne     %0, %4, 2f  \n"
-        "        move   %0, %3      \n"
+        "       move    %0, %3      \n"
         "       sc      %0, %1      \n"
         "       .set pop            \n"
         "       beqz    %0, 1b      \n"
