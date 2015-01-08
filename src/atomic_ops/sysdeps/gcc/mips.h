@@ -19,7 +19,7 @@
  */
 
 #include "../all_aligned_atomic_load_store.h"
-#include "../acquire_release_volatile.h"
+
 #include "../test_and_set_t_is_ao_t.h"
 #include "../standard_ao_double_t.h"
 
