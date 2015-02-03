@@ -1,3 +1,9 @@
+2015-01-08  James Cowgill <james410@cowgill.org.uk>
+
+	* src/atomic_ops/sysdeps/gcc/mips.h: Remove inclusion of
+	acquire_release_volatile.h (the ISA manuals do not say anything about
+	volatile loads / stores having acquire / release semantics).
+
 [7.2f]
 
 2014-05-02  Ivan Maidanski <ivmai@mail.ru>
