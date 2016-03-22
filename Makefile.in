@@ -85,7 +85,8 @@ DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
 	$(top_srcdir)/configure $(am__configure_deps) mkinstalldirs \
 	$(top_srcdir)/pkgconfig/atomic_ops.pc.in \
 	$(top_srcdir)/pkgconfig/atomic_ops-uninstalled.pc.in COPYING \
-	compile config.guess config.sub depcomp install-sh missing
+	compile config.guess config.sub depcomp install-sh missing \
+	ltmain.sh
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
