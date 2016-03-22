@@ -1,3 +1,10 @@
+2016-03-22  Ivan Maidanski <ivmai@mail.ru>
+
+	* Makefile.in: Regenerate (by autoreconf -vif using autoconf-2.69,
+	automake-1.14.1 and libtool-2.4.2).
+	* config.guess: Likewise.
+	* config.sub: Likewise.
+
 2015-01-08  James Cowgill <james410@cowgill.org.uk>
 
 	* src/atomic_ops/sysdeps/gcc/mips.h: Remove inclusion of
