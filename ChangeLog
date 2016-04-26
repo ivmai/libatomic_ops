@@ -1,3 +1,8 @@
+2016-03-24  Ivan Maidanski <ivmai@mail.ru>
+
+	* doc/README.txt (Future directions): Remove (obsolete information
+	about C++0x standard future).
+
 2016-03-22  Ivan Maidanski <ivmai@mail.ru>
 
 	* Makefile.in: Regenerate properly (remove ltmain.sh from DIST_COMMON).
