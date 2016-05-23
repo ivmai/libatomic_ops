@@ -1,6 +1,8 @@
 Synopsis
 ========
 
+IN NEW CODE, PLEASE USE C11 OR C++14 STANDARD ATOMICS INSTEAD OF THIS PACKAGE.
+
 This package provides semi-portable access to hardware provided
 atomic memory operations.  These might allow you to write code:
 
