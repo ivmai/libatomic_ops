@@ -1,3 +1,14 @@
+2016-05-23  Hans Boehm <boehm@acm.org>
+
+	* README: Add top-level disclaimer that it is better to use
+	C11 or C++14 atomic primitives instead of this library for the
+	newly-developed code.
+
+2014-02-21  Ivan Maidanski <ivmai@mail.ru>
+
+	* README: Update links to BDWGC/libatomic_ops site.
+	* doc/README_stack.txt: Likewise.
+
 2016-03-24  Ivan Maidanski <ivmai@mail.ru>
 
 	* doc/README.txt (Future directions): Remove (obsolete information
