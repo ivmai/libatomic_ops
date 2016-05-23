@@ -1,3 +1,9 @@
+[7.2g]
+
+2016-05-23  Ivan Maidanski <ivmai@mail.ru>
+
+	* README: Bump version to 7.2g (rev. G).
+
 2016-05-23  Hans Boehm <boehm@acm.org>
 
 	* README: Add top-level disclaimer that it is better to use
