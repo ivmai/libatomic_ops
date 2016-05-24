@@ -1,5 +1,5 @@
 
-== [7.4.4] (unset) ==
+== [7.4.4] 2016-05-24 ==
 
 * Eliminate 'signed-to-unsigned value extension' compiler warning in malloc.
 * Eliminate 'variable set but not used' Cppcheck warnings in test_stack.
