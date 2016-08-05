@@ -20,6 +20,22 @@
 /* http://www-106.ibm.com/developerworks/eserver/articles/powerpc.html. */
 /* There appears to be no implicit ordering between any kind of         */
 /* independent memory references.                                       */
+
+/* TODO: Implement double-wide operations if available. */
+
+#if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8) \
+     || __clang_major__ > 3 \
+     || (__clang_major__ == 3 && __clang_minor__ >= 8)) \
+    && !defined(AO_DISABLE_GCC_ATOMICS)
+  /* Probably, it could be enabled even for earlier gcc/clang versions. */
+
+  /* TODO: As of clang-3.8.1, it emits lwsync in AO_load_acquire        */
+  /* (i.e., the code is less efficient than the one given below).       */
+
+# include "generic.h"
+
+#else /* AO_DISABLE_GCC_ATOMICS */
+
 /* Architecture enforces some ordering based on control dependence.     */
 /* I don't know if that could help.                                     */
 /* Data-dependent loads are always ordered.                             */
@@ -323,8 +339,6 @@ AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr) {
 #define AO_HAVE_fetch_and_add_full
 #endif /* !AO_PREFER_GENERALIZED */
 
-/* TODO: Implement double-wide operations if available. */
-
 #undef AO_PPC_BR_A
 #undef AO_PPC_CMPx
 #undef AO_PPC_L
@@ -332,3 +346,5 @@ AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr) {
 #undef AO_PPC_LOAD_CLOBBER
 #undef AO_PPC_LxARX
 #undef AO_PPC_STxCXd
+
+#endif /* AO_DISABLE_GCC_ATOMICS */
