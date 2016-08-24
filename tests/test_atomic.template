@@ -49,9 +49,9 @@ void test_atomicXX(void)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_setXX)
-    assert(AO_test_and_setXX(&z) == AO_TS_CLEAR);
-    assert(AO_test_and_setXX(&z) == AO_TS_SET);
-    assert(AO_test_and_setXX(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_setXX(&z) == AO_TS_CLEAR);
+    TA_assert(AO_test_and_setXX(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_setXX(&z) == AO_TS_SET);
     AO_CLEAR(&z);
 # else
     MISSING(AO_test_and_set);

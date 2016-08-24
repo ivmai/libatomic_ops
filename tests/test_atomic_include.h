@@ -49,9 +49,9 @@ void test_atomic(void)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_set)
-    assert(AO_test_and_set(&z) == AO_TS_CLEAR);
-    assert(AO_test_and_set(&z) == AO_TS_SET);
-    assert(AO_test_and_set(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set(&z) == AO_TS_CLEAR);
+    TA_assert(AO_test_and_set(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set(&z) == AO_TS_SET);
     AO_CLEAR(&z);
 # else
     MISSING(AO_test_and_set);
@@ -253,9 +253,9 @@ void test_atomic_release(void)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_set_release)
-    assert(AO_test_and_set_release(&z) == AO_TS_CLEAR);
-    assert(AO_test_and_set_release(&z) == AO_TS_SET);
-    assert(AO_test_and_set_release(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_release(&z) == AO_TS_CLEAR);
+    TA_assert(AO_test_and_set_release(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_release(&z) == AO_TS_SET);
     AO_CLEAR(&z);
 # else
     MISSING(AO_test_and_set);
@@ -457,9 +457,9 @@ void test_atomic_acquire(void)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_set_acquire)
-    assert(AO_test_and_set_acquire(&z) == AO_TS_CLEAR);
-    assert(AO_test_and_set_acquire(&z) == AO_TS_SET);
-    assert(AO_test_and_set_acquire(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_acquire(&z) == AO_TS_CLEAR);
+    TA_assert(AO_test_and_set_acquire(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_acquire(&z) == AO_TS_SET);
     AO_CLEAR(&z);
 # else
     MISSING(AO_test_and_set);
@@ -661,9 +661,9 @@ void test_atomic_read(void)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_set_read)
-    assert(AO_test_and_set_read(&z) == AO_TS_CLEAR);
-    assert(AO_test_and_set_read(&z) == AO_TS_SET);
-    assert(AO_test_and_set_read(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_read(&z) == AO_TS_CLEAR);
+    TA_assert(AO_test_and_set_read(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_read(&z) == AO_TS_SET);
     AO_CLEAR(&z);
 # else
     MISSING(AO_test_and_set);
@@ -865,9 +865,9 @@ void test_atomic_write(void)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_set_write)
-    assert(AO_test_and_set_write(&z) == AO_TS_CLEAR);
-    assert(AO_test_and_set_write(&z) == AO_TS_SET);
-    assert(AO_test_and_set_write(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_write(&z) == AO_TS_CLEAR);
+    TA_assert(AO_test_and_set_write(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_write(&z) == AO_TS_SET);
     AO_CLEAR(&z);
 # else
     MISSING(AO_test_and_set);
@@ -1069,9 +1069,9 @@ void test_atomic_full(void)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_set_full)
-    assert(AO_test_and_set_full(&z) == AO_TS_CLEAR);
-    assert(AO_test_and_set_full(&z) == AO_TS_SET);
-    assert(AO_test_and_set_full(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_full(&z) == AO_TS_CLEAR);
+    TA_assert(AO_test_and_set_full(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_full(&z) == AO_TS_SET);
     AO_CLEAR(&z);
 # else
     MISSING(AO_test_and_set);
@@ -1273,9 +1273,9 @@ void test_atomic_release_write(void)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_set_release_write)
-    assert(AO_test_and_set_release_write(&z) == AO_TS_CLEAR);
-    assert(AO_test_and_set_release_write(&z) == AO_TS_SET);
-    assert(AO_test_and_set_release_write(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_release_write(&z) == AO_TS_CLEAR);
+    TA_assert(AO_test_and_set_release_write(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_release_write(&z) == AO_TS_SET);
     AO_CLEAR(&z);
 # else
     MISSING(AO_test_and_set);
@@ -1477,9 +1477,9 @@ void test_atomic_acquire_read(void)
     MISSING(AO_load);
 # endif
 # if defined(AO_HAVE_test_and_set_acquire_read)
-    assert(AO_test_and_set_acquire_read(&z) == AO_TS_CLEAR);
-    assert(AO_test_and_set_acquire_read(&z) == AO_TS_SET);
-    assert(AO_test_and_set_acquire_read(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_acquire_read(&z) == AO_TS_CLEAR);
+    TA_assert(AO_test_and_set_acquire_read(&z) == AO_TS_SET);
+    TA_assert(AO_test_and_set_acquire_read(&z) == AO_TS_SET);
     AO_CLEAR(&z);
 # else
     MISSING(AO_test_and_set);
