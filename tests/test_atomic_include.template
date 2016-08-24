@@ -210,7 +210,7 @@ void test_atomicXX(void)
     TA_assert(x == 42);
 # else
     MISSING(AO_compare_and_swap);
-    if (x == 13) x = 42;
+    if (*(volatile AO_t *)&x == 13) x = 42;
 # endif
 # if defined(AO_HAVE_orXX)
     AO_orXX(&x, 66);
@@ -237,11 +237,11 @@ void test_atomicXX(void)
     TA_assert(AO_fetch_compare_and_swapXX(&x, 14, 117) == 25);
     TA_assert(x == 25);
     TA_assert(AO_fetch_compare_and_swapXX(&x, 25, 117) == 25);
-    TA_assert(x == 117);
 # else
     MISSING(AO_fetch_compare_and_swap);
     if (x == 25) x = 117;
 # endif
+  TA_assert(x == 117);
 # if defined(AO_HAVE_double_loadXX)
     old_w.AO_val1 = 3316;
     old_w.AO_val2 = 2921;
