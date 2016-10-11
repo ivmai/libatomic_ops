@@ -294,8 +294,8 @@ int main(int argc, char **argv)
         }
         times[nthreads][exper_n] = (unsigned long)(get_msecs() - start_time);
   #     ifdef VERBOSE
-          printf("%d %lu\n", nthreads,
-                 (unsigned long)(get_msecs() - start_time));
+          printf("nthreads=%d, time_ms=%lu\n",
+                 nthreads, times[nthreads][exper_n]);
           printf("final list (should be reordered initial list):\n");
           print_list();
   #     endif
@@ -313,8 +313,8 @@ int main(int argc, char **argv)
                LIMIT, LIMIT, nthreads);
 #       ifndef NO_TIMES
           for (exper_n = 0; exper_n < N_EXPERIMENTS; ++exper_n) {
-#           if defined(VERBOSE)
-              printf(" [%lu]", times[nthreads][exper_n]);
+#           ifdef VERBOSE
+              printf(" [%lums]", times[nthreads][exper_n]);
 #           endif
             sum += times[nthreads][exper_n];
           }
