@@ -55,23 +55,22 @@
 # define get_msecs() 0
 #elif defined(USE_WINTHREADS) || defined(AO_USE_WIN32_PTHREADS)
 # include <sys/timeb.h>
-  long long get_msecs(void)
+  unsigned long get_msecs(void)
   {
     struct timeb tb;
 
     ftime(&tb);
-    return (long long)tb.time * 1000 + tb.millitm;
+    return (unsigned long)tb.time * 1000 + tb.millitm;
   }
 #else /* Unix */
 # include <time.h>
 # include <sys/time.h>
-  /* Need 64-bit long long support */
-  long long get_msecs(void)
+  unsigned long get_msecs(void)
   {
     struct timeval tv;
 
     gettimeofday(&tv, 0);
-    return (long long)tv.tv_sec * 1000 + tv.tv_usec/1000;
+    return (unsigned long)tv.tv_sec * 1000 + tv.tv_usec/1000;
   }
 #endif /* !NO_TIMES */
 
@@ -244,7 +243,7 @@ int main(int argc, char **argv)
           pthread_t thread[MAX_NTHREADS];
 #       endif
         int list_length = nthreads*(nthreads+1)/2;
-        long long start_time;
+        unsigned long start_time;
         list_element * le;
 
 #       ifdef VERBOSE
@@ -292,7 +291,7 @@ int main(int argc, char **argv)
             abort();
           }
         }
-        times[nthreads][exper_n] = (unsigned long)(get_msecs() - start_time);
+        times[nthreads][exper_n] = get_msecs() - start_time;
   #     ifdef VERBOSE
           printf("nthreads=%d, time_ms=%lu\n",
                  nthreads, times[nthreads][exper_n]);
