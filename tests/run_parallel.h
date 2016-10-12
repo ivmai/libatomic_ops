@@ -37,12 +37,8 @@
 # define abort() _exit(-1) /* there is no abort() in WinCE */
 #endif
 
-#ifndef _WIN64
-# define AO_PTRDIFF_T long
-#elif defined(__int64)
-# define AO_PTRDIFF_T __int64
-#else
-# define AO_PTRDIFF_T long long
+#ifndef AO_PTRDIFF_T
+# define AO_PTRDIFF_T ptrdiff_t
 #endif
 
 typedef void * (* thr_func)(void *);
