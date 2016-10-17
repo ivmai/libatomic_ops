@@ -47,7 +47,7 @@ void test_atomicXX(void)
 # endif
 # if defined(AO_HAVE_storeXX)
     AO_storeXX(&x, 13);
-    TA_assert (x == 13);
+    TA_assert(x == 13);
 # else
 #   if !defined(AO_HAVE_store) || !defined(AO_HAVE_store_full) \
        || !defined(AO_HAVE_store_release) \
@@ -129,6 +129,7 @@ void test_atomicXX(void)
     MISSING(AO_short_fetch_and_sub1);
     --s;
 # endif
+  TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_storeXX)
     AO_char_storeXX(&b, 13);
 # else
@@ -166,6 +167,7 @@ void test_atomicXX(void)
     MISSING(AO_char_fetch_and_sub1);
     --b;
 # endif
+  TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_storeXX)
     AO_int_storeXX(&zz, 13);
 # else
@@ -203,6 +205,7 @@ void test_atomicXX(void)
     MISSING(AO_int_fetch_and_sub1);
     --zz;
 # endif
+  TA_assert(*(volatile int *)&zz == 13);
 # if defined(AO_HAVE_compare_and_swapXX)
     TA_assert(!AO_compare_and_swapXX(&x, 14, 42));
     TA_assert(x == 13);
