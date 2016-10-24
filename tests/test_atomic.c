@@ -187,6 +187,7 @@ int main(void)
   test_atomic_full();
   test_atomic_release_write();
   test_atomic_acquire_read();
+  test_atomic_dd_acquire_read();
 # if defined(AO_HAVE_fetch_and_add1) && defined(AO_HAVE_fetch_and_sub1)
     run_parallel(4, add1sub1_thr, add1sub1_test, "add1/sub1");
 # endif

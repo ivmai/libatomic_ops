@@ -44,6 +44,7 @@ test_atomic_include.h: test_atomic_include.template
 	sed -e s:XX:_full:g $? >> $@
 	sed -e s:XX:_release_write:g $? >> $@
 	sed -e s:XX:_acquire_read:g $? >> $@
+	sed -e s:XX:_dd_acquire_read:g $? >> $@
 
 list_atomic.c: list_atomic.template
 	mkdir -p `dirname $@`
