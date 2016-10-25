@@ -16,6 +16,14 @@
 #define MISSING(name) \
   printf("Missing: %s\n", #name "XX")
 
+#if defined(CPPCHECK)
+  void list_atomicXX(void);
+  void char_list_atomicXX(void);
+  void short_list_atomicXX(void);
+  void int_list_atomicXX(void);
+  void double_list_atomicXX(void);
+#endif
+
 void test_atomicXX(void)
 {
   AO_t x;
@@ -39,6 +47,13 @@ void test_atomicXX(void)
     w.AO_val2 = 0;
 # endif
 
+# if defined(CPPCHECK)
+    list_atomicXX();
+    char_list_atomicXX();
+    short_list_atomicXX();
+    int_list_atomicXX();
+    double_list_atomicXX();
+# endif
 # if defined(AO_HAVE_nopXX)
     AO_nopXX();
 # elif !defined(AO_HAVE_nop) || !defined(AO_HAVE_nop_full) \
