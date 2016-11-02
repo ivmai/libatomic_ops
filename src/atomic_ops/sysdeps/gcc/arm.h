@@ -599,3 +599,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 #endif /* !AO_HAVE_test_and_set[_full] && AO_ARM_HAVE_SWP */
 
 #define AO_T_IS_INT
+
+#undef AO_THUMB_GO_ARM
+#undef AO_THUMB_RESTORE_MODE
+#undef AO_THUMB_SWITCH_CLOBBERS
