@@ -11,8 +11,8 @@ compiler:
 sudo: false
 
 install:
-  - ./autogen.sh
-  - ./configure --enable-werror
+  - autoreconf -vif
+  - ./configure
 
 script:
   - make -j check
