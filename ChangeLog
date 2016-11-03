@@ -1,3 +1,38 @@
+2016-11-02  Ivan Maidanski <ivmai@mail.ru>
+
+	* doc/README.txt: Document AO_REQUIRE_CAS better (replace
+	"compare-and-swap" with "AO_compare_and_swap*").
+
+2016-08-24  Ivan Maidanski <ivmai@mail.ru>
+
+	* tests/test_atomic.template (test_atomicXX): Replace assert()
+	calls with TA_assert().
+	* test_atomic_include.h: Regenerate.
+
+2016-08-22  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_malloc.c: Include limits.h (unless SIZE_MAX already
+	defined).
+	* src/atomic_ops_malloc.c (AO_SIZE_MAX): New macro.
+	* src/atomic_ops_malloc.c (SIZET_SAT_ADD): New macro.
+	* src/atomic_ops_malloc.c (AO_malloc_large): Use SIZET_SAT_ADD to
+	avoid integer overflow when computing the memory size to map (i.e.,
+	malloc should handle arguments close to SIZE_MAX correctly).
+
+2016-10-05  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops.h [_HPUX_SOURCE && !__ia64] (AO_barrier_dummy):
+	Fix typo ("do not") in comment.
+	* src/atomic_ops/generalize.h [AO_HAVE_nop_acquire]: Fix typo
+	("do not") in #error message.
+	* src/atomic_ops/generalize.h [AO_HAVE_nop_release]: Likewise.
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h [__TARGET_ARCH_ARM < 6]:
+	Likewise.
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h [__TARGET_ARCH_ARM < 6]: Add
+	#error pragma.
+	* src/atomic_ops_stack.c [AO_HAVE_compare_and_swap_double]: Fix typo
+	("does not") in #error message.
+
 [7.2g]
 
 2016-05-23  Ivan Maidanski <ivmai@mail.ru>
