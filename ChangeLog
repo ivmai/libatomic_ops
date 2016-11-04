@@ -1,3 +1,20 @@
+2012-10-08  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/Makefile.msft (libatomic_ops_gpl.lib): Do not pass
+	"/MACHINE:i386" option to "lib" tool (to select the proper target
+	architecture automatically).
+
+2011-08-09  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/Makefile.msft: Replace -o option with /Fo.
+	* src/Makefile.msft (clean): New target.
+
+2011-08-09  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/Makefile.msft (all): Build "libatomic_ops_gpl.lib" instead of
+	"check".
+	* src/Makefile.msft (test_malloc): Wrap long lines.
+
 2016-11-02  Ivan Maidanski <ivmai@mail.ru>
 
 	* doc/README.txt: Document AO_REQUIRE_CAS better (replace
