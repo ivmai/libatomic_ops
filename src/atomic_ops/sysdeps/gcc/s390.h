@@ -60,6 +60,21 @@ AO_INLINE int AO_compare_and_swap_full(volatile AO_t *addr,
 }
 #define AO_HAVE_compare_and_swap_full
 
-/* TODO: implement AO_fetch_compare_and_swap.   */
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_full(volatile AO_t *addr,
+                               AO_t old, AO_t new_val)
+{
+  __asm__ __volatile__ (
+# ifndef __s390x__
+    "     cs %0,%2,%1\n"
+# else
+    "     csg %0,%2,%1\n"
+# endif
+  : "+d" (old), "=Q" (*addr)
+  : "d" (new_val), "m" (*addr)
+  : "cc", "memory");
+  return old;
+}
+#define AO_HAVE_fetch_compare_and_swap_full
 
 /* TODO: Add double-wide operations for 32-bit executables.       */
