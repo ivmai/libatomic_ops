@@ -96,6 +96,7 @@ void add_elements(int n)
   AO_stack_push(&the_list, (AO_t *)le);
 }
 
+#ifdef VERBOSE
 void print_list(void)
 {
   list_element *p;
@@ -105,6 +106,7 @@ void print_list(void)
        p = (list_element *)AO_REAL_NEXT_PTR(p -> next))
     printf("%d\n", p -> data);
 }
+#endif /* VERBOSE */
 
 static char marks[MAX_NTHREADS * (MAX_NTHREADS + 1) / 2 + 1];
 
