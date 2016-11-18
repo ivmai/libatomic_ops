@@ -108,7 +108,8 @@
   {
     /* AO_THUMB_GO_ARM is empty. */
     /* This will target the system domain and thus be overly            */
-    /* conservative as the CPUs will occupy the inner shareable domain. */
+    /* conservative as the CPUs (even in case of big.LITTLE SoC) will   */
+    /* occupy the inner shareable domain.                               */
     /* The plain variant (dmb st) is theoretically slower, and should   */
     /* not be needed.  That said, with limited experimentation, a CPU   */
     /* implementation for which it actually matters has not been found  */
