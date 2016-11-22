@@ -57,7 +57,9 @@ if test "$GCC" = yes; then
   AS_IF([test "$ac_cv_cc_wextra" = yes], [WEXTRA="-Wextra"], [WEXTRA="-W"])
   AC_MSG_CHECKING(for gcc -Wpedantic)
   CFLAGS="-Wpedantic -Wno-long-long $CFLAGS"
-  AC_TRY_COMPILE([],[], [ac_cv_cc_pedantic=yes], [ac_cv_cc_pedantic=no])
+  AC_TRY_COMPILE([],[
+extern int quiet;
+  ], [ac_cv_cc_pedantic=yes], [ac_cv_cc_pedantic=no])
   CFLAGS="$old_CFLAGS"
   AC_MSG_RESULT($ac_cv_cc_pedantic)
   WPEDANTIC=
