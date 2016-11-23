@@ -723,6 +723,17 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 
 #undef AO_BR_ALIGN
 #undef AO_MASK_PTR
+#undef AO_SKIPATOMIC_ANY_and_ANY
+#undef AO_SKIPATOMIC_ANY_or_ANY
+#undef AO_SKIPATOMIC_ANY_xor_ANY
+#undef AO_SKIPATOMIC_char_store
+#undef AO_SKIPATOMIC_char_store_release
+#undef AO_SKIPATOMIC_int_store
+#undef AO_SKIPATOMIC_int_store_release
+#undef AO_SKIPATOMIC_short_store
+#undef AO_SKIPATOMIC_short_store_release
+#undef AO_SKIPATOMIC_store
+#undef AO_SKIPATOMIC_store_release
 #undef AO_THUMB_GO_ARM
 #undef AO_THUMB_RESTORE_MODE
 #undef AO_THUMB_SWITCH_CLOBBERS
