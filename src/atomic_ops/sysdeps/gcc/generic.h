@@ -142,7 +142,7 @@
 #   define AO_HAVE_double_load_acquire
 # endif
 
-# ifndef AO_HAVE_double_store
+# if !defined(AO_HAVE_double_store) && !defined(AO_SKIPATOMIC_double_store)
     AO_INLINE void
     AO_double_store(volatile AO_double_t *addr, AO_double_t value)
     {
@@ -151,7 +151,8 @@
 #   define AO_HAVE_double_store
 # endif
 
-# ifndef AO_HAVE_double_store_release
+# if !defined(AO_HAVE_double_store_release) \
+     && !defined(AO_SKIPATOMIC_double_store_release)
     AO_INLINE void
     AO_double_store_release(volatile AO_double_t *addr, AO_double_t value)
     {

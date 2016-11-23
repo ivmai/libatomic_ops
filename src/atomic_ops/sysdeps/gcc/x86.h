@@ -23,6 +23,24 @@
     && !defined(AO_DISABLE_GCC_ATOMICS)
 # define AO_GCC_ATOMIC_TEST_AND_SET
 
+/* TODO: Refine for newer clang releases. */
+# if defined(__clang__) \
+     && !(defined(__x86_64__) || defined(__APPLE_CC__) \
+          || defined(__CYGWIN__) || defined(AO_PREFER_BUILTIN_ATOMICS))
+    /* As of clang-3.8 i686 (NDK r11c), it requires -latomic for all    */
+    /* the double-wide operations.  For now, we fall back to the        */
+    /* non-intrinsic implementation by default.                         */
+#   define AO_SKIPATOMIC_double_compare_and_swap_ANY
+#   define AO_SKIPATOMIC_double_load
+#   define AO_SKIPATOMIC_double_load_acquire
+#   define AO_SKIPATOMIC_double_store
+#   define AO_SKIPATOMIC_double_store_release
+# elif defined(__APPLE_CC__) && defined(__x86_64__)
+    /* As of Apple clang-600 (based on LLVM 3.5svn), it has some bug in */
+    /* double-wide CAS implementation for x64 target.                   */
+#   define AO_SKIPATOMIC_double_compare_and_swap_ANY
+# endif
+
 #else /* AO_DISABLE_GCC_ATOMICS */
 
 /* The following really assume we have a 486 or better.  Unfortunately  */
@@ -291,18 +309,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 
 #endif /* AO_DISABLE_GCC_ATOMICS */
 
-#if (defined(AO_PREFER_BUILTIN_ATOMICS) || !defined(__clang__) \
-     || defined(__x86_64__) || defined(__APPLE_CC__) || defined(__CYGWIN__)) \
-    && defined(AO_GCC_ATOMIC_TEST_AND_SET) \
-    && !(defined(__APPLE_CC__) && defined(__x86_64__) && !defined(__ILP32__) \
-         && defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_16))
-
-  /* As of clang-3.8 i686 (NDK r11c), it requires -latomic for all the  */
-  /* double-wide operations.  For now, we fall back to the              */
-  /* non-intrinsic implementation if clang/x86.                         */
-  /* As of Apple clang-600 (based on LLVM 3.5svn), it has some bug in   */
-  /* double-wide CAS implementation for x64 target.                     */
-  /* TODO: Refine for newer clang releases. */
+#if defined(AO_GCC_ATOMIC_TEST_AND_SET) \
+    && !defined(AO_SKIPATOMIC_double_compare_and_swap_ANY)
 
 # if defined(__ILP32__) || !defined(__x86_64__) /* 32-bit AO_t */ \
      || defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_16) /* 64-bit AO_t */
@@ -318,18 +326,6 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
   /* Chapter 8.1.1 of Volume 3A Part 1 of Intel processor manuals.      */
 # define AO_ACCESS_double_CHECK_ALIGNED
 # include "../loadstore/double_atomic_load_store.h"
-
-# ifdef AO_GCC_ATOMIC_TEST_AND_SET
-    /* Double-wide loads and stores are ordered.        */
-#   define AO_double_load_acquire(addr) AO_double_load_read(addr)
-#   define AO_HAVE_double_load_acquire
-
-#   define AO_double_store_release(addr, val) \
-                                (AO_nop_write(), AO_double_store(addr, val))
-#   define AO_HAVE_double_store_release
-
-#   define AO_SKIPATOMIC_double_compare_and_swap_ANY
-# endif /* AO_GCC_ATOMIC_TEST_AND_SET */
 
   /* Returns nonzero if the comparison succeeded.       */
   /* Really requires at least a Pentium.                */
@@ -440,8 +436,6 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
   /* doesn't work.  And the emulation is unsafe by our usual rules.     */
   /* However both are clearly useful in certain cases.                  */
 
-# define AO_SKIPATOMIC_double_compare_and_swap_ANY
-
   AO_INLINE int
   AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                          AO_t old_val1, AO_t old_val2,
@@ -483,3 +477,9 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 #ifdef AO_GCC_ATOMIC_TEST_AND_SET
 # include "generic.h"
 #endif
+
+#undef AO_SKIPATOMIC_double_compare_and_swap_ANY
+#undef AO_SKIPATOMIC_double_load
+#undef AO_SKIPATOMIC_double_load_acquire
+#undef AO_SKIPATOMIC_double_store
+#undef AO_SKIPATOMIC_double_store_release
