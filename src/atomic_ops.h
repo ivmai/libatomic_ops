@@ -176,6 +176,13 @@
 # define AO_EXPECT_FALSE(expr) (expr)
 #endif /* !__GNUC__ */
 
+#if defined(__has_feature)
+  /* __has_feature() is supported.      */
+# if __has_feature(address_sanitizer)
+#   define AO_ADDRESS_SANITIZER
+# endif
+#endif
+
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER)
 # define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")
 #elif defined(_MSC_VER) || defined(__DMC__) || defined(__BORLANDC__) \
