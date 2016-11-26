@@ -44,6 +44,7 @@ Also, includes 7.4.6 changes.
 * Eliminate 'cast to long from void*' compiler warning in test_atomic.
 * Fix (delete) comment for AO_and_full (x86).
 * Fix missing printed value names (test_stack).
+* Implement fetch-CAS for s390[x] (gcc).
 * Refine README about library downloading.
 * Support AIX/ppc (gcc).
 * Support n32 ABI for mips64.
