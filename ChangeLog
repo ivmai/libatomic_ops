@@ -11,6 +11,7 @@
 * Basic support of TILE-Gx and TILEPro CPUs.
 * Code refactoring of int-wide primitives in gcc/x86.h.
 * Define AO_TS_SET as __GCC_ATOMIC_TEST_AND_SET_TRUEVAL if applicable.
+* Do not define print_list() unless used (tests).
 * Eliminate 'ISO C90 does not support long long' compiler pedantic warning.
 * Eliminate 'scope of variable can be reduced' cppcheck warnings.
 * Eliminate redundant lwsync 2nd call in CAS_full on fail (gcc/PowerPC).
@@ -23,10 +24,12 @@
 * Initial ibmc/powerpc (xlc) support.
 * New configure option (--enable-werror) to treat warnings as compiler errors.
 * New macro AO_PREFER_BUILTIN_ATOMICS to rely on C11 atomics fully (AArch64).
+* Refine AO_nop_write comment for ARM big.LITTLE architecture.
 * Refine documentation about _full memory ordering suffix.
 * Refine README how to build the library source from the repository.
 * Relax shareability domain for dmb st in AO_nop_write (ARM/AArch64).
 * Remove spaces at EOLn in asm code.
+* Report gcc/clang pedantic warnings (configure).
 * Support NaCl/arm.
 * Suppress 'ISO C does not support __int128 type' GCC/Clang pedantic warning.
 * Use GCC atomic intrinsics for x86, x64, ARM, MIPS (gcc 4.9+, clang 3.5+).
@@ -35,6 +38,7 @@
 * Workaround 'function is never used' cppcheck style warnings.
 * Workaround 'overflow in pointer subtraction' cppcheck warning.
 * Workaround 'value of macro is unknown' cppcheck information messages.
+* Workaround a bug in double-wide intrinsics of Clang/x64 with ASan enabled.
 Also, includes 7.4.6 changes.
 
 
