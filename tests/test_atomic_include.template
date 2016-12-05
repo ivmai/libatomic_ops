@@ -242,9 +242,12 @@ void test_atomicXX(void)
     MISSING(AO_fetch_compare_and_swap);
     if (x == 25) x = 117;
 # endif
-# if defined(AO_HAVE_double_loadXX)
+# if defined(AO_HAVE_double_loadXX) || defined(AO_HAVE_double_storeXX)
+    /* Initialize old_w even for store to workaround MSan warning.      */
     old_w.AO_val1 = 3316;
     old_w.AO_val2 = 2921;
+# endif
+# if defined(AO_HAVE_double_loadXX)
     new_w = AO_double_loadXX(&old_w);
     TA_assert(new_w.AO_val1 == 3316 && new_w.AO_val2 == 2921);
 # elif !defined(AO_HAVE_double_load) \
