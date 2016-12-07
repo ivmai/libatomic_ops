@@ -12,7 +12,7 @@ sudo: false
 
 install:
   - ./autogen.sh
-  - ./configure --enable-werror
+  - ./configure --enable-assertions --enable-werror
 
 script:
   - make -j check
