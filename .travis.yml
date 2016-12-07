@@ -11,8 +11,10 @@ compiler:
 env:
   - CFLAGS_EXTRA_M=
   - CFLAGS_EXTRA="-O3 -march=native"
+      CONF_ASSERTIONS=--enable-assertions
   - CFLAGS_EXTRA_M=-m32
       CFLAGS_EXTRA="-march=native"
+      CONF_ASSERTIONS=--enable-assertions
 
 matrix:
   exclude:
@@ -28,8 +30,8 @@ before_install:
 
 install:
   - ./autogen.sh
-  - ./configure
 
 script:
+  - ./configure $CONF_ASSERTIONS
   - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
