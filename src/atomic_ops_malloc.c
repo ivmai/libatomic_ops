@@ -295,8 +295,8 @@ AO_malloc(size_t sz)
   }
   *result = log_sz;
 # ifdef AO_TRACE_MALLOC
-    fprintf(stderr, "%x: AO_malloc(%lu) = %p\n",
-                    (int)pthread_self(), (unsigned long)sz, result+1);
+    fprintf(stderr, "%p: AO_malloc(%lu) = %p\n",
+            (void *)pthread_self(), (unsigned long)sz, (void *)(result + 1));
 # endif
   return result + 1;
 }
@@ -310,8 +310,8 @@ AO_free(void *p)
   if (0 == p) return;
   log_sz = (int)(*(AO_t *)base);
 # ifdef AO_TRACE_MALLOC
-    fprintf(stderr, "%x: AO_free(%p sz:%lu)\n", (int)pthread_self(), p,
-            (unsigned long)(log_sz > LOG_MAX_SIZE? log_sz : (1 << log_sz)));
+    fprintf(stderr, "%p: AO_free(%p sz:%lu)\n", (void *)pthread_self(), p,
+            log_sz > LOG_MAX_SIZE ? (unsigned)log_sz : 1UL << log_sz);
 # endif
   if (log_sz > LOG_MAX_SIZE)
     AO_free_large(p);
