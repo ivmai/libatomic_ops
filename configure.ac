@@ -113,6 +113,9 @@ fi
 AC_SUBST(PICFLAG)
 AC_SUBST(DEFS)
 
+# Extra user-defined C flags.
+AC_SUBST([CFLAGS_EXTRA])
+
 AH_TEMPLATE([_PTHREADS], [Indicates the use of pthreads (NetBSD).])
 
 AH_TEMPLATE([AO_USE_NANOSLEEP],

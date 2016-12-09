@@ -10,6 +10,8 @@ AM_CPPFLAGS = \
         -I$(top_builddir)/src -I$(top_srcdir)/src \
         -I$(top_builddir)/tests -I$(top_srcdir)/tests
 
+CFLAGS += $(CFLAGS_EXTRA)
+
 if HAVE_PTHREAD_H
 TESTS=test_atomic test_atomic_pthreads test_stack test_malloc
 test_atomic_pthreads_SOURCES=$(test_atomic_SOURCES)

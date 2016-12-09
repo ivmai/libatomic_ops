@@ -1,6 +1,8 @@
 AM_CFLAGS=@PICFLAG@
 AM_CPPFLAGS = -I$(top_builddir)/src -I$(top_srcdir)/src
 
+CFLAGS += $(CFLAGS_EXTRA)
+
 include_HEADERS = atomic_ops.h atomic_ops_stack.h atomic_ops_malloc.h
 lib_LTLIBRARIES = libatomic_ops.la libatomic_ops_gpl.la
 if NEED_ASM
