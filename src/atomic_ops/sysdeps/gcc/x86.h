@@ -43,7 +43,10 @@
     /* As of Apple clang-600 (based on LLVM 3.5svn), it has some bug in */
     /* double-wide CAS implementation for x64 target.                   */
 #   define AO_SKIPATOMIC_double_compare_and_swap_ANY
-    /* OS X 10.7 clang-425/x64 lacks __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n */
+# endif
+
+# if defined(__APPLE_CC__)
+    /* OS X 10.7 clang-425 lacks __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n     */
     /* predefined macro (unlike e.g. OS X 10.11 clang-703).             */
 #   define AO_GCC_FORCE_HAVE_CAS
 # endif
