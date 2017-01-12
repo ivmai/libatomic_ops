@@ -51,6 +51,21 @@
 #   define AO_GCC_FORCE_HAVE_CAS
 # endif
 
+# if !defined(__x86_64__) && defined(__APPLE__) && defined(__MACH__)
+    /* OS X 10.8 lacks __atomic_load/store symbols for arch i386 (even  */
+    /* with non-Apple clang).                                           */
+#   ifndef MAC_OS_X_VERSION_MIN_REQUIRED
+      /* Include this header just to import the version macro.  */
+#     include <AvailabilityMacros.h>
+#   endif
+#   if MAC_OS_X_VERSION_MIN_REQUIRED < 1090 /* MAC_OS_X_VERSION_10_9 */
+#     define AO_SKIPATOMIC_double_load
+#     define AO_SKIPATOMIC_double_load_acquire
+#     define AO_SKIPATOMIC_double_store
+#     define AO_SKIPATOMIC_double_store_release
+#   endif
+# endif
+
 #else /* AO_DISABLE_GCC_ATOMICS */
 
 /* The following really assume we have a 486 or better.  Unfortunately  */
