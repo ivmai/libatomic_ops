@@ -69,6 +69,8 @@ Makefile.in
 /tests/test*.trs
 
 # Code analysis tools:
+*.c.gcov
+*.h.gcov
 /.sv*-dir
 /cov-int
 /pvs-project.log
