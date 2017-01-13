@@ -110,6 +110,14 @@ if test "$enable_atomic_intrinsics" = no; then
             [Define to avoid C11 atomic intrinsics even if available.])
 fi
 
+AC_ARG_ENABLE(gcov, AC_HELP_STRING([--enable-gcov],
+                                   [Turn on code coverage analysis]))
+if test "$enable_gcov" = "yes"; then
+  CFLAGS="$CFLAGS --coverage"
+  # Turn off code optimization to get accurate line numbers.
+  CFLAGS=`echo "$CFLAGS" | sed -e 's/-O[0-9]*//g'`
+fi
+
 AC_SUBST(PICFLAG)
 AC_SUBST(DEFS)
 
