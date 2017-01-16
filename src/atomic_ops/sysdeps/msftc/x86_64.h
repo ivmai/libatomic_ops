@@ -44,13 +44,16 @@
 /* Assume _MSC_VER >= 1400 */
 #include <intrin.h>
 
-#pragma intrinsic (_InterlockedExchangeAdd)
+#pragma intrinsic (_InterlockedCompareExchange)
 #pragma intrinsic (_InterlockedCompareExchange64)
 
 #ifndef AO_PREFER_GENERALIZED
 
+# pragma intrinsic (_InterlockedIncrement)
 # pragma intrinsic (_InterlockedIncrement64)
+# pragma intrinsic (_InterlockedDecrement)
 # pragma intrinsic (_InterlockedDecrement64)
+# pragma intrinsic (_InterlockedExchangeAdd)
 # pragma intrinsic (_InterlockedExchangeAdd64)
 
 AO_INLINE AO_t
@@ -85,11 +88,35 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 #define AO_HAVE_fetch_compare_and_swap_full
 
 AO_INLINE unsigned int
+AO_int_fetch_compare_and_swap_full(volatile unsigned int *addr,
+                                   unsigned int old_val, unsigned int new_val)
+{
+  return _InterlockedCompareExchange((LONG volatile *)addr, new_val, old_val);
+}
+#define AO_HAVE_int_fetch_compare_and_swap_full
+
+#ifndef AO_PREFER_GENERALIZED
+AO_INLINE unsigned int
 AO_int_fetch_and_add_full(volatile unsigned int *p, unsigned int incr)
 {
   return _InterlockedExchangeAdd((LONG volatile *)p, incr);
 }
 #define AO_HAVE_int_fetch_and_add_full
+
+  AO_INLINE unsigned int
+  AO_int_fetch_and_add1_full(volatile unsigned int *p)
+  {
+    return _InterlockedIncrement((LONG volatile *)p) - 1;
+  }
+# define AO_HAVE_int_fetch_and_add1_full
+
+  AO_INLINE unsigned int
+  AO_int_fetch_and_sub1_full(volatile unsigned int *p)
+  {
+    return _InterlockedDecrement((LONG volatile *)p) + 1;
+  }
+# define AO_HAVE_int_fetch_and_sub1_full
+#endif /* !AO_PREFER_GENERALIZED */
 
 #ifdef AO_ASM_X64_AVAILABLE
 
