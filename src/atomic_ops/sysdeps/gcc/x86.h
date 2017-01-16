@@ -169,7 +169,6 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
   /* AO_store_full could be implemented directly using "xchg" but it    */
   /* could be generalized efficiently as an ordinary store accomplished */
   /* with AO_nop_full ("mfence" instruction).                           */
-#endif /* !AO_PREFER_GENERALIZED */
 
 AO_INLINE void
 AO_char_and_full (volatile unsigned char *p, unsigned char value)
@@ -224,6 +223,7 @@ AO_short_xor_full (volatile unsigned short *p, unsigned short value)
                         : "memory");
 }
 #define AO_HAVE_short_xor_full
+#endif /* !AO_PREFER_GENERALIZED */
 
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set_full(volatile AO_TS_t *addr)
@@ -279,7 +279,68 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 }
 #define AO_HAVE_fetch_compare_and_swap_full
 
+  AO_INLINE unsigned char
+  AO_char_fetch_compare_and_swap_full(volatile unsigned char *addr,
+                                      unsigned char old_val,
+                                      unsigned char new_val)
+  {
+#   ifdef AO_USE_SYNC_CAS_BUILTIN
+      return __sync_val_compare_and_swap(addr, old_val, new_val
+                                         /* empty protection list */);
+#   else
+      unsigned char fetched_val;
+
+      __asm__ __volatile__ ("lock; cmpxchgb %3, %4"
+                            : "=a" (fetched_val), "=m" (*addr)
+                            : "a" (old_val), "r" (new_val), "m" (*addr)
+                            : "memory");
+      return fetched_val;
+#   endif
+  }
+# define AO_HAVE_char_fetch_compare_and_swap_full
+
+  AO_INLINE unsigned short
+  AO_short_fetch_compare_and_swap_full(volatile unsigned short *addr,
+                                       unsigned short old_val,
+                                       unsigned short new_val)
+  {
+#   ifdef AO_USE_SYNC_CAS_BUILTIN
+      return __sync_val_compare_and_swap(addr, old_val, new_val
+                                         /* empty protection list */);
+#   else
+      unsigned short fetched_val;
+
+      __asm__ __volatile__ ("lock; cmpxchgw %3, %4"
+                            : "=a" (fetched_val), "=m" (*addr)
+                            : "a" (old_val), "r" (new_val), "m" (*addr)
+                            : "memory");
+      return fetched_val;
+#   endif
+  }
+# define AO_HAVE_short_fetch_compare_and_swap_full
+
 # if defined(__x86_64__) && !defined(__ILP32__)
+    AO_INLINE unsigned int
+    AO_int_fetch_compare_and_swap_full(volatile unsigned int *addr,
+                                       unsigned int old_val,
+                                       unsigned int new_val)
+    {
+#     ifdef AO_USE_SYNC_CAS_BUILTIN
+        return __sync_val_compare_and_swap(addr, old_val, new_val
+                                           /* empty protection list */);
+#     else
+        unsigned int fetched_val;
+
+        __asm__ __volatile__ ("lock; cmpxchgl %3, %4"
+                            : "=a" (fetched_val), "=m" (*addr)
+                            : "a" (old_val), "r" (new_val), "m" (*addr)
+                            : "memory");
+        return fetched_val;
+#     endif
+    }
+#   define AO_HAVE_int_fetch_compare_and_swap_full
+
+#   ifndef AO_PREFER_GENERALIZED
     AO_INLINE unsigned int
     AO_int_fetch_and_add_full (volatile unsigned int *p, unsigned int incr)
     {
@@ -319,6 +380,7 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                             : "memory");
     }
 #   define AO_HAVE_int_xor_full
+#   endif /* !AO_PREFER_GENERALIZED */
 
 # else
 #   define AO_T_IS_INT
