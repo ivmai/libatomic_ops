@@ -25,8 +25,6 @@
 # define AO_ASSUME_WINDOWS98
 #endif
 #include "common32_defs.h"
-/* FIXME: Do _InterlockedOps really have a full memory barrier?         */
-/* (MSDN WinCE docs say nothing about it.)                              */
 
 #if _M_ARM >= 6
 /* ARMv6 is the first architecture providing support for simple LL/SC.  */
