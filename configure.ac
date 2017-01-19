@@ -115,7 +115,7 @@ AC_ARG_ENABLE(gcov, AC_HELP_STRING([--enable-gcov],
 if test "$enable_gcov" = "yes"; then
   CFLAGS="$CFLAGS --coverage"
   # Turn off code optimization to get accurate line numbers.
-  CFLAGS=`echo "$CFLAGS" | sed -e 's/-O[0-9]*//g'`
+  CFLAGS=`echo "$CFLAGS" | sed -e 's/-O\(1\|2\|3\|4\|s\|fast\)\?//g'`
 fi
 
 AC_SUBST(PICFLAG)
