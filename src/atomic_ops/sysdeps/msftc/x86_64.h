@@ -159,6 +159,8 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                        AO_t new_val1, AO_t new_val2)
 {
    __int64 comparandResult[2];
+
+   assert(((size_t)addr & (sizeof(AO_double_t) - 1)) == 0);
    comparandResult[0] = old_val1; /* low */
    comparandResult[1] = old_val2; /* high */
    return _InterlockedCompareExchange128((volatile __int64 *)addr,
