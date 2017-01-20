@@ -124,6 +124,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
   AO_double_compare_and_swap_full(volatile AO_double_t *addr,
                                   AO_double_t old_val, AO_double_t new_val)
   {
+    assert(((size_t)addr & (sizeof(AO_double_t) - 1)) == 0);
     return (double_ptr_storage)_InterlockedCompareExchange64(
                                         (__int64 volatile *)addr,
                                         new_val.AO_whole /* exchange */,
