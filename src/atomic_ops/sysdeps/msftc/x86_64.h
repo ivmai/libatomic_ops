@@ -37,10 +37,6 @@
 # include "../test_and_set_t_is_ao_t.h"
 #endif
 
-#include <windows.h>
-        /* Seems like over-kill, but that's what MSDN recommends.       */
-        /* And apparently winbase.h is not always self-contained.       */
-
 /* Assume _MSC_VER >= 1400 */
 #include <intrin.h>
 
@@ -59,21 +55,21 @@
 AO_INLINE AO_t
 AO_fetch_and_add_full (volatile AO_t *p, AO_t incr)
 {
-  return _InterlockedExchangeAdd64((LONGLONG volatile *)p, (LONGLONG)incr);
+  return _InterlockedExchangeAdd64((__int64 volatile *)p, incr);
 }
 #define AO_HAVE_fetch_and_add_full
 
 AO_INLINE AO_t
 AO_fetch_and_add1_full (volatile AO_t *p)
 {
-  return _InterlockedIncrement64((LONGLONG volatile *)p) - 1;
+  return _InterlockedIncrement64((__int64 volatile *)p) - 1;
 }
 #define AO_HAVE_fetch_and_add1_full
 
 AO_INLINE AO_t
 AO_fetch_and_sub1_full (volatile AO_t *p)
 {
-  return _InterlockedDecrement64((LONGLONG volatile *)p) + 1;
+  return _InterlockedDecrement64((__int64 volatile *)p) + 1;
 }
 #define AO_HAVE_fetch_and_sub1_full
 #endif /* !AO_PREFER_GENERALIZED */
@@ -82,8 +78,8 @@ AO_INLINE AO_t
 AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                                AO_t new_val)
 {
-  return (AO_t)_InterlockedCompareExchange64((LONGLONG volatile *)addr,
-                                        (LONGLONG)new_val, (LONGLONG)old_val);
+  return (AO_t)_InterlockedCompareExchange64((__int64 volatile *)addr,
+                                             new_val, old_val);
 }
 #define AO_HAVE_fetch_compare_and_swap_full
 
@@ -91,7 +87,7 @@ AO_INLINE unsigned int
 AO_int_fetch_compare_and_swap_full(volatile unsigned int *addr,
                                    unsigned int old_val, unsigned int new_val)
 {
-  return _InterlockedCompareExchange((LONG volatile *)addr, new_val, old_val);
+  return _InterlockedCompareExchange((long volatile *)addr, new_val, old_val);
 }
 #define AO_HAVE_int_fetch_compare_and_swap_full
 
@@ -99,21 +95,21 @@ AO_int_fetch_compare_and_swap_full(volatile unsigned int *addr,
 AO_INLINE unsigned int
 AO_int_fetch_and_add_full(volatile unsigned int *p, unsigned int incr)
 {
-  return _InterlockedExchangeAdd((LONG volatile *)p, incr);
+  return _InterlockedExchangeAdd((long volatile *)p, incr);
 }
 #define AO_HAVE_int_fetch_and_add_full
 
   AO_INLINE unsigned int
   AO_int_fetch_and_add1_full(volatile unsigned int *p)
   {
-    return _InterlockedIncrement((LONG volatile *)p) - 1;
+    return _InterlockedIncrement((long volatile *)p) - 1;
   }
 # define AO_HAVE_int_fetch_and_add1_full
 
   AO_INLINE unsigned int
   AO_int_fetch_and_sub1_full(volatile unsigned int *p)
   {
-    return _InterlockedDecrement((LONG volatile *)p) + 1;
+    return _InterlockedDecrement((long volatile *)p) + 1;
   }
 # define AO_HAVE_int_fetch_and_sub1_full
 #endif /* !AO_PREFER_GENERALIZED */
