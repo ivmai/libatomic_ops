@@ -16,7 +16,7 @@
 #CPU=$(MY_CPU)
 #!include <ntwin32.mak>
 
-CFLAGS=-O2 -W3 -DAO_ASSUME_WINDOWS98
+CFLAGS=-O2 -W3
 
 LIB_OBJS=atomic_ops.obj atomic_ops_malloc.obj atomic_ops_stack.obj
 
@@ -37,9 +37,6 @@ libatomic_ops_gpl.lib: $(LIB_OBJS)
 test_atomic: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
 	cl $(CFLAGS) -I. ..\tests\test_atomic.c /Fo.\test_atomic
 
-test_atomic_w95: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
-	cl -W3 -O2 -I. ..\tests\test_atomic.c /Fo.\test_atomic_w95
-
 test_malloc: ..\tests\test_malloc.c libatomic_ops_gpl.lib
 	cl $(CFLAGS) -I. ..\tests\test_malloc.c /Fo.\test_malloc \
 	    libatomic_ops_gpl.lib
@@ -48,9 +45,7 @@ test_stack: ..\tests\test_stack.c libatomic_ops_gpl.lib
 	cl $(CFLAGS) -I. ..\tests\test_stack.c /Fo.\test_stack \
 	    libatomic_ops_gpl.lib
 
-check: test_atomic test_atomic_w95 test_malloc test_stack
-	@echo "The following will print lots of 'Missing ...' messages"
-	test_atomic_w95
+check: test_atomic test_malloc test_stack
 	@echo "The following will print some 'Missing ...' messages"
 	test_atomic
 	test_malloc

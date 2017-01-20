@@ -149,9 +149,6 @@ AH_TEMPLATE([AO_ASM_X64_AVAILABLE],
         [Inline assembly available (only VC/x86_64)])
 AH_TEMPLATE([AO_ASSUME_VISTA],
         [Assume Windows Server 2003, Vista or later target (only VC/x86)])
-AH_TEMPLATE([AO_ASSUME_WINDOWS98],
-        [Assume hardware compare-and-swap functionality available \
-         on target (only VC/x86)])
 AH_TEMPLATE([AO_CMPXCHG16B_AVAILABLE],
         [Assume target is not old AMD Opteron chip (only x86_64)])
 AH_TEMPLATE([AO_FORCE_USE_SWP],

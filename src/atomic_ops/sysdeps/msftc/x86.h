@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-/* If AO_ASSUME_WINDOWS98 is defined, we assume Windows 98 or newer.    */
 /* If AO_ASSUME_VISTA is defined, we assume Windows Server 2003, Vista  */
 /* or later.                                                            */
 
@@ -28,7 +27,9 @@
 
 #include "../test_and_set_t_is_char.h"
 
-#if defined(AO_ASSUME_VISTA) && !defined(AO_ASSUME_WINDOWS98)
+#if !defined(AO_ASSUME_WINDOWS98) \
+    && (defined(AO_ASSUME_VISTA) || _MSC_VER >= 1400)
+   /* Visual Studio 2005 (MS VC++ 8.0) discontinued support of Windows 95. */
 # define AO_ASSUME_WINDOWS98
 #endif
 
