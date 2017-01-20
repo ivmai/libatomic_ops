@@ -146,6 +146,11 @@ AO_INLINE void AO_stack_init(AO_stack_t *list)
         AO_stack_pop_explicit_aux_acquire(&((l)->AO_ptr), &((l)->AO_aux))
 #define AO_HAVE_stack_pop_acquire
 
+#ifndef AO_DOUBLE_ALIGN
+  /* For AO_stack clients only. */
+# define AO_DOUBLE_ALIGN /* empty */
+#endif
+
 # else /* Use fully non-blocking data structure, wide CAS       */
 
 #ifndef AO_HAVE_double_t
@@ -156,6 +161,7 @@ AO_INLINE void AO_stack_init(AO_stack_t *list)
 
 typedef volatile AO_double_t AO_stack_t;
 /* AO_val1 is version, AO_val2 is pointer.      */
+/* AO_stack_t variables should have AO_DOUBLE_ALIGN attribute.  */
 
 #define AO_STACK_INITIALIZER AO_DOUBLE_T_INITIALIZER
 

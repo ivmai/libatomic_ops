@@ -50,10 +50,24 @@
   typedef __m128 double_ptr_storage;
 #elif defined(_WIN32) && !defined(__GNUC__)
   typedef unsigned __int64 double_ptr_storage;
+# ifdef _MSC_VER
+    /* VC++/x86 does not align __int64 properly by default, thus,       */
+    /* causing an undefined behavior or assertions violation in         */
+    /* the double-wide atomic primitives.  For the proper alignment,    */
+    /* all variables of AO_double_t type (in the client code) those     */
+    /* address is passed to an AO primitive should be defined with the  */
+    /* given attribute.  Not a part of double_ptr_storage because the   */
+    /* attribute cannot be applied to function parameters.              */
+#   define AO_DOUBLE_ALIGN __declspec(align(8))
+# endif
 #else
   typedef unsigned long long double_ptr_storage;
 #endif
 # define AO_HAVE_DOUBLE_PTR_STORAGE
+
+#ifndef AO_DOUBLE_ALIGN
+# define AO_DOUBLE_ALIGN /* empty */
+#endif
 
 typedef union {
     struct { AO_t AO_v1; AO_t AO_v2; } AO_parts;

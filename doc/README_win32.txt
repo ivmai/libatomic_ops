@@ -26,6 +26,11 @@ Most clients of atomic_ops.h will need to define AO_ASSUME_WINDOWS98 before
 including it.  Compare_and_swap is otherwise not available.
 Defining AO_ASSUME_VISTA will make compare_double_and_swap_double available
 as well.
+Please note that MS compiler for x86 does not align AO_double_t on an 8-byte
+boundary, thus to avoid an undefined behavior, an AO_double_t (volatile)
+variable should be declared with AO_DOUBLE_ALIGN attribute if the variable
+reference is passed to an AO primitive (the attribute is not applicable to
+arguments and pointers).
 
 Note that the library is covered by the GNU General Public License, while
 the top 2 of these pieces allow use in proprietary code.
