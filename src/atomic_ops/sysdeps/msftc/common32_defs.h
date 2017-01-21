@@ -116,3 +116,43 @@ AO_fetch_and_sub1_full(volatile AO_t *p)
   }
 # define AO_HAVE_fetch_compare_and_swap_full
 #endif /* AO_ASSUME_WINDOWS98 */
+
+#if (_MSC_VER > 1400) && !defined(_M_ARM)
+
+# pragma intrinsic (_InterlockedAnd8)
+# pragma intrinsic (_InterlockedCompareExchange16)
+# pragma intrinsic (_InterlockedOr8)
+# pragma intrinsic (_InterlockedXor8)
+
+  AO_INLINE void
+  AO_char_and_full(volatile unsigned char *p, unsigned char value)
+  {
+    _InterlockedAnd8((char volatile *)p, value);
+  }
+# define AO_HAVE_char_and_full
+
+  AO_INLINE void
+  AO_char_or_full(volatile unsigned char *p, unsigned char value)
+  {
+    _InterlockedOr8((char volatile *)p, value);
+  }
+# define AO_HAVE_char_or_full
+
+  AO_INLINE void
+  AO_char_xor_full(volatile unsigned char *p, unsigned char value)
+  {
+    _InterlockedXor8((char volatile *)p, value);
+  }
+# define AO_HAVE_char_xor_full
+
+  AO_INLINE unsigned short
+  AO_short_fetch_compare_and_swap_full(volatile unsigned short *addr,
+                                       unsigned short old_val,
+                                       unsigned short new_val)
+  {
+    return _InterlockedCompareExchange16((short volatile *)addr,
+                                         new_val, old_val);
+  }
+# define AO_HAVE_short_fetch_compare_and_swap_full
+
+#endif /* _MSC_VER > 1400 */
