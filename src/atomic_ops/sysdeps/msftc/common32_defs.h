@@ -117,7 +117,7 @@ AO_fetch_and_sub1_full(volatile AO_t *p)
 # define AO_HAVE_fetch_compare_and_swap_full
 #endif /* AO_ASSUME_WINDOWS98 */
 
-#if (_MSC_VER > 1400) && !defined(_M_ARM)
+#if (_MSC_VER > 1400) && (!defined(_M_ARM) || _MSC_VER >= 1800)
 
 # pragma intrinsic (_InterlockedAnd8)
 # pragma intrinsic (_InterlockedCompareExchange16)
