@@ -171,7 +171,41 @@ AO_int_fetch_and_add_full(volatile unsigned int *p, unsigned int incr)
 # endif /* !AO_PREFER_GENERALIZED */
 #endif /* _MSC_VER > 1400 */
 
-#ifdef AO_ASM_X64_AVAILABLE
+#if _MSC_VER >= 1800 /* Visual Studio 2013+ */
+
+# pragma intrinsic (_InterlockedCompareExchange8)
+
+  AO_INLINE unsigned char
+  AO_char_fetch_compare_and_swap_full(volatile unsigned char *addr,
+                                      unsigned char old_val,
+                                      unsigned char new_val)
+  {
+    return _InterlockedCompareExchange8((char volatile *)addr,
+                                        new_val, old_val);
+  }
+# define AO_HAVE_char_fetch_compare_and_swap_full
+
+# ifndef AO_PREFER_GENERALIZED
+#   pragma intrinsic (_InterlockedExchangeAdd16)
+#   pragma intrinsic (_InterlockedExchangeAdd8)
+
+    AO_INLINE unsigned char
+    AO_char_fetch_and_add_full(volatile unsigned char *p, unsigned char incr)
+    {
+      return _InterlockedExchangeAdd8((char volatile *)p, incr);
+    }
+#   define AO_HAVE_char_fetch_and_add_full
+
+    AO_INLINE unsigned short
+    AO_short_fetch_and_add_full(volatile unsigned short *p,
+                                unsigned short incr)
+    {
+      return _InterlockedExchangeAdd16((short volatile *)p, incr);
+    }
+#   define AO_HAVE_short_fetch_and_add_full
+# endif /* !AO_PREFER_GENERALIZED */
+
+#elif defined(AO_ASM_X64_AVAILABLE)
 
   AO_INLINE unsigned char
   AO_char_fetch_and_add_full(volatile unsigned char *p, unsigned char incr)
@@ -196,6 +230,10 @@ AO_int_fetch_and_add_full(volatile unsigned int *p, unsigned int incr)
     }
   }
 # define AO_HAVE_short_fetch_and_add_full
+
+#endif /* _MSC_VER < 1800 && AO_ASM_X64_AVAILABLE */
+
+#ifdef AO_ASM_X64_AVAILABLE
 
 /* As far as we can tell, the lfence and sfence instructions are not    */
 /* currently needed or useful for cached memory accesses.               */

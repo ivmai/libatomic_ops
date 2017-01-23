@@ -63,7 +63,7 @@ AO_nop_full(void)
 
 #endif
 
-#ifndef AO_NO_ASM_XADD
+#if !defined(AO_NO_ASM_XADD) && !defined(AO_HAVE_char_fetch_and_add_full)
   AO_INLINE unsigned char
   AO_char_fetch_and_add_full(volatile unsigned char *p, unsigned char incr)
   {
