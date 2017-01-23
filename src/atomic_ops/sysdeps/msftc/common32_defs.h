@@ -155,4 +155,22 @@ AO_fetch_and_sub1_full(volatile AO_t *p)
   }
 # define AO_HAVE_short_fetch_compare_and_swap_full
 
+# ifndef AO_PREFER_GENERALIZED
+#   pragma intrinsic (_InterlockedIncrement16)
+#   pragma intrinsic (_InterlockedDecrement16)
+
+    AO_INLINE unsigned short
+    AO_short_fetch_and_add1_full(volatile unsigned short *p)
+    {
+      return _InterlockedIncrement16((short volatile *)p) - 1;
+    }
+#   define AO_HAVE_short_fetch_and_add1_full
+
+    AO_INLINE unsigned short
+    AO_short_fetch_and_sub1_full(volatile unsigned short *p)
+    {
+      return _InterlockedDecrement16((short volatile *)p) + 1;
+    }
+#   define AO_HAVE_short_fetch_and_sub1_full
+# endif /* !AO_PREFER_GENERALIZED */
 #endif /* _MSC_VER > 1400 */
