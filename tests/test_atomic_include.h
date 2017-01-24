@@ -26,7 +26,7 @@ void test_atomic(void)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
 # if defined(AO_HAVE_double_t)
-    AO_double_t w;
+    static AO_double_t w; /* static to avoid misalignment */
     w.AO_val1 = 0;
     w.AO_val2 = 0;
 # endif
@@ -230,7 +230,7 @@ void test_atomic_release(void)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
 # if defined(AO_HAVE_double_t)
-    AO_double_t w;
+    static AO_double_t w; /* static to avoid misalignment */
     w.AO_val1 = 0;
     w.AO_val2 = 0;
 # endif
@@ -434,7 +434,7 @@ void test_atomic_acquire(void)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
 # if defined(AO_HAVE_double_t)
-    AO_double_t w;
+    static AO_double_t w; /* static to avoid misalignment */
     w.AO_val1 = 0;
     w.AO_val2 = 0;
 # endif
@@ -638,7 +638,7 @@ void test_atomic_read(void)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
 # if defined(AO_HAVE_double_t)
-    AO_double_t w;
+    static AO_double_t w; /* static to avoid misalignment */
     w.AO_val1 = 0;
     w.AO_val2 = 0;
 # endif
@@ -842,7 +842,7 @@ void test_atomic_write(void)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
 # if defined(AO_HAVE_double_t)
-    AO_double_t w;
+    static AO_double_t w; /* static to avoid misalignment */
     w.AO_val1 = 0;
     w.AO_val2 = 0;
 # endif
@@ -1046,7 +1046,7 @@ void test_atomic_full(void)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
 # if defined(AO_HAVE_double_t)
-    AO_double_t w;
+    static AO_double_t w; /* static to avoid misalignment */
     w.AO_val1 = 0;
     w.AO_val2 = 0;
 # endif
@@ -1250,7 +1250,7 @@ void test_atomic_release_write(void)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
 # if defined(AO_HAVE_double_t)
-    AO_double_t w;
+    static AO_double_t w; /* static to avoid misalignment */
     w.AO_val1 = 0;
     w.AO_val2 = 0;
 # endif
@@ -1454,7 +1454,7 @@ void test_atomic_acquire_read(void)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
 # if defined(AO_HAVE_double_t)
-    AO_double_t w;
+    static AO_double_t w; /* static to avoid misalignment */
     w.AO_val1 = 0;
     w.AO_val2 = 0;
 # endif

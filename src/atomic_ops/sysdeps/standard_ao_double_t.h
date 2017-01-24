@@ -23,5 +23,11 @@ typedef union {
 } AO_double_t;
 
 #define AO_HAVE_double_t
+
+/* Note: AO_double_t volatile variables are not intended to be local    */
+/* ones (at least those which are passed to AO double-wide primitives   */
+/* as the first argument), otherwise it is the client responsibility to */
+/* ensure they have double-word alignment.                              */
+
 #define AO_val1 AO_parts.AO_v1
 #define AO_val2 AO_parts.AO_v2
