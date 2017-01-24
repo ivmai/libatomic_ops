@@ -24,11 +24,6 @@ pieces from the resulting src directory contents:
 
 If the client defines AO_ASSUME_VISTA (before include atomic_ops.h), it should
 make double_compare_and_swap_full available.
-Please note that MS compiler for x86 does not align AO_double_t on an 8-byte
-boundary, thus to avoid an undefined behavior, an AO_double_t (volatile)
-variable should be declared with AO_DOUBLE_ALIGN attribute if the variable
-reference is passed to an AO primitive (the attribute is not applicable to
-arguments and pointers).
 
 Note that the library is covered by the GNU General Public License, while
 the top 2 of these pieces allow use in proprietary code.

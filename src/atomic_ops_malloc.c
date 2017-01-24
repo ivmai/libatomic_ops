@@ -223,7 +223,7 @@ get_chunk(void)
 
 /* Object free lists.  Ith entry corresponds to objects         */
 /* of total size 2**i bytes.                                    */
-AO_stack_t AO_DOUBLE_ALIGN AO_free_list[LOG_MAX_SIZE+1];
+AO_stack_t AO_free_list[LOG_MAX_SIZE+1];
 
 /* Break up the chunk, and add it to the object free list for   */
 /* the given size.  We have exclusive access to chunk.          */

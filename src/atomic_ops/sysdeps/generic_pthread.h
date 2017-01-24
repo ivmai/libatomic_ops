@@ -367,7 +367,6 @@ typedef struct {
         AO_t AO_val2;
 } AO_double_t;
 #define AO_HAVE_double_t
-#define AO_DOUBLE_ALIGN /* empty */
 
 #define AO_DOUBLE_T_INITIALIZER { (AO_t)0, (AO_t)0 }
 

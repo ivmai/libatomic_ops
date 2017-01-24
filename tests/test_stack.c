@@ -79,7 +79,7 @@ typedef struct le {
   int data;
 } list_element;
 
-AO_stack_t AO_DOUBLE_ALIGN the_list = AO_STACK_INITIALIZER;
+AO_stack_t the_list = AO_STACK_INITIALIZER;
 
 void add_elements(int n)
 {
