@@ -67,6 +67,11 @@ typedef union {
 } AO_double_t;
 #define AO_HAVE_double_t
 
+/* Note: AO_double_t volatile variables are not intended to be local    */
+/* ones (at least those which are passed to AO double-wide primitives   */
+/* as the first argument), otherwise it is the client responsibility to */
+/* ensure they have double-word alignment.                              */
+
 /* Dummy declaration as a compile-time assertion for AO_double_t size.  */
 struct AO_double_t_size_static_assert {
     char dummy[sizeof(AO_double_t) == 2 * sizeof(AO_t) ? 1 : -1];
