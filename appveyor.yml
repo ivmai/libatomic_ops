@@ -21,4 +21,4 @@ build_script:
   - cmd: cd src && nmake -f Makefile.msft clean all && cd ..
 
 test_script:
-  - cmd: cd src && nmake -f Makefile.msft test_malloc test_stack
+  - cmd: cd src && nmake -f Makefile.msft check-noautogen
