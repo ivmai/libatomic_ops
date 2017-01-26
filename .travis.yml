@@ -15,4 +15,4 @@ install:
   - ./configure --enable-assertions --enable-werror
 
 script:
-  - make -j check
+  - make -j check CFLAGS_EXTRA="-march=native"
