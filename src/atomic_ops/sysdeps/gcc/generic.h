@@ -45,6 +45,9 @@
 # define AO_GCC_HAVE_SYNC_CAS
 #endif
 
+#undef AO_compiler_barrier
+#define AO_compiler_barrier() __atomic_signal_fence(__ATOMIC_SEQ_CST)
+
 #ifdef AO_UNIPROCESSOR
   /* If only a single processor (core) is used, AO_UNIPROCESSOR could   */
   /* be defined by the client to avoid unnecessary memory barrier.      */
