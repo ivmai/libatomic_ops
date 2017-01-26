@@ -157,7 +157,7 @@
 /* The test_and_set primitive returns an AO_TS_VAL_t value.     */
 /* AO_TS_t is the type of an in-memory test-and-set location.   */
 
-#define AO_TS_INITIALIZER (AO_t)AO_TS_CLEAR
+#define AO_TS_INITIALIZER ((AO_TS_t)AO_TS_CLEAR)
 
 /* Platform-dependent stuff:                                    */
 #if (defined(__GNUC__) || defined(_MSC_VER) || defined(__INTEL_COMPILER) \
