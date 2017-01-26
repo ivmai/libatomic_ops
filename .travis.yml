@@ -10,7 +10,9 @@ compiler:
 
 env:
   - CFLAGS_EXTRA_M=
+  - CFLAGS_EXTRA="-O3 -march=native"
   - CFLAGS_EXTRA_M=-m32
+      CFLAGS_EXTRA="-march=native"
 
 matrix:
   exclude:
@@ -29,4 +31,4 @@ install:
   - ./configure
 
 script:
-  - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA_M"
+  - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
