@@ -411,8 +411,10 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
   /* Reading or writing a quadword aligned on a 64-bit boundary is      */
   /* always carried out atomically on at least a Pentium according to   */
   /* Chapter 8.1.1 of Volume 3A Part 1 of Intel processor manuals.      */
-# define AO_ACCESS_double_CHECK_ALIGNED
-# include "../loadstore/double_atomic_load_store.h"
+# ifndef AO_PREFER_GENERALIZED
+#   define AO_ACCESS_double_CHECK_ALIGNED
+#   include "../loadstore/double_atomic_load_store.h"
+# endif
 
   /* Returns nonzero if the comparison succeeded.       */
   /* Really requires at least a Pentium.                */
@@ -481,8 +483,10 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 
   /* Reading or writing a quadword aligned on a 64-bit boundary is      */
   /* always carried out atomically (requires at least a Pentium).       */
-# define AO_ACCESS_double_CHECK_ALIGNED
-# include "../loadstore/double_atomic_load_store.h"
+# ifndef AO_PREFER_GENERALIZED
+#   define AO_ACCESS_double_CHECK_ALIGNED
+#   include "../loadstore/double_atomic_load_store.h"
+# endif
 
   /* X32 has native support for 64-bit integer operations (AO_double_t  */
   /* is a 64-bit integer and we could use 64-bit cmpxchg).              */
