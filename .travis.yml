@@ -8,11 +8,19 @@ compiler:
   - clang
   - gcc
 
-sudo: false
+env:
+  - CFLAGS_EXTRA=
+  - CFLAGS_EXTRA=-march=native
+  - CFLAGS_EXTRA=-m32 -march=native
+
+sudo: required
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CFLAGS_EXTRA" == -m32* ]]; then sudo apt-get install libc6:i386 libc6-dev-i386; fi
 
 install:
   - ./autogen.sh
   - ./configure --enable-assertions --enable-werror
 
 script:
-  - make -j check CFLAGS_EXTRA="-march=native"
+  - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA"
