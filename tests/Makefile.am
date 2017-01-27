@@ -12,19 +12,22 @@ AM_CPPFLAGS = \
 
 CFLAGS += $(CFLAGS_EXTRA)
 
+TESTS = test_atomic test_atomic_generalized test_stack test_malloc
 if HAVE_PTHREAD_H
-TESTS=test_atomic test_atomic_pthreads test_stack test_malloc
+TESTS += test_atomic_pthreads
 test_atomic_pthreads_SOURCES=$(test_atomic_SOURCES)
 test_atomic_pthreads_CPPFLAGS=-DAO_USE_PTHREAD_DEFS $(AM_CPPFLAGS)
 test_atomic_pthreads_LDADD=$(test_atomic_LDADD)
-else
-TESTS=test_atomic test_stack test_malloc
 endif
 
 check_PROGRAMS=$(TESTS)
 
 test_atomic_SOURCES=test_atomic.c
 test_atomic_LDADD = $(THREADDLLIBS) $(top_builddir)/src/libatomic_ops.la
+
+test_atomic_generalized_SOURCES=$(test_atomic_SOURCES)
+test_atomic_generalized_CPPFLAGS=-DAO_PREFER_GENERALIZED $(AM_CPPFLAGS)
+test_atomic_generalized_LDADD=$(test_atomic_LDADD)
 
 test_stack_SOURCES=test_stack.c
 test_stack_LDADD = $(THREADDLLIBS) \
