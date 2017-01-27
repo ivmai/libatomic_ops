@@ -36,6 +36,7 @@ Makefile
 /tests/core
 /tests/list_atomic.i
 /tests/test_atomic
+/tests/test_atomic_generalized
 /tests/test_atomic_pthreads
 /tests/test_malloc
 /tests/test_stack
