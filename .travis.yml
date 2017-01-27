@@ -11,7 +11,7 @@ compiler:
 env:
   - CFLAGS_EXTRA=
   - CFLAGS_EXTRA=-march=native
-  - CFLAGS_EXTRA=-m32 -march=native
+  - CFLAGS_EXTRA="-m32 -march=native"
 
 sudo: required
 
