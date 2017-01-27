@@ -13,6 +13,11 @@ env:
   - CFLAGS_EXTRA=-march=native
   - CFLAGS_EXTRA="-m32 -march=native"
 
+matrix:
+  exclude:
+  - os: osx
+    compiler: gcc
+
 sudo: required
 
 before_install:
