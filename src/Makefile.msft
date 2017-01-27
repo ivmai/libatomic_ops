@@ -14,11 +14,10 @@
 # To install, copy atomic_ops.h and the atomic_ops/... tree to your favorite
 # include directory.
 
-#MY_CPU=X86
-#CPU=$(MY_CPU)
 #!include <ntwin32.mak>
 
-CFLAGS=-O2 -W3
+CFLAGS_EXTRA=
+CFLAGS=-O2 -W3 $(CFLAGS_EXTRA)
 
 LIB_OBJS=atomic_ops.obj atomic_ops_malloc.obj atomic_ops_stack.obj
 
