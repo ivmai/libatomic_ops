@@ -39,6 +39,6 @@ script:
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
 
 after_success:
-  - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then lcov --directory src --capture --output-file coverage.info; fi
+  - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then lcov --directory src --directory tests --capture --output-file coverage.info; fi
   - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then lcov --remove coverage.info 'tests/*' --output-file coverage.info && lcov --list coverage.info; fi
   - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then coveralls-lcov --repo-token ${COVERALLS_TOKEN} coverage.info; fi
