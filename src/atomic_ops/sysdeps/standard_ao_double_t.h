@@ -34,6 +34,9 @@
   typedef unsigned __int64 double_ptr_storage;
 #elif defined(__aarch64__)
   typedef unsigned __int128 double_ptr_storage;
+#elif defined(__i386__) && defined(__GNUC__)
+  typedef unsigned long long double_ptr_storage
+                                __attribute__((__aligned__(8)));
 #else
   typedef unsigned long long double_ptr_storage;
 #endif
