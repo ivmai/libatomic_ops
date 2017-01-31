@@ -32,7 +32,7 @@
 #   if defined(__clang__)
 #     pragma GCC diagnostic ignored "-Wpedantic"
 #   else
-      /* GCC before ~4.8 does not accept "-Wpedanic" quietly.     */
+      /* GCC before ~4.8 does not accept "-Wpedantic" quietly.  */
 #     pragma GCC diagnostic ignored "-pedantic"
 #   endif
     typedef unsigned __int128 double_ptr_storage;
