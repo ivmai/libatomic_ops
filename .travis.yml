@@ -32,3 +32,4 @@ install:
 
 script:
   - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
+  - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
