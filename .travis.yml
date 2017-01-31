@@ -12,21 +12,33 @@ env:
   - CFLAGS_EXTRA=
   - CFLAGS_EXTRA=-march=native
   - CFLAGS_EXTRA="-m32 -march=native"
+  - CFLAGS_EXTRA="--coverage -march=native"
 
 matrix:
   exclude:
   - os: osx
     compiler: gcc
+  - compiler: clang
+    env: CFLAGS_EXTRA="--coverage -march=native"
+  - os: linux
+    compiler: gcc
+    env: CFLAGS_EXTRA=-march=native
 
 sudo: required
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CFLAGS_EXTRA" == -m32* ]]; then sudo apt-get install libc6:i386 libc6-dev-i386; fi
+  - if [[ "$CFLAGS_EXTRA" == --coverage* ]]; then sudo apt-get install lcov; gem install coveralls-lcov; ENABLE_GCOV=--enable-gcov; CFLAGS_EXTRA="-march=native"; fi
 
 install:
   - ./autogen.sh
-  - ./configure --enable-assertions --enable-werror
+  - ./configure --enable-assertions $ENABLE_GCOV --enable-werror
 
 script:
   - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA"
   - cat tests/test_atomic*.log
+
+after_success:
+  - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then lcov --directory src --capture --output-file coverage.info; fi
+  - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then lcov --remove coverage.info 'tests/*' --output-file coverage.info && lcov --list coverage.info; fi
+  - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then coveralls-lcov --repo-token ${COVERALLS_TOKEN} coverage.info; fi
