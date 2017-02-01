@@ -32,7 +32,7 @@ before_install:
       sudo apt-get install lcov;
       gem install coveralls-lcov;
       CONF_SHARED=--disable-shared;
-      CFLAGS_EXTRA="-march=native -DAO_TRACE_MALLOC -DVERBOSE";
+      CFLAGS_EXTRA="-march=native -DVERBOSE";
     else
       CONF_ASSERTIONS=--enable-assertions;
     fi
