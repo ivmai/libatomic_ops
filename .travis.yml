@@ -9,36 +9,46 @@ compiler:
   - gcc
 
 env:
-  - CFLAGS_EXTRA=
-  - CFLAGS_EXTRA=-march=native
-  - CFLAGS_EXTRA="-m32 -march=native"
-  - CFLAGS_EXTRA="--coverage -march=native"
+  - CFLAGS_EXTRA_M=
+  - CFLAGS_EXTRA="-O3 -march=native"
+  - CFLAGS_EXTRA_M=-m32
+    CFLAGS_EXTRA="-march=native"
+  - CONF_GCOV=--enable-gcov
 
 matrix:
   exclude:
   - os: osx
     compiler: gcc
   - compiler: clang
-    env: CFLAGS_EXTRA="--coverage -march=native"
-  - os: linux
-    compiler: gcc
-    env: CFLAGS_EXTRA=-march=native
+    env: CONF_GCOV=--enable-gcov
 
 sudo: required
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CFLAGS_EXTRA" == -m32* ]]; then sudo apt-get install libc6:i386 libc6-dev-i386; fi
-  - if [[ "$CFLAGS_EXTRA" == --coverage* ]]; then sudo apt-get install lcov; gem install coveralls-lcov; ENABLE_GCOV=--enable-gcov; CFLAGS_EXTRA="-march=native"; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CFLAGS_EXTRA_M" == "-m32" ]]; then
+      sudo apt-get install gcc-multilib;
+    fi
+  - if [[ "$CONF_GCOV" == --en* ]]; then
+      sudo apt-get install lcov;
+      gem install coveralls-lcov;
+      CONF_SHARED=--disable-shared;
+      CFLAGS_EXTRA="-march=native -DAO_TRACE_MALLOC -DVERBOSE";
+    else
+      CONF_ASSERTIONS=--enable-assertions;
+    fi
 
 install:
   - ./autogen.sh
-  - ./configure --enable-assertions $ENABLE_GCOV --enable-werror
 
 script:
-  - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA"
+  - ./configure $CONF_ASSERTIONS $CONF_GCOV $CONF_SHARED --enable-werror
+  - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
 
 after_success:
-  - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then lcov --directory src --directory tests --capture --output-file coverage.info; fi
-  - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then lcov --remove coverage.info 'tests/*' --output-file coverage.info && lcov --list coverage.info; fi
-  - if [[ "$ENABLE_GCOV" == "--enable-gcov" ]]; then coveralls-lcov --repo-token ${COVERALLS_TOKEN} coverage.info; fi
+  - if [[ "$CONF_GCOV" == --en* ]]; then
+      lcov --capture --directory src --directory tests --output-file coverage.info;
+      lcov --remove coverage.info '/usr/*' 'tests/*' --output-file coverage.info;
+      lcov --list coverage.info;
+      coveralls-lcov --repo-token ${COVERALLS_TOKEN} coverage.info;
+    fi
