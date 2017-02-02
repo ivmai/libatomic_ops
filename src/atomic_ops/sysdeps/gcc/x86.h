@@ -27,11 +27,13 @@
 # if defined(__clang__) \
      && (!(defined(__x86_64__) || defined(__APPLE_CC__) \
            || defined(__CYGWIN__) || defined(AO_PREFER_BUILTIN_ATOMICS)) \
-         || (defined(AO_ADDRESS_SANITIZER) && defined(__x86_64__) \
-             && !defined(__ILP32__)))
+         || (defined(__x86_64__) && !defined(__ILP32__) \
+             && ((__clang_major__ == 3 && __clang_minor__ == 4 \
+                   && !defined(AO_PREFER_BUILTIN_ATOMICS)) \
+                 || defined(AO_ADDRESS_SANITIZER))))
     /* As of clang-3.8 i686 (NDK r11c), it requires -latomic for all    */
-    /* the double-wide operations.  For now, we fall back to the        */
-    /* non-intrinsic implementation by default.                         */
+    /* the double-wide operations.  Same for clang-3.4/x64.  For now,   */
+    /* we fall back to the non-intrinsic implementation by default.     */
     /* As of clang-3.8, double-wide arguments are incorrectly passed to */
     /* atomic intrinsic operations for x64 target if ASan is enabled.   */
 #   define AO_SKIPATOMIC_double_compare_and_swap_ANY
