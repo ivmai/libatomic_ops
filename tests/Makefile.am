@@ -26,7 +26,8 @@ test_atomic_SOURCES=test_atomic.c
 test_atomic_LDADD = $(THREADDLLIBS) $(top_builddir)/src/libatomic_ops.la
 
 test_atomic_generalized_SOURCES=$(test_atomic_SOURCES)
-test_atomic_generalized_CPPFLAGS=-DAO_PREFER_GENERALIZED $(AM_CPPFLAGS)
+test_atomic_generalized_CPPFLAGS= \
+        -DAO_PREFER_GENERALIZED -DAO_TEST_EMULATION $(AM_CPPFLAGS)
 test_atomic_generalized_LDADD=$(test_atomic_LDADD)
 
 test_stack_SOURCES=test_stack.c
