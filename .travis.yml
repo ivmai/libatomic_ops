@@ -11,8 +11,10 @@ compiler:
 env:
   - CFLAGS_EXTRA_M=
   - CFLAGS_EXTRA="-O3 -march=native"
+    CONF_ASSERTIONS=--enable-assertions
   - CFLAGS_EXTRA_M=-m32
-    CFLAGS_EXTRA="-march=native"
+      CFLAGS_EXTRA="-march=native"
+      CONF_ASSERTIONS=--enable-assertions
   - CONF_GCOV=--enable-gcov
 
 matrix:
@@ -33,8 +35,6 @@ before_install:
       gem install coveralls-lcov;
       CONF_SHARED=--disable-shared;
       CFLAGS_EXTRA="-march=native -DVERBOSE";
-    else
-      CONF_ASSERTIONS=--enable-assertions;
     fi
 
 install:
