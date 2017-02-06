@@ -1,3 +1,30 @@
+2017-01-31  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/standard_ao_double_t.h [__i386__ && __GNUC__]
+	(double_ptr_storage): Add aligned(8) attribute (so that AO_double_t
+	global/static variables to have proper (double-word) alignment).
+
+2017-01-26  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops.h (AO_TS_INITIALIZER): Change type from AO_t to
+	AO_TS_t; add outermost parentheses.
+
+2017-01-24  Ivan Maidanski <ivmai@mail.ru>
+
+	* doc/README.txt (AO_double_t): Add note about required alignment.
+	* src/atomic_ops/sysdeps/standard_ao_double_t.h (AO_double_t): Add
+	comment about alignment.
+	* src/atomic_ops_stack.h (AO_stack_t): Likewise.
+	* tests/test_atomic.template (test_atomicXX): Define w
+	local variable as static (as otherwise, e.g., it could have 4-byte
+	alignment on x86); add comment.
+	* tests/test_atomic_include.h: Regenerate.
+
+2017-01-16  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/msftc/arm.h: Remove FIXME about memory barrier
+	of _InterlockedOps (they have the correct one according to the MSDN).
+
 2012-10-08  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/Makefile.msft (libatomic_ops_gpl.lib): Do not pass
