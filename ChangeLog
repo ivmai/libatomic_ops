@@ -1,15 +1,21 @@
 
 == [7.4.6] (unset) ==
 
+* Add assertion that double-wide CAS target is aligned (msftc/x86[_64]).
+* Add configure --enable-gcov option (enable code coverage analysis).
 * Code refactoring of gcc/powerpc.h to avoid code duplication.
 * Eliminate 'cast to long from void*' compiler warning in test_atomic.
+* Eliminate 'printf format specifies type void*' GCC pedantic warnings.
+* Enable limited testing in Makefile.msft without Cygwin.
 * Fix (delete) comment for AO_and_full (x86).
 * Fix missing printed value names (test_stack).
 * Implement fetch-CAS for s390[x] (gcc).
 * Refine README about library downloading.
 * Support AIX/ppc (gcc).
+* Support CFLAGS_EXTRA to pass extra user-defined compiler flags (make).
 * Support n32 ABI for mips64.
 * Use LLD and SCD instructions on mips64.
+* Workaround 'uninitialized memory use' MemorySanitizer warning (test_atomic).
 Also, includes 7.2h changes.
 
 
@@ -179,6 +185,8 @@ Also, includes 7.2 changes.
 * Fix (improve) AO_REQUIRE_CAS description in README.
 * Fix assertions style in test_atomic_include.
 * Fix size value wrap around in AO_malloc_large.
+* Fix test_atomic failure caused unaligned AO_double_t access (x86).
+* Fix type of general AO_TS_INITIALIZER.
 * Fix typos in 'error' pragma messages.
 
 
