@@ -37,7 +37,7 @@ before_install:
       sudo apt-get install lcov;
       gem install coveralls-lcov;
       CONF_SHARED=--enable-shared;
-      CFLAGS_EXTRA="-march=native -DVERBOSE";
+      CFLAGS_EXTRA="-march=native -DDEBUG_RUN_ONE_TEST -DVERBOSE";
     fi
 
 install:
