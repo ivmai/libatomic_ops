@@ -17,6 +17,7 @@ env:
       CONF_ASSERTIONS=--enable-assertions
   - CONF_GCOV=--enable-gcov
   - CSA_CHECK=true
+      CPPCHECK=true
 
 matrix:
   exclude:
@@ -25,7 +26,7 @@ matrix:
   - compiler: clang
     env: CONF_GCOV=--enable-gcov
   - compiler: clang
-    env: CSA_CHECK=true
+    env: CSA_CHECK=true CPPCHECK=true
 
 sudo: required
 
@@ -39,13 +40,17 @@ before_install:
       CONF_SHARED=--enable-shared;
       CFLAGS_EXTRA="-march=native -DDEBUG_RUN_ONE_TEST -DVERBOSE";
     fi
+  - if [[ "$CPPCHECK" == true ]]; then
+      git clone --depth=3 https://github.com/danmar/cppcheck.git -b master;
+      make --directory cppcheck -j CXXFLAGS="-O3 -march=native -DNDEBUG";
+    fi
 
 install:
   - ./autogen.sh
 
 script:
   - ./configure $CONF_ASSERTIONS $CONF_GCOV $CONF_SHARED --enable-werror
-  - if [[ "$CSA_CHECK" == true ]]; then
+  - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
       make --directory tests list_atomic.c test_atomic_include.h;
     else
       make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M";
@@ -54,6 +59,15 @@ script:
   - if [[ "$CSA_CHECK" == true ]]; then
       clang --analyze -Xanalyzer -analyzer-output=text -Werror -I src
             -DAO_TRACE_MALLOC -DVERBOSE tests/*.c src/*.c;
+    fi
+  - if [[ "$CPPCHECK" == true ]]; then
+      cppcheck/cppcheck -f -q --error-exitcode=2 -j16 -Ulong -DCPPCHECK -I src
+                --enable=information,performance,portability,style,warning
+                tests/*.c src/*.c;
+    fi
+  - if [[ "$CPPCHECK" == true ]]; then
+      cppcheck/cppcheck -f -q --error-exitcode=2 -Ulong -DAO_TEST_EMULATION
+                -DCPPCHECK -I src --enable=unusedFunction tests/*.c src/*.c;
     fi
 
 after_success:
