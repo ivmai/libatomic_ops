@@ -33,7 +33,7 @@ before_install:
   - if [[ "$CONF_GCOV" == --en* ]]; then
       sudo apt-get install lcov;
       gem install coveralls-lcov;
-      CONF_SHARED=--disable-shared;
+      CONF_SHARED=--enable-shared;
       CFLAGS_EXTRA="-march=native -DVERBOSE";
     fi
 
