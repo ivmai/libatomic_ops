@@ -53,6 +53,7 @@ Makefile
 # Code analysis tools:
 *.c.gcov
 *.h.gcov
+*.sancov
 /.sv*-dir
 /cov-int
 /coverage.info
