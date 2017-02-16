@@ -18,6 +18,7 @@ env:
   - CONF_GCOV=--enable-gcov
   - CSA_CHECK=true
       CPPCHECK=true
+  - SANITIZE=address
 
 matrix:
   exclude:
@@ -27,6 +28,10 @@ matrix:
     env: CONF_GCOV=--enable-gcov
   - compiler: clang
     env: CSA_CHECK=true CPPCHECK=true
+  - compiler: gcc
+    env: SANITIZE=address
+  - os: osx
+    env: SANITIZE=address
 
 sudo: required
 
@@ -43,6 +48,9 @@ before_install:
   - if [[ "$CPPCHECK" == true ]]; then
       git clone --depth=3 https://github.com/danmar/cppcheck.git -b master;
       make --directory cppcheck -j CXXFLAGS="-O3 -march=native -DNDEBUG";
+    fi
+  - if [[ "$SANITIZE" != "" ]]; then
+     CFLAGS_EXTRA="$CFLAGS_EXTRA -fsanitize=$SANITIZE -fno-common -fno-omit-frame-pointer";
     fi
 
 install:
