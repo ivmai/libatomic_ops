@@ -181,7 +181,18 @@
 # if __has_feature(address_sanitizer)
 #   define AO_ADDRESS_SANITIZER
 # endif
+# if __has_feature(memory_sanitizer)
+#   define AO_MEMORY_SANITIZER
+# endif
 #endif
+
+#ifndef AO_ATTR_NO_SANITIZE_MEMORY
+# ifdef AO_MEMORY_SANITIZER
+#   define AO_ATTR_NO_SANITIZE_MEMORY __attribute__((no_sanitize("memory")))
+# else
+#   define AO_ATTR_NO_SANITIZE_MEMORY /* empty */
+# endif
+#endif /* !AO_ATTR_NO_SANITIZE_MEMORY */
 
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER)
 # define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")
