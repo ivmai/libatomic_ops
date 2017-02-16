@@ -55,7 +55,7 @@ before_install:
       make --directory cppcheck -j CXXFLAGS="-O3 -march=native -DNDEBUG";
     fi
   - if [[ "$SANITIZE" != "" ]]; then
-     CFLAGS_EXTRA="$CFLAGS_EXTRA -fsanitize=$SANITIZE -fno-common -fno-omit-frame-pointer";
+      CFLAGS_EXTRA="$CFLAGS_EXTRA -fsanitize=$SANITIZE -fno-common -fno-omit-frame-pointer";
     fi
 
 install:
