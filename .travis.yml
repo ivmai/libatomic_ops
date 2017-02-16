@@ -15,6 +15,7 @@ env:
   - CFLAGS_EXTRA_M=-m32
       CFLAGS_EXTRA="-march=native"
       CONF_ASSERTIONS=--enable-assertions
+  - CONF_INTRINSICS=--disable-atomic-intrinsics
   - CONF_GCOV=--enable-gcov
   - CSA_CHECK=true
       CPPCHECK=true
@@ -24,6 +25,10 @@ matrix:
   exclude:
   - os: osx
     compiler: gcc
+  - compiler: gcc
+    env: CONF_INTRINSICS=--disable-atomic-intrinsics
+  - os: osx
+    env: CONF_INTRINSICS=--disable-atomic-intrinsics
   - compiler: clang
     env: CONF_GCOV=--enable-gcov
   - compiler: clang
@@ -57,7 +62,8 @@ install:
   - ./autogen.sh
 
 script:
-  - ./configure $CONF_ASSERTIONS $CONF_GCOV $CONF_SHARED --enable-werror
+  - ./configure $CONF_ASSERTIONS $CONF_INTRINSICS $CONF_GCOV
+                $CONF_SHARED --enable-werror
   - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
       make --directory tests list_atomic.c test_atomic_include.h;
     else
