@@ -64,6 +64,7 @@ install:
 script:
   - ./configure $CONF_ASSERTIONS $CONF_INTRINSICS $CONF_GCOV
                 $CONF_SHARED --enable-werror
+  - cat src/config.h
   - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
       make --directory tests list_atomic.c test_atomic_include.h;
     else
