@@ -7,7 +7,7 @@
 # since we can't rely on sed.  But we don't keep test_atomic_include.h in
 # the development repository any longer, so if you want to run all tests
 # for the sources obtained from the repository then
-# type "./autogen.sh; ./configure; make check; make clean" in Cygwin first.
+# type "./autogen.sh && ./configure && make -j && make clean" in Cygwin first.
 # Otherwise type "nmake -f Makefile.msft check-noautogen" to run only the
 # tests not requiring the source auto-generation.
 # Win32 clients only need to include the header files.
