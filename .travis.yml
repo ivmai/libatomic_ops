@@ -20,6 +20,7 @@ env:
   - CSA_CHECK=true
       CPPCHECK=true
   - SANITIZE=address
+  - SANITIZE=memory,undefined
 
 matrix:
   exclude:
@@ -37,6 +38,10 @@ matrix:
     env: SANITIZE=address
   - os: osx
     env: SANITIZE=address
+  - compiler: gcc
+    env: SANITIZE=memory,undefined
+  - os: osx
+    env: SANITIZE=memory,undefined
 
 sudo: required
 
@@ -57,6 +62,10 @@ before_install:
   - if [[ "$SANITIZE" != "" ]]; then
       CFLAGS_EXTRA="$CFLAGS_EXTRA -fsanitize=$SANITIZE -fno-common -fno-omit-frame-pointer";
     fi
+# TODO: Issues found by MSan and UBSan do not cause the build to fail by now.
+# Travis Linux/clang-3.4 does not accept -fno-sanitize-recover=undefined,
+# and the sanitizer runtime does not seem to handle MSAN_OPTIONS="exitcode=1"
+# and UBSAN_OPTIONS="halt_on_error=1".
 
 install:
   - ./autogen.sh
