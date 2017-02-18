@@ -59,6 +59,11 @@ before_install:
       git clone --depth=3 https://github.com/danmar/cppcheck.git -b master;
       make --directory cppcheck -j CXXFLAGS="-O3 -march=native -DNDEBUG";
     fi
+  - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
+      MAKEFILE_TARGET=all;
+    else
+      MAKEFILE_TARGET=check;
+    fi
   - if [[ "$SANITIZE" != "" ]]; then
       CFLAGS_EXTRA="$CFLAGS_EXTRA -fsanitize=$SANITIZE -fno-common -fno-omit-frame-pointer";
     fi
@@ -76,11 +81,7 @@ script:
   - if [[ "$CSA_CHECK" != true && "$CPPCHECK" != true ]]; then
       cat src/config.h;
     fi
-  - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
-      make --directory tests list_atomic.c test_atomic_include.h;
-    else
-      make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M";
-    fi
+  - make -j $MAKEFILE_TARGET CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
   - if [[ "$CSA_CHECK" == true ]]; then
       clang --analyze -Xanalyzer -analyzer-output=text -Werror -I src
