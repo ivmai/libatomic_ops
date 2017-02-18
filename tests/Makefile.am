@@ -43,6 +43,16 @@ test_malloc_LDADD = $(THREADDLLIBS) \
         $(top_builddir)/src/libatomic_ops_gpl.la \
         $(top_builddir)/src/libatomic_ops.la
 
+# Run the tests directly (without test-driver):
+.PHONY: check-without-test-driver
+check-without-test-driver: $(TESTS)
+	@echo "The following will print some 'Missing ...' messages"
+	./test_atomic
+	./test_atomic_generalized
+	./test_stack
+	./test_malloc
+	test ! -f test_atomic_pthreads || ./test_atomic_pthreads
+
 test_atomic_include.h: test_atomic_include.template
 	mkdir -p `dirname $@`
 	sed -e s:XX::g $? > $@
