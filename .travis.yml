@@ -67,10 +67,6 @@ before_install:
   - if [[ "$SANITIZE" != "" ]]; then
       CFLAGS_EXTRA="$CFLAGS_EXTRA -fsanitize=$SANITIZE -fno-common -fno-omit-frame-pointer";
     fi
-# TODO: Issues found by MSan and UBSan do not cause the build to fail by now.
-# Travis Linux/clang-3.4 does not accept -fno-sanitize-recover=undefined,
-# and the sanitizer runtime does not seem to handle MSAN_OPTIONS="exitcode=1"
-# and UBSAN_OPTIONS="halt_on_error=1".
 
 install:
   - ./autogen.sh
@@ -95,6 +91,9 @@ script:
   - if [[ "$CPPCHECK" == true ]]; then
       cppcheck/cppcheck -f -q --error-exitcode=2 -Ulong -DAO_TEST_EMULATION
                 -DCPPCHECK -I src --enable=unusedFunction tests/*.c src/*.c;
+    fi
+  - if [[ "$SANITIZE" == *memory* || "$SANITIZE" == *undefined* ]]; then
+      UBSAN_OPTIONS="halt_on_error=1" make -C tests check-without-test-driver;
     fi
 
 after_success:
