@@ -13,8 +13,11 @@ AM_CPPFLAGS = \
 CFLAGS += $(CFLAGS_EXTRA)
 
 TESTS = test_atomic test_atomic_generalized test_stack test_malloc
+TEST_OBJS = test_atomic.o test_stack.o test_malloc.o \
+        test_atomic_generalized-test_atomic.o
 if HAVE_PTHREAD_H
 TESTS += test_atomic_pthreads
+TEST_OBJS += test_atomic_pthreads-test_atomic.o
 test_atomic_pthreads_SOURCES=$(test_atomic_SOURCES)
 test_atomic_pthreads_CPPFLAGS=-DAO_USE_PTHREAD_DEFS $(AM_CPPFLAGS)
 test_atomic_pthreads_LDADD=$(test_atomic_LDADD)
@@ -108,3 +111,6 @@ list_atomic.i: list_atomic.c
 # Verify list_atomic.c syntax:
 list_atomic.o: list_atomic.c
 	$(COMPILE) -c -o $@ $?
+
+# Just compile all tests (without linking and execution):
+check-nolink-local: $(TEST_OBJS)

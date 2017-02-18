@@ -10,4 +10,6 @@ dist_pkgdata_DATA = COPYING README.md
 
 EXTRA_DIST = autogen.sh
 
+check-nolink-local: all
+
 #distclean-local:
