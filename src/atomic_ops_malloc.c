@@ -251,14 +251,27 @@ static unsigned msb(size_t s)
 {
   unsigned result = 0;
   if ((s & 0xff) != s) {
-    unsigned v;
-    /* The following is a tricky code ought to be equivalent to         */
-    /* "(v = s >> 32) != 0" but suppresses warnings on 32-bit arch's.   */
-    if (sizeof(size_t) > 4 && (v = s >> (sizeof(size_t) > 4 ? 32 : 0)) != 0)
-      {
-        s = v;
-        result += 32;
-      }
+#   if __SIZEOF_SIZE_T__ == 8
+      unsigned v = (unsigned)(s >> 32);
+      if (v != 0)
+        {
+          s = v;
+          result += 32;
+        }
+#   elif __SIZEOF_SIZE_T__ == 4
+      /* No op. */
+#   else
+      unsigned v;
+      /* The following is a tricky code ought to be equivalent to       */
+      /* "(v = s >> 32) != 0" but suppresses warnings on 32-bit arch's. */
+#     define SIZEOF_SIZE_T_GT_4 (sizeof(size_t) > 4)
+      if (SIZEOF_SIZE_T_GT_4
+          && (v = (unsigned)(s >> (SIZEOF_SIZE_T_GT_4 ? 32 : 0))) != 0)
+        {
+          s = v;
+          result += 32;
+        }
+#   endif /* !defined(__SIZEOF_SIZE_T__) */
     if ((s >> 16) != 0)
       {
         s >>= 16;
