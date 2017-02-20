@@ -552,7 +552,7 @@ AO_xor(volatile AO_t *p, AO_t value)
       : "=&r"(result), "=&r"(tmp), "+m"(*addr)
       : "r"(addr), "r"(old_val), "r"(new_val)
       : AO_THUMB_SWITCH_CLOBBERS "cc");
-    return !(result&2); /* if succeded, return 1, else 0 */
+    return !(result&2); /* if succeeded then return 1 else 0 */
   }
 # define AO_HAVE_compare_and_swap
 #endif /* !AO_GENERALIZE_ASM_BOOL_CAS */
@@ -654,7 +654,7 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
         : "r" (addr), "r" (new_val.AO_whole)
         : "cc");
     } while (AO_EXPECT_FALSE(result));
-    return !result;   /* if succeded, return 1 else 0 */
+    return !result;   /* if succeeded then return 1 else 0 */
   }
 # define AO_HAVE_double_compare_and_swap
 #endif /* AO_ARM_HAVE_LDREXD */
