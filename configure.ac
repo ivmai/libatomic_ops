@@ -6,7 +6,6 @@ AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR(src/atomic_ops.c)
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign dist-bzip2 nostdinc])
-AM_EXTRA_RECURSIVE_TARGETS([check-nolink])
 AM_MAINTAINER_MODE
 
 AC_CONFIG_HEADERS([src/config.h])
