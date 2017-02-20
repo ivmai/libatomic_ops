@@ -187,7 +187,9 @@
 #endif
 
 #ifndef AO_ATTR_NO_SANITIZE_MEMORY
-# ifdef AO_MEMORY_SANITIZER
+# if defined(AO_MEMORY_SANITIZER) \
+        && (!defined(__clang__) || __clang_major__ > 3 \
+            || (__clang_major__ == 3 && __clang_minor__ >= 8))
 #   define AO_ATTR_NO_SANITIZE_MEMORY __attribute__((no_sanitize("memory")))
 # else
 #   define AO_ATTR_NO_SANITIZE_MEMORY /* empty */
