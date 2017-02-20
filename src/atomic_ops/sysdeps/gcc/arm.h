@@ -262,7 +262,7 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
     : "=&r"(result), "=&r"(tmp), "+m"(*addr)
     : "r"(addr), "r"(old_val), "r"(new_val)
     : AO_THUMB_SWITCH_CLOBBERS "cc");
-  return !(result&2);   /* if succeded, return 1, else 0 */
+  return !(result&2);   /* if succeeded then return 1 else 0 */
 }
 #define AO_HAVE_compare_and_swap
 
@@ -304,7 +304,7 @@ AO_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
         : "r" (addr), "r" (new_val)
         : "cc");
     } while (result);
-    return !result;   /* if succeded, return 1 else 0 */
+    return !result;   /* if succeeded then return 1 else 0 */
   }
 # define AO_HAVE_compare_double_and_swap_double
 #endif
