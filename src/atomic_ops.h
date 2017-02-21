@@ -300,6 +300,7 @@
 # endif /* __arm__ */
 # if defined(__cris__) || defined(CRIS)
 #   include "atomic_ops/sysdeps/gcc/cris.h"
+#   define AO_CAN_EMUL_CAS
 #   define AO_GENERALIZE_TWICE
 # endif
 # if defined(__mips__)
