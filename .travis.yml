@@ -15,7 +15,7 @@ env:
       CONF_ASSERTIONS=--enable-assertions
   - CONF_INTRINSICS=--disable-atomic-intrinsics
   - CONF_GCOV=--enable-gcov
-  - CROSS_NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
   - CSA_CHECK=true CPPCHECK=true
   - SANITIZE=address
   - SANITIZE=memory,undefined
@@ -41,12 +41,12 @@ matrix:
   - os: osx
     env: SANITIZE=memory,undefined
   - compiler: clang
-    env: CROSS_NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
 
 sudo: required
 
 before_install:
-  - if [[ ("$CFLAGS_EXTRA_M" == "-m32" || "$CROSS_NOLIBC_ARCH_ABI" != "")
+  - if [[ ("$CFLAGS_EXTRA_M" == "-m32" || "$CROSS_GCC_VER" != "")
           && "$TRAVIS_OS_NAME" == "linux" ]]; then
       sudo apt-get install gcc-multilib;
     fi
@@ -63,11 +63,10 @@ before_install:
     fi
   - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
       MAKEFILE_TARGET=all;
-    elif [[ "$CROSS_NOLIBC_ARCH_ABI" != "" ]]; then
-      GCC_VER=4.9.0;
+    elif [[ "$CROSS_GCC_VER" != "" ]]; then
       BUILD_ARCH=x86_64;
-      TAR_FOLDER_URL=https://www.kernel.org/pub/tools/crosstool/files/bin/$BUILD_ARCH/$GCC_VER;
-      TARFILE=$BUILD_ARCH-gcc-$GCC_VER-nolibc_$CROSS_NOLIBC_ARCH_ABI.tar.xz;
+      TAR_FOLDER_URL=https://www.kernel.org/pub/tools/crosstool/files/bin/$BUILD_ARCH/$CROSS_GCC_VER;
+      TARFILE=$BUILD_ARCH-gcc-$CROSS_GCC_VER-nolibc_$NOLIBC_ARCH_ABI.tar.xz;
       wget -O - $TAR_FOLDER_URL/$TARFILE | tar xf - --xz --directory ~;
       export C_INCLUDE_PATH=/usr/include;
       MAKEFILE_TARGET=check-nolink;
@@ -87,8 +86,8 @@ script:
   - if [[ "$CSA_CHECK" != true && "$CPPCHECK" != true ]]; then
       cat src/config.h;
     fi
-  - if [[ "$CROSS_NOLIBC_ARCH_ABI" != "" ]]; then
-      export CC=~/gcc-$GCC_VER-nolibc/$CROSS_NOLIBC_ARCH_ABI/bin/$CROSS_NOLIBC_ARCH_ABI-gcc;
+  - if [[ "$CROSS_GCC_VER" != "" ]]; then
+      export CC=~/gcc-$CROSS_GCC_VER-nolibc/$NOLIBC_ARCH_ABI/bin/$NOLIBC_ARCH_ABI-gcc;
     fi
   - make -j $MAKEFILE_TARGET CC=$CC
         CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
