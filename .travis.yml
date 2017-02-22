@@ -56,8 +56,9 @@ before_install:
       CFLAGS_EXTRA="-march=native -DDEBUG_RUN_ONE_TEST -DVERBOSE";
     fi
   - if [[ "$CPPCHECK" == true ]]; then
-      git clone --depth=3 https://github.com/danmar/cppcheck.git -b master;
-      make --directory cppcheck -j CXXFLAGS="-O3 -march=native -DNDEBUG";
+      git clone --depth=3 https://github.com/danmar/cppcheck.git
+            ~/cppcheck -b master;
+      make --directory ~/cppcheck -j CXXFLAGS="-O3 -march=native -DNDEBUG";
     fi
   - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
       MAKEFILE_TARGET=all;
@@ -84,12 +85,12 @@ script:
             -DAO_TRACE_MALLOC -DVERBOSE tests/*.c src/*.c;
     fi
   - if [[ "$CPPCHECK" == true ]]; then
-      cppcheck/cppcheck -f -q --error-exitcode=2 -j16 -Ulong -DCPPCHECK -I src
+      ~/cppcheck/cppcheck -f -q --error-exitcode=2 -j16 -Ulong -DCPPCHECK
                 --enable=information,performance,portability,style,warning
-                tests/*.c src/*.c;
+                -I src tests/*.c src/*.c;
     fi
   - if [[ "$CPPCHECK" == true ]]; then
-      cppcheck/cppcheck -f -q --error-exitcode=2 -Ulong -DAO_TEST_EMULATION
+      ~/cppcheck/cppcheck -f -q --error-exitcode=2 -Ulong -DAO_TEST_EMULATION
                 -DCPPCHECK -I src --enable=unusedFunction tests/*.c src/*.c;
     fi
   - if [[ "$SANITIZE" == *memory* || "$SANITIZE" == *undefined* ]]; then
