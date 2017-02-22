@@ -15,7 +15,21 @@ env:
       CONF_ASSERTIONS=--enable-assertions
   - CONF_INTRINSICS=--disable-atomic-intrinsics
   - CONF_GCOV=--enable-gcov
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=aarch64-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=alpha-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=hppa-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ia64-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=m68k-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=mips-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=mips64-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=powerpc-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=powerpc64-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ppc64le-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=s390x-linux
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc-linux
+      CFLAGS_EXTRA="-DAO_NO_SPARC_V9"
+  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc64-linux
   - CSA_CHECK=true CPPCHECK=true
   - SANITIZE=address
   - SANITIZE=memory,undefined
@@ -41,7 +55,34 @@ matrix:
   - os: osx
     env: SANITIZE=memory,undefined
   - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=aarch64-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=alpha-linux
+  - compiler: clang
     env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=hppa-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ia64-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=m68k-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=mips-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=mips64-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=powerpc-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=powerpc64-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ppc64le-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=s390x-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc-linux
+        CFLAGS_EXTRA="-DAO_NO_SPARC_V9"
+  - compiler: clang
+    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc64-linux
 
 sudo: required
 
