@@ -10,16 +10,13 @@ compiler:
 
 env:
   - CFLAGS_EXTRA_M=
-  - CFLAGS_EXTRA="-O3 -march=native"
-    CONF_ASSERTIONS=--enable-assertions
-  - CFLAGS_EXTRA_M=-m32
-      CFLAGS_EXTRA="-march=native"
+  - CFLAGS_EXTRA="-O3 -march=native" CONF_ASSERTIONS=--enable-assertions
+  - CFLAGS_EXTRA_M=-m32 CFLAGS_EXTRA="-march=native"
       CONF_ASSERTIONS=--enable-assertions
   - CONF_INTRINSICS=--disable-atomic-intrinsics
   - CONF_GCOV=--enable-gcov
   - CROSS_NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
-  - CSA_CHECK=true
-      CPPCHECK=true
+  - CSA_CHECK=true CPPCHECK=true
   - SANITIZE=address
   - SANITIZE=memory,undefined
 
