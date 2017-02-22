@@ -17,6 +17,7 @@ env:
       CONF_ASSERTIONS=--enable-assertions
   - CONF_INTRINSICS=--disable-atomic-intrinsics
   - CONF_GCOV=--enable-gcov
+  - CROSS_NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
   - CSA_CHECK=true
       CPPCHECK=true
   - SANITIZE=address
@@ -42,11 +43,14 @@ matrix:
     env: SANITIZE=memory,undefined
   - os: osx
     env: SANITIZE=memory,undefined
+  - compiler: clang
+    env: CROSS_NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
 
 sudo: required
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CFLAGS_EXTRA_M" == "-m32" ]]; then
+  - if [[ ("$CFLAGS_EXTRA_M" == "-m32" || "$CROSS_NOLIBC_ARCH_ABI" != "")
+          && "$TRAVIS_OS_NAME" == "linux" ]]; then
       sudo apt-get install gcc-multilib;
     fi
   - if [[ "$CONF_GCOV" == --en* ]]; then
@@ -62,6 +66,14 @@ before_install:
     fi
   - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
       MAKEFILE_TARGET=all;
+    elif [[ "$CROSS_NOLIBC_ARCH_ABI" != "" ]]; then
+      GCC_VER=4.9.0;
+      BUILD_ARCH=x86_64;
+      TAR_FOLDER_URL=https://www.kernel.org/pub/tools/crosstool/files/bin/$BUILD_ARCH/$GCC_VER;
+      TARFILE=$BUILD_ARCH-gcc-$GCC_VER-nolibc_$CROSS_NOLIBC_ARCH_ABI.tar.xz;
+      wget -O - $TAR_FOLDER_URL/$TARFILE | tar xf - --xz --directory ~;
+      export C_INCLUDE_PATH=/usr/include;
+      MAKEFILE_TARGET=check-nolink;
     else
       MAKEFILE_TARGET=check;
     fi
@@ -78,7 +90,11 @@ script:
   - if [[ "$CSA_CHECK" != true && "$CPPCHECK" != true ]]; then
       cat src/config.h;
     fi
-  - make -j $MAKEFILE_TARGET CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
+  - if [[ "$CROSS_NOLIBC_ARCH_ABI" != "" ]]; then
+      export CC=~/gcc-$GCC_VER-nolibc/$CROSS_NOLIBC_ARCH_ABI/bin/$CROSS_NOLIBC_ARCH_ABI-gcc;
+    fi
+  - make -j $MAKEFILE_TARGET CC=$CC
+        CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
   - if [[ "$CSA_CHECK" == true ]]; then
       clang --analyze -Xanalyzer -analyzer-output=text -Werror -I src
