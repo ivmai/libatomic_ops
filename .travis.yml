@@ -18,6 +18,9 @@ env:
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=aarch64-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=alpha-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
+  - CROSS_GCC_VER=4.2.4 NOLIBC_ARCH_ABI=avr32-linux
+      CFLAGS_EXTRA="-fno-strict-aliasing"
+  - CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=cris-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=hppa-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ia64-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=m68k-linux
@@ -27,9 +30,11 @@ env:
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=powerpc64-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ppc64le-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=s390x-linux
+  - CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=sh4-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc-linux
       CFLAGS_EXTRA="-DAO_NO_SPARC_V9"
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc64-linux
+  - CROSS_GCC_VER=4.6.2 NOLIBC_ARCH_ABI=tilegx-linux
   - CSA_CHECK=true CPPCHECK=true
   - SANITIZE=address
   - SANITIZE=memory,undefined
@@ -61,6 +66,11 @@ matrix:
   - compiler: clang
     env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
   - compiler: clang
+    env: CROSS_GCC_VER=4.2.4 NOLIBC_ARCH_ABI=avr32-linux
+        CFLAGS_EXTRA="-fno-strict-aliasing"
+  - compiler: clang
+    env: CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=cris-linux
+  - compiler: clang
     env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=hppa-linux
   - compiler: clang
     env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ia64-linux
@@ -79,10 +89,14 @@ matrix:
   - compiler: clang
     env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=s390x-linux
   - compiler: clang
+    env: CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=sh4-linux
+  - compiler: clang
     env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc-linux
         CFLAGS_EXTRA="-DAO_NO_SPARC_V9"
   - compiler: clang
     env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc64-linux
+  - compiler: clang
+    env: CROSS_GCC_VER=4.6.2 NOLIBC_ARCH_ABI=tilegx-linux
 
 sudo: required
 
@@ -109,6 +123,7 @@ before_install:
       TAR_FOLDER_URL=https://www.kernel.org/pub/tools/crosstool/files/bin/$BUILD_ARCH/$CROSS_GCC_VER;
       TARFILE=$BUILD_ARCH-gcc-$CROSS_GCC_VER-nolibc_$NOLIBC_ARCH_ABI.tar.xz;
       wget -O - $TAR_FOLDER_URL/$TARFILE | tar xf - --xz --directory ~;
+      export CROSS_CC=~/gcc-$CROSS_GCC_VER-nolibc/$NOLIBC_ARCH_ABI/bin/$NOLIBC_ARCH_ABI-gcc;
       export C_INCLUDE_PATH=/usr/include;
       MAKEFILE_TARGET=check-nolink;
     else
@@ -128,7 +143,7 @@ script:
       cat src/config.h;
     fi
   - if [[ "$CROSS_GCC_VER" != "" ]]; then
-      export CC=~/gcc-$CROSS_GCC_VER-nolibc/$NOLIBC_ARCH_ABI/bin/$NOLIBC_ARCH_ABI-gcc;
+      CC=$CROSS_CC;
     fi
   - make -j $MAKEFILE_TARGET CC=$CC
         CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
