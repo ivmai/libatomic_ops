@@ -23,6 +23,11 @@ need_asm=false
 PICFLAG=
 AC_MSG_CHECKING(for PIC compiler flag)
 if test "$GCC" = yes; then
+  old_CC="$CC"
+  if test -n "$CROSS_CC"; then
+    CC="$CROSS_CC"
+  fi
+
   case "$host" in
     *-*-cygwin* | *-*-mingw*)
       # Cygwin and Mingw[-w32/64] do not need -fPIC.
@@ -72,6 +77,8 @@ extern int quiet;
   if test "$enable_werror" = yes; then
     CFLAGS="-Werror $CFLAGS"
   fi
+
+  CC="$old_CC"
 else
   case "$host" in
     *-*-hpux*)
