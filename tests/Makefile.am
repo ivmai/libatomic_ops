@@ -12,18 +12,21 @@ AM_CPPFLAGS = \
 
 CFLAGS += $(CFLAGS_EXTRA)
 
-TESTS = test_atomic test_atomic_generalized test_stack test_malloc
-TEST_OBJS = test_atomic.o test_stack.o test_malloc.o \
-        test_atomic_generalized-test_atomic.o
+TESTS = test_atomic$(EXEEXT) test_atomic_generalized$(EXEEXT) \
+        test_stack$(EXEEXT) test_malloc$(EXEEXT)
+TEST_OBJS = test_atomic.o test_atomic_generalized-test_atomic.o \
+        test_stack.o test_malloc.o
+check_PROGRAMS = test_atomic test_atomic_generalized \
+        test_stack test_malloc
+
 if HAVE_PTHREAD_H
-TESTS += test_atomic_pthreads
+TESTS += test_atomic_pthreads$(EXEEXT)
 TEST_OBJS += test_atomic_pthreads-test_atomic.o
+check_PROGRAMS += test_atomic_pthreads
 test_atomic_pthreads_SOURCES=$(test_atomic_SOURCES)
 test_atomic_pthreads_CPPFLAGS=-DAO_USE_PTHREAD_DEFS $(AM_CPPFLAGS)
 test_atomic_pthreads_LDADD=$(test_atomic_LDADD)
 endif
-
-check_PROGRAMS=$(TESTS)
 
 test_atomic_SOURCES=test_atomic.c
 test_atomic_LDADD = $(THREADDLLIBS) $(top_builddir)/src/libatomic_ops.la
@@ -47,11 +50,11 @@ test_malloc_LDADD = $(THREADDLLIBS) \
 .PHONY: check-without-test-driver
 check-without-test-driver: $(TESTS)
 	@echo "The following will print some 'Missing ...' messages"
-	./test_atomic
-	./test_atomic_generalized
-	./test_stack
-	./test_malloc
-	test ! -f test_atomic_pthreads || ./test_atomic_pthreads
+	./test_atomic$(EXEEXT)
+	./test_atomic_generalized$(EXEEXT)
+	./test_stack$(EXEEXT)
+	./test_malloc$(EXEEXT)
+	test ! -f test_atomic_pthreads$(EXEEXT) || ./test_atomic_pthreads$(EXEEXT)
 
 test_atomic_include.h: test_atomic_include.template
 	mkdir -p `dirname $@`
