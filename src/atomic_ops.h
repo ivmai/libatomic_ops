@@ -159,6 +159,22 @@
 
 #define AO_TS_INITIALIZER ((AO_TS_t)AO_TS_CLEAR)
 
+/* Convenient internal macro to test version of GCC.    */
+#if defined(__GNUC__) && defined(__GNUC_MINOR__)
+# define AO_GNUC_PREREQ(major, minor) \
+            ((__GNUC__ << 16) + __GNUC_MINOR__ >= ((major) << 16) + (minor))
+#else
+# define AO_GNUC_PREREQ(major, minor) 0 /* false */
+#endif
+
+/* Convenient internal macro to test version of Clang.  */
+#if defined(__clang__) && defined(__clang_major__)
+# define AO_CLANG_PREREQ(major, minor) \
+    ((__clang_major__ << 16) + __clang_minor__ >= ((major) << 16) + (minor))
+#else
+# define AO_CLANG_PREREQ(major, minor) 0 /* false */
+#endif
+
 /* Platform-dependent stuff:                                    */
 #if (defined(__GNUC__) || defined(_MSC_VER) || defined(__INTEL_COMPILER) \
         || defined(__DMC__) || defined(__WATCOMC__)) && !defined(AO_NO_INLINE)
@@ -169,7 +185,7 @@
 # define AO_INLINE static
 #endif
 
-#if __GNUC__ >= 3 && !defined(LINT2)
+#if AO_GNUC_PREREQ(3, 0) && !defined(LINT2)
 # define AO_EXPECT_FALSE(expr) __builtin_expect(expr, 0)
   /* Equivalent to (expr) but predict that usually (expr) == 0. */
 #else
@@ -188,8 +204,7 @@
 
 #ifndef AO_ATTR_NO_SANITIZE_MEMORY
 # if defined(AO_MEMORY_SANITIZER) \
-        && (!defined(__clang__) || __clang_major__ > 3 \
-            || (__clang_major__ == 3 && __clang_minor__ >= 8))
+        && (!defined(__clang__) || AO_CLANG_PREREQ(3, 8))
 #   define AO_ATTR_NO_SANITIZE_MEMORY __attribute__((no_sanitize("memory")))
 # else
 #   define AO_ATTR_NO_SANITIZE_MEMORY /* empty */
@@ -253,8 +268,7 @@
 #   include "atomic_ops/sysdeps/gcc/x86.h"
 # endif /* __i386__ */
 # if defined(__x86_64__)
-#   if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2)) \
-       && !defined(AO_USE_SYNC_CAS_BUILTIN)
+#   if AO_GNUC_PREREQ(4, 2) && !defined(AO_USE_SYNC_CAS_BUILTIN)
       /* It is safe to use __sync CAS built-in on this architecture.    */
 #     define AO_USE_SYNC_CAS_BUILTIN
 #   endif

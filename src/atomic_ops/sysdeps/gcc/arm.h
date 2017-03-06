@@ -15,9 +15,7 @@
  *
  */
 
-#if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8) \
-     || __clang_major__ > 3 \
-     || (__clang_major__ == 3 && __clang_minor__ >= 5)) \
+#if (AO_GNUC_PREREQ(4, 8) || AO_CLANG_PREREQ(3, 5)) \
     && !defined(AO_DISABLE_GCC_ATOMICS)
   /* Probably, it could be enabled even for earlier gcc/clang versions. */
 # define AO_GCC_ATOMIC_TEST_AND_SET
@@ -82,8 +80,7 @@
 #   if (!defined(__thumb__) \
         || (defined(__thumb2__) && !defined(__ARM_ARCH_7__) \
             && !defined(__ARM_ARCH_7M__) && !defined(__ARM_ARCH_7EM__))) \
-       && (!defined(__clang__) || (__clang_major__ > 3) \
-            || (__clang_major__ == 3 && __clang_minor__ >= 3))
+       && (!defined(__clang__) || AO_CLANG_PREREQ(3, 3))
       /* LDREXD/STREXD present in ARMv6K/M+ (see gas/config/tc-arm.c).  */
       /* In the Thumb mode, this works only starting from ARMv7 (except */
       /* for the base and 'M' models).  Clang3.2 (and earlier) does not */

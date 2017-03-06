@@ -16,10 +16,8 @@
  * Some of the machine specific code was borrowed from our GC distribution.
  */
 
-#if (((__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) \
-      && !defined(__INTEL_COMPILER)) /* TODO: test and enable icc */ \
-     || __clang_major__ > 3 \
-     || (__clang_major__ == 3 && __clang_minor__ >= 4)) \
+#if (AO_GNUC_PREREQ(4, 8) || AO_CLANG_PREREQ(3, 4)) \
+    && !defined(__INTEL_COMPILER) /* TODO: test and enable icc */ \
     && !defined(AO_DISABLE_GCC_ATOMICS)
 # define AO_GCC_ATOMIC_TEST_AND_SET
 
@@ -28,8 +26,8 @@
      && (!(defined(__x86_64__) || defined(__APPLE_CC__) \
            || defined(__CYGWIN__) || defined(AO_PREFER_BUILTIN_ATOMICS)) \
          || (defined(__x86_64__) && !defined(__ILP32__) \
-             && ((__clang_major__ == 3 && __clang_minor__ == 4 \
-                   && !defined(AO_PREFER_BUILTIN_ATOMICS)) \
+             && (!(AO_CLANG_PREREQ(3, 5) \
+                   || defined(AO_PREFER_BUILTIN_ATOMICS)) \
                  || defined(AO_ADDRESS_SANITIZER))))
     /* As of clang-3.8 i686 (NDK r11c), it requires -latomic for all    */
     /* the double-wide operations.  Same for clang-3.4/x64.  For now,   */
