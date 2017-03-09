@@ -251,7 +251,7 @@ static unsigned msb(size_t s)
 {
   unsigned result = 0;
   if ((s & 0xff) != s) {
-#   if __SIZEOF_SIZE_T__ == 8
+#   if (__SIZEOF_SIZE_T__ == 8) && !defined(CPPCHECK)
       unsigned v = (unsigned)(s >> 32);
       if (v != 0)
         {
