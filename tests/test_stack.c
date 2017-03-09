@@ -53,7 +53,8 @@
 
 #ifdef NO_TIMES
 # define get_msecs() 0
-#elif defined(USE_WINTHREADS) || defined(AO_USE_WIN32_PTHREADS)
+#elif (defined(USE_WINTHREADS) || defined(AO_USE_WIN32_PTHREADS)) \
+      && !defined(CPPCHECK)
 # include <sys/timeb.h>
   unsigned long get_msecs(void)
   {
