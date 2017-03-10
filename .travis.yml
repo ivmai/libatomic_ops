@@ -32,7 +32,7 @@ env:
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=s390x-linux
   - CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=sh4-linux
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc-linux
-      CFLAGS_EXTRA="-DAO_NO_SPARC_V9"
+      CFLAGS_EXTRA="-D AO_NO_SPARC_V9"
   - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc64-linux
   - CROSS_GCC_VER=4.6.2 NOLIBC_ARCH_ABI=tilegx-linux
   - CSA_CHECK=true CPPCHECK=true
@@ -92,7 +92,7 @@ matrix:
     env: CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=sh4-linux
   - compiler: clang
     env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc-linux
-        CFLAGS_EXTRA="-DAO_NO_SPARC_V9"
+        CFLAGS_EXTRA="-D AO_NO_SPARC_V9"
   - compiler: clang
     env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc64-linux
   - compiler: clang
@@ -109,12 +109,12 @@ before_install:
       sudo apt-get install lcov;
       gem install coveralls-lcov;
       CONF_SHARED=--enable-shared;
-      CFLAGS_EXTRA="-march=native -DDEBUG_RUN_ONE_TEST -DVERBOSE";
+      CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE";
     fi
   - if [[ "$CPPCHECK" == true ]]; then
       git clone --depth=3 https://github.com/danmar/cppcheck.git
             ~/cppcheck -b master;
-      make --directory ~/cppcheck -j CXXFLAGS="-O3 -march=native -DNDEBUG";
+      make --directory ~/cppcheck -j CXXFLAGS="-O3 -march=native -D NDEBUG";
     fi
   - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
       MAKEFILE_TARGET=all;
@@ -150,16 +150,17 @@ script:
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
   - if [[ "$CSA_CHECK" == true ]]; then
       clang --analyze -Xanalyzer -analyzer-output=text -Werror -I src
-            -DAO_TRACE_MALLOC -DVERBOSE tests/*.c src/*.c;
+            -D AO_TRACE_MALLOC -D VERBOSE tests/*.c src/*.c;
     fi
   - if [[ "$CPPCHECK" == true ]]; then
-      ~/cppcheck/cppcheck -f -q --error-exitcode=2 -j16 -Ulong -DCPPCHECK
+      ~/cppcheck/cppcheck -f -q --error-exitcode=2 -j16 -U long -D CPPCHECK
                 --enable=information,performance,portability,style,warning
                 -I src tests/*.c src/*.c;
     fi
   - if [[ "$CPPCHECK" == true ]]; then
-      ~/cppcheck/cppcheck -f -q --error-exitcode=2 -Ulong -DAO_TEST_EMULATION
-                -DCPPCHECK -I src --enable=unusedFunction tests/*.c src/*.c;
+      ~/cppcheck/cppcheck -f -q --error-exitcode=2 -U long -D CPPCHECK
+                -D AO_TEST_EMULATION --enable=unusedFunction -I src
+                tests/*.c src/*.c;
     fi
   - if [[ "$SANITIZE" == *memory* || "$SANITIZE" == *undefined* ]]; then
       UBSAN_OPTIONS="halt_on_error=1" make -C tests check-without-test-driver;
