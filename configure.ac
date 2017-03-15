@@ -31,12 +31,12 @@ if test "$GCC" = yes; then
   case "$host" in
     *-*-cygwin* | *-*-mingw*)
       # Cygwin and Mingw[-w32/64] do not need -fPIC.
-      AC_MSG_RESULT("<none>")
+      AC_MSG_RESULT([not needed])
       ;;
     *)
       AC_MSG_RESULT(-fPIC)
       PICFLAG=-fPIC
-      AC_MSG_CHECKING(whether gcc -fPIC causes __PIC__ definition)
+      AC_MSG_CHECKING(whether -fPIC compiler option causes __PIC__ definition)
       # Workaround: at least GCC 3.4.6 (Solaris) does not define this macro.
       old_CFLAGS="$CFLAGS"
       CFLAGS="$PICFLAG $CFLAGS"
@@ -53,14 +53,14 @@ if test "$GCC" = yes; then
   esac
 
   # Output all warnings.
-  AC_MSG_CHECKING(for gcc -Wextra)
+  AC_MSG_CHECKING([whether compiler supports -Wextra])
   old_CFLAGS="$CFLAGS"
   CFLAGS="-Wextra $CFLAGS"
   AC_TRY_COMPILE([],[], [ac_cv_cc_wextra=yes], [ac_cv_cc_wextra=no])
   CFLAGS="$old_CFLAGS"
   AC_MSG_RESULT($ac_cv_cc_wextra)
   AS_IF([test "$ac_cv_cc_wextra" = yes], [WEXTRA="-Wextra"], [WEXTRA="-W"])
-  AC_MSG_CHECKING(for gcc -Wpedantic)
+  AC_MSG_CHECKING([whether compiler supports -Wpedantic])
   CFLAGS="-Wpedantic -Wno-long-long $CFLAGS"
   AC_TRY_COMPILE([],[
 extern int quiet;
@@ -82,7 +82,7 @@ extern int quiet;
 else
   case "$host" in
     *-*-hpux*)
-      AC_MSG_RESULT("+Z")
+      AC_MSG_RESULT([+Z])
       PICFLAG="+Z"
       CFLAGS="+O2 -mt $CFLAGS"
       ;;
@@ -98,7 +98,7 @@ else
       # Any Linux compiler had better be gcc compatible.
       ;;
     *)
-      AC_MSG_RESULT("<none>")
+      AC_MSG_RESULT([none])
       ;;
   esac
 fi
