@@ -140,7 +140,8 @@ static char *get_mmaped(size_t sz)
 # include <limits.h>
 #endif
 #ifdef SIZE_MAX
-# define AO_SIZE_MAX SIZE_MAX
+# define AO_SIZE_MAX ((size_t)SIZE_MAX)
+            /* Extra cast to workaround some buggy SIZE_MAX definitions. */
 #else
 # define AO_SIZE_MAX (~(size_t)0)
 #endif
