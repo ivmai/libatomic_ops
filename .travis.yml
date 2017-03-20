@@ -73,8 +73,10 @@ matrix:
     - os: linux
       env:
         - CPPCHECK=true
-        - CSA_CHECK=true
       sudo: required
+    - os: linux
+      env:
+        - CSA_CHECK=true
     - os: linux
       env:
         - CROSS_GCC_VER=4.9.0
