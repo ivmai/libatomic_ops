@@ -7,7 +7,6 @@ matrix:
     - os: linux
       compiler: gcc
     - os: osx
-      compiler: clang
     - os: linux
       compiler: clang
       env:
@@ -19,7 +18,6 @@ matrix:
         - CFLAGS_EXTRA="-O3 -march=native"
         - CONF_ASSERTIONS=--enable-assertions
     - os: osx
-      compiler: clang
       env:
         - CFLAGS_EXTRA="-O3 -march=native"
         - CONF_ASSERTIONS=--enable-assertions
@@ -42,7 +40,6 @@ matrix:
           packages:
             - gcc-multilib
     - os: osx
-      compiler: clang
       env:
         - CFLAGS_EXTRA="-m32 -march=native"
         - CONF_ASSERTIONS=--enable-assertions
