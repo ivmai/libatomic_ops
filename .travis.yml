@@ -1,140 +1,252 @@
 language: c
 
-os:
-  - linux
-  - osx
-
-compiler:
-  - clang
-  - gcc
-
-env:
-  - CFLAGS_EXTRA_M=
-  - CFLAGS_EXTRA="-O3 -march=native" CONF_ASSERTIONS=--enable-assertions
-  - CFLAGS_EXTRA_M=-m32 CFLAGS_EXTRA="-march=native"
-      CONF_ASSERTIONS=--enable-assertions
-  - CONF_INTRINSICS=--disable-atomic-intrinsics
-  - CONF_GCOV=--enable-gcov
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=aarch64-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=alpha-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
-  - CROSS_GCC_VER=4.2.4 NOLIBC_ARCH_ABI=avr32-linux
-      CFLAGS_EXTRA="-fno-strict-aliasing"
-  - CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=cris-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=hppa-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ia64-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=m68k-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=mips-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=mips64-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=powerpc-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=powerpc64-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ppc64le-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=s390x-linux
-  - CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=sh4-linux
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc-linux
-      CFLAGS_EXTRA="-D AO_NO_SPARC_V9"
-  - CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc64-linux
-  - CROSS_GCC_VER=4.6.2 NOLIBC_ARCH_ABI=tilegx-linux
-  - CSA_CHECK=true CPPCHECK=true
-  - SANITIZE=address
-  - SANITIZE=memory,undefined
-
 matrix:
-  exclude:
-  - os: osx
-    compiler: gcc
-  - compiler: gcc
-    env: CONF_INTRINSICS=--disable-atomic-intrinsics
-  - os: osx
-    env: CONF_INTRINSICS=--disable-atomic-intrinsics
-  - compiler: clang
-    env: CONF_GCOV=--enable-gcov
-  - compiler: clang
-    env: CSA_CHECK=true CPPCHECK=true
-  - compiler: gcc
-    env: SANITIZE=address
-  - os: osx
-    env: SANITIZE=address
-  - compiler: gcc
-    env: SANITIZE=memory,undefined
-  - os: osx
-    env: SANITIZE=memory,undefined
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=aarch64-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=alpha-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
-  - compiler: clang
-    env: CROSS_GCC_VER=4.2.4 NOLIBC_ARCH_ABI=avr32-linux
-        CFLAGS_EXTRA="-fno-strict-aliasing"
-  - compiler: clang
-    env: CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=cris-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=hppa-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ia64-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=m68k-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=mips-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=mips64-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=powerpc-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=powerpc64-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=ppc64le-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=s390x-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.6.3 NOLIBC_ARCH_ABI=sh4-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc-linux
-        CFLAGS_EXTRA="-D AO_NO_SPARC_V9"
-  - compiler: clang
-    env: CROSS_GCC_VER=4.9.0 NOLIBC_ARCH_ABI=sparc64-linux
-  - compiler: clang
-    env: CROSS_GCC_VER=4.6.2 NOLIBC_ARCH_ABI=tilegx-linux
-
-sudo: required
+  include:
+    - os: linux
+      compiler: clang
+    - os: linux
+      compiler: gcc
+    - os: osx
+      compiler: clang
+    - os: linux
+      compiler: clang
+      env:
+        - CFLAGS_EXTRA="-O3 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+    - os: linux
+      compiler: gcc
+      env:
+        - CFLAGS_EXTRA="-O3 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+    - os: osx
+      compiler: clang
+      env:
+        - CFLAGS_EXTRA="-O3 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+    - os: linux
+      compiler: clang
+      env:
+        - CFLAGS_EXTRA="-m32 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      compiler: gcc
+      env:
+        - CFLAGS_EXTRA="-m32 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: osx
+      compiler: clang
+      env:
+        - CFLAGS_EXTRA="-m32 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+    - os: linux
+      compiler: clang
+      env:
+        - CFLAGS_EXTRA="-fsanitize=address -fno-common -fno-omit-frame-pointer"
+    - os: linux
+      compiler: clang
+      env:
+        - CFLAGS_EXTRA="-fsanitize=memory,undefined -fno-common -fno-omit-frame-pointer"
+        - MSAN_OR_UBSAN=true
+      sudo: required
+    - os: linux
+      compiler: clang
+      env:
+        - CONF_INTRINSICS=--disable-atomic-intrinsics
+    - os: linux
+      compiler: gcc
+      env:
+        - CONF_GCOV=--enable-gcov
+        - CONF_SHARED=--enable-shared
+        - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE"
+      addons:
+        apt:
+          packages:
+            - lcov
+    - os: linux
+      env:
+        - CPPCHECK=true
+        - CSA_CHECK=true
+      sudo: required
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=aarch64-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=alpha-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.2.4
+        - NOLIBC_ARCH_ABI=avr32-linux
+        - CFLAGS_EXTRA="-fno-strict-aliasing"
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.6.3
+        - NOLIBC_ARCH_ABI=cris-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=hppa-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=ia64-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=m68k-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=mips-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=mips64-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=powerpc-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=powerpc64-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=ppc64le-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=s390x-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.6.3
+        - NOLIBC_ARCH_ABI=sh4-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=sparc-linux
+        - CFLAGS_EXTRA="-D AO_NO_SPARC_V9"
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.9.0
+        - NOLIBC_ARCH_ABI=sparc64-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: linux
+      env:
+        - CROSS_GCC_VER=4.6.2
+        - NOLIBC_ARCH_ABI=tilegx-linux
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
 
 before_install:
-  - if [[ ("$CFLAGS_EXTRA_M" == "-m32" || "$CROSS_GCC_VER" != "")
-          && "$TRAVIS_OS_NAME" == "linux" ]]; then
-      sudo apt-get install gcc-multilib;
-    fi
-  - if [[ "$CONF_GCOV" == --en* ]]; then
-      sudo apt-get install lcov;
-      gem install coveralls-lcov;
-      CONF_SHARED=--enable-shared;
-      CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE";
-    fi
   - if [[ "$CPPCHECK" == true ]]; then
       git clone --depth=3 https://github.com/danmar/cppcheck.git
             ~/cppcheck -b master;
       make --directory ~/cppcheck -j CXXFLAGS="-O3 -march=native -D NDEBUG";
-    fi
-  - if [[ "$CSA_CHECK" == true || "$CPPCHECK" == true ]]; then
       MAKEFILE_TARGET=all;
     elif [[ "$CROSS_GCC_VER" != "" ]]; then
       BUILD_ARCH=x86_64;
       TAR_FOLDER_URL=https://www.kernel.org/pub/tools/crosstool/files/bin/$BUILD_ARCH/$CROSS_GCC_VER;
       TARFILE=$BUILD_ARCH-gcc-$CROSS_GCC_VER-nolibc_$NOLIBC_ARCH_ABI.tar.xz;
       wget -O - $TAR_FOLDER_URL/$TARFILE | tar xf - --xz --directory ~;
-      export CROSS_CC=~/gcc-$CROSS_GCC_VER-nolibc/$NOLIBC_ARCH_ABI/bin/$NOLIBC_ARCH_ABI-gcc;
+      CROSS_CC=~/gcc-$CROSS_GCC_VER-nolibc/$NOLIBC_ARCH_ABI/bin/$NOLIBC_ARCH_ABI-gcc;
       export C_INCLUDE_PATH=/usr/include;
       MAKEFILE_TARGET=check-nolink;
+    elif [[ "$CSA_CHECK" == true ]]; then
+      MAKEFILE_TARGET=all;
     else
       MAKEFILE_TARGET=check;
-    fi
-  - if [[ "$SANITIZE" != "" ]]; then
-      CFLAGS_EXTRA="$CFLAGS_EXTRA -fsanitize=$SANITIZE -fno-common -fno-omit-frame-pointer";
     fi
 
 install:
   - ./autogen.sh
+  - if [[ "$CONF_GCOV" == --en* ]]; then
+      gem install coveralls-lcov;
+    fi
 
 script:
   - ./configure $CONF_ASSERTIONS $CONF_INTRINSICS $CONF_GCOV
@@ -145,8 +257,7 @@ script:
   - if [[ "$CROSS_GCC_VER" != "" ]]; then
       CC=$CROSS_CC;
     fi
-  - make -j $MAKEFILE_TARGET CC=$CC
-        CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
+  - make -j $MAKEFILE_TARGET CC=$CC CFLAGS_EXTRA="$CFLAGS_EXTRA"
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
   - if [[ "$CSA_CHECK" == true ]]; then
       clang --analyze -Xanalyzer -analyzer-output=text -Werror -I src
@@ -162,7 +273,7 @@ script:
                 -D AO_TEST_EMULATION --enable=unusedFunction -I src
                 tests/*.c src/*.c;
     fi
-  - if [[ "$SANITIZE" == *memory* || "$SANITIZE" == *undefined* ]]; then
+  - if [[ "$MSAN_OR_UBSAN" == true ]]; then
       UBSAN_OPTIONS="halt_on_error=1" make -C tests check-without-test-driver;
     fi
 
