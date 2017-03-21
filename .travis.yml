@@ -75,6 +75,13 @@ matrix:
       env:
         - CSA_CHECK=true
     - os: linux
+      compiler: musl-gcc
+      dist: trusty
+      addons:
+        apt:
+          packages:
+            - musl-tools
+    - os: linux
       env:
         - CROSS_GCC_VER=4.9.0
         - NOLIBC_ARCH_ABI=aarch64-linux
