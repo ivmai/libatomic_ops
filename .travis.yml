@@ -54,6 +54,13 @@ matrix:
       env:
         - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
         - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - os: linux
+      addons: { apt: { packages: [ musl-tools ] } }
+      compiler: musl-gcc
+      dist: trusty
+      env:
+        - CFLAGS_EXTRA="-march=native"
+        - CONF_OPTIONS="--enable-assertions"
 
 install:
   - ./autogen.sh
