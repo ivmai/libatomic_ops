@@ -22,23 +22,17 @@ matrix:
         - CFLAGS_EXTRA="-O3 -march=native"
         - CONF_ASSERTIONS=--enable-assertions
     - os: linux
+      addons: { apt: { packages: [ gcc-multilib ] } }
       compiler: clang
       env:
         - CFLAGS_EXTRA="-m32 -march=native"
         - CONF_ASSERTIONS=--enable-assertions
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
     - os: linux
+      addons: { apt: { packages: [ gcc-multilib ] } }
       compiler: gcc
       env:
         - CFLAGS_EXTRA="-m32 -march=native"
         - CONF_ASSERTIONS=--enable-assertions
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
     - os: osx
       env:
         - CFLAGS_EXTRA="-m32 -march=native"
@@ -58,15 +52,12 @@ matrix:
       env:
         - CONF_INTRINSICS=--disable-atomic-intrinsics
     - os: linux
+      addons: { apt: { packages: [ lcov ] } }
       compiler: gcc
       env:
         - CONF_GCOV=--enable-gcov
         - CONF_SHARED=--enable-shared
         - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE"
-      addons:
-        apt:
-          packages:
-            - lcov
     - os: linux
       env:
         - CPPCHECK=true
@@ -75,158 +66,65 @@ matrix:
       env:
         - CSA_CHECK=true
     - os: linux
+      addons: { apt: { packages: [ musl-tools ] } }
       compiler: musl-gcc
       dist: trusty
-      addons:
-        apt:
-          packages:
-            - musl-tools
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=aarch64-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=aarch64-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=alpha-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=alpha-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.2.4
-        - NOLIBC_ARCH_ABI=avr32-linux
-        - CFLAGS_EXTRA="-fno-strict-aliasing"
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.2.4, NOLIBC_ARCH_ABI=avr32-linux,
+             CFLAGS_EXTRA="-fno-strict-aliasing" ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.6.3
-        - NOLIBC_ARCH_ABI=cris-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.6.3, NOLIBC_ARCH_ABI=cris-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=hppa-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=hppa-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=ia64-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=ia64-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=m68k-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=m68k-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=mips-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=mips-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=mips64-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=mips64-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=powerpc-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=powerpc-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=powerpc64-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=powerpc64-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=ppc64le-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=ppc64le-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=s390x-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=s390x-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.6.3
-        - NOLIBC_ARCH_ABI=sh4-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.6.3, NOLIBC_ARCH_ABI=sh4-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=sparc-linux
-        - CFLAGS_EXTRA="-D AO_NO_SPARC_V9"
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=sparc-linux,
+             CFLAGS_EXTRA="-D AO_NO_SPARC_V9" ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.9.0
-        - NOLIBC_ARCH_ABI=sparc64-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=sparc64-linux ]
     - os: linux
-      env:
-        - CROSS_GCC_VER=4.6.2
-        - NOLIBC_ARCH_ABI=tilegx-linux
-      addons:
-        apt:
-          packages:
-            - gcc-multilib
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      env: [ CROSS_GCC_VER=4.6.2, NOLIBC_ARCH_ABI=tilegx-linux ]
 
 before_install:
   - if [[ "$CPPCHECK" == true ]]; then
