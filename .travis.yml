@@ -63,6 +63,14 @@ matrix:
         - CPPCHECK=true
       sudo: required
     - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang-4.0
+      compiler: clang-4.0
+      dist: trusty
       env:
         - CSA_CHECK=true
     - os: linux
@@ -164,7 +172,7 @@ script:
   - make -j $MAKEFILE_TARGET CC=$CC CFLAGS_EXTRA="$CFLAGS_EXTRA"
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
   - if [[ "$CSA_CHECK" == true ]]; then
-      clang --analyze -Xanalyzer -analyzer-output=text -Werror -I src
+      ${CC} --analyze -Xanalyzer -analyzer-output=text -Werror -I src
             -D AO_TRACE_MALLOC -D VERBOSE tests/*.c src/*.c;
     fi
   - if [[ "$CPPCHECK" == true ]]; then
