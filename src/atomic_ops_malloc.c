@@ -93,6 +93,7 @@ static volatile AO_t initial_heap_ptr = (AO_t)AO_initial_heap;
 #   define OPT_MAP_ANON MAP_ANON
 # endif
 #else
+# include <unistd.h> /* for close() */
 # define OPT_MAP_ANON 0
 #endif
 
