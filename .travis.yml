@@ -79,6 +79,27 @@ matrix:
       dist: trusty
       env: [ CFLAGS_EXTRA="-m32 -O3 -march=native" ]
     - os: linux
+      addons:
+        apt:
+          packages: [ gcc-5, gcc-5-multilib ]
+          sources: [ ubuntu-toolchain-r-test ]
+      compiler: gcc-5
+      dist: trusty
+      env:
+        - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
+        - CONF_ASSERTIONS=--enable-assertions
+        - CONF_SHARED=--enable-shared
+    - os: linux
+      addons:
+        apt:
+          packages: [ gcc-5, gcc-5-multilib ]
+          sources: [ ubuntu-toolchain-r-test ]
+      compiler: gcc-5
+      dist: trusty
+      env:
+        - CFLAGS_EXTRA="-mx32 -march=native"
+        - CONF_INTRINSICS=--disable-atomic-intrinsics
+    - os: linux
       compiler: clang
       env:
         - CFLAGS_EXTRA="-fsanitize=address -fno-common -fno-omit-frame-pointer"
