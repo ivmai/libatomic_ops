@@ -22,6 +22,15 @@ matrix:
         - CFLAGS_EXTRA="-O3 -march=native"
         - CONF_ASSERTIONS=--enable-assertions
     - os: linux
+      compiler: clang
+      dist: trusty
+      env:
+        - CFLAGS_EXTRA="-march=native -std=c11"
+    - os: linux
+      compiler: gcc
+      env:
+        - CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=2 -std=c89"
+    - os: linux
       addons: { apt: { packages: [ gcc-multilib ] } }
       compiler: clang
       env:
@@ -35,7 +44,7 @@ matrix:
         - CONF_ASSERTIONS=--enable-assertions
     - os: osx
       env:
-        - CFLAGS_EXTRA="-m32 -march=native"
+        - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
         - CONF_ASSERTIONS=--enable-assertions
     - os: linux
       compiler: clang
