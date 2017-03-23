@@ -47,6 +47,38 @@ matrix:
         - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
         - CONF_ASSERTIONS=--enable-assertions
     - os: linux
+      addons:
+        apt:
+          packages: [ clang-4.0 ]
+          sources: [ llvm-toolchain-trusty-4.0 ]
+      compiler: clang-4.0
+      dist: trusty
+      env: [ CFLAGS_EXTRA="-O3 -march=native -std=c11" ]
+    - os: linux
+      addons:
+        apt:
+          packages: [ clang-4.0, gcc-multilib ]
+          sources: [ llvm-toolchain-trusty-4.0 ]
+      compiler: clang-4.0
+      dist: trusty
+      env: [ CFLAGS_EXTRA="-m32 -O3 -march=native" ]
+    - os: linux
+      addons:
+        apt:
+          packages: [ gcc-5 ]
+          sources: [ ubuntu-toolchain-r-test ]
+      compiler: gcc-5
+      dist: trusty
+      env: [ CFLAGS_EXTRA="-O3 -march=native" ]
+    - os: linux
+      addons:
+        apt:
+          packages: [ gcc-5, gcc-5-multilib ]
+          sources: [ ubuntu-toolchain-r-test ]
+      compiler: gcc-5
+      dist: trusty
+      env: [ CFLAGS_EXTRA="-m32 -O3 -march=native" ]
+    - os: linux
       compiler: clang
       env:
         - CFLAGS_EXTRA="-fsanitize=address -fno-common -fno-omit-frame-pointer"
