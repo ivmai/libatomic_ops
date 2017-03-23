@@ -44,13 +44,14 @@ matrix:
     - os: linux
       compiler: clang
       env:
-        - CFLAGS_EXTRA="-fsanitize=memory,undefined -fno-common -fno-omit-frame-pointer"
+        - CFLAGS_EXTRA="-fsanitize=memory,undefined -march=native -fno-omit-frame-pointer"
         - MSAN_OR_UBSAN=true
       sudo: required
     - os: linux
       compiler: clang
       env:
         - CONF_INTRINSICS=--disable-atomic-intrinsics
+        - CFLAGS_EXTRA="-march=native"
     - os: linux
       addons: { apt: { packages: [ lcov ] } }
       compiler: gcc
@@ -77,6 +78,9 @@ matrix:
       addons: { apt: { packages: [ musl-tools ] } }
       compiler: musl-gcc
       dist: trusty
+      env:
+        - CFLAGS_EXTRA="-march=native"
+        - CONF_ASSERTIONS=--enable-assertions
     - os: linux
       addons: { apt: { packages: [ gcc-multilib ] } }
       env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=aarch64-linux ]
