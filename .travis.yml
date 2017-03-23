@@ -44,6 +44,16 @@ matrix:
       env:
         - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
         - CONF_OPTIONS="--enable-assertions"
+    - os: linux
+      addons:
+        apt:
+          packages: [ gcc-5, gcc-5-multilib ]
+          sources: [ ubuntu-toolchain-r-test ]
+      compiler: gcc-5
+      dist: trusty
+      env:
+        - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
+        - CONF_OPTIONS="--enable-assertions --enable-shared"
 
 install:
   - ./autogen.sh
