@@ -75,10 +75,8 @@ matrix:
     - os: linux
       addons:
         apt:
-          sources:
-            - llvm-toolchain-trusty-4.0
-          packages:
-            - clang-4.0
+          packages: [ clang-4.0 ]
+          sources: [ llvm-toolchain-trusty-4.0 ]
       compiler: clang-4.0
       dist: trusty
       env:
