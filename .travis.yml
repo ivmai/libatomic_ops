@@ -24,12 +24,10 @@ matrix:
     - os: linux
       compiler: clang
       dist: trusty
-      env:
-        - CFLAGS_EXTRA="-march=native -std=c11"
+      env: [ CFLAGS_EXTRA="-march=native -std=c11" ]
     - os: linux
       compiler: gcc
-      env:
-        - CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=2 -std=c89"
+      env: [ CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=2 -std=c89" ]
     - os: linux
       addons: { apt: { packages: [ gcc-multilib ] } }
       compiler: clang
@@ -122,8 +120,7 @@ matrix:
         - CONF_SHARED=--enable-shared
         - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE"
     - os: linux
-      env:
-        - CPPCHECK=true
+      env: [ CPPCHECK=true ]
       sudo: required
     - os: linux
       addons:
@@ -132,8 +129,7 @@ matrix:
           sources: [ llvm-toolchain-trusty-4.0 ]
       compiler: clang-4.0
       dist: trusty
-      env:
-        - CSA_CHECK=true
+      env: [ CSA_CHECK=true ]
     - os: linux
       addons: { apt: { packages: [ musl-tools ] } }
       compiler: musl-gcc
