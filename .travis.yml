@@ -120,7 +120,12 @@ matrix:
         - CONF_SHARED=--enable-shared
         - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE"
     - os: linux
-      env: [ CPPCHECK=true ]
+      env:
+        - CPPCHECK_ENABLE="-j16 -q --enable=information,performance,portability,style,warning"
+      sudo: required
+    - os: linux
+      env:
+        - CPPCHECK_ENABLE="-q --enable=unusedFunction -D AO_TEST_EMULATION"
       sudo: required
     - os: linux
       addons:
@@ -195,7 +200,7 @@ matrix:
       env: [ CROSS_GCC_VER=4.6.2, NOLIBC_ARCH_ABI=tilegx-linux ]
 
 before_install:
-  - if [[ "$CPPCHECK" == true ]]; then
+  - if [[ "$CPPCHECK_ENABLE" != "" ]]; then
       git clone --depth=3 https://github.com/danmar/cppcheck.git
             ~/cppcheck -b master;
       make --directory ~/cppcheck -j CXXFLAGS="-O3 -march=native -D NDEBUG";
@@ -223,7 +228,7 @@ install:
 script:
   - ./configure $CONF_ASSERTIONS $CONF_INTRINSICS $CONF_GCOV
                 $CONF_SHARED --enable-werror
-  - if [[ "$CSA_CHECK" != true && "$CPPCHECK" != true ]]; then
+  - if [[ "$CSA_CHECK" != true && "$CPPCHECK_ENABLE" == "" ]]; then
       cat src/config.h;
     fi
   - if [[ "$CROSS_GCC_VER" != "" ]]; then
@@ -235,15 +240,9 @@ script:
       ${CC} --analyze -Xanalyzer -analyzer-output=text -Werror -I src
             $CFLAGS_EXTRA tests/*.c src/*.c;
     fi
-  - if [[ "$CPPCHECK" == true ]]; then
-      ~/cppcheck/cppcheck -f -q --error-exitcode=2 -j16 -U long -D CPPCHECK
-                --enable=information,performance,portability,style,warning
-                -I src tests/*.c src/*.c;
-    fi
-  - if [[ "$CPPCHECK" == true ]]; then
-      ~/cppcheck/cppcheck -f -q --error-exitcode=2 -U long -D CPPCHECK
-                -D AO_TEST_EMULATION --enable=unusedFunction -I src
-                tests/*.c src/*.c;
+  - if [[ "$CPPCHECK_ENABLE" != "" ]]; then
+      ~/cppcheck/cppcheck -f --error-exitcode=2 -U long -D CPPCHECK -I src
+                $CPPCHECK_ENABLE tests/*.c src/*.c;
     fi
   - if [[ "$MSAN_OR_UBSAN" == true ]]; then
       UBSAN_OPTIONS="halt_on_error=1" make -C tests check-without-test-driver;
