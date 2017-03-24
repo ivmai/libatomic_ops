@@ -129,7 +129,7 @@ matrix:
           sources: [ llvm-toolchain-trusty-4.0 ]
       compiler: clang-4.0
       dist: trusty
-      env: [ CSA_CHECK=true ]
+      env: [ CSA_CHECK=true, CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D VERBOSE" ]
     - os: linux
       addons: { apt: { packages: [ musl-tools ] } }
       compiler: musl-gcc
@@ -233,7 +233,7 @@ script:
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
   - if [[ "$CSA_CHECK" == true ]]; then
       ${CC} --analyze -Xanalyzer -analyzer-output=text -Werror -I src
-            -D AO_TRACE_MALLOC -D VERBOSE tests/*.c src/*.c;
+            $CFLAGS_EXTRA tests/*.c src/*.c;
     fi
   - if [[ "$CPPCHECK" == true ]]; then
       ~/cppcheck/cppcheck -f -q --error-exitcode=2 -j16 -U long -D CPPCHECK
