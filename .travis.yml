@@ -11,16 +11,16 @@ matrix:
       compiler: clang
       env:
         - CFLAGS_EXTRA="-O3 -march=native"
-        - CONF_ASSERTIONS=--enable-assertions
+        - CONF_OPTIONS="--enable-assertions"
     - os: linux
       compiler: gcc
       env:
         - CFLAGS_EXTRA="-O3 -march=native"
-        - CONF_ASSERTIONS=--enable-assertions
+        - CONF_OPTIONS="--enable-assertions"
     - os: osx
       env:
         - CFLAGS_EXTRA="-O3 -march=native"
-        - CONF_ASSERTIONS=--enable-assertions
+        - CONF_OPTIONS="--enable-assertions"
     - os: linux
       compiler: clang
       dist: trusty
@@ -33,17 +33,17 @@ matrix:
       compiler: clang
       env:
         - CFLAGS_EXTRA="-m32 -march=native"
-        - CONF_ASSERTIONS=--enable-assertions
+        - CONF_OPTIONS="--enable-assertions"
     - os: linux
       addons: { apt: { packages: [ gcc-multilib ] } }
       compiler: gcc
       env:
         - CFLAGS_EXTRA="-m32 -march=native"
-        - CONF_ASSERTIONS=--enable-assertions
+        - CONF_OPTIONS="--enable-assertions"
     - os: osx
       env:
         - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
-        - CONF_ASSERTIONS=--enable-assertions
+        - CONF_OPTIONS="--enable-assertions"
     - os: linux
       addons:
         apt:
@@ -85,8 +85,7 @@ matrix:
       dist: trusty
       env:
         - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
-        - CONF_ASSERTIONS=--enable-assertions
-        - CONF_SHARED=--enable-shared
+        - CONF_OPTIONS="--enable-assertions --enable-shared"
     - os: linux
       addons:
         apt:
@@ -96,7 +95,7 @@ matrix:
       dist: trusty
       env:
         - CFLAGS_EXTRA="-mx32 -march=native"
-        - CONF_INTRINSICS=--disable-atomic-intrinsics
+        - CONF_OPTIONS="--disable-atomic-intrinsics"
     - os: linux
       compiler: clang
       env:
@@ -110,14 +109,14 @@ matrix:
     - os: linux
       compiler: clang
       env:
-        - CONF_INTRINSICS=--disable-atomic-intrinsics
+        - CONF_OPTIONS="--disable-atomic-intrinsics"
         - CFLAGS_EXTRA="-march=native"
     - os: linux
       addons: { apt: { packages: [ lcov ] } }
       compiler: gcc
       env:
-        - CONF_GCOV=--enable-gcov
-        - CONF_SHARED=--enable-shared
+        - CONF_OPTIONS="--enable-gcov --enable-shared"
+        - REPORT_COVERAGE=true
         - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE"
     - os: linux
       env:
@@ -141,7 +140,7 @@ matrix:
       dist: trusty
       env:
         - CFLAGS_EXTRA="-march=native"
-        - CONF_ASSERTIONS=--enable-assertions
+        - CONF_OPTIONS="--enable-assertions"
     - os: linux
       addons: { apt: { packages: [ gcc-multilib ] } }
       env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=aarch64-linux ]
@@ -221,13 +220,12 @@ before_install:
 
 install:
   - ./autogen.sh
-  - if [[ "$CONF_GCOV" == --en* ]]; then
+  - if [[ "$REPORT_COVERAGE" == true ]]; then
       gem install coveralls-lcov;
     fi
 
 script:
-  - ./configure $CONF_ASSERTIONS $CONF_INTRINSICS $CONF_GCOV
-                $CONF_SHARED --enable-werror
+  - ./configure $CONF_OPTIONS --enable-werror
   - if [[ "$CSA_CHECK" != true && "$CPPCHECK_ENABLE" == "" ]]; then
       cat src/config.h;
     fi
@@ -249,7 +247,7 @@ script:
     fi
 
 after_success:
-  - if [[ "$CONF_GCOV" == --en* ]]; then
+  - if [[ "$REPORT_COVERAGE" == true ]]; then
       lcov --capture --directory src --directory tests --output-file coverage.info;
       lcov --remove coverage.info '/usr/*' 'tests/*' --output-file coverage.info;
       lcov --list coverage.info;
