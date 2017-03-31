@@ -2,8 +2,8 @@
 # Info (current:revision:age) for the Libtool versioning system.
 # These numbers should be updated at most once just before the release,
 # and, optionally, at most once during the development (after the release).
-LIBATOMIC_OPS_VER_INFO = 1:3:0
-LIBATOMIC_OPS_GPL_VER_INFO = 1:3:0
+LIBATOMIC_OPS_VER_INFO = 1:4:0
+LIBATOMIC_OPS_GPL_VER_INFO = 1:4:0
 
 AM_CFLAGS=@PICFLAG@
 AM_CPPFLAGS = -I$(top_builddir)/src -I$(top_srcdir)/src
