@@ -147,6 +147,13 @@ matrix:
         - CFLAGS_EXTRA="-march=native"
         - CONF_OPTIONS="--enable-assertions"
     - os: linux
+      addons: { apt: { packages: [ gcc-mingw-w64 ] } }
+      compiler: x86_64-w64-mingw32-gcc
+      dist: trusty
+      env:
+        - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared"
+        - MAKEFILE_TARGET=all
+    - os: linux
       addons: { apt: { packages: [ gcc-multilib ] } }
       env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=aarch64-linux ]
     - os: linux
