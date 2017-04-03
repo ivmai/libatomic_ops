@@ -121,10 +121,12 @@ matrix:
     - os: linux
       env:
         - CPPCHECK_ENABLE="-j16 -q --enable=information,performance,portability,style,warning"
+        - MAKEFILE_TARGET=all
       sudo: required
     - os: linux
       env:
         - CPPCHECK_ENABLE="-q --enable=unusedFunction -D AO_TEST_EMULATION"
+        - MAKEFILE_TARGET=all
       sudo: required
     - os: linux
       addons:
@@ -133,7 +135,10 @@ matrix:
           sources: [ llvm-toolchain-trusty-4.0 ]
       compiler: clang-4.0
       dist: trusty
-      env: [ CSA_CHECK=true, CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D VERBOSE" ]
+      env:
+        - CSA_CHECK=true
+        - MAKEFILE_TARGET=all
+        - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D VERBOSE"
     - os: linux
       addons: { apt: { packages: [ musl-tools ] } }
       compiler: musl-gcc
@@ -203,7 +208,6 @@ before_install:
       git clone --depth=3 https://github.com/danmar/cppcheck.git
             ~/cppcheck -b master;
       make --directory ~/cppcheck -j CXXFLAGS="-O3 -march=native -D NDEBUG";
-      MAKEFILE_TARGET=all;
     elif [[ "$CROSS_GCC_VER" != "" ]]; then
       BUILD_ARCH=x86_64;
       TAR_FOLDER_URL=https://www.kernel.org/pub/tools/crosstool/files/bin/$BUILD_ARCH/$CROSS_GCC_VER;
@@ -212,9 +216,8 @@ before_install:
       CROSS_CC=~/gcc-$CROSS_GCC_VER-nolibc/$NOLIBC_ARCH_ABI/bin/$NOLIBC_ARCH_ABI-gcc;
       export C_INCLUDE_PATH=/usr/include;
       MAKEFILE_TARGET=check-nolink;
-    elif [[ "$CSA_CHECK" == true ]]; then
-      MAKEFILE_TARGET=all;
-    else
+    fi
+  - if [[ "$MAKEFILE_TARGET" == "" ]]; then
       MAKEFILE_TARGET=check;
     fi
 
