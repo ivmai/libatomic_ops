@@ -1,32 +1,42 @@
 language: c
 
-os:
-  - linux
-  - osx
-
-compiler:
-  - clang
-  - gcc
-
-env:
-  - CFLAGS_EXTRA_M=
-  - CFLAGS_EXTRA="-O3 -march=native"
-      CONF_ASSERTIONS=--enable-assertions
-  - CFLAGS_EXTRA_M=-m32
-      CFLAGS_EXTRA="-march=native"
-      CONF_ASSERTIONS=--enable-assertions
-
 matrix:
-  exclude:
-  - os: osx
-    compiler: gcc
-
-sudo: required
-
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CFLAGS_EXTRA_M" == "-m32" ]]; then
-      sudo apt-get install gcc-multilib;
-    fi
+  include:
+    - os: linux
+      compiler: clang
+    - os: linux
+      compiler: gcc
+    - os: osx
+    - os: linux
+      compiler: clang
+      env:
+        - CFLAGS_EXTRA="-O3 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+    - os: linux
+      compiler: gcc
+      env:
+        - CFLAGS_EXTRA="-O3 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+    - os: osx
+      env:
+        - CFLAGS_EXTRA="-O3 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+    - os: linux
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      compiler: clang
+      env:
+        - CFLAGS_EXTRA="-m32 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+    - os: linux
+      addons: { apt: { packages: [ gcc-multilib ] } }
+      compiler: gcc
+      env:
+        - CFLAGS_EXTRA="-m32 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
+    - os: osx
+      env:
+        - CFLAGS_EXTRA="-m32 -march=native"
+        - CONF_ASSERTIONS=--enable-assertions
 
 install:
   - ./autogen.sh
@@ -34,5 +44,5 @@ install:
 script:
   - ./configure $CONF_ASSERTIONS
   - cat src/config.h
-  - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA $CFLAGS_EXTRA_M"
+  - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA"
   - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
