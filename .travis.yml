@@ -85,6 +85,16 @@ matrix:
     env:
     - CFLAGS_EXTRA="-march=native"
     - CONF_OPTIONS="--enable-assertions"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-mingw-w64
+    compiler: x86_64-w64-mingw32-gcc
+    dist: trusty
+    env:
+    - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared"
+    - MAKEFILE_TARGET=all
 
 before_install:
 - if [[ "$AUTOMAKE_VER" != "" || "$LIBTOOL_VER" != "" || "$M4_VER" != "" ]]; then
