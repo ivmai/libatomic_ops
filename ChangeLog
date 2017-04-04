@@ -5,15 +5,22 @@
 * Add configure --enable-gcov option (enable code coverage analysis)
 * Code refactoring of gcc/powerpc.h to avoid code duplication
 * Eliminate 'cast to long from void*' compiler warning in test_atomic
+* Eliminate 'implicit declaration of close' warning in 'strict ANSI' mode
+* Eliminate 'missing braces around initializer' gcc warning (hppa)
 * Eliminate 'printf format specifies type void*' GCC pedantic warnings
 * Enable limited testing in Makefile.msft without Cygwin
 * Fix (delete) comment for AO_and_full (x86)
+* Fix block_all_signals compilation in 'strict ANSI' mode
+* Fix missing .exe for test filenames in Makefile (MinGW)
 * Fix missing printed value names (test_stack)
 * Implement fetch-CAS for s390[x] (gcc)
+* Move libraries version info to the beginning of Makefile.am
+* Refine documentation in Makefile.msft how to run all tests (MS VC)
 * Refine README about library downloading
 * Support AIX/ppc (gcc)
 * Support CFLAGS_EXTRA to pass extra user-defined compiler flags (make)
 * Support n32 ABI for mips64
+* Update shared libraries version info for 7.4.6+ (to 1:4:0)
 * Use LLD and SCD instructions on mips64
 * Workaround 'uninitialized memory use' MemorySanitizer warning (test_atomic)
 Also, includes 7.2h changes
@@ -182,11 +189,14 @@ Also, includes 7.2 changes
 * Add 'clean' target to Makefile.msft
 * Enable Makefile.msft for Win64
 * Exclude 'check' from nmake all (Makefile.msft)
+* Fix 'Cannot implement CAS_full on this architecture' build error (cris)
 * Fix (improve) AO_REQUIRE_CAS description in README
+* Fix AO_SIZE_MAX definition (Linux/musl-gcc)
 * Fix assertions style in test_atomic_include
 * Fix size value wrap around in AO_malloc_large
 * Fix test_atomic failure caused unaligned AO_double_t access (x86)
 * Fix type of general AO_TS_INITIALIZER
+* Fix typo in comments in gcc/arm.h
 * Fix typos in 'error' pragma messages
 
 
