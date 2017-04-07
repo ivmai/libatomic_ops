@@ -193,7 +193,11 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
   /* We need to make sure that first is still the first entry on the    */
   /* list.  Otherwise it's possible that a reinsertion of it was        */
   /* already started before we added the black list entry.              */
-  if (first != AO_load(list)) {
+  if (first != AO_load_acquire(list))
+                        /* Workaround test failure on AIX, at least, by */
+                        /* using acquire ordering semantics for this    */
+                        /* load.  Probably, it is not the right fix.    */
+  {
     AO_store_release(a->AO_stack_bl+i, 0);
     goto retry;
   }
