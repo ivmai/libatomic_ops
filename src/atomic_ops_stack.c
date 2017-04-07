@@ -152,11 +152,14 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
   /* list.  Otherwise it's possible that a reinsertion of it was        */
   /* already started before we added the black list entry.              */
 # if defined(__alpha__) && (__GNUC__ == 4)
-    if (first != AO_load(list))
+    if (first != AO_load_acquire(list))
                         /* Workaround __builtin_expect bug found in     */
                         /* gcc-4.6.3/alpha causing test_stack failure.  */
 # else
-    if (AO_EXPECT_FALSE(first != AO_load(list)))
+    if (AO_EXPECT_FALSE(first != AO_load_acquire(list)))
+                        /* Workaround test failure on AIX, at least, by */
+                        /* using acquire ordering semantics for this    */
+                        /* load.  Probably, it is not the right fix.    */
 # endif
   {
     AO_store_release(a->AO_stack_bl+i, 0);
