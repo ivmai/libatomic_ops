@@ -198,6 +198,10 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
 
 #if defined(AO_HAVE_compare_double_and_swap_double)
 
+#ifdef LINT2
+  volatile /* non-static */ AO_t AO_noop_sink;
+#endif
+
 void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 {
     AO_t next;
@@ -211,6 +215,10 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
     /* by Treiber.  Pop is still safe, since we run into the ABA        */
     /* problem only if there were both intervening "pop"s and "push"es. */
     /* In that case we still see a change in the version number.        */
+#   ifdef LINT2
+      /* Instruct static analyzer that element is not lost. */
+      AO_noop_sink = (AO_t)element;
+#   endif
 }
 
 AO_t *AO_stack_pop_acquire(AO_stack_t *list)
