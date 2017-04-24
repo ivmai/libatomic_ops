@@ -90,6 +90,7 @@
 # include "generic-arithm.h"
 
 # define AO_CLEAR(addr) __atomic_clear(addr, __ATOMIC_RELEASE)
+# define AO_HAVE_CLEAR
 
   AO_INLINE AO_TS_VAL_t
   AO_test_and_set(volatile AO_TS_t *addr)
