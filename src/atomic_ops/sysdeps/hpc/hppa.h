@@ -80,6 +80,9 @@ AO_test_and_set_full(volatile AO_TS_t * addr)
   register unsigned int ret;
   register unsigned long a = (unsigned long)AO_ldcw_align(addr);
 
+# if defined(CPPCHECK)
+    ret = 0; /* to void 'uninitialized variable' warning */
+# endif
   AO_ldcw(a, ret);
   return (AO_TS_VAL_t)ret;
 }
