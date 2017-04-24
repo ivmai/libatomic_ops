@@ -8,14 +8,16 @@ matrix:
       compiler: gcc
     - os: osx
     - os: linux
+      env: [ COVERITY_SCAN_BRANCH=1 ]
       addons:
         coverity_scan:
           project:
             name: ivmai/libatomic_ops
             version: 7.5.0
+            description: The atomic_ops library
           branch_pattern: master
-          build_command_prepend: "./autogen.sh && ./configure"
-          build_command: "make -j check CFLAGS_EXTRA=-DLINT2"
+          build_command_prepend: ./configure
+          build_command: make -j check CFLAGS_EXTRA="-D LINT2 -march=native"
     - os: linux
       compiler: clang
       env:
@@ -238,7 +240,7 @@ before_install:
     fi
 
 install:
-  - if [[ "$COVERITY_SCAN_BRANCH" != 1 ]]; then ./autogen.sh; fi
+  - ./autogen.sh
   - if [[ "$REPORT_COVERAGE" == true ]]; then
       gem install coveralls-lcov;
     fi
