@@ -8,6 +8,9 @@ matrix:
     compiler: gcc
   - os: osx
   - os: linux
+    env:
+    - MAKEFILE_TARGET=dist
+  - os: linux
     compiler: clang
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
@@ -76,11 +79,14 @@ matrix:
     - CFLAGS_EXTRA="-march=native"
     - CONF_OPTIONS="--enable-assertions"
 
+before_install:
+- if [[ "$MAKEFILE_TARGET" == "" ]]; then MAKEFILE_TARGET=check; fi
+
 install:
 - "./autogen.sh"
 
 script:
 - ./configure $CONF_OPTIONS
 - cat src/config.h
-- make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA"
+- make -j $MAKEFILE_TARGET CFLAGS_EXTRA="$CFLAGS_EXTRA"
 - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
