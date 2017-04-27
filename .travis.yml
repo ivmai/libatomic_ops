@@ -7,10 +7,16 @@ matrix:
   - os: linux
     compiler: gcc
   - os: osx
+  - os: linux
+    env:
+    - MAKEFILE_TARGET=dist
+
+before_install:
+- if [[ "$MAKEFILE_TARGET" == "" ]]; then MAKEFILE_TARGET=check; fi
 
 install:
 - autoreconf -vif
 
 script:
 - ./configure
-- make -j check
+- make -j $MAKEFILE_TARGET
