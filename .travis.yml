@@ -12,13 +12,12 @@ matrix:
       addons:
         coverity_scan:
           project:
-            description: The atomic_ops project
             name: ivmai/libatomic_ops
-            notification_email: ivmai@mail.ru
             version: 7.5.0
+          notification_email: ivmai@mail.ru
           branch_pattern: master
-          build_command_prepend: ./configure
-          build_command: make -j check CFLAGS_EXTRA="-D LINT2 -march=native"
+          build_command_prepend: CFLAGS=-march=native ./configure
+          build_command: make -j check CFLAGS_EXTRA=-DLINT2
     - os: linux
       compiler: clang
       env:
