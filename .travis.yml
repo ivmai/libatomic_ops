@@ -8,10 +8,20 @@ matrix:
     compiler: gcc
   - os: osx
   - os: linux
+    dist: trusty
+    env:
+    - MAKEFILE_TARGET=distcheck
+  - os: linux
     env:
     - MAKEFILE_TARGET=dist
 
 before_install:
+- if [[ "$MAKEFILE_TARGET" == "dist"* ]]; then
+    autoconf --version;
+    automake --version;
+    m4 --version;
+    libtool --version || true;
+  fi
 - if [[ "$MAKEFILE_TARGET" == "" ]]; then MAKEFILE_TARGET=check; fi
 
 install:
