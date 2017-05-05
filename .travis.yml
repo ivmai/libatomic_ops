@@ -167,6 +167,13 @@ matrix:
     - os: linux
       env: [ MAKEFILE_TARGET=dist ]
     - os: linux
+      dist: trusty
+      env:
+        - MAKEFILE_TARGET=distcheck
+        - AUTOMAKE_VER=1.15
+        - M4_VER=1.4.18
+        - LIBTOOL_VER=2.4.6
+    - os: linux
       addons: { apt: { packages: [ gcc-multilib ] } }
       env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=aarch64-linux ]
     - os: linux
@@ -228,7 +235,8 @@ before_install:
       git clone --depth=3 https://github.com/danmar/cppcheck.git
             ~/cppcheck -b master;
       make --directory ~/cppcheck -j CXXFLAGS="-O3 -march=native -D NDEBUG";
-    elif [[ "$CROSS_GCC_VER" != "" ]]; then
+    fi
+  - if [[ "$CROSS_GCC_VER" != "" ]]; then
       BUILD_ARCH=x86_64;
       TAR_FOLDER_URL=https://www.kernel.org/pub/tools/crosstool/files/bin/$BUILD_ARCH/$CROSS_GCC_VER;
       TARFILE=$BUILD_ARCH-gcc-$CROSS_GCC_VER-nolibc_$NOLIBC_ARCH_ABI.tar.xz;
@@ -236,6 +244,32 @@ before_install:
       CROSS_CC=~/gcc-$CROSS_GCC_VER-nolibc/$NOLIBC_ARCH_ABI/bin/$NOLIBC_ARCH_ABI-gcc;
       export C_INCLUDE_PATH=/usr/include;
       MAKEFILE_TARGET=check-nolink;
+    fi
+  - if [[ "$AUTOMAKE_VER" != "" || "$LIBTOOL_VER" != ""
+          || "$M4_VER" != "" ]]; then
+      GNUTOOLS_ROOT=`pwd`/gnu-tools;
+      export PATH=$GNUTOOLS_ROOT/bin:$PATH;
+    fi
+  - if [[ "$M4_VER" != "" ]]; then
+      M4_XZ_URL=https://ftp.gnu.org/gnu/m4/m4-$M4_VER.tar.xz;
+      wget -O - $M4_XZ_URL | tar xf - --xz --directory ~;
+      (cd ~/m4-$M4_VER && ./configure --prefix=$GNUTOOLS_ROOT && make -j check && make install);
+    fi
+  - if [[ "$LIBTOOL_VER" != "" ]]; then
+      LIBTOOL_XZ_URL=https://ftp.gnu.org/gnu/libtool/libtool-$LIBTOOL_VER.tar.xz;
+      wget -O - $LIBTOOL_XZ_URL | tar xf - --xz --directory ~;
+      (cd ~/libtool-$LIBTOOL_VER && ./configure --prefix=$GNUTOOLS_ROOT && make -j && make install);
+    fi
+  - if [[ "$AUTOMAKE_VER" != "" ]]; then
+      AUTOMAKE_XZ_URL=https://ftp.gnu.org/gnu/automake/automake-$AUTOMAKE_VER.tar.xz;
+      wget -O - $AUTOMAKE_XZ_URL | tar xf - --xz --directory ~;
+      (cd ~/automake-$AUTOMAKE_VER && ./configure --prefix=$GNUTOOLS_ROOT && make -j && make install);
+    fi
+  - if [[ "$MAKEFILE_TARGET" == "dist"* ]]; then
+      autoconf --version;
+      automake --version;
+      m4 --version;
+      libtool --version || true;
     fi
   - if [[ "$MAKEFILE_TARGET" == "" ]]; then
       MAKEFILE_TARGET=check;
