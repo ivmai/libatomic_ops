@@ -1,3 +1,9 @@
+2017-04-07  Fabrizio Fabbri <ffabbri4@bloomberg.net>
+
+	* src/atomic_ops_stack.c [AO_USE_ALMOST_LOCK_FREE]
+	(AO_stack_pop_explicit_aux_acquire): Replace AO_load to AO_load_acquire
+	when loaded value is compared to first; add comment.
+
 2017-03-15  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops_malloc.c [SIZE_MAX] (AO_SIZE_MAX): Cast
