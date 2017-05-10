@@ -87,6 +87,7 @@ Also, includes 7.4.6 changes
 * Support n32 ABI for mips64
 * Update shared libraries version info for 7.4.6+ (to 1:4:0)
 * Use LLD and SCD instructions on mips64
+* Workaround 'resource leak' false positives in AO_malloc, add_elements
 * Workaround 'uninitialized memory use' MemorySanitizer warning (test_atomic)
 Also, includes 7.2h changes
 
@@ -263,6 +264,7 @@ Also, includes 7.2 changes
 * Fix type of general AO_TS_INITIALIZER
 * Fix typo in comments in gcc/arm.h
 * Fix typos in 'error' pragma messages
+* Workaround test_stack failure on AIX/ppc
 
 
 == [7.2g] 2016-05-23 ==
