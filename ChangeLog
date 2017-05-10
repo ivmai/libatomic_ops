@@ -50,6 +50,7 @@
 * Suppress 'ISO C does not support __int128 type' GCC/Clang pedantic warning
 * Test store/CAS emulation explicitly
 * Update shared libraries version info to 2:0:1
+* Use GCC atomic intrinsics for PowerPC 32/64 (GCC 4.8+ and clang 3.8+)
 * Use GCC atomic intrinsics for x86, x64, ARM, MIPS (gcc 4.9+, clang 3.5+)
 * Use generalized double-wide load/store if AO_PREFER_GENERALIZED (gcc/x86)
 * Workaround '#error' cppcheck error messages
@@ -58,6 +59,8 @@
 * Workaround 'obsolescent ftime called' cppcheck style warning (POSIX)
 * Workaround 'overflow in pointer subtraction' cppcheck warning
 * Workaround 'shifting 32-bit value by 32 bits undefined' cppcheck warning
+* Workaround 'uninitialized memory use' code analyzer false warning (tests)
+* Workaround 'uninitialized variable' cppcheck error in hpc/hppa.h
 * Workaround 'value of macro is unknown' cppcheck information messages
 * Workaround a bug in double-wide intrinsics of Clang/x64 with ASan enabled
 * Workaround MSan warning about uninitialized data read by generalized store
