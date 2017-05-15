@@ -19,6 +19,15 @@ matrix:
           build_command_prepend: CFLAGS=-march=native ./configure
           build_command: make -j check CFLAGS_EXTRA=-DLINT2
     - os: linux
+      dist: trusty
+      env:
+        - MAKEFILE_TARGET=distcheck
+        - AUTOMAKE_VER=1.15
+        - M4_VER=1.4.18
+        - LIBTOOL_VER=2.4.6
+    - os: linux
+      env: [ MAKEFILE_TARGET=dist ]
+    - os: linux
       compiler: clang
       env:
         - CFLAGS_EXTRA="-O3 -march=native"
@@ -164,15 +173,6 @@ matrix:
       env:
         - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared"
         - MAKEFILE_TARGET=all
-    - os: linux
-      env: [ MAKEFILE_TARGET=dist ]
-    - os: linux
-      dist: trusty
-      env:
-        - MAKEFILE_TARGET=distcheck
-        - AUTOMAKE_VER=1.15
-        - M4_VER=1.4.18
-        - LIBTOOL_VER=2.4.6
     - os: linux
       addons: { apt: { packages: [ gcc-multilib ] } }
       env: [ CROSS_GCC_VER=4.9.0, NOLIBC_ARCH_ABI=aarch64-linux ]
