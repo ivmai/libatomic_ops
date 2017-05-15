@@ -324,6 +324,6 @@ deploy:
   file_glob: true
   skip_cleanup: true
   on:
-    condition: "$MAKEFILE_TARGET" == distcheck
+    condition: $MAKEFILE_TARGET = distcheck
     repo: ivmai/libatomic_ops
     tags: true
