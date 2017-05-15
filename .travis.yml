@@ -2,15 +2,15 @@ language: c
 
 matrix:
   include:
-    - os: linux
-      compiler: clang
-    - os: linux
-      compiler: gcc
-    - os: osx
+  - os: linux
+    compiler: clang
+  - os: linux
+    compiler: gcc
+  - os: osx
 
 install:
-  - autoreconf -vif
+- autoreconf -vif
 
 script:
-  - ./configure
-  - make -j check
+- ./configure
+- make -j check
