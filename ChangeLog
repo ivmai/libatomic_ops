@@ -8,6 +8,7 @@
 * Eliminate 'implicit declaration of close' warning in 'strict ANSI' mode
 * Eliminate 'missing braces around initializer' gcc warning (hppa)
 * Eliminate 'printf format specifies type void*' GCC pedantic warnings
+* Eliminate 'value shift followed by expansion' false code defect warning
 * Enable limited testing in Makefile.msft without Cygwin
 * Fix (delete) comment for AO_and_full (x86)
 * Fix block_all_signals compilation in 'strict ANSI' mode
@@ -191,6 +192,7 @@ Also, includes 7.2 changes
 * Enable Makefile.msft for Win64
 * Exclude 'check' from nmake all (Makefile.msft)
 * Fix 'Cannot implement CAS_full on this architecture' build error (cris)
+* Fix 'doc' files installation folder
 * Fix (improve) AO_REQUIRE_CAS description in README
 * Fix AO_SIZE_MAX definition (Linux/musl-gcc)
 * Fix assertions style in test_atomic_include
