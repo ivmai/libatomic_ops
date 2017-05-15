@@ -2,71 +2,85 @@ language: c
 
 matrix:
   include:
-    - os: linux
-      compiler: clang
-    - os: linux
-      compiler: gcc
-    - os: osx
-    - os: linux
-      compiler: clang
-      env:
-        - CFLAGS_EXTRA="-O3 -march=native"
-        - CONF_OPTIONS="--enable-assertions"
-    - os: linux
-      compiler: gcc
-      env:
-        - CFLAGS_EXTRA="-O3 -march=native"
-        - CONF_OPTIONS="--enable-assertions"
-    - os: osx
-      env:
-        - CFLAGS_EXTRA="-O3 -march=native"
-        - CONF_OPTIONS="--enable-assertions"
-    - os: linux
-      compiler: clang
-      dist: trusty
-      env: [ CFLAGS_EXTRA="-march=native -std=c11" ]
-    - os: linux
-      compiler: gcc
-      env: [ CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=2 -std=c89" ]
-    - os: linux
-      addons: { apt: { packages: [ gcc-multilib ] } }
-      compiler: clang
-      env:
-        - CFLAGS_EXTRA="-m32 -march=native"
-        - CONF_OPTIONS="--enable-assertions"
-    - os: linux
-      addons: { apt: { packages: [ gcc-multilib ] } }
-      compiler: gcc
-      env:
-        - CFLAGS_EXTRA="-m32 -march=native"
-        - CONF_OPTIONS="--enable-assertions"
-    - os: osx
-      env:
-        - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
-        - CONF_OPTIONS="--enable-assertions"
-    - os: linux
-      addons:
-        apt:
-          packages: [ gcc-5, gcc-5-multilib ]
-          sources: [ ubuntu-toolchain-r-test ]
-      compiler: gcc-5
-      dist: trusty
-      env:
-        - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
-        - CONF_OPTIONS="--enable-assertions --enable-shared"
-    - os: linux
-      addons: { apt: { packages: [ musl-tools ] } }
-      compiler: musl-gcc
-      dist: trusty
-      env:
-        - CFLAGS_EXTRA="-march=native"
-        - CONF_OPTIONS="--enable-assertions"
+  - os: linux
+    compiler: clang
+  - os: linux
+    compiler: gcc
+  - os: osx
+  - os: linux
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-O3 -march=native"
+    - CONF_OPTIONS="--enable-assertions"
+  - os: linux
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-O3 -march=native"
+    - CONF_OPTIONS="--enable-assertions"
+  - os: osx
+    env:
+    - CFLAGS_EXTRA="-O3 -march=native"
+    - CONF_OPTIONS="--enable-assertions"
+  - os: linux
+    compiler: clang
+    dist: trusty
+    env:
+    - CFLAGS_EXTRA="-march=native -std=c11"
+  - os: linux
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=2 -std=c89"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-m32 -march=native"
+    - CONF_OPTIONS="--enable-assertions"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-m32 -march=native"
+    - CONF_OPTIONS="--enable-assertions"
+  - os: osx
+    env:
+    - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
+    - CONF_OPTIONS="--enable-assertions"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-5
+        - gcc-5-multilib
+        sources:
+        - ubuntu-toolchain-r-test
+    compiler: gcc-5
+    dist: trusty
+    env:
+    - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - musl-tools
+    compiler: musl-gcc
+    dist: trusty
+    env:
+    - CFLAGS_EXTRA="-march=native"
+    - CONF_OPTIONS="--enable-assertions"
 
 install:
-  - ./autogen.sh
+- "./autogen.sh"
 
 script:
-  - ./configure $CONF_OPTIONS
-  - cat src/config.h
-  - make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA"
-  - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
+- ./configure $CONF_OPTIONS
+- cat src/config.h
+- make -j check CFLAGS_EXTRA="$CFLAGS_EXTRA"
+- if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
