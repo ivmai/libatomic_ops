@@ -4,8 +4,12 @@ matrix:
   include:
   - os: linux
     compiler: clang
+    env:
+    - WORKAROUND_ACLOCAL_MISSING=true
   - os: linux
     compiler: gcc
+    env:
+    - WORKAROUND_ACLOCAL_MISSING=true
   - os: osx
   - os: linux
     dist: trusty
@@ -15,6 +19,7 @@ matrix:
   - os: linux
     env:
     - MAKEFILE_TARGET=dist
+    - WORKAROUND_ACLOCAL_MISSING=true
   - os: linux
     addons:
       apt:
@@ -31,6 +36,11 @@ before_install:
     libtool --version || true;
   fi
 - if [[ "$MAKEFILE_TARGET" == "" ]]; then MAKEFILE_TARGET=check; fi
+
+install:
+- if [[ "$WORKAROUND_ACLOCAL_MISSING" == true ]]; then
+    autoreconf --force --install
+  fi
 
 script:
 - ./configure
