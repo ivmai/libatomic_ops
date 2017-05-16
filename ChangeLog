@@ -86,6 +86,7 @@ Also, includes 7.4.6 changes
 * Move libraries version info to the beginning of Makefile.am
 * Refine documentation in Makefile.msft how to run all tests (MS VC)
 * Refine README about library downloading
+* Rename doc/README.txt to doc/README_details.txt
 * Support AIX/ppc (gcc)
 * Support CFLAGS_EXTRA to pass extra user-defined compiler flags (make)
 * Support n32 ABI for mips64
