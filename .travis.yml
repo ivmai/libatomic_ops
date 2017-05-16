@@ -38,7 +38,7 @@ script:
 - if [[ "$AO_REAL_VERSION" != "" ]]; then
     gzip --decompress libatomic_ops-*.tar.gz;
     mv libatomic_ops-*.tar libatomic_ops-$AO_REAL_VERSION.tar;
-    gzip --best libatomic_ops-*.tar;
+    gzip --best --verbose libatomic_ops-*.tar;
   fi
 
 deploy:
