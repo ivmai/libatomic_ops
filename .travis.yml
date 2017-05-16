@@ -11,6 +11,7 @@ matrix:
     dist: trusty
     env:
     - MAKEFILE_TARGET=distcheck
+    - AO_REAL_VERSION=7.2g
   - os: linux
     env:
     - MAKEFILE_TARGET=dist
@@ -27,6 +28,11 @@ before_install:
 script:
 - ./configure
 - make -j $MAKEFILE_TARGET
+- if [[ "$AO_REAL_VERSION" != "" ]]; then
+    gzip --decompress libatomic_ops-*.tar.gz;
+    mv libatomic_ops-*.tar libatomic_ops-$AO_REAL_VERSION.tar;
+    gzip --best libatomic_ops-*.tar;
+  fi
 
 deploy:
   provider: releases
