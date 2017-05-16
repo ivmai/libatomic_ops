@@ -1,3 +1,8 @@
+2017-05-16  Ivan Maidanski <ivmai@mail.ru>
+
+	* doc/Makefile.in: Regenerate (by autoreconf -vif using autoconf-2.69,
+	automake-1.14.1, libtool-2.4.2, m4-1.4.17).
+
 2017-05-09  Andy Li <andy@onthewings.net>
 
 	* doc/Makefile.am (dist_pkgdata_DATA): Remove COPYING, LICENSING.txt,
