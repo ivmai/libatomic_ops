@@ -39,7 +39,7 @@ before_install:
 
 install:
 - if [[ "$WORKAROUND_ACLOCAL_MISSING" == true ]]; then
-    autoreconf --force --install
+    autoreconf --force --install;
   fi
 
 script:
