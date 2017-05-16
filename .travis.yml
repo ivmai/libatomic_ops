@@ -24,9 +24,6 @@ before_install:
   fi
 - if [[ "$MAKEFILE_TARGET" == "" ]]; then MAKEFILE_TARGET=check; fi
 
-install:
-- autoreconf -vif
-
 script:
 - ./configure
 - make -j $MAKEFILE_TARGET
