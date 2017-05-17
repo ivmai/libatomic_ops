@@ -1,3 +1,9 @@
+[7.2h]
+
+2017-05-17  Ivan Maidanski <ivmai@mail.ru>
+
+	* README: Bump version to 7.2h (rev. H).
+
 2017-05-16  Ivan Maidanski <ivmai@mail.ru>
 
 	* doc/Makefile.in: Regenerate (by autoreconf -vif using autoconf-2.69,
