@@ -41,8 +41,6 @@
 /* uncached memory, which we don't support.  It does not order loads    */
 /* from cached memory.                                                  */
 
-#include "../all_aligned_atomic_load_store.h"
-
 #include "../test_and_set_t_is_ao_t.h"
         /* There seems to be no byte equivalent of lwarx, so this       */
         /* may really be what we want, at least in the 32-bit case.     */

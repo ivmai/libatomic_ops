@@ -13,8 +13,6 @@
 /* Thanks to Maged Michael, Doug Lea, and Roger Hoover for helping to   */
 /* track some of this down and correcting my misunderstandings. -HB     */
 
-#include "../all_aligned_atomic_load_store.h"
-
 #include "../test_and_set_t_is_ao_t.h"
 
 void AO_sync(void);
