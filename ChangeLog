@@ -1,5 +1,5 @@
 
-== [7.4.6] (unset) ==
+== [7.4.6] 2017-05-18 ==
 
 * Add assertion that double-wide CAS target is aligned (msftc/x86[_64])
 * Add configure --enable-gcov option (enable code coverage analysis)
