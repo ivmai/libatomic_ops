@@ -23,6 +23,7 @@
 * Support CFLAGS_EXTRA to pass extra user-defined compiler flags (make)
 * Support n32 ABI for mips64
 * Update shared libraries version info for 7.4.6+ (to 1:4:0)
+* Use 'inline code' format for commands in README.md
 * Use LLD and SCD instructions on mips64
 * Workaround 'resource leak' false positives in AO_malloc, add_elements
 * Workaround 'uninitialized memory use' MemorySanitizer warning (test_atomic)
@@ -187,7 +188,7 @@ Also, includes 7.2e changes
 Also, includes 7.2 changes
 
 
-== [7.2h] (unset) ==
+== [7.2h] 2017-05-17 ==
 
 * Add 'clean' target to Makefile.msft
 * Enable Makefile.msft for Win64
