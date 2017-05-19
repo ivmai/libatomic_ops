@@ -2,7 +2,12 @@
 
 IN NEW CODE, PLEASE USE C11 OR C++14 STANDARD ATOMICS INSTEAD OF THIS PACKAGE.
 
-This is version 7.6.0 of libatomic_ops.
+[![Travis-CI build status](https://travis-ci.org/ivmai/libatomic_ops.svg?branch=master)](https://travis-ci.org/ivmai/libatomic_ops)
+[![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/ivmai/libatomic_ops?branch=master&svg=true)](https://ci.appveyor.com/project/ivmai/libatomic-ops)
+[![Coveralls test coverage status](https://coveralls.io/repos/ivmai/libatomic_ops/badge.png?branch=master)](https://coveralls.io/github/ivmai/libatomic_ops)
+[![Coverity Scan build status](https://scan.coverity.com/projects/10809/badge.svg)](https://scan.coverity.com/projects/ivmai-libatomic_ops)
+
+This is version 7.7.0 (next release development) of libatomic_ops.
 
 
 ## Download

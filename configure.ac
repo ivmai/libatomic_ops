@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT([libatomic_ops],[7.6.0],bdwgc@lists.opendylan.org)
+AC_INIT([libatomic_ops],[7.7.0],bdwgc@lists.opendylan.org)
 
 AC_PREREQ(2.61)
 AC_CANONICAL_TARGET([])
