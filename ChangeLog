@@ -1,5 +1,5 @@
 
-== [7.5.0] (development) ==
+== [7.6.0] 2017-05-19 ==
 
 * Add *_and/or/xor* and *_[fetch_]compare_and_swap* tests to test_atomic
 * Add asm-based and/or/xor implementation for char/short/int (gcc/x86)
@@ -67,7 +67,7 @@
 Also, includes 7.4.6 changes
 
 
-== [7.4.6] (unset) ==
+== [7.4.6] 2017-05-18 ==
 
 * Add assertion that double-wide CAS target is aligned (msftc/x86[_64])
 * Add configure --enable-gcov option (enable code coverage analysis)
