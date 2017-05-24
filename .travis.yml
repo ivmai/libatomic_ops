@@ -365,7 +365,7 @@ before_install:
     MAKEFILE_TARGET=check-nolink;
   fi
 - if [[ "$AUTOMAKE_VER" != "" || "$LIBTOOL_VER" != "" || "$M4_VER" != "" ]]; then
-    GNUTOOLS_ROOT=`pwd`/gnu-tools;
+    GNUTOOLS_ROOT=`pwd`/../gnu-tools;
     export PATH=$GNUTOOLS_ROOT/bin:$PATH;
   fi
 - if [[ "$M4_VER" != "" ]]; then
