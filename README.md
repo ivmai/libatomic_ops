@@ -39,8 +39,6 @@ allow you to write code:
 For details and licensing restrictions see the files in the "doc"
 subdirectory.
 
-Please address bug reports to [mailing list](mailto:bdwgc@lists.opendylan.org).
-
 
 ## Installation and Usage
 
@@ -71,6 +69,31 @@ implementation is entirely in header files.
 
 HP-UX/PA-RISC: `aCC -Ae` won't work as a C compiler, since it doesn't support
 inline assembly code.  Use cc.
+
+
+## Feedback, Contribution, Questions and Notifications
+
+Please address bug reports and new feature ideas to
+[GitHub issues](https://github.com/ivmai/libatomic_ops/issues).  Before the
+submission please check that it has not been done yet by someone else.
+
+If you want to contribute, submit
+a [pull request](https://github.com/ivmai/libatomic_ops/pulls) to GitHub.
+
+If you need help, use
+[Stack Overflow](https://stackoverflow.com/questions/tagged/atomic-ops).
+Older questions on the site can be found by
+[this query](https://stackoverflow.com/search?q=atomic_ops).
+Older technical discussions are also available in
+[bdwgc mailing list archive](https://github.com/ivmai/bdwgc/files/1038163/bdwgc-mailing-list-archive-2017_04.tar.gz).
+
+To get new release announcements, subscribe to
+[RSS feed](https://github.com/ivmai/libatomic_ops/releases.atom).
+(To receive the notifications by email, a 3rd-party free service like
+[IFTTT RSS Feed](https://ifttt.com/feed) can be setup.)
+To be notified on all issues, please
+[watch](https://github.com/ivmai/libatomic_ops/watchers) the project on
+GitHub.
 
 
 ## Copyright & Warranty
