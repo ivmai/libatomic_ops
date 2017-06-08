@@ -33,6 +33,10 @@
 
 #include "atomic_ops.h"
 
+#if !defined(AO_ATOMIC_OPS_H) && !defined(CPPCHECK)
+# error Wrong atomic_ops.h included.
+#endif
+
 #if (defined(_WIN32_WCE) || defined(__MINGW32CE__)) && !defined(AO_HAVE_abort)
 # define abort() _exit(-1) /* there is no abort() in WinCE */
 #endif
