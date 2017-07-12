@@ -8,18 +8,6 @@ matrix:
     compiler: gcc
   - os: osx
   - os: linux
-    env:
-    - COVERITY_SCAN_BRANCH=1
-    addons:
-      coverity_scan:
-        project:
-          name: ivmai/libatomic_ops
-          version: 7.6.0
-        notification_email: ivmai@mail.ru
-        branch_pattern: master
-        build_command_prepend: CFLAGS=-march=native ./configure
-        build_command: make -j check CFLAGS_EXTRA=-DLINT2
-  - os: linux
     dist: trusty
     env:
     - MAKEFILE_TARGET=distcheck
@@ -408,17 +396,12 @@ install:
 - if [[ "$REPORT_COVERAGE" == true ]]; then gem install coveralls-lcov; fi
 
 script:
-- if [[ "$COVERITY_SCAN_BRANCH" != 1 ]]; then
-    ./configure $CONF_OPTIONS --enable-werror;
-  fi
-- if [[ "$CSA_CHECK" != true && "$CPPCHECK_ENABLE" == ""
-        && "$COVERITY_SCAN_BRANCH" != 1 ]]; then
+- ./configure $CONF_OPTIONS --enable-werror
+- if [[ "$CSA_CHECK" != true && "$CPPCHECK_ENABLE" == "" ]]; then
     cat src/config.h;
   fi
 - if [[ "$CROSS_GCC_VER" != "" ]]; then CC=$CROSS_CC; fi
-- if [[ "$COVERITY_SCAN_BRANCH" != 1 ]]; then
-    make -j $MAKEFILE_TARGET CC=$CC CFLAGS_EXTRA="$CFLAGS_EXTRA";
-  fi
+- make -j $MAKEFILE_TARGET CC=$CC CFLAGS_EXTRA="$CFLAGS_EXTRA"
 - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
 - if [[ "$CSA_CHECK" == true ]]; then
     ${CC} --analyze -Xanalyzer -analyzer-output=text -Werror -I src
