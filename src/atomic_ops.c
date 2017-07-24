@@ -259,7 +259,7 @@ void AO_pause(int n)
 
         tv.tv_sec = 0;
         tv.tv_usec = usec;
-        select(0, 0, 0, 0, &tv);
+        (void)select(0, 0, 0, 0, &tv);
 #     endif
     }
 }
