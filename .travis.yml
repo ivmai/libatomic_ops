@@ -145,7 +145,7 @@ matrix:
     dist: trusty
     env:
     - CFLAGS_EXTRA="-mx32 -march=native"
-    - CONF_OPTIONS="--disable-atomic-intrinsics"
+    - CONF_OPTIONS="--disable-atomic-intrinsics --disable-docs"
   - os: linux
     compiler: clang
     env:
