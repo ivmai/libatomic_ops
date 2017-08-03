@@ -125,6 +125,11 @@ if test "$enable_gcov" = "yes"; then
   CFLAGS=`echo "$CFLAGS" | sed -e 's/-O\(1\|2\|3\|4\|s\|fast\)\?//g'`
 fi
 
+AC_ARG_ENABLE(docs,
+        [AC_HELP_STRING([--disable-docs],
+                        [Do not build and install documentation])])
+AM_CONDITIONAL(ENABLE_DOCS, test x$enable_docs != xno)
+
 AC_SUBST(PICFLAG)
 AC_SUBST(DEFS)
 
