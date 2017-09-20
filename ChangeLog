@@ -67,6 +67,13 @@
 Also, includes 7.4.6 changes
 
 
+== [7.4.8] (date not set) ==
+
+* Fix 'missing select.h', 'undefined sigprocmask' compiler errors (Hexagon)
+* Update README about bugs reporting and new releases notification
+* Workaround misspelling in GCC to detect ARMv6KZ platform
+
+
 == [7.4.6] 2017-05-18 ==
 
 * Add assertion that double-wide CAS target is aligned (msftc/x86[_64])
