@@ -1,4 +1,15 @@
 
+== [7.6.2] (date not set) ==
+
+* Avoid misleading 'AO_t undefined' error if wrong atomic_ops.h included
+* Do not install documentation if configure --disable-docs (new option)
+* Do not produce .tar.bz2 distribution file (configure)
+* Eliminate '-pedantic is not an option that controls warnings' GCC message
+* Use GCC atomic intrinsics for Hexagon (clang 3.9+)
+* Workaround 'unused result' code defects in atomic_ops.c, list_atomic
+Also, includes 7.4.8 changes
+
+
 == [7.6.0] 2017-05-19 ==
 
 * Add *_and/or/xor* and *_[fetch_]compare_and_swap* tests to test_atomic
