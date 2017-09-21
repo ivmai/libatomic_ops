@@ -137,6 +137,12 @@ AO_TS_t lock = AO_TS_INITIALIZER;
 unsigned long locked_counter;
 volatile unsigned long junk = 13;
 
+void do_junk(void) AO_ATTR_NO_SANITIZE_THREAD
+{
+  junk *= 17;
+  junk *= 19;
+}
+
 void * test_and_set_thr(void * id)
 {
   unsigned long i;
@@ -164,8 +170,7 @@ void * test_and_set_thr(void * id)
       --locked_counter;
       AO_CLEAR(&lock);
       /* Spend a bit of time outside the lock. */
-        junk *= 17;
-        junk *= 17;
+      do_junk();
     }
   return 0;
 }

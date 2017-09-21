@@ -68,9 +68,9 @@ typedef struct list_node {
         int data;
 } ln;
 
-ln *cons(int d, ln *tail)
+ln *cons(int d, ln *tail) AO_ATTR_NO_SANITIZE_THREAD
 {
-  static size_t extra = 0;
+  static size_t extra = 0; /* data race in extra is OK */
   size_t my_extra = extra;
   ln *result;
   int * extras;

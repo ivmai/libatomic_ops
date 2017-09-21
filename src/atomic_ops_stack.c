@@ -48,7 +48,7 @@
 /* pointers with extra bits "or"ed into the low order bits.             */
 void
 AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
-                                   AO_stack_aux *a)
+                                   AO_stack_aux *a) AO_ATTR_NO_SANITIZE_THREAD
 {
   AO_t x_bits = (AO_t)x;
   AO_t next;
@@ -94,7 +94,7 @@ AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
   do
     {
       next = AO_load(list);
-      *x = next;
+      *x = next; /* data race is OK here */
     }
   while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(list, next, x_bits)));
 }
@@ -203,12 +203,13 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
 #endif
 
 void AO_stack_push_release(AO_stack_t *list, AO_t *element)
+                                                AO_ATTR_NO_SANITIZE_THREAD
 {
     AO_t next;
 
     do {
       next = AO_load(&(list -> ptr));
-      *element = next;
+      *element = next; /* data race is OK here */
     } while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(&(list -> ptr),
                                                       next, (AO_t)element)));
     /* This uses a narrow CAS here, an old optimization suggested       */
@@ -221,7 +222,7 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 #   endif
 }
 
-AO_t *AO_stack_pop_acquire(AO_stack_t *list)
+AO_t *AO_stack_pop_acquire(AO_stack_t *list) AO_ATTR_NO_SANITIZE_THREAD
 {
 #   ifdef __clang__
       AO_t *volatile cptr;
@@ -238,7 +239,7 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
       cversion = AO_load_acquire(&(list -> version));
       cptr = (AO_t *)AO_load(&(list -> ptr));
       if (cptr == 0) return 0;
-      next = *cptr;
+      next = *cptr; /* data race is OK here */
     } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(list,
                                         cversion, (AO_t)cptr,
                                         cversion+1, (AO_t)next)));
