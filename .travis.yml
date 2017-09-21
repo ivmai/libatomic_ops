@@ -230,7 +230,11 @@ matrix:
     addons:
       apt:
         packages:
+        - gcc-4.6
         - gcc-multilib
+        sources:
+        - ubuntu-toolchain-r-test
+    compiler: gcc-4.6
     env:
     - CROSS_GCC_VER=4.2.4
     - NOLIBC_ARCH_ABI=avr32-linux
@@ -239,7 +243,11 @@ matrix:
     addons:
       apt:
         packages:
+        - gcc-4.6
         - gcc-multilib
+        sources:
+        - ubuntu-toolchain-r-test
+    compiler: gcc-4.6
     env:
     - CROSS_GCC_VER=4.6.3
     - NOLIBC_ARCH_ABI=cris-linux
@@ -319,7 +327,11 @@ matrix:
     addons:
       apt:
         packages:
+        - gcc-4.6
         - gcc-multilib
+        sources:
+        - ubuntu-toolchain-r-test
+    compiler: gcc-4.6
     env:
     - CROSS_GCC_VER=4.6.3
     - NOLIBC_ARCH_ABI=sh4-linux
@@ -344,7 +356,11 @@ matrix:
     addons:
       apt:
         packages:
+        - gcc-4.6
         - gcc-multilib
+        sources:
+        - ubuntu-toolchain-r-test
+    compiler: gcc-4.6
     env:
     - CROSS_GCC_VER=4.6.2
     - NOLIBC_ARCH_ABI=tilegx-linux
