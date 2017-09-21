@@ -135,6 +135,7 @@
     && !defined(AO_HAVE_XSIZE_fetch_and_add_full)
   AO_INLINE XCTYPE
   AO_XSIZE_fetch_and_add_full(volatile XCTYPE *addr, XCTYPE incr)
+                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -153,6 +154,7 @@
     && !defined(AO_HAVE_XSIZE_fetch_and_add_acquire)
   AO_INLINE XCTYPE
   AO_XSIZE_fetch_and_add_acquire(volatile XCTYPE *addr, XCTYPE incr)
+                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -171,6 +173,7 @@
     && !defined(AO_HAVE_XSIZE_fetch_and_add_release)
   AO_INLINE XCTYPE
   AO_XSIZE_fetch_and_add_release(volatile XCTYPE *addr, XCTYPE incr)
+                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -189,6 +192,7 @@
     && !defined(AO_HAVE_XSIZE_fetch_and_add)
   AO_INLINE XCTYPE
   AO_XSIZE_fetch_and_add(volatile XCTYPE *addr, XCTYPE incr)
+                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -602,6 +606,7 @@
     && !defined(AO_HAVE_XSIZE_and_full)
   AO_INLINE void
   AO_XSIZE_and_full(volatile XCTYPE *addr, XCTYPE value)
+                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -684,6 +689,7 @@
     && !defined(AO_HAVE_XSIZE_or_full)
   AO_INLINE void
   AO_XSIZE_or_full(volatile XCTYPE *addr, XCTYPE value)
+                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -765,6 +771,7 @@
     && !defined(AO_HAVE_XSIZE_xor_full)
   AO_INLINE void
   AO_XSIZE_xor_full(volatile XCTYPE *addr, XCTYPE value)
+                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 

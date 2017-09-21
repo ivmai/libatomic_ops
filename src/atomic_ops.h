@@ -200,6 +200,9 @@
 # if __has_feature(memory_sanitizer)
 #   define AO_MEMORY_SANITIZER
 # endif
+# if __has_feature(thread_sanitizer)
+#   define AO_THREAD_SANITIZER
+# endif
 #endif
 
 #ifndef AO_ATTR_NO_SANITIZE_MEMORY
@@ -210,6 +213,15 @@
 #   define AO_ATTR_NO_SANITIZE_MEMORY /* empty */
 # endif
 #endif /* !AO_ATTR_NO_SANITIZE_MEMORY */
+
+#ifndef AO_ATTR_NO_SANITIZE_THREAD
+# if defined(AO_THREAD_SANITIZER) \
+        && (!defined(__clang__) || AO_CLANG_PREREQ(3, 8))
+#   define AO_ATTR_NO_SANITIZE_THREAD __attribute__((no_sanitize("thread")))
+# else
+#   define AO_ATTR_NO_SANITIZE_THREAD /* empty */
+# endif
+#endif /* !AO_ATTR_NO_SANITIZE_THREAD */
 
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER)
 # define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")

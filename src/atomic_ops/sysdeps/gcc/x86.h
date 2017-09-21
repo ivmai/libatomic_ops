@@ -28,12 +28,13 @@
          || (defined(__x86_64__) && !defined(__ILP32__) \
              && (!(AO_CLANG_PREREQ(3, 5) \
                    || defined(AO_PREFER_BUILTIN_ATOMICS)) \
-                 || defined(AO_ADDRESS_SANITIZER))))
+                 || defined(AO_ADDRESS_SANITIZER) \
+                 || defined(AO_THREAD_SANITIZER))))
     /* As of clang-3.8 i686 (NDK r11c), it requires -latomic for all    */
     /* the double-wide operations.  Same for clang-3.4/x64.  For now,   */
     /* we fall back to the non-intrinsic implementation by default.     */
-    /* As of clang-3.8, double-wide arguments are incorrectly passed to */
-    /* atomic intrinsic operations for x64 target if ASan is enabled.   */
+    /* As of clang-4.0, double-wide arguments are incorrectly passed to */
+    /* atomic intrinsic operations for x64 target if ASan/TSan enabled. */
 #   define AO_SKIPATOMIC_double_compare_and_swap_ANY
 #   define AO_SKIPATOMIC_double_load
 #   define AO_SKIPATOMIC_double_load_acquire
