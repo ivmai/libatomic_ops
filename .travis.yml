@@ -159,6 +159,10 @@ matrix:
   - os: linux
     compiler: clang
     env:
+    - CFLAGS_EXTRA="-fsanitize=thread -fno-omit-frame-pointer"
+  - os: linux
+    compiler: clang
+    env:
     - CONF_OPTIONS="--disable-atomic-intrinsics"
     - CFLAGS_EXTRA="-march=native"
   - os: linux
