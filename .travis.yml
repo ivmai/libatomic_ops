@@ -63,6 +63,11 @@ matrix:
     - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-D AO_GENERALIZE_ASM_BOOL_CAS -D AO_USE_NANOSLEEP -D AO_USE_NO_SIGNALS"
+    - CONF_OPTIONS="--enable-assertions"
+  - os: linux
     addons:
       apt:
         packages:
