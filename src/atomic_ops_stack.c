@@ -143,7 +143,10 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
         }
     }
   assert(i < AO_BL_SIZE);
-  assert(a -> AO_stack_bl[i] == first);
+# ifndef AO_THREAD_SANITIZER
+    assert(a -> AO_stack_bl[i] == first);
+                                /* No actual race with the above CAS.   */
+# endif
   /* First is on the auxiliary black list.  It may be removed by        */
   /* another thread before we get to it, but a new insertion of x       */
   /* cannot be started here.                                            */
@@ -176,7 +179,9 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
     AO_store_release(a->AO_stack_bl+i, 0);
     goto retry;
   }
-  assert(*list != first);
+# ifndef AO_THREAD_SANITIZER
+    assert(*list != first); /* No actual race with the above CAS.       */
+# endif
   /* Since we never insert an entry on the black list, this cannot have */
   /* succeeded unless first remained on the list while we were running. */
   /* Thus its next link cannot have changed out from under us, and we   */
