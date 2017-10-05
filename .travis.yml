@@ -54,10 +54,28 @@ matrix:
       apt:
         packages:
         - gcc-multilib
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-m32 -march=native"
+    - CONF_OPTIONS="--disable-atomic-intrinsics"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
     compiler: gcc
     env:
     - CFLAGS_EXTRA="-m32 -march=native"
     - CONF_OPTIONS="--enable-assertions"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-m32 -march=native"
+    - CONF_OPTIONS="--disable-atomic-intrinsics"
   - os: osx
     env:
     - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
