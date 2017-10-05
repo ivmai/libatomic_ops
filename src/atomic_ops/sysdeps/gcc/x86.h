@@ -292,7 +292,7 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 
       __asm__ __volatile__ ("lock; cmpxchgb %3, %4"
                             : "=a" (fetched_val), "=m" (*addr)
-                            : "a" (old_val), "r" (new_val), "m" (*addr)
+                            : "a" (old_val), "q" (new_val), "m" (*addr)
                             : "memory");
       return fetched_val;
 #   endif
