@@ -5,8 +5,10 @@
 * Do not install documentation if configure --disable-docs (new option)
 * Do not produce .tar.bz2 distribution file (configure)
 * Eliminate '-pedantic is not an option that controls warnings' GCC message
+* Fix 'bad register name %sil' assembler error (GCC-4.4/x86)
 * Use GCC atomic intrinsics for Hexagon (clang 3.9+)
 * Workaround 'unused result' code defects in atomic_ops.c, list_atomic
+* Workaround Thread Sanitizer (TSan) false positive warnings
 Also, includes 7.4.8 changes
 
 
