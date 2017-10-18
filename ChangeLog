@@ -1,5 +1,5 @@
 
-== [7.4.8] (date not set) ==
+== [7.4.8] 2017-10-18 ==
 
 * Fix 'missing select.h', 'undefined sigprocmask' compiler errors (Hexagon)
 * Update README about bugs reporting and new releases notification
