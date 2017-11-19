@@ -46,9 +46,9 @@
 /* to be inserted.                                                      */
 /* Both list headers and link fields contain "perturbed" pointers, i.e. */
 /* pointers with extra bits "or"ed into the low order bits.             */
-void
-AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
-                                   AO_stack_aux *a) AO_ATTR_NO_SANITIZE_THREAD
+AO_ATTR_NO_SANITIZE_THREAD
+void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
+                                        AO_stack_aux *a)
 {
   AO_t x_bits = (AO_t)x;
   AO_t next;
@@ -207,8 +207,8 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
   volatile /* non-static */ AO_t AO_noop_sink;
 #endif
 
+AO_ATTR_NO_SANITIZE_THREAD
 void AO_stack_push_release(AO_stack_t *list, AO_t *element)
-                                                AO_ATTR_NO_SANITIZE_THREAD
 {
     AO_t next;
 
@@ -227,7 +227,8 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 #   endif
 }
 
-AO_t *AO_stack_pop_acquire(AO_stack_t *list) AO_ATTR_NO_SANITIZE_THREAD
+AO_ATTR_NO_SANITIZE_THREAD
+AO_t *AO_stack_pop_acquire(AO_stack_t *list)
 {
 #   ifdef __clang__
       AO_t *volatile cptr;
