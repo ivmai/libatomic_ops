@@ -137,7 +137,8 @@ AO_TS_t lock = AO_TS_INITIALIZER;
 unsigned long locked_counter;
 volatile unsigned long junk = 13;
 
-void do_junk(void) AO_ATTR_NO_SANITIZE_THREAD
+AO_ATTR_NO_SANITIZE_THREAD
+void do_junk(void)
 {
   junk *= 17;
   junk *= 19;

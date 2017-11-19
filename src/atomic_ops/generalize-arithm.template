@@ -133,9 +133,9 @@
 /* corresponding compare_and_swap variants to minimize adding barriers. */
 #if defined(AO_HAVE_XSIZE_compare_and_swap_full) \
     && !defined(AO_HAVE_XSIZE_fetch_and_add_full)
+  AO_ATTR_NO_SANITIZE_THREAD
   AO_INLINE XCTYPE
   AO_XSIZE_fetch_and_add_full(volatile XCTYPE *addr, XCTYPE incr)
-                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -152,9 +152,9 @@
 
 #if defined(AO_HAVE_XSIZE_compare_and_swap_acquire) \
     && !defined(AO_HAVE_XSIZE_fetch_and_add_acquire)
+  AO_ATTR_NO_SANITIZE_THREAD
   AO_INLINE XCTYPE
   AO_XSIZE_fetch_and_add_acquire(volatile XCTYPE *addr, XCTYPE incr)
-                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -171,9 +171,9 @@
 
 #if defined(AO_HAVE_XSIZE_compare_and_swap_release) \
     && !defined(AO_HAVE_XSIZE_fetch_and_add_release)
+  AO_ATTR_NO_SANITIZE_THREAD
   AO_INLINE XCTYPE
   AO_XSIZE_fetch_and_add_release(volatile XCTYPE *addr, XCTYPE incr)
-                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -190,9 +190,9 @@
 
 #if defined(AO_HAVE_XSIZE_compare_and_swap) \
     && !defined(AO_HAVE_XSIZE_fetch_and_add)
+  AO_ATTR_NO_SANITIZE_THREAD
   AO_INLINE XCTYPE
   AO_XSIZE_fetch_and_add(volatile XCTYPE *addr, XCTYPE incr)
-                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -604,9 +604,9 @@
 /* XSIZE_and */
 #if defined(AO_HAVE_XSIZE_compare_and_swap_full) \
     && !defined(AO_HAVE_XSIZE_and_full)
+  AO_ATTR_NO_SANITIZE_THREAD
   AO_INLINE void
   AO_XSIZE_and_full(volatile XCTYPE *addr, XCTYPE value)
-                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -687,9 +687,9 @@
 /* XSIZE_or */
 #if defined(AO_HAVE_XSIZE_compare_and_swap_full) \
     && !defined(AO_HAVE_XSIZE_or_full)
+  AO_ATTR_NO_SANITIZE_THREAD
   AO_INLINE void
   AO_XSIZE_or_full(volatile XCTYPE *addr, XCTYPE value)
-                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
@@ -769,9 +769,9 @@
 /* XSIZE_xor */
 #if defined(AO_HAVE_XSIZE_compare_and_swap_full) \
     && !defined(AO_HAVE_XSIZE_xor_full)
+  AO_ATTR_NO_SANITIZE_THREAD
   AO_INLINE void
   AO_XSIZE_xor_full(volatile XCTYPE *addr, XCTYPE value)
-                                                AO_ATTR_NO_SANITIZE_THREAD
   {
     XCTYPE old;
 
