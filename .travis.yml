@@ -180,7 +180,15 @@ matrix:
     - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
-    compiler: gcc
+    addons:
+      apt:
+        packages:
+        - gcc-5
+        - gcc-5-multilib
+        sources:
+        - ubuntu-toolchain-r-test
+    compiler: gcc-5
+    dist: trusty
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -march=native -fno-omit-frame-pointer"
   - os: osx
