@@ -162,6 +162,24 @@ matrix:
     env:
     - CFLAGS_EXTRA="-fsanitize=address -march=native -fno-common -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
+  - os: linux
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
+    - CONF_OPTIONS="--enable-assertions"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-5
+        - gcc-5-multilib
+        sources:
+        - ubuntu-toolchain-r-test
+    compiler: gcc-5
+    dist: trusty
+    env:
+    - CFLAGS_EXTRA="-fsanitize=address -m32 -march=native -fno-omit-frame-pointer"
+    - LDFLAGS="-fuse-ld=gold"
   - os: osx
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -fno-omit-frame-pointer"
@@ -449,6 +467,7 @@ script:
   fi
 - if [[ "$CROSS_GCC_VER" != "" ]]; then CC=$CROSS_CC; fi
 - make -j $MAKEFILE_TARGET CC=$CC CFLAGS_EXTRA="$CFLAGS_EXTRA"
+        LDFLAGS="$LDFLAGS"
 - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
 - if [[ "$CSA_CHECK" == true ]]; then
     ${CC} --analyze -Xanalyzer -analyzer-output=text -Werror -I src
