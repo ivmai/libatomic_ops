@@ -481,7 +481,7 @@ script:
   fi
 - if [[ "$CROSS_GCC_VER" != "" ]]; then CC=$CROSS_CC; fi
 - if [[ "$COVERITY_SCAN_BRANCH" != 1 ]]; then
-    make -j $MAKEFILE_TARGET CC=$CC CFLAGS_EXTRA="$CFLAGS_EXTRA";
+    make -j $MAKEFILE_TARGET CC=$CC CFLAGS_EXTRA="$CFLAGS_EXTRA" LDFLAGS="-fuse-ld=gold";
   fi
 - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
 - if [[ "$CSA_CHECK" == true ]]; then
