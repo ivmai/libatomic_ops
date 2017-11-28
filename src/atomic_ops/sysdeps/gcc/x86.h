@@ -504,7 +504,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 # define AO_HAVE_double_compare_and_swap_full
 
 #elif defined(AO_CMPXCHG16B_AVAILABLE) \
-      || defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_16)
+      || (defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_16) \
+          && !defined(AO_THREAD_SANITIZER))
 # include "../standard_ao_double_t.h"
 
   /* The Intel and AMD Architecture Programmer Manuals state roughly    */
