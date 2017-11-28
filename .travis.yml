@@ -208,6 +208,11 @@ matrix:
   - os: linux
     compiler: clang
     env:
+    - CFLAGS_EXTRA="-fsanitize=thread -march=native -fno-omit-frame-pointer"
+    - CONF_OPTIONS="--enable-assertions"
+  - os: linux
+    compiler: clang
+    env:
     - CONF_OPTIONS="--disable-atomic-intrinsics"
     - CFLAGS_EXTRA="-march=native"
   - os: linux
