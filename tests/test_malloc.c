@@ -68,19 +68,19 @@ typedef struct list_node {
         int data;
 } ln;
 
-AO_ATTR_NO_SANITIZE_THREAD
 ln *cons(int d, ln *tail)
 {
-  static size_t extra = 0; /* data race in extra is OK */
-  size_t my_extra = extra;
+# ifdef AO_HAVE_fetch_and_add1
+    static volatile AO_t extra = 0;
+    size_t my_extra = (size_t)AO_fetch_and_add1(&extra) % 101;
+# else
+    static size_t extra = 0; /* data race in extra is OK */
+    size_t my_extra = (extra++) % 101;
+# endif
   ln *result;
   int * extras;
   unsigned i;
 
-  if (my_extra > 100)
-    extra = my_extra = 0;
-  else
-    ++extra;
   result = AO_malloc(sizeof(ln) + sizeof(int)*my_extra);
   if (result == 0)
     {
