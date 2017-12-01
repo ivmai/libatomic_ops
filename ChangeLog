@@ -2,10 +2,14 @@
 == [7.6.2] (date not set) ==
 
 * Avoid misleading 'AO_t undefined' error if wrong atomic_ops.h included
+* Define AO_TS_SET to 1 (true) if GCC atomic_test_and_set is used
 * Do not install documentation if configure --disable-docs (new option)
 * Do not produce .tar.bz2 distribution file (configure)
 * Eliminate '-pedantic is not an option that controls warnings' GCC message
+* Eliminate data race in cons() of test_malloc
 * Fix 'bad register name %sil' assembler error (GCC-4.4/x86)
+* Fix 'unknown attribute no_sanitize' compiler warning for GCC
+* Place no_sanitize attributes in a GCC-compliant way
 * Use GCC atomic intrinsics for Hexagon (clang 3.9+)
 * Workaround 'unused result' code defects in atomic_ops.c, list_atomic
 * Workaround Thread Sanitizer (TSan) false positive warnings
