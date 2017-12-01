@@ -172,8 +172,19 @@ matrix:
   - os: linux
     compiler: clang
     env:
-    - CFLAGS_EXTRA="-fsanitize=address -march=native -fno-common -fno-omit-frame-pointer"
+    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - clang-4.0
+        sources:
+        - llvm-toolchain-trusty-4.0
+    compiler: clang-4.0
+    env:
+    - CFLAGS_EXTRA="-fsanitize=address -march=native -fno-common -fno-omit-frame-pointer"
+    - CONF_OPTIONS="--enable-assertions"
   - os: linux
     compiler: gcc
     env:
