@@ -140,6 +140,15 @@ make_list(int m, int n)
   return cons(m, make_list(m+1, n));
 }
 
+void free_list(ln *x)
+{
+  while (x != NULL) {
+    ln *next = x -> next;
+    AO_free(x);
+    x = next;
+  }
+}
+
 /* Reverse list x, and concatenate it to y, deallocating no longer needed */
 /* nodes in x.                                                            */
 ln *
@@ -202,6 +211,7 @@ void * run_one_test(void * arg) {
     x = reverse(x, 0);
   }
   check_list(x, 1, LIST_LENGTH);
+  free_list(x);
   return arg; /* use arg to suppress compiler warning */
 }
 
