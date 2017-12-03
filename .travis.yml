@@ -188,7 +188,7 @@ matrix:
   - os: linux
     compiler: gcc
     env:
-    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
+    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer -D USE_STANDARD_MALLOC"
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
     addons:
