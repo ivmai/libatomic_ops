@@ -258,7 +258,7 @@ matrix:
     env:
     - CSA_CHECK=true
     - MAKEFILE_TARGET=all
-    - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D VERBOSE"
+    - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D HAVE_MMAP -D VERBOSE"
   - os: linux
     addons:
       apt:
