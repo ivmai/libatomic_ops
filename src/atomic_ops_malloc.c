@@ -285,7 +285,7 @@ AO_malloc(size_t sz)
   AO_t *result;
   unsigned log_sz;
 
-  if (sz > CHUNK_SIZE)
+  if (sz > CHUNK_SIZE - sizeof(AO_t))
     return AO_malloc_large(sz);
   log_sz = msb(sz + (sizeof(AO_t) - 1));
   result = AO_stack_pop(AO_free_list+log_sz);
