@@ -218,6 +218,12 @@ void * run_one_test(void * arg) {
   return arg; /* use arg to suppress compiler warning */
 }
 
+#ifndef LOG_MAX_SIZE
+# define LOG_MAX_SIZE 16
+#endif
+
+#define CHUNK_SIZE (1 << LOG_MAX_SIZE)
+
 int main(int argc, char **argv) {
     int nthreads;
 
@@ -236,6 +242,14 @@ int main(int argc, char **argv) {
     printf("Performing %d reversals of %d element lists in %d threads\n",
            N_REVERSALS, LIST_LENGTH, nthreads);
     AO_malloc_enable_mmap();
+
+    /* Test various corner cases. */
+    AO_free(NULL);
+    AO_free(AO_malloc(0));
+#   ifdef HAVE_MMAP
+      AO_free(AO_malloc(CHUNK_SIZE - (sizeof(AO_t)-1))); /* large alloc */
+#   endif
+
     run_parallel(nthreads, run_one_test, dummy_test, "AO_malloc/AO_free");
     return 0;
 }
