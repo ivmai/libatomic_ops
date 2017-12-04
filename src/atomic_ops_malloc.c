@@ -162,6 +162,7 @@ AO_malloc_large(size_t sz)
  /* The header will force us to waste ALIGNMENT bytes, incl. header.    */
  /* Round to multiple of CHUNK_SIZE.                                    */
  sz = SIZET_SAT_ADD(sz, ALIGNMENT + CHUNK_SIZE - 1) & ~(CHUNK_SIZE - 1);
+ assert(sz > LOG_MAX_SIZE);
  result = get_mmaped(sz);
  if (result == 0) return 0;
  result += ALIGNMENT;
@@ -303,6 +304,8 @@ AO_malloc(size_t sz)
   if (sz > CHUNK_SIZE - sizeof(AO_t))
     return AO_malloc_large(sz);
   log_sz = msb(sz + (sizeof(AO_t) - 1));
+  assert(log_sz <= LOG_MAX_SIZE);
+  assert(((size_t)1 << log_sz) >= sz + sizeof(AO_t));
   result = AO_stack_pop(AO_free_list+log_sz);
   while (0 == result) {
     void * chunk = get_chunk();
