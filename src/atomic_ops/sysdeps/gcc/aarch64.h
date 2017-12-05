@@ -38,7 +38,12 @@
 # define AO_SKIPATOMIC_double_load_acquire
 #endif
 
-#if !defined(AO_PREFER_BUILTIN_ATOMICS)
+/* As of gcc-5.4, all built-in load/store and CAS atomics for double    */
+/* word require -latomic (and are not lock-free), so we use the         */
+/* asm-based implementation by default.                                 */
+/* TODO: Update it when GCC has lock-free double-word load/store/CAS.   */
+#if !defined(AO_PREFER_BUILTIN_ATOMICS) && !defined(AO_THREAD_SANITIZER) \
+    && (!defined(__clang__) || defined(AO_AARCH64_ASM_LOAD_STORE_CAS))
 
   AO_INLINE AO_double_t
   AO_double_load(const volatile AO_double_t *addr)
@@ -75,9 +80,6 @@
     return result;
   }
 # define AO_HAVE_double_load_acquire
-
-  /* As of gcc 5.0, all built-in store and CAS atomics for double       */
-  /* word require -latomic, so use asm-based implementation by default. */
 
   AO_INLINE void
   AO_double_store(volatile AO_double_t *addr, AO_double_t value)
@@ -207,7 +209,7 @@
   }
 # define AO_HAVE_double_compare_and_swap_full
 
-#endif /* !AO_PREFER_BUILTIN_ATOMICS */
+#endif /* !AO_PREFER_BUILTIN_ATOMICS && !__clang__ */
 
 /* As of clang-5.0, __GCC_HAVE_SYNC_COMPARE_AND_SWAP_16                 */
 /* macro is still missing (while the double-word CAS is available).     */
