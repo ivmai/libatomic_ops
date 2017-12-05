@@ -204,10 +204,15 @@
 
 #endif /* !AO_PREFER_BUILTIN_ATOMICS */
 
+/* As of clang-5.0, __GCC_HAVE_SYNC_COMPARE_AND_SWAP_16                 */
+/* macro is still missing (while the double-word CAS is available).     */
 #if defined(__clang__)
-  /* As of clang-3.6/arm64, __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n are missing. */
-# define AO_GCC_FORCE_HAVE_CAS
 # define AO_GCC_HAVE_double_SYNC_CAS
+#endif
+
+#if (defined(__clang__) && !AO_CLANG_PREREQ(3, 8)) || defined(__APPLE_CC__)
+  /* __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n macros are missing.     */
+# define AO_GCC_FORCE_HAVE_CAS
 #endif
 
 #include "generic.h"
