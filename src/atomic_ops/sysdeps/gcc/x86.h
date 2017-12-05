@@ -571,6 +571,7 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 # include "generic.h"
 #endif
 
+#undef AO_GCC_FORCE_HAVE_CAS
 #undef AO_SKIPATOMIC_double_compare_and_swap_ANY
 #undef AO_SKIPATOMIC_double_load
 #undef AO_SKIPATOMIC_double_load_acquire

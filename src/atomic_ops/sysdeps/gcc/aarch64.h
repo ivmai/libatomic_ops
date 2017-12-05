@@ -219,5 +219,7 @@
 
 #include "generic.h"
 
+#undef AO_GCC_FORCE_HAVE_CAS
+#undef AO_GCC_HAVE_double_SYNC_CAS
 #undef AO_SKIPATOMIC_double_load
 #undef AO_SKIPATOMIC_double_load_acquire
