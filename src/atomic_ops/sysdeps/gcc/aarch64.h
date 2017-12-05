@@ -17,23 +17,25 @@
 
 #include "../standard_ao_double_t.h"
 
+/* As of clang-5.0 (and gcc-5.4), __atomic_thread_fence is always       */
+/* translated to DMB (which is inefficient for AO_nop_write).           */
+/* TODO: Update it for newer Clang and GCC releases. */
+#if !defined(AO_PREFER_BUILTIN_ATOMICS) && !defined(AO_THREAD_SANITIZER) \
+    && !defined(AO_UNIPROCESSOR)
+  AO_INLINE void
+  AO_nop_write(void)
+  {
+    __asm__ __volatile__("dmb ishst" : : : "memory");
+  }
+# define AO_HAVE_nop_write
+#endif
+
 #ifdef AO_PREFER_BUILTIN_ATOMICS
   /* As of clang 3.6 (and gcc 5.0), load atomics for double word are    */
   /* translated to incorrect code lacking STXP (see the note below).    */
 # define AO_SKIPATOMIC_double_load
 # define AO_SKIPATOMIC_double_load_acquire
 #else
-
-  /* As of clang 3.6 (and gcc 4.9), __atomic_thread_fence is always     */
-  /* translated to DMB (which is inefficient for AO_nop_write).         */
-# ifndef AO_UNIPROCESSOR
-    AO_INLINE void
-    AO_nop_write(void)
-    {
-      __asm__ __volatile__("dmb ishst" : : : "memory");
-    }
-#   define AO_HAVE_nop_write
-# endif
 
   AO_INLINE AO_double_t
   AO_double_load(const volatile AO_double_t *addr)
