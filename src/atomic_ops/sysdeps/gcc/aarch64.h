@@ -30,12 +30,15 @@
 # define AO_HAVE_nop_write
 #endif
 
-#ifdef AO_PREFER_BUILTIN_ATOMICS
-  /* As of clang 3.6 (and gcc 5.0), load atomics for double word are    */
-  /* translated to incorrect code lacking STXP (see the note below).    */
+/* Atomics for loading double word in Clang were translated to an       */
+/* incorrect code lacking STXP (see the note in AO_double_load below).  */
+#if defined(AO_PREFER_BUILTIN_ATOMICS) \
+    && defined(__clang__) && !AO_CLANG_PREREQ(3, 8)
 # define AO_SKIPATOMIC_double_load
 # define AO_SKIPATOMIC_double_load_acquire
-#else
+#endif
+
+#if !defined(AO_PREFER_BUILTIN_ATOMICS)
 
   AO_INLINE AO_double_t
   AO_double_load(const volatile AO_double_t *addr)
