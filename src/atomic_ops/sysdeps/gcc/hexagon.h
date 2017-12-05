@@ -135,3 +135,6 @@ AO_fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
 #define AO_T_IS_INT
 
 #endif /* AO_DISABLE_GCC_ATOMICS */
+
+#undef AO_GCC_FORCE_HAVE_CAS
+#undef AO_GCC_HAVE_double_SYNC_CAS
