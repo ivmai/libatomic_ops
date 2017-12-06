@@ -15,8 +15,6 @@
  *
  */
 
-#include "../standard_ao_double_t.h"
-
 /* As of clang-5.0 (and gcc-5.4), __atomic_thread_fence is always       */
 /* translated to DMB (which is inefficient for AO_nop_write).           */
 /* TODO: Update it for newer Clang and GCC releases. */
@@ -30,13 +28,12 @@
 # define AO_HAVE_nop_write
 #endif
 
-/* Atomics for loading double word in Clang were translated to an       */
-/* incorrect code lacking STXP (see the note in AO_double_load below).  */
-#if defined(AO_PREFER_BUILTIN_ATOMICS) \
-    && defined(__clang__) && !AO_CLANG_PREREQ(3, 8)
-# define AO_SKIPATOMIC_double_load
-# define AO_SKIPATOMIC_double_load_acquire
-#endif
+/* There were some bugs in the older clang releases (related to         */
+/* optimization of functions dealing with __int128 values, supposedly), */
+/* so even asm-based implementation did not work correctly.             */
+#if !defined(__clang__) || AO_CLANG_PREREQ(3, 9)
+
+# include "../standard_ao_double_t.h"
 
 /* As of gcc-5.4, all built-in load/store and CAS atomics for double    */
 /* word require -latomic (and are not lock-free), so we use the         */
@@ -218,6 +215,8 @@
 /* macro is still missing (while the double-word CAS is available).     */
 # define AO_GCC_HAVE_double_SYNC_CAS
 
+#endif /* !__clang__ || AO_CLANG_PREREQ(3, 9) */
+
 #if (defined(__clang__) && !AO_CLANG_PREREQ(3, 8)) || defined(__APPLE_CC__)
   /* __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n macros are missing.     */
 # define AO_GCC_FORCE_HAVE_CAS
@@ -227,5 +226,3 @@
 
 #undef AO_GCC_FORCE_HAVE_CAS
 #undef AO_GCC_HAVE_double_SYNC_CAS
-#undef AO_SKIPATOMIC_double_load
-#undef AO_SKIPATOMIC_double_load_acquire
