@@ -21,10 +21,6 @@
 #include <stdio.h>
 #include "atomic_ops_malloc.h"
 
-#ifndef MAX_NTHREADS
-# define MAX_NTHREADS 100
-#endif
-
 #ifndef DEFAULT_NTHREADS
 # ifdef HAVE_MMAP
 #   define DEFAULT_NTHREADS 10
@@ -229,6 +225,7 @@ int main(int argc, char **argv) {
 
     if (1 == argc) {
       nthreads = DEFAULT_NTHREADS;
+      assert(nthreads <= MAX_NTHREADS);
     } else if (2 == argc) {
       nthreads = atoi(argv[1]);
       if (nthreads < 1 || nthreads > MAX_NTHREADS) {
