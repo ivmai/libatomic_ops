@@ -52,7 +52,7 @@
 #endif
 
 #ifndef DEFAULT_NTHREADS
-# define DEFAULT_NTHREADS 4 /* must be <= MAX_NTHREADS */
+# define DEFAULT_NTHREADS 16 /* must be <= MAX_NTHREADS */
 #endif
 
 #ifdef NO_TIMES
