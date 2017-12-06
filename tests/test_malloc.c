@@ -23,7 +23,7 @@
 
 #ifndef DEFAULT_NTHREADS
 # ifdef HAVE_MMAP
-#   define DEFAULT_NTHREADS 10
+#   define DEFAULT_NTHREADS 16
 # else
 #   define DEFAULT_NTHREADS 3
 # endif
