@@ -336,11 +336,7 @@ AO_malloc(size_t sz)
     add_chunk_as(chunk, log_sz);
     result = AO_stack_pop(AO_free_list+log_sz);
   }
-# ifdef AO_THREAD_SANITIZER
-    AO_store(result, log_sz);
-# else
-    *result = log_sz;
-# endif
+  *result = log_sz;
 # ifdef AO_TRACE_MALLOC
     fprintf(stderr, "%p: AO_malloc(%lu) = %p\n",
             (void *)pthread_self(), (unsigned long)sz, (void *)(result + 1));
@@ -359,11 +355,7 @@ AO_free(void *p)
     return;
 
   base = (AO_t *)p - 1;
-# ifdef AO_THREAD_SANITIZER
-    log_sz = (int)AO_load(base);
-# else
-    log_sz = (int)(*base);
-# endif
+  log_sz = (int)(*base);
 # ifdef AO_TRACE_MALLOC
     fprintf(stderr, "%p: AO_free(%p sz:%lu)\n", (void *)pthread_self(), p,
             log_sz > LOG_MAX_SIZE ? (unsigned)log_sz : 1UL << log_sz);
