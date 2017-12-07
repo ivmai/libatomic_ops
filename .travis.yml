@@ -95,7 +95,7 @@ matrix:
     compiler: clang-4.0
     dist: trusty
     env:
-    - CFLAGS_EXTRA="-O3 -march=native -std=c11"
+    - CFLAGS_EXTRA="-O3 -march=native -std=c11 -D DEFAULT_NTHREADS=32"
   - os: linux
     addons:
       apt:
