@@ -22,6 +22,14 @@
 #define AO_REQUIRE_CAS
 #include "atomic_ops_stack.h"
 
+/* The function call must be a part of a do-while loop with a CAS       */
+/* designating the condition of the loop (see the use cases below).     */
+AO_ATTR_NO_SANITIZE_THREAD
+AO_INLINE void AO_copy_before_cas(AO_t *pdest, AO_t *psrc)
+{
+  *pdest = *psrc;
+}
+
 #ifdef AO_USE_ALMOST_LOCK_FREE
 
   void AO_pause(int); /* defined in atomic_ops.c */
@@ -46,7 +54,6 @@
 /* to be inserted.                                                      */
 /* Both list headers and link fields contain "perturbed" pointers, i.e. */
 /* pointers with extra bits "or"ed into the low order bits.             */
-AO_ATTR_NO_SANITIZE_THREAD
 void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
                                         AO_stack_aux *a)
 {
@@ -94,7 +101,7 @@ void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
   do
     {
       next = AO_load(list);
-      *x = next; /* data race is OK here */
+      AO_copy_before_cas(x, &next);
     }
   while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(list, next, x_bits)));
 }
@@ -207,14 +214,13 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
   volatile /* non-static */ AO_t AO_noop_sink;
 #endif
 
-AO_ATTR_NO_SANITIZE_THREAD
 void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 {
     AO_t next;
 
     do {
       next = AO_load(&(list -> ptr));
-      *element = next; /* data race is OK here */
+      AO_copy_before_cas(element, &next);
     } while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(&(list -> ptr),
                                                       next, (AO_t)element)));
     /* This uses a narrow CAS here, an old optimization suggested       */
@@ -227,7 +233,6 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 #   endif
 }
 
-AO_ATTR_NO_SANITIZE_THREAD
 AO_t *AO_stack_pop_acquire(AO_stack_t *list)
 {
 #   ifdef __clang__
@@ -244,8 +249,9 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
       /* Version must be loaded first.  */
       cversion = AO_load_acquire(&(list -> version));
       cptr = (AO_t *)AO_load(&(list -> ptr));
-      if (cptr == 0) return 0;
-      next = *cptr; /* data race is OK here */
+      if (NULL == cptr)
+        return NULL;
+      AO_copy_before_cas(&next, cptr);
     } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(list,
                                         cversion, (AO_t)cptr,
                                         cversion+1, (AO_t)next)));
@@ -274,7 +280,7 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
       /* Again version must be loaded first, for different reason.      */
       version = AO_load_acquire(&(list -> version));
       next_ptr = AO_load(&(list -> ptr));
-      *element = next_ptr;
+      AO_copy_before_cas(element, &next_ptr);
     } while (!AO_compare_and_swap_double_release(
                            list, version,
                            version+1, (AO_t) element));
@@ -289,13 +295,14 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
     do {
       cversion = AO_load_acquire(&(list -> version));
       cptr = (AO_t *)AO_load(&(list -> ptr));
-      if (cptr == 0) return 0;
-      next = *cptr;
-    } while (!AO_compare_double_and_swap_double_release
-                    (list, cversion, (AO_t) cptr, cversion+1, next));
+      if (NULL == cptr)
+        return NULL;
+      AO_copy_before_cas(&next, cptr);
+    } while (!AO_compare_double_and_swap_double_release(list,
+                                                cversion, (AO_t)cptr,
+                                                cversion+1, next));
     return cptr;
 }
-
 
 #endif /* AO_HAVE_compare_and_swap_double */
 
