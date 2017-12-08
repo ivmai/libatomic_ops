@@ -25,7 +25,7 @@
 /* The function call must be a part of a do-while loop with a CAS       */
 /* designating the condition of the loop (see the use cases below).     */
 AO_ATTR_NO_SANITIZE_THREAD
-AO_INLINE void AO_copy_before_cas(AO_t *pdest, AO_t *psrc)
+static void AO_copy_before_cas(AO_t *pdest, AO_t *psrc)
 {
   *pdest = *psrc;
 }
