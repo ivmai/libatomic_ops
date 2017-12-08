@@ -27,10 +27,11 @@
 #   define AO_GCC_FORCE_HAVE_CAS
 
 #   ifdef __x86_64__
-      /* As of Apple clang-600 (based on LLVM 3.5svn), it has some bug  */
-      /* in the double-wide CAS implementation for x64 target.          */
-      /* TODO: Refine for newer Apple clang releases. */
+#     if !AO_CLANG_PREREQ(9, 0) /* < Apple clang-900 */
+        /* Older Apple clang (e.g., clang-600 based on LLVM 3.5svn) had */
+        /* some bug in the double word CAS implementation for x64.      */
 #       define AO_SKIPATOMIC_double_compare_and_swap_ANY
+#     endif
 
 #   elif defined(__MACH__)
       /* OS X 10.8 lacks __atomic_load/store symbols for arch i386      */
@@ -46,21 +47,22 @@
 
 # elif defined(__clang__)
 #   if !defined(__x86_64__)
-#     if !defined(AO_PREFER_BUILTIN_ATOMICS) && !defined(__CYGWIN__)
-        /* As of clang-3.8/i686 (NDK r11c), it requires -latomic for    */
-        /* all the double-wide operations.  For now, we fall back to    */
-        /* the non-intrinsic implementation by default.                 */
-        /* TODO: Refine for newer clang releases. */
+#     if !defined(AO_PREFER_BUILTIN_ATOMICS) && !defined(__CYGWIN__) \
+         && !AO_CLANG_PREREQ(5, 0)
+        /* At least clang-3.8/i686 (from NDK r11c) required to specify  */
+        /* -latomic in case of a double-word atomic operation use.      */
 #       define AO_SKIPATOMIC_double_compare_and_swap_ANY
 #       define AO_SKIPATOMIC_DOUBLE_LOAD_STORE_ANY
 #     endif /* !AO_PREFER_BUILTIN_ATOMICS */
 
 #   elif !defined(__ILP32__)
 #     if (!AO_CLANG_PREREQ(3, 5) && !defined(AO_PREFER_BUILTIN_ATOMICS)) \
-         || defined(AO_ADDRESS_SANITIZER) || defined(AO_THREAD_SANITIZER)
-        /* Same as above but for clang-3.4/x64.  As of clang-4.0,       */
-        /* double-wide arguments are incorrectly passed to atomic       */
-        /* intrinsic operations for x64 target if ASan/TSan enabled.    */
+         || (!AO_CLANG_PREREQ(4, 0) && defined(AO_ADDRESS_SANITIZER)) \
+         || defined(AO_THREAD_SANITIZER)
+        /* clang-3.4/x64 required -latomic.  clang-3.9/x64 seems to     */
+        /* pass double-wide arguments to atomic operations incorrectly  */
+        /* in case of ASan/TSan.                                        */
+        /* TODO: As of clang-4.0, lock-free test_stack fails if TSan.   */
 #       define AO_SKIPATOMIC_double_compare_and_swap_ANY
 #       define AO_SKIPATOMIC_DOUBLE_LOAD_STORE_ANY
 #     endif
