@@ -235,7 +235,7 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 
 AO_t *AO_stack_pop_acquire(AO_stack_t *list)
 {
-#   ifdef __clang__
+#   if defined(__clang__) && !AO_CLANG_PREREQ(3, 5)
       AO_t *volatile cptr;
                         /* Use volatile to workaround a bug in          */
                         /* clang-1.1/x86 causing test_stack failure.    */
