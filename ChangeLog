@@ -1,3 +1,14 @@
+2017-12-04  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_malloc.c (AO_malloc): Call AO_malloc_large() also for
+	size values in range CHUNK_SIZE-sizeof(AO_t)+1 .. CHUNK_SIZE.
+
+2017-06-09  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops.c [__hexagon__ && !AO_USE_NO_SIGNALS
+	&& !AO_USE_NANOSLEEP] (AO_USE_NO_SIGNALS, AO_USE_NANOSLEEP): Define;
+	add comment.
+
 [7.2h]
 
 2017-05-17  Ivan Maidanski <ivmai@mail.ru>
