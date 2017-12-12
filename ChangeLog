@@ -84,6 +84,12 @@ Also, includes 7.4.8 changes
 Also, includes 7.4.6 changes
 
 
+== [7.4.10] (not released yet) ==
+
+* Fix AO_malloc for sizes near CHUNK_SIZE
+* Fix memory leak in test_malloc
+
+
 == [7.4.8] 2017-10-18 ==
 
 * Fix 'missing select.h', 'undefined sigprocmask' compiler errors (Hexagon)
@@ -278,6 +284,12 @@ Also, includes 7.2e changes
 * Turn off AO primitives inlining if AO_NO_INLINE defined
 * Use __builtin_expect in CAS failure loop condition checks (GCC only)
 Also, includes 7.2 changes
+
+
+== [7.2i] (not released yet) ==
+
+* Fix 'missing select.h', 'undefined sigprocmask' compiler errors (Hexagon)
+* Fix AO_malloc for sizes near CHUNK_SIZE
 
 
 == [7.2h] 2017-05-17 ==
