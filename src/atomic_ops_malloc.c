@@ -15,6 +15,10 @@
 # include "config.h"
 #endif
 
+#ifdef DONT_USE_MMAP /* for testing */
+# undef HAVE_MMAP
+#endif
+
 #define AO_REQUIRE_CAS
 #include "atomic_ops_malloc.h"
 

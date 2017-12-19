@@ -15,6 +15,10 @@
 # include "config.h"
 #endif
 
+#ifdef DONT_USE_MMAP
+# undef HAVE_MMAP
+#endif
+
 #include "run_parallel.h"
 
 #include <stdlib.h>
