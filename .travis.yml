@@ -215,7 +215,7 @@ matrix:
   - os: linux
     compiler: clang
     env:
-    - CFLAGS_EXTRA="-fsanitize=thread -fno-omit-frame-pointer"
+    - CFLAGS_EXTRA="-fsanitize=thread -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
   - os: linux
     compiler: clang
     env:
