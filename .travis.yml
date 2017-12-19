@@ -29,7 +29,7 @@ matrix:
     - CONF_OPTIONS="--enable-assertions"
   - os: osx
     env:
-    - CFLAGS_EXTRA="-O3 -march=native"
+    - CFLAGS_EXTRA="-O3 -march=native -D AO_USE_ALMOST_LOCK_FREE"
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
     compiler: clang
@@ -65,7 +65,7 @@ matrix:
         - gcc-multilib
     compiler: gcc
     env:
-    - CFLAGS_EXTRA="-m32 -march=native"
+    - CFLAGS_EXTRA="-m32 -march=native -D AO_USE_ALMOST_LOCK_FREE"
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
     addons:
@@ -160,7 +160,7 @@ matrix:
   - os: linux
     compiler: clang
     env:
-    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
+    - CFLAGS_EXTRA="-fsanitize=address -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
   - os: linux
     addons:
@@ -176,7 +176,7 @@ matrix:
   - os: linux
     compiler: gcc
     env:
-    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer -D USE_STANDARD_MALLOC"
+    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer -D AO_USE_ALMOST_LOCK_FREE -D USE_STANDARD_MALLOC"
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
     addons:
@@ -203,7 +203,7 @@ matrix:
   - os: linux
     compiler: clang
     env:
-    - CFLAGS_EXTRA="-fsanitize=thread -fno-omit-frame-pointer"
+    - CFLAGS_EXTRA="-fsanitize=thread -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
   - os: linux
     compiler: clang
     env:
