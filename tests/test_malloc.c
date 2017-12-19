@@ -247,7 +247,9 @@ int main(int argc, char **argv) {
     /* Test various corner cases. */
     AO_free(NULL);
     AO_free(AO_malloc(0));
-    AO_free(AO_malloc(CHUNK_SIZE - (sizeof(AO_t)-1))); /* large alloc */
+#   ifdef HAVE_MMAP
+      AO_free(AO_malloc(CHUNK_SIZE - (sizeof(AO_t)-1))); /* large alloc */
+#   endif
 
     run_parallel(nthreads, run_one_test, dummy_test, "AO_malloc/AO_free");
     return 0;
