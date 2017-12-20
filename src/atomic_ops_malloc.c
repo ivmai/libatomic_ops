@@ -31,6 +31,19 @@
 # include <pthread.h>
 #endif
 
+#if defined(AO_ADDRESS_SANITIZER) && !defined(AO_NO_MALLOC_POISON)
+  /* #include "sanitizer/asan_interface.h" */
+  void __asan_poison_memory_region(void *, size_t);
+  void __asan_unpoison_memory_region(void *, size_t);
+# define ASAN_POISON_MEMORY_REGION(addr, size) \
+                __asan_poison_memory_region(addr, size)
+# define ASAN_UNPOISON_MEMORY_REGION(addr, size) \
+                __asan_unpoison_memory_region(addr, size)
+#else
+# define ASAN_POISON_MEMORY_REGION(addr, size) (void)0
+# define ASAN_UNPOISON_MEMORY_REGION(addr, size) (void)0
+#endif /* !AO_ADDRESS_SANITIZER */
+
 #if (defined(_WIN32_WCE) || defined(__MINGW32CE__)) && !defined(AO_HAVE_abort)
 # define abort() _exit(-1) /* there is no abort() in WinCE */
 #endif
@@ -244,6 +257,8 @@ static void add_chunk_as(void * chunk, unsigned log_sz)
   assert (CHUNK_SIZE >= sz);
   limit = (size_t)CHUNK_SIZE - sz;
   for (ofs = ALIGNMENT - sizeof(AO_t); ofs <= limit; ofs += sz) {
+    ASAN_POISON_MEMORY_REGION((char *)chunk + ofs + sizeof(AO_t),
+                              sz - sizeof(AO_t));
     AO_stack_push(&AO_free_list[log_sz], (AO_t *)((char *)chunk + ofs));
   }
 }
@@ -331,6 +346,7 @@ AO_malloc(size_t sz)
     fprintf(stderr, "%p: AO_malloc(%lu) = %p\n",
             (void *)pthread_self(), (unsigned long)sz, (void *)(result + 1));
 # endif
+  ASAN_UNPOISON_MEMORY_REGION(result + 1, sz);
   return result + 1;
 }
 
@@ -352,6 +368,7 @@ AO_free(void *p)
   if (AO_EXPECT_FALSE(log_sz > LOG_MAX_SIZE)) {
     AO_free_large(p);
   } else {
+    ASAN_POISON_MEMORY_REGION(base + 1, ((size_t)1 << log_sz) - sizeof(AO_t));
     AO_stack_push(AO_free_list + log_sz, base);
   }
 }
