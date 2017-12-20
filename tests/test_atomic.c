@@ -30,7 +30,7 @@
 
 #include "test_atomic_include.h"
 
-#ifdef AO_USE_PTHREAD_DEFS
+#if defined(AO_USE_PTHREAD_DEFS) || defined(AO_PREFER_GENERALIZED)
 # define NITERS 100000
 #else
 # define NITERS 10000000
