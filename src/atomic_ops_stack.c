@@ -201,7 +201,9 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
 #define ptr AO_val2
 #define version AO_val1
 
-#if defined(AO_HAVE_compare_double_and_swap_double)
+#if defined(AO_HAVE_compare_double_and_swap_double) \
+    && !(defined(AO_STACK_PREFER_CAS_DOUBLE) \
+         && defined(AO_HAVE_compare_and_swap_double))
 
 #ifdef LINT2
   volatile /* non-static */ AO_t AO_noop_sink;
@@ -256,10 +258,7 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
 #elif defined(AO_HAVE_compare_and_swap_double)
 
 /* Needed for future IA64 processors.  No current clients? */
-
-#if !defined(CPPCHECK)
-# error Untested!  Probably does not work.
-#endif
+/* TODO: Not tested thoroughly. */
 
 /* We have a wide CAS, but only does an AO_t-wide comparison.   */
 /* We can't use the Treiber optimization, since we only check   */
