@@ -100,7 +100,7 @@ matrix:
   - os: linux
     compiler: clang
     env:
-    - CFLAGS_EXTRA="-D AO_USE_PTHREAD_DEFS"
+    - CFLAGS_EXTRA="-D AO_STACK_PREFER_CAS_DOUBLE -D AO_USE_PTHREAD_DEFS"
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
     addons:
