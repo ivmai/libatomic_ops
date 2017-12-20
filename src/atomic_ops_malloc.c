@@ -336,12 +336,7 @@ AO_malloc(size_t sz)
     add_chunk_as(chunk, log_sz);
     result = AO_stack_pop(AO_free_list+log_sz);
   }
-# if defined(AO_THREAD_SANITIZER) && defined(AO_USE_ALMOST_LOCK_FREE)
-    /* A data race with AO_stack_pop() called above is a false positive. */
-    AO_store(result, log_sz);
-# else
-    *result = log_sz;
-# endif
+  *result = log_sz;
 # ifdef AO_TRACE_MALLOC
     fprintf(stderr, "%p: AO_malloc(%lu) = %p\n",
             (void *)pthread_self(), (unsigned long)sz, (void *)(result + 1));

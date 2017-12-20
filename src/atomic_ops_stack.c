@@ -122,6 +122,21 @@ void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
 # define PRECHECK(a)
 #endif
 
+/* This function is used before CAS in the below AO_stack_pop() and the */
+/* data race (reported by TSan) is OK because it results in a retry.    */
+#ifdef AO_THREAD_SANITIZER
+  AO_ATTR_NO_SANITIZE_THREAD
+  static AO_t AO_load_next(volatile AO_t *first_ptr)
+  {
+    /* Assuming an architecture on which loads of word type are atomic. */
+    /* AO_load cannot be used here because it cannot be instructed to   */
+    /* suppress the warning about the race.                             */
+    return *first_ptr;
+  }
+#else
+# define AO_load_next AO_load
+#endif
+
 AO_t *
 AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
 {
@@ -176,7 +191,7 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
     goto retry;
   }
   first_ptr = AO_REAL_NEXT_PTR(first);
-  next = AO_load(first_ptr);
+  next = AO_load_next(first_ptr);
 # if defined(__alpha__) && (__GNUC__ == 4)
     if (!AO_compare_and_swap_release(list, first, next))
 # else
