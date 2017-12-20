@@ -103,6 +103,11 @@ matrix:
     - CFLAGS_EXTRA="-D AO_STACK_PREFER_CAS_DOUBLE -D AO_USE_PTHREAD_DEFS"
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-D DONT_USE_MMAP -O3"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+  - os: linux
     addons:
       apt:
         packages:
