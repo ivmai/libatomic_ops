@@ -172,6 +172,8 @@ void * run_one_test(void * arg) {
   int i;
   char *p = AO_malloc(LARGE_OBJ_SIZE);
   char *q;
+  char a = 'a' + ((int)((AO_PTRDIFF_T)arg) * 2) % ('z' - 'a' + 1);
+  char b = a + 1;
 
   if (0 == p) {
 #   ifdef HAVE_MMAP
@@ -182,7 +184,7 @@ void * run_one_test(void * arg) {
               LARGE_OBJ_SIZE);
 #   endif
   } else {
-    p[0] = p[LARGE_OBJ_SIZE/2] = p[LARGE_OBJ_SIZE-1] = 'a';
+    p[0] = p[LARGE_OBJ_SIZE/2] = p[LARGE_OBJ_SIZE-1] = a;
     q = AO_malloc(LARGE_OBJ_SIZE);
     if (q == 0)
       {
@@ -190,15 +192,13 @@ void * run_one_test(void * arg) {
           /* Normal for more than about 10 threads without mmap? */
         exit(2);
       }
-    q[0] = q[LARGE_OBJ_SIZE/2] = q[LARGE_OBJ_SIZE-1] = 'b';
-    if (p[0] != 'a' || p[LARGE_OBJ_SIZE/2] != 'a'
-        || p[LARGE_OBJ_SIZE-1] != 'a') {
+    q[0] = q[LARGE_OBJ_SIZE/2] = q[LARGE_OBJ_SIZE-1] = b;
+    if (p[0] != a || p[LARGE_OBJ_SIZE/2] != a || p[LARGE_OBJ_SIZE-1] != a) {
       fprintf(stderr, "First large allocation smashed\n");
       abort();
     }
     AO_free(p);
-    if (q[0] != 'b' || q[LARGE_OBJ_SIZE/2] != 'b'
-        || q[LARGE_OBJ_SIZE-1] != 'b') {
+    if (q[0] != b || q[LARGE_OBJ_SIZE/2] != b || q[LARGE_OBJ_SIZE-1] != b) {
       fprintf(stderr, "Second large allocation smashed\n");
       abort();
     }
@@ -215,7 +215,7 @@ void * run_one_test(void * arg) {
   }
   check_list(x, 1, LIST_LENGTH);
   free_list(x);
-  return arg; /* use arg to suppress compiler warning */
+  return NULL;
 }
 
 #ifndef LOG_MAX_SIZE
