@@ -22,13 +22,17 @@
 #define AO_REQUIRE_CAS
 #include "atomic_ops_stack.h"
 
-/* The function call must be a part of a do-while loop with a CAS       */
+/* This function call must be a part of a do-while loop with a CAS      */
 /* designating the condition of the loop (see the use cases below).     */
-AO_ATTR_NO_SANITIZE_THREAD
-static void AO_copy_before_cas(AO_t *pdest, AO_t *psrc)
-{
-  *pdest = *psrc;
-}
+#ifdef AO_THREAD_SANITIZER
+  AO_ATTR_NO_SANITIZE_THREAD
+  static void store_before_cas(AO_t *addr, AO_t value)
+  {
+    *addr = value;
+  }
+#else
+# define store_before_cas(addr, value) (void)(*(addr) = (value))
+#endif
 
 #ifdef AO_USE_ALMOST_LOCK_FREE
 
@@ -101,7 +105,7 @@ void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
   do
     {
       next = AO_load(list);
-      AO_copy_before_cas(x, &next);
+      store_before_cas(x, next);
     }
   while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(list, next, x_bits)));
 }
@@ -219,6 +223,25 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
 
 #else /* ! USE_ALMOST_LOCK_FREE */
 
+/* The functionality is the same as of AO_load_next but the atomicity   */
+/* is not needed.  The usage is similar to that of store_before_cas.    */
+#ifdef AO_THREAD_SANITIZER
+  /* TODO: If compiled by Clang (as of clang-4.0) with -O3 flag,        */
+  /* no_sanitize attribute is ignored unless the argument is volatile.  */
+# if defined(__clang__)
+#   define LOAD_BEFORE_CAS_VOLATILE volatile
+# else
+#   define LOAD_BEFORE_CAS_VOLATILE /* empty */
+# endif
+  AO_ATTR_NO_SANITIZE_THREAD
+  static AO_t load_before_cas(const LOAD_BEFORE_CAS_VOLATILE AO_t *addr)
+  {
+    return *addr;
+  }
+#else
+# define load_before_cas(addr) (*(addr))
+#endif
+
 /* Better names for fields in AO_stack_t */
 #define ptr AO_val2
 #define version AO_val1
@@ -237,7 +260,7 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 
     do {
       next = AO_load(&(list -> ptr));
-      AO_copy_before_cas(element, &next);
+      store_before_cas(element, next);
     } while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(&(list -> ptr),
                                                       next, (AO_t)element)));
     /* This uses a narrow CAS here, an old optimization suggested       */
@@ -268,7 +291,7 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
       cptr = (AO_t *)AO_load(&(list -> ptr));
       if (NULL == cptr)
         return NULL;
-      AO_copy_before_cas(&next, cptr);
+      next = load_before_cas((AO_t *)cptr);
     } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(list,
                                         cversion, (AO_t)cptr,
                                         cversion+1, (AO_t)next)));
@@ -294,7 +317,7 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
       /* Again version must be loaded first, for different reason.      */
       version = AO_load_acquire(&(list -> version));
       next_ptr = AO_load(&(list -> ptr));
-      AO_copy_before_cas(element, &next_ptr);
+      store_before_cas(element, next_ptr);
     } while (!AO_compare_and_swap_double_release(
                            list, version,
                            version+1, (AO_t) element));
@@ -311,7 +334,7 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
       cptr = (AO_t *)AO_load(&(list -> ptr));
       if (NULL == cptr)
         return NULL;
-      AO_copy_before_cas(&next, cptr);
+      next = load_before_cas(cptr);
     } while (!AO_compare_double_and_swap_double_release(list,
                                                 cversion, (AO_t)cptr,
                                                 cversion+1, next));
