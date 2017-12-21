@@ -1,3 +1,8 @@
+2017-12-19  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_stack.h [AO_USE_ALMOST_LOCK_FREE] (AO_REAL_NEXT_PTR):
+	Fix typo ("either NULL") in the comment.
+
 2017-12-04  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops_malloc.c (AO_malloc): Call AO_malloc_large() also for
