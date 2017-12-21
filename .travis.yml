@@ -15,7 +15,7 @@ matrix:
     dist: trusty
     env:
     - MAKEFILE_TARGET=distcheck
-    - AO_REAL_VERSION=7.2h
+    - AO_REAL_VERSION=7.2i
   - os: linux
     env:
     - MAKEFILE_TARGET=dist
