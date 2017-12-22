@@ -88,6 +88,7 @@ Also, includes 7.4.6 changes
 
 * Fix AO_malloc for sizes near CHUNK_SIZE
 * Fix memory leak in test_malloc
+* Fix typo in AO_REAL_NEXT_PTR comment
 
 
 == [7.4.8] 2017-10-18 ==
@@ -286,10 +287,11 @@ Also, includes 7.2e changes
 Also, includes 7.2 changes
 
 
-== [7.2i] (not released yet) ==
+== [7.2i] 2017-12-21 ==
 
 * Fix 'missing select.h', 'undefined sigprocmask' compiler errors (Hexagon)
 * Fix AO_malloc for sizes near CHUNK_SIZE
+* Fix typo in AO_REAL_NEXT_PTR comment
 
 
 == [7.2h] 2017-05-17 ==
