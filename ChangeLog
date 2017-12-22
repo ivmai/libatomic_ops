@@ -1,5 +1,5 @@
 
-== [7.4.10] (not released yet) ==
+== [7.4.10] 2017-12-22 ==
 
 * Fix AO_malloc for sizes near CHUNK_SIZE
 * Fix memory leak in test_malloc
