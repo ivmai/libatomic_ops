@@ -8,7 +8,6 @@ matrix:
     compiler: gcc
   - os: osx
   - os: linux
-    dist: trusty
     env:
     - MAKEFILE_TARGET=distcheck
     - AUTOMAKE_VER=1.15
@@ -33,7 +32,6 @@ matrix:
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
     compiler: clang
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-march=native -std=c11"
   - os: linux
@@ -81,7 +79,6 @@ matrix:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-5
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
@@ -91,7 +88,6 @@ matrix:
         packages:
         - musl-tools
     compiler: musl-gcc
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-march=native"
     - CONF_OPTIONS="--enable-assertions"
@@ -101,7 +97,6 @@ matrix:
         packages:
         - gcc-mingw-w64
     compiler: x86_64-w64-mingw32-gcc
-    dist: trusty
     env:
     - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared"
     - MAKEFILE_TARGET=all
