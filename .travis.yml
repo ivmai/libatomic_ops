@@ -8,7 +8,6 @@ matrix:
     compiler: gcc
   - os: osx
   - os: linux
-    dist: trusty
     env:
     - MAKEFILE_TARGET=distcheck
     - AUTOMAKE_VER=1.15
@@ -33,7 +32,6 @@ matrix:
     - CONF_OPTIONS="--enable-assertions"
   - os: linux
     compiler: clang
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-march=native -std=c11"
   - os: linux
@@ -103,7 +101,6 @@ matrix:
         sources:
         - llvm-toolchain-trusty-4.0
     compiler: clang-4.0
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-O3 -march=native -std=c11 -D AO_BL_SIZE=4 -D DEFAULT_NTHREADS=32"
   - os: linux
@@ -115,7 +112,6 @@ matrix:
         sources:
         - llvm-toolchain-trusty-4.0
     compiler: clang-4.0
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-m32 -O3 -march=native"
   - os: linux
@@ -126,7 +122,6 @@ matrix:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-5
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - os: linux
@@ -138,7 +133,6 @@ matrix:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-5
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-m32 -O3 -march=native"
   - os: linux
@@ -150,7 +144,6 @@ matrix:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-5
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
@@ -163,7 +156,6 @@ matrix:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-5
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-mx32 -march=native"
     - CONF_OPTIONS="--disable-atomic-intrinsics --disable-docs"
@@ -197,7 +189,6 @@ matrix:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-5
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -march=native -fno-omit-frame-pointer"
     - LDFLAGS="-fuse-ld=gold"
@@ -252,7 +243,6 @@ matrix:
         sources:
         - llvm-toolchain-trusty-4.0
     compiler: clang-4.0
-    dist: trusty
     env:
     - CSA_CHECK=true
     - MAKEFILE_TARGET=all
@@ -263,7 +253,6 @@ matrix:
         packages:
         - musl-tools
     compiler: musl-gcc
-    dist: trusty
     env:
     - CFLAGS_EXTRA="-march=native"
     - CONF_OPTIONS="--enable-assertions"
@@ -273,7 +262,6 @@ matrix:
         packages:
         - gcc-mingw-w64
     compiler: x86_64-w64-mingw32-gcc
-    dist: trusty
     env:
     - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared"
     - MAKEFILE_TARGET=all
