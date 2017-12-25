@@ -12,7 +12,6 @@ matrix:
     - WORKAROUND_ACLOCAL_MISSING=true
   - os: osx
   - os: linux
-    dist: trusty
     env:
     - MAKEFILE_TARGET=distcheck
     - AO_REAL_VERSION=7.2i
@@ -26,7 +25,6 @@ matrix:
         packages:
         - musl-tools
     compiler: musl-gcc
-    dist: trusty
 
 before_install:
 - if [[ "$MAKEFILE_TARGET" == "dist"* ]]; then
