@@ -1,5 +1,5 @@
 
-== [7.6.2] (date not set) ==
+== [7.6.2] 2017-12-24 ==
 
 * Allow to alter DEFAULT/MAX_NTHREADS values in test_malloc/stack
 * Allow to select almost-non-blocking stack implementation explicitly
