@@ -15,7 +15,8 @@
 # include "config.h"
 #endif
 
-#if defined(AO_NO_PTHREADS) && defined(AO_USE_PTHREAD_DEFS)
+#if (defined(AO_NO_PTHREADS) || defined(__MINGW32__)) \
+    && defined(AO_USE_PTHREAD_DEFS)
 # include <stdio.h>
 
   int main(void)
