@@ -272,6 +272,15 @@ matrix:
     addons:
       apt:
         packages:
+        - gcc-mingw-w64
+    compiler: i686-w64-mingw32-gcc
+    env:
+    - CONF_OPTIONS="--host=i686-w64-mingw32"
+    - MAKEFILE_TARGET=all
+  - os: linux
+    addons:
+      apt:
+        packages:
         - gcc-multilib
     env:
     - CROSS_GCC_VER=4.9.0
