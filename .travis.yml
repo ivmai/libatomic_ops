@@ -100,6 +100,15 @@ matrix:
     env:
     - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared"
     - MAKEFILE_TARGET=all
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-mingw-w64
+    compiler: i686-w64-mingw32-gcc
+    env:
+    - CONF_OPTIONS="--host=i686-w64-mingw32"
+    - MAKEFILE_TARGET=all
 
 before_install:
 - if [[ "$AUTOMAKE_VER" != "" || "$LIBTOOL_VER" != "" || "$M4_VER" != "" ]]; then
