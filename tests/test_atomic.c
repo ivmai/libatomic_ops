@@ -188,6 +188,10 @@ int test_and_set_test(void)
      || defined(AO_USE_NO_SIGNALS) || defined(AO_USE_WIN32_PTHREADS)) \
     && defined(AO_TEST_EMULATION)
 
+# ifdef __cplusplus
+    extern "C" {
+# endif
+
   void AO_store_full_emulation(volatile AO_t *addr, AO_t val);
   AO_t AO_fetch_compare_and_swap_emulation(volatile AO_t *addr, AO_t old_val,
                                            AO_t new_val);
@@ -195,6 +199,10 @@ int test_and_set_test(void)
     int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *,
                                                 AO_t old_val1, AO_t old_val2,
                                                 AO_t new_val1, AO_t new_val2);
+# endif
+
+# ifdef __cplusplus
+    } /* extern "C" */
 # endif
 
   void test_atomic_emulation(void)
