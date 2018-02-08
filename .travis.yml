@@ -263,6 +263,11 @@ matrix:
     - MAKEFILE_TARGET=all
     - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D HAVE_MMAP -D VERBOSE"
   - os: linux
+    compiler: gcc
+    env:
+    - CC_FOR_CHECK=g++
+    - MAKEFILE_TARGET=all
+  - os: linux
     addons:
       apt:
         packages:
@@ -510,6 +515,9 @@ script:
 - if [[ "$COVERITY_SCAN_BRANCH" != 1 ]]; then
     make -j $MAKEFILE_TARGET CC=$CC CFLAGS_EXTRA="$CFLAGS_EXTRA"
             LDFLAGS="$LDFLAGS";
+  fi
+- if [[ "$CC_FOR_CHECK" != "" ]]; then
+    make check CC=$CC_FOR_CHECK CFLAGS_EXTRA="$CFLAGS_EXTRA";
   fi
 - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
 - if [[ "$CSA_CHECK" == true ]]; then
