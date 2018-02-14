@@ -263,6 +263,12 @@ matrix:
     - MAKEFILE_TARGET=all
     - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D HAVE_MMAP -D VERBOSE"
   - os: linux
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-x c++ -march=native -D VERBOSE"
+    - CONF_OPTIONS="--enable-assertions"
+    - MAKEFILE_TARGET=all
+  - os: linux
     compiler: gcc
     env:
     - CC_FOR_CHECK=g++
