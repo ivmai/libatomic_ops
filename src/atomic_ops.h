@@ -329,9 +329,11 @@
 #   include "atomic_ops/sysdeps/gcc/avr32.h"
 # elif defined(__hexagon__)
 #   include "atomic_ops/sysdeps/gcc/hexagon.h"
+# elif defined(__riscv)
+#   include "atomic_ops/sysdeps/gcc/riscv.h"
 # elif defined(__tile__)
 #   include "atomic_ops/sysdeps/gcc/tile.h"
-# else /* __nios2__, __riscv, etc. */
+# else /* __nios2__, etc. */
 #   include "atomic_ops/sysdeps/gcc/generic.h"
 # endif
 #endif /* __GNUC__ && !AO_USE_PTHREAD_DEFS */
