@@ -41,11 +41,19 @@
 
 # if !defined(_ABI64) || _MIPS_SIM != _ABI64
 #   define AO_T_IS_INT
+# if defined(__mips_isa_rev) && (__mips_isa_rev >= 6)
+#   define AO_MIPS_SET_ISA    "       \n"
+# else
 #   define AO_MIPS_SET_ISA    "       .set mips2\n"
+# endif
 #   define AO_MIPS_LL_1(args) "       ll " args "\n"
 #   define AO_MIPS_SC(args)   "       sc " args "\n"
 # else
+# if defined(__mips_isa_rev) && (__mips_isa_rev >= 6)
+#   define AO_MIPS_SET_ISA    "       \n"
+# else
 #   define AO_MIPS_SET_ISA    "       .set mips3\n"
+# endif
 #   define AO_MIPS_LL_1(args) "       lld " args "\n"
 #   define AO_MIPS_SC(args)   "       scd " args "\n"
 # endif
