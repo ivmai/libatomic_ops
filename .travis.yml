@@ -140,6 +140,16 @@ matrix:
     addons:
       apt:
         packages:
+        - gcc-7
+        sources:
+        - ubuntu-toolchain-r-test
+    compiler: gcc-7
+    env:
+    - CFLAGS_EXTRA="-O3 -march=native"
+  - os: linux
+    addons:
+      apt:
+        packages:
         - gcc-5
         - gcc-5-multilib
         sources:
