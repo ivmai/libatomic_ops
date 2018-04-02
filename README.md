@@ -23,7 +23,7 @@ Also, the latest bug fixes and new features are available in the
 ## Overview
 
 This package provides semi-portable access to hardware-provided
-atomic memory update operations on a number architectures.  These might
+atomic memory update operations on a number of architectures.  These might
 allow you to write code:
 
 * That does more interesting things in signal handlers.
