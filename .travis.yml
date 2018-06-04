@@ -130,42 +130,42 @@ matrix:
     addons:
       apt:
         packages:
-        - gcc-7
+        - gcc-8
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-7
+    compiler: gcc-8
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - os: linux
     addons:
       apt:
         packages:
-        - gcc-7
+        - gcc-8
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-7
+    compiler: gcc-8
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - os: linux
     addons:
       apt:
         packages:
-        - gcc-7
-        - gcc-7-multilib
+        - gcc-8
+        - gcc-8-multilib
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-7
+    compiler: gcc-8
     env:
     - CFLAGS_EXTRA="-m32 -O3 -march=native"
   - os: linux
     addons:
       apt:
         packages:
-        - gcc-7
-        - gcc-7-multilib
+        - gcc-8
+        - gcc-8-multilib
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-7
+    compiler: gcc-8
     env:
     - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
@@ -173,11 +173,11 @@ matrix:
     addons:
       apt:
         packages:
-        - gcc-7
-        - gcc-7-multilib
+        - gcc-8
+        - gcc-8-multilib
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-7
+    compiler: gcc-8
     env:
     - CFLAGS_EXTRA="-mx32 -march=native"
     - CONF_OPTIONS="--disable-atomic-intrinsics --disable-docs"
@@ -208,11 +208,11 @@ matrix:
     addons:
       apt:
         packages:
-        - gcc-7
-        - gcc-7-multilib
+        - gcc-8
+        - gcc-8-multilib
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-7
+    compiler: gcc-8
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -march=native -fno-omit-frame-pointer"
     - LDFLAGS="-fuse-ld=gold"
