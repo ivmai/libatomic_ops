@@ -96,4 +96,25 @@ GitHub.
 
 ## Copyright & Warranty
 
-See doc/LICENSING.txt file.
+ * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
+ * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
+ * Copyright (c) 1999-2011 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2008-2018 Ivan Maidanski
+
+The file armcc/arm_v6.h is also
+
+ * Copyright (c) 2007 by NEC LE-IT.  All rights reserved.
+
+The file gcc/avr32.h is
+
+ * Copyright (c) 2009 Bradley Smith <brad@brad-smith.co.uk>
+
+The file gcc/mips.h is
+
+ * Copyright (c) 2005, 2007 Thiemo Seufer <ths@networkno.de>
+
+The file gcc/sh.h is
+
+ * Copyright (c) 2009 by Takashi YOSHII. All rights reserved.
+
+See doc/LICENSING.txt for the details.
