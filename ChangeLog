@@ -1,5 +1,5 @@
 
-== [7.6.6] (not released yet) ==
+== [7.6.6] 2018-08-07 ==
 
 * COPYING: sync with FSF's gpl-2.0.txt
 * Fix 'undefined reference to __atomic_load/store/cas_16' error (gcc-7/x64)
