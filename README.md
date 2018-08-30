@@ -6,6 +6,8 @@ IN NEW CODE, PLEASE USE C11 OR C++14 STANDARD ATOMICS INSTEAD OF THIS PACKAGE.
 [![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/ivmai/libatomic_ops?branch=master&svg=true)](https://ci.appveyor.com/project/ivmai/libatomic-ops)
 [![Coveralls test coverage status](https://coveralls.io/repos/ivmai/libatomic_ops/badge.png?branch=master)](https://coveralls.io/github/ivmai/libatomic_ops)
 [![Coverity Scan build status](https://scan.coverity.com/projects/10809/badge.svg)](https://scan.coverity.com/projects/ivmai-libatomic_ops)
+[![Code Quality: Cpp](https://img.shields.io/lgtm/grade/cpp/g/ivmai/libatomic_ops.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ivmai/libatomic_ops/context:cpp)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/ivmai/libatomic_ops.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ivmai/libatomic_ops/alerts)
 
 This is version 7.7.0 (next release development) of libatomic_ops.
 
