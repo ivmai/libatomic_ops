@@ -100,7 +100,6 @@ __asm {
 #ifndef AO_PREFER_GENERALIZED
 AO_INLINE AO_TS_VAL_t
 AO_test_and_set(volatile AO_TS_t *addr) {
-
         AO_TS_VAL_t oldval;
         unsigned long tmp;
         unsigned long one = 1;
