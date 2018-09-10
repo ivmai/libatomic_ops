@@ -383,7 +383,7 @@
 
 #if defined(_MSC_VER) || defined(__DMC__) || defined(__BORLANDC__) \
         || (defined(__WATCOMC__) && defined(__NT__))
-# if defined(_AMD64_) || defined(_M_X64)
+# if defined(_AMD64_) || defined(_M_X64) || defined(_M_ARM64)
 #   include "atomic_ops/sysdeps/msftc/x86_64.h"
 # elif defined(_M_IX86) || defined(x86)
 #   include "atomic_ops/sysdeps/msftc/x86.h"
