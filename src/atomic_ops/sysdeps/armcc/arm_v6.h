@@ -45,8 +45,8 @@ AO_nop_full(void)
 {
 # ifndef AO_UNIPROCESSOR
     unsigned int dest=0;
-    /* issue an data memory barrier (keeps ordering of memory transactions */
-    /* before and after this operation)                                    */
+    /* Issue a data memory barrier (keeps ordering of memory transactions  */
+    /* before and after this operation).                                   */
     __asm {
             mcr p15,0,dest,c7,c10,5
             };
