@@ -2,7 +2,7 @@
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 1999-2003 by Hewlett-Packard Company. All rights reserved.
- *
+ * Copyright (c) 2009-2016 Ivan Maidanski
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
@@ -87,7 +87,6 @@ AO_short_fetch_and_add_full (volatile unsigned short *p, unsigned short incr)
 #define AO_HAVE_short_fetch_and_add_full
 
 #ifndef AO_PREFER_GENERALIZED
-  /* Really only works for 486 and later */
   AO_INLINE void
   AO_and_full (volatile AO_t *p, AO_t value)
   {
