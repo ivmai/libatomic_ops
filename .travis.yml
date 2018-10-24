@@ -435,6 +435,14 @@ matrix:
         - gcc-multilib
     env:
     - CROSS_GCC_VER=8.1.0
+    - NOLIBC_ARCH_ABI=nios2-linux
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
+    env:
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=powerpc-linux
   - os: linux
     addons:
