@@ -325,6 +325,15 @@ matrix:
         - gcc-multilib
     env:
     - CROSS_GCC_VER=8.1.0
+    - NOLIBC_ARCH_ABI=aarch64-linux
+    - CFLAGS_EXTRA="-mabi=ilp32"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
+    env:
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=alpha-linux
   - os: linux
     addons:
