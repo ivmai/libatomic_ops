@@ -347,6 +347,15 @@ matrix:
     addons:
       apt:
         packages:
+        - gcc-multilib
+    env:
+    - CROSS_GCC_VER=8.1.0
+    - NOLIBC_ARCH_ABI=arm-linux-gnueabi
+    - CFLAGS_EXTRA="-D AO_DISABLE_GCC_ATOMICS"
+  - os: linux
+    addons:
+      apt:
+        packages:
         - gcc-4.6
         - gcc-multilib
         sources:
@@ -409,6 +418,15 @@ matrix:
         - gcc-multilib
     env:
     - CROSS_GCC_VER=8.1.0
+    - NOLIBC_ARCH_ABI=mips-linux
+    - CFLAGS_EXTRA="-D AO_DISABLE_GCC_ATOMICS"
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
+    env:
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=mips64-linux
   - os: linux
     addons:
@@ -418,6 +436,15 @@ matrix:
     env:
     - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=powerpc-linux
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
+    env:
+    - CROSS_GCC_VER=8.1.0
+    - NOLIBC_ARCH_ABI=powerpc-linux
+    - CFLAGS_EXTRA="-D AO_DISABLE_GCC_ATOMICS"
   - os: linux
     addons:
       apt:
