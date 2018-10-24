@@ -484,9 +484,25 @@ matrix:
         packages:
         - gcc-multilib
     env:
+    - CROSS_GCC_VER=8.1.0
+    - NOLIBC_ARCH_ABI=s390-linux
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
+    env:
     - CROSS_GCC_VER=4.9.0
     - NOLIBC_ARCH_ABI=s390x-linux
     - NOLIBC_DELIM=_
+  - os: linux
+    addons:
+      apt:
+        packages:
+        - gcc-multilib
+    env:
+    - CROSS_GCC_VER=8.1.0
+    - NOLIBC_ARCH_ABI=sh2-linux
   - os: linux
     addons:
       apt:
