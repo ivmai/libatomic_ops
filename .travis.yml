@@ -316,7 +316,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=aarch64-linux
   - os: linux
     addons:
@@ -324,7 +324,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=alpha-linux
   - os: linux
     addons:
@@ -332,8 +332,8 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
-    - NOLIBC_ARCH_ABI=arm-unknown-linux-gnueabi
+    - CROSS_GCC_VER=8.1.0
+    - NOLIBC_ARCH_ABI=arm-linux-gnueabi
   - os: linux
     addons:
       apt:
@@ -346,6 +346,7 @@ matrix:
     env:
     - CROSS_GCC_VER=4.2.4
     - NOLIBC_ARCH_ABI=avr32-linux
+    - NOLIBC_DELIM=_
     - CFLAGS_EXTRA="-fno-strict-aliasing"
   - os: linux
     addons:
@@ -359,13 +360,14 @@ matrix:
     env:
     - CROSS_GCC_VER=4.6.3
     - NOLIBC_ARCH_ABI=cris-linux
+    - NOLIBC_DELIM=_
   - os: linux
     addons:
       apt:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=hppa-linux
   - os: linux
     addons:
@@ -373,7 +375,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=ia64-linux
   - os: linux
     addons:
@@ -381,7 +383,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=m68k-linux
   - os: linux
     addons:
@@ -389,7 +391,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=mips-linux
   - os: linux
     addons:
@@ -397,7 +399,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=mips64-linux
   - os: linux
     addons:
@@ -405,7 +407,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=powerpc-linux
   - os: linux
     addons:
@@ -413,7 +415,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=powerpc64-linux
   - os: linux
     addons:
@@ -423,6 +425,7 @@ matrix:
     env:
     - CROSS_GCC_VER=4.9.0
     - NOLIBC_ARCH_ABI=ppc64le-linux
+    - NOLIBC_DELIM=_
   - os: linux
     addons:
       apt:
@@ -431,17 +434,14 @@ matrix:
     env:
     - CROSS_GCC_VER=4.9.0
     - NOLIBC_ARCH_ABI=s390x-linux
+    - NOLIBC_DELIM=_
   - os: linux
     addons:
       apt:
         packages:
-        - gcc-4.6
         - gcc-multilib
-        sources:
-        - ubuntu-toolchain-r-test
-    compiler: gcc-4.6
     env:
-    - CROSS_GCC_VER=4.6.3
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=sh4-linux
   - os: linux
     addons:
@@ -449,7 +449,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=sparc-linux
     - CFLAGS_EXTRA="-D AO_NO_SPARC_V9"
   - os: linux
@@ -458,7 +458,7 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
+    - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=sparc64-linux
   - os: linux
     addons:
@@ -472,6 +472,7 @@ matrix:
     env:
     - CROSS_GCC_VER=4.6.2
     - NOLIBC_ARCH_ABI=tilegx-linux
+    - NOLIBC_DELIM=_
 
 before_install:
 - if [[ "$CPPCHECK_ENABLE" != "" ]]; then
@@ -480,9 +481,10 @@ before_install:
     make --directory ~/cppcheck -j CXXFLAGS="-O3 -march=native -D NDEBUG";
   fi
 - if [[ "$CROSS_GCC_VER" != "" ]]; then
+    if [[ "$NOLIBC_DELIM" == "" ]]; then NOLIBC_DELIM=-; fi;
     BUILD_ARCH=x86_64;
     TAR_FOLDER_URL=https://www.kernel.org/pub/tools/crosstool/files/bin/$BUILD_ARCH/$CROSS_GCC_VER;
-    TARFILE=$BUILD_ARCH-gcc-$CROSS_GCC_VER-nolibc_$NOLIBC_ARCH_ABI.tar.xz;
+    TARFILE=$BUILD_ARCH-gcc-$CROSS_GCC_VER-nolibc$NOLIBC_DELIM$NOLIBC_ARCH_ABI.tar.xz;
     wget -O - $TAR_FOLDER_URL/$TARFILE | tar xf - --xz --directory ~;
     CROSS_CC=~/gcc-$CROSS_GCC_VER-nolibc/$NOLIBC_ARCH_ABI/bin/$NOLIBC_ARCH_ABI-gcc;
     export C_INCLUDE_PATH=/usr/include;
