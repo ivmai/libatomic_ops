@@ -32,7 +32,7 @@
   typedef __m128 double_ptr_storage;
 #elif defined(_WIN32) && !defined(__GNUC__)
   typedef unsigned __int64 double_ptr_storage;
-#elif defined(__aarch64__)
+#elif defined(__aarch64__) && !defined(__ILP32__)
   typedef unsigned __int128 double_ptr_storage;
 #elif defined(__i386__) && defined(__GNUC__)
   typedef unsigned long long double_ptr_storage
