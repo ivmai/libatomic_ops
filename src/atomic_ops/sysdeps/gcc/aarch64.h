@@ -39,7 +39,8 @@
 /* word require -latomic, are not lock-free and cause test_stack        */
 /* failure, so the asm-based implementation is used for now.            */
 /* TODO: Update it for newer GCC releases. */
-#if !defined(__clang__) || defined(AO_AARCH64_ASM_LOAD_STORE_CAS)
+#if (!defined(__ILP32__) && !defined(__clang__)) \
+    || defined(AO_AARCH64_ASM_LOAD_STORE_CAS)
 
 # ifndef AO_PREFER_GENERALIZED
     AO_INLINE AO_double_t
@@ -260,11 +261,13 @@
   }
 # define AO_HAVE_double_compare_and_swap_full
 
-#endif /* !__clang__ || AO_AARCH64_ASM_LOAD_STORE_CAS */
+#endif /* !__ILP32__ && !__clang__ || AO_AARCH64_ASM_LOAD_STORE_CAS */
 
-/* As of clang-5.0 and gcc-5.4, __GCC_HAVE_SYNC_COMPARE_AND_SWAP_16     */
+/* As of clang-5.0 and gcc-8.1, __GCC_HAVE_SYNC_COMPARE_AND_SWAP_16     */
 /* macro is still missing (while the double-word CAS is available).     */
-# define AO_GCC_HAVE_double_SYNC_CAS
+# ifndef __ILP32__
+#   define AO_GCC_HAVE_double_SYNC_CAS
+# endif
 
 #endif /* !__clang__ || AO_CLANG_PREREQ(3, 9) */
 
