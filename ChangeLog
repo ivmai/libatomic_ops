@@ -1,4 +1,13 @@
 
+== [7.6.8] (not released yet) ==
+
+* Eliminate 'redundant blank line at start/end of block' CodeFactor warning
+* Fix 'Cannot implement CAS_full on this architecture' build error (nios2)
+* Fix typos in arm_v6.h, ia64.h, acquire_release_volatile.template
+* Support aarch64-ilp32 (GCC) and UWP/arm64 (MS VC) targets
+* Workaround 'condition my_chunk_ptr is always false' cppcheck false positive
+
+
 == [7.6.6] 2018-08-07 ==
 
 * COPYING: sync with FSF's gpl-2.0.txt
