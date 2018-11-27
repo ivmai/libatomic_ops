@@ -1,6 +1,7 @@
 
 == [7.6.8] (not released yet) ==
 
+* Eliminate 'casting signed to bigger unsigned int' CSA warning (test_stack)
 * Eliminate 'redundant blank line at start/end of block' CodeFactor warning
 * Fix 'Cannot implement CAS_full on this architecture' build error (nios2)
 * Fix typos in arm_v6.h, ia64.h, acquire_release_volatile.template
