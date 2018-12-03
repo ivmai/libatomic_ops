@@ -140,6 +140,15 @@ Also, includes 7.4.8 changes
 Also, includes 7.4.6 changes
 
 
+== [7.4.12] (not released yet) ==
+
+* COPYING: sync with FSF's gpl-2.0.txt
+* Fix a typo in the overview section of README
+* Fix typos in arm_v6.h, ia64.h, acquire_release_volatile.template
+* Support ILP32 in AArch64 assembly routines (GCC)
+* Support UWP/arm64 target
+
+
 == [7.4.10] 2017-12-22 ==
 
 * Fix AO_malloc for sizes near CHUNK_SIZE
@@ -341,6 +350,11 @@ Also, includes 7.2e changes
 * Turn off AO primitives inlining if AO_NO_INLINE defined
 * Use __builtin_expect in CAS failure loop condition checks (GCC only)
 Also, includes 7.2 changes
+
+
+== [7.2j] (not released yet) ==
+
+* Fix typos in arm_v6.h, ia64.h
 
 
 == [7.2i] 2017-12-21 ==
