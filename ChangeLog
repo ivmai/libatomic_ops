@@ -1,3 +1,10 @@
+2018-09-13  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops/sysdeps/armcc/arm_v6.h [!AO_UNIPROCESSOR]
+	(AO_nop_full): Fix typo ("a data memory barrier") in comment.
+	* src/atomic_ops/sysdeps/icc/ia64.h (AO_char_load_acquire): Fix typo
+	("a ld.acq instruction") in comment.
+
 [7.2i]
 
 2017-12-21  Ivan Maidanski <ivmai@mail.ru>
