@@ -1,5 +1,5 @@
 
-== [7.4.12] (not released yet) ==
+== [7.4.12] 2018-12-11 ==
 
 * COPYING: sync with FSF's gpl-2.0.txt
 * Fix a typo in arm_v6.h
