@@ -46,7 +46,7 @@ AO_int_load_acquire(const volatile unsigned *addr)
 {
   unsigned result = *addr;
 
-  /* A normal volatile load generates a ld.acq instruction (on IA-64).  */
+  /* A normal volatile load generates an ld.acq (on IA-64).     */
   AO_GCC_BARRIER();
   return result;
 }
@@ -56,7 +56,7 @@ AO_INLINE void
 AO_int_store_release(volatile unsigned *addr, unsigned new_val)
 {
   AO_GCC_BARRIER();
-  /* A normal volatile store generates a st.rel instruction (on IA-64). */
+  /* A normal volatile store generates an st.rel (on IA-64).    */
   *addr = new_val;
 }
 #define AO_HAVE_int_store_release
