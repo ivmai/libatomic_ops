@@ -55,7 +55,7 @@ AO_store_release(volatile AO_t *p, AO_t val)
 AO_INLINE unsigned char
 AO_char_load_acquire(const volatile unsigned char *p)
 {
-  /* A normal volatile load generates a ld.acq instruction.     */
+  /* A normal volatile load generates an ld.acq         */
   return (__ld1_acq((AO_INTEL_PTR_t)p));
 }
 #define AO_HAVE_char_load_acquire
@@ -70,6 +70,7 @@ AO_char_store_release(volatile unsigned char *p, unsigned char val)
 AO_INLINE unsigned short
 AO_short_load_acquire(const volatile unsigned short *p)
 {
+  /* A normal volatile load generates an ld.acq         */
   return (__ld2_acq((AO_INTEL_PTR_t)p));
 }
 #define AO_HAVE_short_load_acquire
@@ -84,6 +85,7 @@ AO_short_store_release(volatile unsigned short *p, unsigned short val)
 AO_INLINE unsigned int
 AO_int_load_acquire(const volatile unsigned int *p)
 {
+  /* A normal volatile load generates an ld.acq         */
   return (__ld4_acq((AO_INTEL_PTR_t)p));
 }
 #define AO_HAVE_int_load_acquire
