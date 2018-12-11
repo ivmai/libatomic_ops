@@ -1,5 +1,5 @@
 
-== [7.6.8] (not released yet) ==
+== [7.6.8] 2018-12-11 ==
 
 * Eliminate 'casting signed to bigger unsigned int' CSA warning (test_stack)
 * Eliminate 'redundant blank line at start/end of block' CodeFactor warning
