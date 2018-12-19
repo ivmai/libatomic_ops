@@ -233,7 +233,9 @@ get_chunk(void)
                         > AO_INITIAL_HEAP_SIZE - CHUNK_SIZE)) {
       /* We failed.  The initial heap is used up.       */
       my_chunk_ptr = get_mmaped(CHUNK_SIZE);
-      assert(((AO_t)my_chunk_ptr & (ALIGNMENT-1)) == 0);
+#     if !defined(CPPCHECK)
+        assert(((AO_t)my_chunk_ptr & (ALIGNMENT-1)) == 0);
+#     endif
       break;
     }
     if (AO_compare_and_swap(&initial_heap_ptr, (AO_t)my_chunk_ptr,
