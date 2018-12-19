@@ -229,8 +229,8 @@ get_chunk(void)
                                     (AO_t)initial_ptr, (AO_t)my_chunk_ptr);
       }
 
-    if (AO_EXPECT_FALSE(my_chunk_ptr - AO_initial_heap
-                        > AO_INITIAL_HEAP_SIZE - CHUNK_SIZE)) {
+    if (AO_EXPECT_FALSE((AO_t)my_chunk_ptr
+            > (AO_t)(AO_initial_heap + AO_INITIAL_HEAP_SIZE - CHUNK_SIZE))) {
       /* We failed.  The initial heap is used up.       */
       my_chunk_ptr = get_mmaped(CHUNK_SIZE);
 #     if !defined(CPPCHECK)
