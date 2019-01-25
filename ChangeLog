@@ -1,4 +1,9 @@
 
+== [7.4.14] (not released yet) ==
+
+* Fix 'AO_*_TS_T is not defined' compiler warnings (GCC-8)
+
+
 == [7.4.12] 2018-12-11 ==
 
 * COPYING: sync with FSF's gpl-2.0.txt
