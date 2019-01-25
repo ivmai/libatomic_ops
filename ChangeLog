@@ -1,4 +1,11 @@
 
+== [7.6.10] (not released yet) ==
+
+* Eliminate 'my_chunk_ptr-AO_initial_heap out of bounds' cppcheck warning
+* Fix 'AO_*_TS_T is not defined' compiler warnings (GCC-8)
+* Workaround 'argument to function assert is always 1' cppcheck warnings
+
+
 == [7.6.8] 2018-12-11 ==
 
 * Eliminate 'casting signed to bigger unsigned int' CSA warning (test_stack)
