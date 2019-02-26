@@ -233,6 +233,7 @@ else
 fi
 AC_SUBST(THREADDLLIBS)
 
+AM_CONDITIONAL(ENABLE_SHARED, test x$enable_shared = xyes)
 AM_CONDITIONAL(HAVE_PTHREAD_H, test x$have_pthreads = xtrue)
 AM_CONDITIONAL(NEED_ASM, test x$need_asm = xtrue)
 
