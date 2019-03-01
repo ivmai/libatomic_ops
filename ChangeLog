@@ -149,7 +149,7 @@ Also, includes 7.4.8 changes
 Also, includes 7.4.6 changes
 
 
-== [7.4.14] (not released yet) ==
+== [7.4.14] 2019-03-01 ==
 
 * Fix 'AO_*_TS_T is not defined' compiler warnings (GCC-8)
 
