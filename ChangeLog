@@ -1,5 +1,5 @@
 
-== [7.6.10] (not released yet) ==
+== [7.6.10] 2019-03-01 ==
 
 * Eliminate 'my_chunk_ptr-AO_initial_heap out of bounds' cppcheck warning
 * Fix 'AO_*_TS_T is not defined' compiler warnings (GCC-8)
