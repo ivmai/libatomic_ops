@@ -1,5 +1,5 @@
 
-== [7.4.14] (not released yet) ==
+== [7.4.14] 2019-03-01 ==
 
 * Fix 'AO_*_TS_T is not defined' compiler warnings (GCC-8)
 
