@@ -1,5 +1,5 @@
 # Copyright (c) 2005-2006 Hewlett-Packard Development Company, L.P.
-# Copyright (c) 2009-2018 Ivan Maidanski
+# Copyright (c) 2009-2019 Ivan Maidanski
 #
 # THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
 # OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
