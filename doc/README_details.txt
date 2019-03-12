@@ -13,7 +13,7 @@ are normally built.  On Windows, read README_win32.txt instead.
 are implemented by header files included from it.  It is sometimes
 necessary, and always recommended to also link against libatomic_ops.a.
 To use the almost non-blocking stack or malloc implementations,
-see the corresponding README files, and also link against libatomic_gpl.a
+see the corresponding README files, and also link against libatomic_ops_gpl.a
 before linking against libatomic_ops.a.
 
 OVERVIEW:
