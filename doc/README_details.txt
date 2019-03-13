@@ -26,9 +26,9 @@ similar goals, since they usually do not handle differences in memory
 barrier styles with sufficient generality.
 
 If this is included after defining AO_REQUIRE_CAS, then the package makes
-an attempt to emulate AO_compare_and_swap* (single-width) in a way that (at
-least on Linux) should still be async-signal-safe.  As a result, most other
-atomic operations will then be defined using the compare-and-swap
+an attempt to emulate [fetch_]compare_and_swap* (single-width) in a way that,
+at least on Linux, should still be async-signal-safe.  As a result, most
+other atomic operations may then be defined using the compare-and-swap
 emulation.  This emulation is slow, since it needs to disable signals.
 And it needs to block in case of contention.  If you care about performance
 on a platform that can't directly provide compare-and-swap, there are
@@ -93,11 +93,12 @@ void xor(volatile AO_t *addr, AO_t value)
         Atomically 'xor' value into *addr.
 int compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
         Atomically compare *addr to old_val, and replace *addr by new_val
-        if the first comparison succeeds.  Returns nonzero if the comparison
-        succeeded and *addr was updated.
+        if the first comparison succeeds; returns nonzero if the comparison
+        succeeded and *addr was updated; cannot fail spuriously.
 AO_t fetch_compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
         Atomically compare *addr to old_val, and replace *addr by new_val
-        if the first comparison succeeds; returns the original value of *addr.
+        if the first comparison succeeds; returns the original value of *addr;
+        cannot fail spuriously.
 AO_TS_VAL_t test_and_set(volatile AO_TS_t * addr)
         Atomically read the binary value at *addr, and set it.  AO_TS_VAL_t
         is an enumeration type which includes two values AO_TS_SET and
