@@ -52,22 +52,21 @@ Corrections/additions for other platforms are greatly appreciated.
 
 OPERATIONS:
 
-Most operations operate on values of type AO_t, which are unsigned integers
-whose size matches that of pointers on the given architecture.  Exceptions
-are:
+Most operations handle values of type AO_t, which are unsigned integers
+whose size matches that of pointers on the given architecture.  Additionally,
+on most supported architectures the operations are also implemented to handle
+smaller integers types; such operations are indicated by the appropriate size
+prefix:
+- char_... Operates on unsigned char values;
+- short_... Operates on unsigned short values;
+- int_... Operates on unsigned int values.
 
-- AO_test_and_set operates on AO_TS_t, which is whatever size the hardware
-supports with good performance.  In some cases this is the length of a cache
-line.  In some cases it is a byte.  In many cases it is equivalent to AO_t.
+The notable exception is AO_test_and_set operating only on AO_TS_t, which is
+whatever size the hardware supports with good performance.  In some cases this
+is the length of a cache line, in some other cases it is a byte.  In many
+cases AO_TS_t is equivalent to AO_t.
 
-- Most operations are also implemented on smaller size integers.
-Such operations are indicated by the appropriate prefix:
-
-AO_char_... Operates on unsigned char values.
-AO_short_... Operates on unsigned short values.
-AO_int_... Operates on unsigned int values.
-
-The defined operations are all of the form AO_[<size>_]<op><barrier>(<args>).
+The defined operations are all of the form AO_[<size>]<op><barrier>(<args>).
 
 The <op> component specifies an atomic memory operation.  It may be
 one of the following, where the corresponding argument and result types
@@ -196,8 +195,8 @@ _dd_acquire_read: Ordered with respect to later reads that are data
 We assume that if a store is data-dependent on a previous load, then
 the two are always implicitly ordered.
 
-It is possible to test whether AO_<op><barrier> is available on the
-current platform by checking whether AO_HAVE_<op>_<barrier> is defined
+It is possible to test whether AO_[<size>]<op><barrier> is available on the
+target platform by checking whether AO_HAVE_[<size>]<op><barrier> is defined
 as a macro.
 
 Note that we generally don't implement operations that are either
