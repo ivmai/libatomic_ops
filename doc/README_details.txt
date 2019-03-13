@@ -48,9 +48,7 @@ to use.  Current real implementations appear to be much better behaved.)
 We of course are in no position to guarantee that future processors
 (even HPs) will continue to behave this way, though we hope they will.
 
-This is a work in progress.  Corrections/additions for other platforms are
-greatly appreciated.  It passes rudimentary tests on X86, Itanium, and
-Alpha.
+Corrections/additions for other platforms are greatly appreciated.
 
 OPERATIONS:
 
@@ -62,15 +60,12 @@ are:
 supports with good performance.  In some cases this is the length of a cache
 line.  In some cases it is a byte.  In many cases it is equivalent to AO_t.
 
-- A few operations are implemented on smaller or larger size integers.
+- Most operations are also implemented on smaller size integers.
 Such operations are indicated by the appropriate prefix:
 
 AO_char_... Operates on unsigned char values.
 AO_short_... Operates on unsigned short values.
 AO_int_... Operates on unsigned int values.
-
-(Currently a very limited selection of these is implemented.  We're
-working on it.)
 
 The defined operations are all of the form AO_[<size>_]<op><barrier>(<args>).
 
@@ -228,10 +223,6 @@ constraints, and if and how we can guarantee sequential consistency.
 
 Dd_acquire_read is very hard or impossible to define in a way that cannot
 be invalidated by reasonably standard compiler transformations.
-
-There is probably no good reason to provide operations on standard
-integer types, since those may have the wrong alignment constraints.
-
 
 Example:
 
