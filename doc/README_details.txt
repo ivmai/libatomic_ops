@@ -138,7 +138,11 @@ int compare_and_swap_double(volatile AO_double_t * addr,
 where AO_double_t is a structure containing AO_val1 and AO_val2 fields,
 both of type AO_t.  For compare_and_swap_double, we compare against
 the val1 field.  AO_double_t exists only if AO_HAVE_double_t
-is defined.
+is defined.  If this type is available then the following operation is
+provided for convenience, fully equivalent to compare_double_and_swap_double:
+
+int double_compare_and_swap(volatile AO_double_t * addr,
+                            AO_double_t old_val, AO_double_t new_val)
 
 Please note that AO_double_t (and AO_stack_t) variables should be properly
 aligned (8-byte alignment on 32-bit targets, 16-byte alignment on 64-bit ones)
@@ -148,7 +152,8 @@ passed (as a reference) to the primitive.  Global and static variables should
 already have proper alignment automatically but automatic variables (i.e.
 located on the stack) might be misaligned because the stack might be
 word-aligned (e.g. 4-byte stack alignment is the default one for x86).
-Luckily, stack-allocated AO variables is a rare case in practice.
+Luckily, stack-allocated AO variables operated atomically are used rarely
+in practice.
 
 ORDERING CONSTRAINTS:
 
