@@ -1,4 +1,15 @@
 
+== [7.6.12] (not released yet) ==
+
+* Describe double_compare_and_swap operation in README_details
+* Document CAS operations better in README_details
+* Fix library name in README_details
+* Refine and reformat description of size prefix in README_details
+* Remove outdated notes in README_details
+* Support MSYS host (configure)
+* Update README_win32 to match Makefile.msft
+
+
 == [7.6.10] 2019-03-01 ==
 
 * Eliminate 'my_chunk_ptr-AO_initial_heap out of bounds' cppcheck warning
