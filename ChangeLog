@@ -1,3 +1,7 @@
+2019-03-13  Ivan Maidanski <ivmai@mail.ru>
+
+	* doc/README.txt: Fix typo ("libatomic_ops_gpl.a").
+
 2018-09-13  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/armcc/arm_v6.h [!AO_UNIPROCESSOR]
