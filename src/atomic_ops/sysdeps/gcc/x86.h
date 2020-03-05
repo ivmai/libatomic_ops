@@ -444,7 +444,7 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
   {
     char result;
     AO_t scratch_reg;
-#   ifdef __PIC__
+#   if defined(__PIC__) && !AO_GNUC_PREREQ(5, 1)
       AO_t saved_ebx;
 
       /* If PIC is turned on, we cannot use ebx as it is reserved for the */
