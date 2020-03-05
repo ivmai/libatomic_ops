@@ -282,10 +282,19 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
                 /* variables are protected.                             */
 #   else
       char result;
-      __asm__ __volatile__ ("lock; cmpxchg %2, %0; setz %1"
+#     if defined(__GCC_ASM_FLAG_OUTPUTS__)
+        AO_t dummy;
+
+        __asm__ __volatile__ ("lock; cmpxchg %3, %0"
+                        : "+m" (*addr), "=@ccz" (result), "=a" (dummy)
+                        : "r" (new_val), "a" (old)
+                        : "memory");
+#     else
+        __asm__ __volatile__ ("lock; cmpxchg %2, %0; setz %1"
                         : "+m" (*addr), "=a" (result)
                         : "r" (new_val), "a" (old)
                         : "memory");
+#     endif
       return (int)result;
 #   endif
   }
@@ -457,10 +466,10 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                                          AO_t old_val1, AO_t old_val2,
                                          AO_t new_val1, AO_t new_val2)
   {
-    AO_t dummy; /* an output for clobbered edx */
     char result;
 #   if defined(__PIC__) && !(AO_GNUC_PREREQ(5, 1) || AO_CLANG_PREREQ(4, 0))
       AO_t saved_ebx;
+      AO_t dummy;
 
       /* The following applies to an ancient GCC (and, probably, it was   */
       /* never needed for Clang):                                         */
@@ -509,11 +518,21 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
       /* register, instead of using a fixed register, is implemented    */
       /* in Clang and GCC 5.1+, at least. (Older GCC refused to compile */
       /* such code for PIC mode).                                       */
-      __asm__ __volatile__ ("lock; cmpxchg8b %0; setz %1"
+#     if defined(__GCC_ASM_FLAG_OUTPUTS__)
+        __asm__ __volatile__ ("lock; cmpxchg8b %0"
+                        : "+m" (*addr), "=@ccz" (result),
+                          "+d" (old_val2), "+a" (old_val1)
+                        : "c" (new_val2), "b" (new_val1)
+                        : "memory");
+#     else
+        AO_t dummy; /* an output for clobbered edx */
+
+        __asm__ __volatile__ ("lock; cmpxchg8b %0; setz %1"
                         : "+m" (*addr), "=a" (result), "=d" (dummy)
                         : "d" (old_val2), "a" (old_val1),
                           "c" (new_val2), "b" (new_val1)
                         : "memory");
+#     endif
 #   endif
     return (int) result;
   }
@@ -574,14 +593,23 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                                          AO_t old_val1, AO_t old_val2,
                                          AO_t new_val1, AO_t new_val2)
   {
-    AO_t dummy; /* an output for clobbered rdx */
     char result;
 
-    __asm__ __volatile__("lock; cmpxchg16b %0; setz %1"
+#   if defined(__GCC_ASM_FLAG_OUTPUTS__)
+      __asm__ __volatile__("lock; cmpxchg16b %0"
+                        : "+m" (*addr), "=@ccz" (result),
+                          "+d" (old_val2), "+a" (old_val1)
+                        : "c" (new_val2), "b" (new_val1)
+                        : "memory");
+#   else
+      AO_t dummy; /* an output for clobbered rdx */
+
+      __asm__ __volatile__("lock; cmpxchg16b %0; setz %1"
                         : "+m" (*addr), "=a" (result), "=d" (dummy)
                         : "d" (old_val2), "a" (old_val1),
                           "c" (new_val2), "b" (new_val1)
                         : "memory");
+#   endif
     return (int) result;
   }
 # define AO_HAVE_compare_double_and_swap_double_full
