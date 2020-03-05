@@ -270,11 +270,20 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
                 /* variables are protected.                             */
 #   else
       char result;
-      __asm__ __volatile__ ("lock; cmpxchg %2, %0; setz %1"
-			    : "+m" (*addr), "=a" (result)
-			    : "r" (new_val), "a" (old)
-			    : "memory");
-      return (int)result;
+#     ifdef  __GCC_ASM_FLAG_OUTPUTS__
+        AO_t scratch_reg;
+        __asm__ __volatile__ ("lock; cmpxchg %3, %0"
+			      : "+m" (*addr), "=@ccz" (result),
+				"=a" (scratch_reg)
+			      : "r" (new_val), "a" (old)
+			      : "memory");
+#     else
+        __asm__ __volatile__ ("lock; cmpxchg %2, %0; setz %1"
+			      : "+m" (*addr), "=a" (result)
+			      : "r" (new_val), "a" (old)
+			      : "memory");
+#     endif
+	return (int)result;
 #   endif
   }
 # define AO_HAVE_compare_and_swap_full
@@ -443,8 +452,8 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                                          AO_t new_val1, AO_t new_val2)
   {
     char result;
-    AO_t scratch_reg;
 #   if defined(__PIC__) && !AO_GNUC_PREREQ(5, 1)
+      AO_t scratch_reg;
       AO_t saved_ebx;
 
       /* If PIC is turned on, we cannot use ebx as it is reserved for the */
@@ -489,11 +498,21 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
       /* For non-PIC mode, this operation could be simplified (and be   */
       /* faster) by using ebx as new_val1 (GCC would refuse to compile  */
       /* such code for PIC mode).                                       */
-      __asm__ __volatile__ ("lock; cmpxchg8b %0; setz %1"
-			    : "+m" (*addr), "=a" (result), "=d" (scratch_reg)
-			    : "d" (old_val2), "a" (old_val1),
-			      "c" (new_val2), "b" (new_val1)
-			    : "memory");
+#     ifdef __GCC_ASM_FLAG_OUTPUTS__
+        __asm__ __volatile__ ("lock; cmpxchg8b %0"
+			      : "+m" (*addr), "=@ccz" (result),
+				"+d" (old_val2), "+a" (old_val1)
+			      : "c" (new_val2), "b" (new_val1)
+			      : "memory");
+#     else
+	AO_t scratch_reg;
+        __asm__ __volatile__ ("lock; cmpxchg8b %0; setz %1"
+			      : "+m,m" (*addr), "=a,d" (result),
+				"=d,a" (scratch_reg)
+			      : "d,d" (old_val2), "a,a" (old_val1),
+				"c,c" (new_val2), "b,b" (new_val1)
+			      : "memory");
+#     endif
 #   endif
     return (int) result;
   }
@@ -555,12 +574,21 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
                                          AO_t new_val1, AO_t new_val2)
   {
     char result;
-    AO_t scratch_reg;
-    __asm__ __volatile__("lock; cmpxchg16b %0; setz %1"
-			 : "+m" (*addr), "=a"(result), "=d" (scratch_reg)
-			 : "d" (old_val2), "a" (old_val1),
-			   "c" (new_val2), "b" (new_val1)
-			 : "memory");
+#   ifdef __GCC_ASM_FLAG_OUTPUTS__
+      __asm__ __volatile__("lock; cmpxchg16b %0"
+			   : "+m" (*addr), "=@ccz" (result),
+			     "+d" (old_val2), "+a" (old_val1)
+			   : "c" (new_val2), "b" (new_val1)
+			   : "memory");
+#   else
+      AO_t scratch_reg;
+      __asm__ __volatile__("lock; cmpxchg16b %0; setz %1"
+			   : "+m,m" (*addr), "=a,d" (result),
+			     "=d,a" (scratch_reg)
+			   : "d,d" (old_val2), "a,a" (old_val1),
+			     "c,c" (new_val2), "b,b" (new_val1)
+			   : "memory");
+#   endif
     return (int) result;
   }
 # define AO_HAVE_compare_double_and_swap_double_full
