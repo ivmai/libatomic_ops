@@ -459,9 +459,11 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
   {
     AO_t dummy; /* an output for clobbered edx */
     char result;
-#   ifdef __PIC__
+#   if defined(__PIC__) && !(AO_GNUC_PREREQ(5, 1) || AO_CLANG_PREREQ(4, 0))
       AO_t saved_ebx;
 
+      /* The following applies to an ancient GCC (and, probably, it was   */
+      /* never needed for Clang):                                         */
       /* If PIC is turned on, we cannot use ebx as it is reserved for the */
       /* GOT pointer.  We should save and restore ebx.  The proposed      */
       /* solution is not so efficient as the older alternatives using     */
@@ -503,7 +505,9 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old_val,
 #     endif
 #   else
       /* For non-PIC mode, this operation could be simplified (and be   */
-      /* faster) by using ebx as new_val1 (GCC would refuse to compile  */
+      /* faster) by using ebx as new_val1.  Reuse of the PIC hard       */
+      /* register, instead of using a fixed register, is implemented    */
+      /* in Clang and GCC 5.1+, at least. (Older GCC refused to compile */
       /* such code for PIC mode).                                       */
       __asm__ __volatile__ ("lock; cmpxchg8b %0; setz %1"
                         : "+m" (*addr), "=a" (result), "=d" (dummy)
