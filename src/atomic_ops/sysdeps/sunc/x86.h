@@ -124,41 +124,4 @@ AO_compare_and_swap_full (volatile AO_t *addr, AO_t old, AO_t new_val)
 }
 #define AO_HAVE_compare_and_swap_full
 
-#if 0
-/* FIXME: not tested (and probably wrong). Besides,     */
-/* it tickles a bug in Sun C 5.10 (when optimizing).    */
-/* Returns nonzero if the comparison succeeded. */
-/* Really requires at least a Pentium.          */
-AO_INLINE int
-AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
-                                       AO_t old_val1, AO_t old_val2,
-                                       AO_t new_val1, AO_t new_val2)
-{
-  char result;
-#if __PIC__
-  /* If PIC is turned on, we can't use %ebx as it is reserved for the
-     GOT pointer.  We can save and restore %ebx because GCC won't be
-     using it for anything else (such as any of the m operands) */
-  __asm__ __volatile__("pushl %%ebx;"   /* save ebx used for PIC GOT ptr */
-                       "movl %6,%%ebx;" /* move new_val1 to %ebx */
-                       "lock; cmpxchg8b %0; setz %1;"
-                       "pop %%ebx;"     /* restore %ebx */
-                       : "=m"(*addr), "=a"(result)
-                       : "m"(*addr), "d" (old_val2), "a" (old_val1),
-                         "c" (new_val2), "m" (new_val1) : "memory");
-#else
-  /* We can't just do the same thing in non-PIC mode, because GCC
-   * might be using %ebx as the memory operand.  We could have ifdef'd
-   * in a clobber, but there's no point doing the push/pop if we don't
-   * have to. */
-  __asm__ __volatile__("lock; cmpxchg8b %0; setz %1;"
-                       : "=m"(*addr), "=a"(result)
-                       : /* "m"(*addr), */ "d" (old_val2), "a" (old_val1),
-                         "c" (new_val2), "b" (new_val1) : "memory");
-#endif
-  return (int) result;
-}
-#define AO_HAVE_compare_double_and_swap_double_full
-#endif
-
 #include "../ao_t_is_int.h"

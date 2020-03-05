@@ -142,9 +142,11 @@ AO_compare_double_and_swap_double_full(volatile AO_double_t *addr,
                                        AO_t old_val1, AO_t old_val2,
                                        AO_t new_val1, AO_t new_val2)
 {
+  AO_t dummy; /* an output for clobbered rdx */
   char result;
+
   __asm__ __volatile__("lock; cmpxchg16b %0; setz %1"
-                       : "=m"(*addr), "=a"(result)
+                       : "=m" (*addr), "=a" (result), "=d" (dummy)
                        : "m"(*addr), "d" (old_val2), "a" (old_val1),
                          "c" (new_val2), "b" (new_val1) : "memory");
   return (int) result;
