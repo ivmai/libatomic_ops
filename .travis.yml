@@ -15,6 +15,7 @@ matrix:
     env:
     - MAKEFILE_TARGET=distcheck
     - AO_REAL_VERSION=7.2i
+    - AUTOMAKE_VER=1.14.1
   - os: linux
     env:
     - MAKEFILE_TARGET=dist
@@ -27,6 +28,14 @@ matrix:
     compiler: musl-gcc
 
 before_install:
+- if [[ "$AUTOMAKE_VER" != "" ]]; then
+    GNUTOOLS_ROOT=`pwd`/../gnu-tools;
+    export PATH=$GNUTOOLS_ROOT/bin:$PATH;
+    GNU_DOWNLOAD_SITE=https://ftp.gnu.org/gnu;
+    AUTOMAKE_XZ_URL=$GNU_DOWNLOAD_SITE/automake/automake-$AUTOMAKE_VER.tar.xz;
+    wget -O - $AUTOMAKE_XZ_URL | tar xf - --xz --directory ~;
+    (cd ~/automake-$AUTOMAKE_VER && ./configure --prefix=$GNUTOOLS_ROOT && make -j && make install);
+  fi
 - if [[ "$MAKEFILE_TARGET" == "dist"* ]]; then
     autoconf --version;
     automake --version;
