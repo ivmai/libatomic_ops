@@ -1,6 +1,7 @@
 
 == [7.4.16] (not released yet) ==
 
+* Fix gcc/sunc x86 AO_compare_double_and_swap_double missing side effect
 * Fix library name in README_details
 
 
@@ -224,6 +225,8 @@ Also, includes 7.2 changes
 == [7.2j] (not released yet) ==
 
 * Fix a typo in arm_v6.h
+* Fix asm constraints of primitives in sunc/x86_64.h
+* Fix gcc/sunc x86 AO_compare_double_and_swap_double missing side effect
 * Fix library name in README details
 
 
