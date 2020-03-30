@@ -1,28 +1,24 @@
 dist: xenial
 language: c
+os: linux
 
 jobs:
   include:
-  - os: linux
-    compiler: clang
+  - compiler: clang
     env:
     - WORKAROUND_ACLOCAL_MISSING=true
-  - os: linux
-    compiler: gcc
+  - compiler: gcc
     env:
     - WORKAROUND_ACLOCAL_MISSING=true
   - os: osx
-  - os: linux
-    env:
+  - env:
     - MAKEFILE_TARGET=distcheck
     - AO_REAL_VERSION=7.2i
     - AUTOMAKE_VER=1.14.1
-  - os: linux
-    env:
+  - env:
     - MAKEFILE_TARGET=dist
     - WORKAROUND_ACLOCAL_MISSING=true
-  - os: linux
-    addons:
+  - addons:
       apt:
         packages:
         - musl-tools
