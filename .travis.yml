@@ -1,29 +1,24 @@
 dist: xenial
 language: c
+os: linux
 
 jobs:
   include:
-  - os: linux
-    compiler: clang
-  - os: linux
-    compiler: gcc
+  - compiler: clang
+  - compiler: gcc
   - os: osx
-  - os: linux
-    env:
+  - env:
     - MAKEFILE_TARGET=distcheck
     - AUTOMAKE_VER=1.15
     - M4_VER=1.4.18
     - LIBTOOL_VER=2.4.6
-  - os: linux
-    env:
+  - env:
     - MAKEFILE_TARGET=dist
-  - os: linux
-    compiler: clang
+  - compiler: clang
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
     - CONF_OPTIONS="--enable-assertions"
-  - os: linux
-    compiler: gcc
+  - compiler: gcc
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
     - CONF_OPTIONS="--enable-assertions"
@@ -31,16 +26,13 @@ jobs:
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
     - CONF_OPTIONS="--enable-assertions"
-  - os: linux
-    compiler: clang
+  - compiler: clang
     env:
     - CFLAGS_EXTRA="-march=native -std=c11"
-  - os: linux
-    compiler: gcc
+  - compiler: gcc
     env:
     - CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=2 -std=c89"
-  - os: linux
-    addons:
+  - addons:
       apt:
         packages:
         - gcc-multilib
@@ -48,8 +40,7 @@ jobs:
     env:
     - CFLAGS_EXTRA="-m32 -march=native"
     - CONF_OPTIONS="--enable-assertions"
-  - os: linux
-    addons:
+  - addons:
       apt:
         packages:
         - gcc-multilib
@@ -61,18 +52,15 @@ jobs:
     env:
     - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions"
-  - os: linux
-    compiler: gcc
+  - compiler: gcc
     env:
     - CFLAGS_EXTRA="-D AO_GENERALIZE_ASM_BOOL_CAS -D AO_USE_NANOSLEEP -D AO_USE_NO_SIGNALS"
     - CONF_OPTIONS="--enable-assertions"
-  - os: linux
-    compiler: clang
+  - compiler: clang
     env:
     - CFLAGS_EXTRA="-D AO_USE_PTHREAD_DEFS"
     - CONF_OPTIONS="--enable-assertions"
-  - os: linux
-    addons:
+  - addons:
       apt:
         packages:
         - gcc-5
@@ -83,8 +71,7 @@ jobs:
     env:
     - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
-  - os: linux
-    addons:
+  - addons:
       apt:
         packages:
         - musl-tools
@@ -92,8 +79,7 @@ jobs:
     env:
     - CFLAGS_EXTRA="-march=native"
     - CONF_OPTIONS="--enable-assertions"
-  - os: linux
-    addons:
+  - addons:
       apt:
         packages:
         - gcc-mingw-w64
@@ -101,8 +87,7 @@ jobs:
     env:
     - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared"
     - MAKEFILE_TARGET=all
-  - os: linux
-    addons:
+  - addons:
       apt:
         packages:
         - gcc-mingw-w64
