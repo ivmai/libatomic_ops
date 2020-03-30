@@ -283,14 +283,46 @@ matrix:
     env:
     - CONF_OPTIONS="--host=i686-w64-mingw32"
     - MAKEFILE_TARGET=all
-  - os: linux
-    addons:
-      apt:
-        packages:
-        - gcc-multilib
+  - arch: arm64
+    compiler: clang
     env:
-    - CROSS_GCC_VER=8.1.0
-    - NOLIBC_ARCH_ABI=aarch64-linux
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions"
+    - TESTS_CUSTOM_RUN=true
+  - arch: arm64
+    compiler: gcc
+  - arch: arm64
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-O3 -march=native"
+    - CONF_OPTIONS="--enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - arch: ppc64le
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - arch: ppc64le
+    compiler: gcc
+  - arch: ppc64le
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
+  - arch: s390x
+    compiler: clang
+  - arch: s390x
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - arch: s390x
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
   - os: linux
     addons:
       apt:
@@ -440,15 +472,6 @@ matrix:
         packages:
         - gcc-multilib
     env:
-    - CROSS_GCC_VER=4.9.0
-    - NOLIBC_ARCH_ABI=ppc64le-linux
-    - NOLIBC_DELIM=_
-  - os: linux
-    addons:
-      apt:
-        packages:
-        - gcc-multilib
-    env:
     - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=riscv32-linux
   - os: linux
@@ -467,15 +490,6 @@ matrix:
     env:
     - CROSS_GCC_VER=8.1.0
     - NOLIBC_ARCH_ABI=s390-linux
-  - os: linux
-    addons:
-      apt:
-        packages:
-        - gcc-multilib
-    env:
-    - CROSS_GCC_VER=4.9.0
-    - NOLIBC_ARCH_ABI=s390x-linux
-    - NOLIBC_DELIM=_
   - os: linux
     addons:
       apt:
