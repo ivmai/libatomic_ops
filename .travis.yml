@@ -8,11 +8,6 @@ jobs:
   - compiler: gcc
   - os: osx
   - env:
-    - MAKEFILE_TARGET=distcheck
-    - AUTOMAKE_VER=1.15
-    - M4_VER=1.4.18
-    - LIBTOOL_VER=2.4.6
-  - env:
     - MAKEFILE_TARGET=dist
   - compiler: clang
     env:
@@ -386,6 +381,11 @@ jobs:
     env:
     - CROSS_GCC_VER=4.6.2
     - NOLIBC_ARCH_ABI=tilegx-linux
+  - env:
+    - MAKEFILE_TARGET=distcheck
+    - AUTOMAKE_VER=1.15
+    - M4_VER=1.4.18
+    - LIBTOOL_VER=2.4.6
 
 before_install:
 - if [[ "$CROSS_GCC_VER" != "" ]]; then
@@ -464,8 +464,7 @@ after_success:
 
 deploy:
   provider: releases
-  api_key:
-    secure: wDAkRwV0lFrzLqdMhrnzD+fVZDODB32q2riJKXKZ3eC70VdliJzX59G60iJqIdN6YSSGGjpDTcaKTmim/T1zgAW+UIcXvpveX3jtocmsJJemZyFKAT++hHbeakNr4Mhgs0ddv3+JsgX375KOmL+ZkUzW0+5uIf9CXK80kE5v6E6p5LC6+Jg8Tqj2uSmUDfrYCFdIDQ901vAjxdPbFsFL8STy0ahBhUCrTThi9emAMR2vBwxf+0We58la936hMFmXs320ZtYN4fksuxNMgQu/3HL/UZIINT2IXgstWiNoU3yK6Z5IvOKWw0iPLMg7SS6L4WYJTu4Z26YnIlJ8XM3f7hO+c+jdffup59O1oklCl6JwlbqNFWtZhfJ+TW8fX8rpsvZIovBI4oOsZthpMNcvb3ZZ6UczUbhaInCvcYl5aTw/8K63Vh2HhKTFdMYMLn1X+qNIfXyKRL15C8VZOHB3Os14G03FNPlTqFE4IRnU3TyXTKBIwYOXf5Nb7fmOYZ11lHejco3rE0n3MiqIL0QJAAwExozV6Af/aJefyTWqfycgaGEfUzBQQpcMVlrDJg1I+LU7vExYYYYYoVPCKHn3CDsmdftUpJcPeKMHuasrfp54RBnY+B9s+hJQRtA7C70JbtoJpC+nxfwIzprBkdLudD+mI52zgFmU7JC1UeWDBik=
+  edge: true
   file: libatomic_ops-*.tar.gz
   file_glob: true
   on:
