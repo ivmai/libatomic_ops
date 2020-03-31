@@ -1,7 +1,7 @@
 language: c
 os: linux
 
-matrix:
+jobs:
   include:
   - compiler: clang
   - compiler: gcc
