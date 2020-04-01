@@ -258,7 +258,6 @@ jobs:
     env:
     - CFLAGS_EXTRA="-O3"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
-    - TESTS_CUSTOM_RUN=true
   - arch: ppc64le
     compiler: gcc
   - arch: ppc64le
@@ -278,6 +277,11 @@ jobs:
     compiler: gcc
     env:
     - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
+  - arch: s390x
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-D AO_DISABLE_GCC_ATOMICS"
     - TESTS_CUSTOM_RUN=true
   - addons:
       apt:
