@@ -98,50 +98,50 @@ jobs:
   - addons:
       apt:
         packages:
-        - gcc-8
+        - gcc-9
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-8
+    compiler: gcc-9
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - addons:
       apt:
         packages:
-        - gcc-8
+        - gcc-9
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-8
+    compiler: gcc-9
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - addons:
       apt:
         packages:
-        - gcc-8
-        - gcc-8-multilib
+        - gcc-9
+        - gcc-9-multilib
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-8
+    compiler: gcc-9
     env:
     - CFLAGS_EXTRA="-m32 -O3 -march=native"
   - addons:
       apt:
         packages:
-        - gcc-8
-        - gcc-8-multilib
+        - gcc-9
+        - gcc-9-multilib
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-8
+    compiler: gcc-9
     env:
     - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
   - addons:
       apt:
         packages:
-        - gcc-8
-        - gcc-8-multilib
+        - gcc-9
+        - gcc-9-multilib
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-8
+    compiler: gcc-9
     env:
     - CFLAGS_EXTRA="-mx32 -march=native"
     - CONF_OPTIONS="--disable-atomic-intrinsics --disable-docs"
@@ -160,11 +160,11 @@ jobs:
   - addons:
       apt:
         packages:
-        - gcc-8
-        - gcc-8-multilib
+        - gcc-9
+        - gcc-9-multilib
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-8
+    compiler: gcc-9
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -march=native -fno-omit-frame-pointer"
     - LDFLAGS="-fuse-ld=gold"
