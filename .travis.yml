@@ -241,47 +241,103 @@ jobs:
     - MAKEFILE_TARGET=all
   - arch: arm64
     compiler: clang
+  - arch: arm64
+    compiler: gcc
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: clang-8
     env:
     - CFLAGS_EXTRA="-O3"
     - CONF_OPTIONS="--enable-assertions"
     - TESTS_CUSTOM_RUN=true
-  - arch: arm64
-    compiler: gcc
-  - arch: arm64
-    compiler: gcc
+  - addons:
+      apt:
+        packages:
+        - gcc-9
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: gcc-9
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
     - CONF_OPTIONS="--enable-shared"
     - TESTS_CUSTOM_RUN=true
   - arch: ppc64le
     compiler: clang
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions --enable-shared"
   - arch: ppc64le
     compiler: gcc
   - arch: ppc64le
-    compiler: gcc
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - TESTS_CUSTOM_RUN=true
-  - arch: s390x
-    compiler: clang
-  - arch: s390x
     compiler: clang
     env:
     - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - CONF_OPTIONS="--enable-assertions --disable-atomic-intrinsics"
     - TESTS_CUSTOM_RUN=true
-  - arch: s390x
+  - arch: ppc64le
     compiler: gcc
     env:
     - CFLAGS_EXTRA="-O3"
-    - TESTS_CUSTOM_RUN=true
-  - arch: s390x
-    compiler: gcc
-    env:
     - CONF_OPTIONS="--disable-atomic-intrinsics"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: ppc64le
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - gcc-9
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: ppc64le
+    compiler: gcc-9
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
+  - arch: s390x
+    compiler: clang
+  - arch: s390x
+    compiler: gcc
+  - arch: s390x
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --disable-atomic-intrinsics"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: s390x
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - gcc-9
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: s390x
+    compiler: gcc-9
+    env:
+    - CFLAGS_EXTRA="-O3"
     - TESTS_CUSTOM_RUN=true
   - addons:
       apt:
