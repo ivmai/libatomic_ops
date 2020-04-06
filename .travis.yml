@@ -98,6 +98,17 @@ jobs:
   - addons:
       apt:
         packages:
+        - clang-9
+        sources:
+        - ubuntu-toolchain-r-test
+        - sourceline: "deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main"
+          key_url: https://apt.llvm.org/llvm-snapshot.gpg.key
+    compiler: clang-9
+    env:
+    - CFLAGS_EXTRA="-O3 -march=native"
+  - addons:
+      apt:
+        packages:
         - gcc-9
         sources:
         - ubuntu-toolchain-r-test
@@ -145,11 +156,27 @@ jobs:
     env:
     - CFLAGS_EXTRA="-mx32 -march=native"
     - CONF_OPTIONS="--disable-atomic-intrinsics --disable-docs"
-  - compiler: clang
+  - addons:
+      apt:
+        packages:
+        - clang-9
+        sources:
+        - ubuntu-toolchain-r-test
+        - sourceline: "deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main"
+          key_url: https://apt.llvm.org/llvm-snapshot.gpg.key
+    compiler: clang-9
     env:
     - CFLAGS_EXTRA="-fsanitize=address -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
-  - compiler: clang
+  - addons:
+      apt:
+        packages:
+        - clang-9
+        sources:
+        - ubuntu-toolchain-r-test
+        - sourceline: "deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main"
+          key_url: https://apt.llvm.org/llvm-snapshot.gpg.key
+    compiler: clang-9
     env:
     - CFLAGS_EXTRA="-fsanitize=address -march=native -fno-common -fno-omit-frame-pointer"
     - CONF_OPTIONS="--enable-assertions"
@@ -171,14 +198,30 @@ jobs:
   - os: osx
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -fno-omit-frame-pointer"
-  - compiler: clang
+  - addons:
+      apt:
+        packages:
+        - clang-9
+        sources:
+        - ubuntu-toolchain-r-test
+        - sourceline: "deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main"
+          key_url: https://apt.llvm.org/llvm-snapshot.gpg.key
+    compiler: clang-9
     env:
     - CFLAGS_EXTRA="-fsanitize=memory,undefined -march=native -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
   - compiler: clang
     env:
     - CFLAGS_EXTRA="-fsanitize=thread -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
-  - compiler: clang
+  - addons:
+      apt:
+        packages:
+        - clang-9
+        sources:
+        - ubuntu-toolchain-r-test
+        - sourceline: "deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main"
+          key_url: https://apt.llvm.org/llvm-snapshot.gpg.key
+    compiler: clang-9
     env:
     - CFLAGS_EXTRA="-fsanitize=thread -march=native -fno-omit-frame-pointer"
     - CONF_OPTIONS="--enable-assertions"
