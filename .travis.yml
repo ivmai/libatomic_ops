@@ -353,12 +353,6 @@ jobs:
     compiler: clang
   - arch: s390x
     compiler: gcc
-  - arch: s390x
-    compiler: gcc
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions --disable-atomic-intrinsics"
-    - TESTS_CUSTOM_RUN=true
   - addons:
       apt:
         packages:
