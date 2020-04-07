@@ -282,100 +282,6 @@ jobs:
     env:
     - CONF_OPTIONS="--host=i686-w64-mingw32"
     - MAKEFILE_TARGET=all
-  - arch: arm64
-    compiler: clang
-  - arch: arm64
-    compiler: gcc
-  - addons:
-      apt:
-        packages:
-        - clang-8
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: clang-8
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-9
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: gcc-9
-    env:
-    - CFLAGS_EXTRA="-O3 -march=native"
-    - CONF_OPTIONS="--enable-shared"
-    - TESTS_CUSTOM_RUN=true
-  - arch: ppc64le
-    compiler: clang
-  - arch: ppc64le
-    compiler: gcc
-  - arch: ppc64le
-    compiler: clang
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions --disable-atomic-intrinsics"
-    - TESTS_CUSTOM_RUN=true
-  - arch: ppc64le
-    compiler: gcc
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--disable-atomic-intrinsics"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - clang-8
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: ppc64le
-    compiler: clang-8
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions --enable-shared"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-9
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: ppc64le
-    compiler: gcc-9
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - TESTS_CUSTOM_RUN=true
-  - arch: s390x
-    compiler: clang
-  - arch: s390x
-    compiler: gcc
-  - addons:
-      apt:
-        packages:
-        - clang-8
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: s390x
-    compiler: clang-8
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions --enable-shared"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-9
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: s390x
-    compiler: gcc-9
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - TESTS_CUSTOM_RUN=true
   - addons:
       apt:
         packages:
@@ -565,6 +471,100 @@ jobs:
     - CROSS_GCC_VER=4.6.2
     - NOLIBC_ARCH_ABI=tilegx-linux
     - NOLIBC_DELIM=_
+  - arch: arm64
+    compiler: clang
+  - arch: arm64
+    compiler: gcc
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - gcc-9
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: gcc-9
+    env:
+    - CFLAGS_EXTRA="-O3 -march=native"
+    - CONF_OPTIONS="--enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - arch: ppc64le
+    compiler: clang
+  - arch: ppc64le
+    compiler: gcc
+  - arch: ppc64le
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --disable-atomic-intrinsics"
+    - TESTS_CUSTOM_RUN=true
+  - arch: ppc64le
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--disable-atomic-intrinsics"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: ppc64le
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - gcc-9
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: ppc64le
+    compiler: gcc-9
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
+  - arch: s390x
+    compiler: clang
+  - arch: s390x
+    compiler: gcc
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: s390x
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - gcc-9
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: s390x
+    compiler: gcc-9
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
   - env:
     - MAKEFILE_TARGET=distcheck
     - AUTOMAKE_VER=1.15
