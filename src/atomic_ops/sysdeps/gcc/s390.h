@@ -15,10 +15,10 @@
  *
  */
 
-#if AO_GNUC_PREREQ(5, 4) && defined(__s390x__) \
+#if (AO_GNUC_PREREQ(5, 4) || AO_CLANG_PREREQ(8, 0)) && defined(__s390x__) \
     && !defined(AO_DISABLE_GCC_ATOMICS)
-  /* Probably, it could be enabled for earlier gcc versions.    */
-  /* TODO: As of clang-3.8.0, an error occurs in backend for AtomicFence. */
+  /* Probably, it could be enabled for earlier clang/gcc versions.      */
+  /* But, e.g., clang-3.8.0 produces a backend error for AtomicFence.   */
 
 # include "generic.h"
 
