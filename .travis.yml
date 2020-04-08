@@ -490,6 +490,17 @@ jobs:
   - addons:
       apt:
         packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3 -D AO_AARCH64_ASM_LOAD_STORE_CAS -D AO_PREFER_BUILTIN_ATOMICS"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
         - gcc-9
         sources:
         - ubuntu-toolchain-r-test
@@ -498,6 +509,17 @@ jobs:
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
     - CONF_OPTIONS="--enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
   - arch: ppc64le
     compiler: clang
