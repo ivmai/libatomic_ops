@@ -521,6 +521,15 @@ jobs:
     env:
     - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - musl-tools
+    arch: arm64
+    compiler: musl-gcc
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
   - arch: ppc64le
     compiler: clang
   - arch: ppc64le
