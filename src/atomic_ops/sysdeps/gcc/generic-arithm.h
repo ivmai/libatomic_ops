@@ -15,6 +15,8 @@
  *
  */
 
+#ifndef AO_NO_char_ARITHM
+
 AO_INLINE unsigned/**/char
 AO_char_fetch_and_add(volatile unsigned/**/char *addr, unsigned/**/char incr)
 {
@@ -48,6 +50,8 @@ AO_char_fetch_and_add(volatile unsigned/**/char *addr, unsigned/**/char incr)
   }
 # define AO_HAVE_char_xor
 #endif
+
+#endif /* !AO_NO_char_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -64,6 +68,8 @@ AO_char_fetch_and_add(volatile unsigned/**/char *addr, unsigned/**/char incr)
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_short_ARITHM
 
 AO_INLINE unsigned/**/short
 AO_short_fetch_and_add(volatile unsigned/**/short *addr, unsigned/**/short incr)
@@ -98,6 +104,8 @@ AO_short_fetch_and_add(volatile unsigned/**/short *addr, unsigned/**/short incr)
   }
 # define AO_HAVE_short_xor
 #endif
+
+#endif /* !AO_NO_short_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -114,6 +122,8 @@ AO_short_fetch_and_add(volatile unsigned/**/short *addr, unsigned/**/short incr)
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_int_ARITHM
 
 AO_INLINE unsigned
 AO_int_fetch_and_add(volatile unsigned *addr, unsigned incr)
@@ -148,6 +158,8 @@ AO_int_fetch_and_add(volatile unsigned *addr, unsigned incr)
   }
 # define AO_HAVE_int_xor
 #endif
+
+#endif /* !AO_NO_int_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -164,6 +176,8 @@ AO_int_fetch_and_add(volatile unsigned *addr, unsigned incr)
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_ARITHM
 
 AO_INLINE AO_t
 AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
@@ -198,6 +212,8 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
   }
 # define AO_HAVE_xor
 #endif
+
+#endif /* !AO_NO_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -214,6 +230,8 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_char_ARITHM
 
 AO_INLINE unsigned/**/char
 AO_char_fetch_and_add_acquire(volatile unsigned/**/char *addr, unsigned/**/char incr)
@@ -248,6 +266,8 @@ AO_char_fetch_and_add_acquire(volatile unsigned/**/char *addr, unsigned/**/char 
   }
 # define AO_HAVE_char_xor_acquire
 #endif
+
+#endif /* !AO_NO_char_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -264,6 +284,8 @@ AO_char_fetch_and_add_acquire(volatile unsigned/**/char *addr, unsigned/**/char 
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_short_ARITHM
 
 AO_INLINE unsigned/**/short
 AO_short_fetch_and_add_acquire(volatile unsigned/**/short *addr, unsigned/**/short incr)
@@ -298,6 +320,8 @@ AO_short_fetch_and_add_acquire(volatile unsigned/**/short *addr, unsigned/**/sho
   }
 # define AO_HAVE_short_xor_acquire
 #endif
+
+#endif /* !AO_NO_short_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -314,6 +338,8 @@ AO_short_fetch_and_add_acquire(volatile unsigned/**/short *addr, unsigned/**/sho
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_int_ARITHM
 
 AO_INLINE unsigned
 AO_int_fetch_and_add_acquire(volatile unsigned *addr, unsigned incr)
@@ -348,6 +374,8 @@ AO_int_fetch_and_add_acquire(volatile unsigned *addr, unsigned incr)
   }
 # define AO_HAVE_int_xor_acquire
 #endif
+
+#endif /* !AO_NO_int_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -364,6 +392,8 @@ AO_int_fetch_and_add_acquire(volatile unsigned *addr, unsigned incr)
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_ARITHM
 
 AO_INLINE AO_t
 AO_fetch_and_add_acquire(volatile AO_t *addr, AO_t incr)
@@ -398,6 +428,8 @@ AO_fetch_and_add_acquire(volatile AO_t *addr, AO_t incr)
   }
 # define AO_HAVE_xor_acquire
 #endif
+
+#endif /* !AO_NO_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -414,6 +446,8 @@ AO_fetch_and_add_acquire(volatile AO_t *addr, AO_t incr)
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_char_ARITHM
 
 AO_INLINE unsigned/**/char
 AO_char_fetch_and_add_release(volatile unsigned/**/char *addr, unsigned/**/char incr)
@@ -448,6 +482,8 @@ AO_char_fetch_and_add_release(volatile unsigned/**/char *addr, unsigned/**/char 
   }
 # define AO_HAVE_char_xor_release
 #endif
+
+#endif /* !AO_NO_char_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -464,6 +500,8 @@ AO_char_fetch_and_add_release(volatile unsigned/**/char *addr, unsigned/**/char 
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_short_ARITHM
 
 AO_INLINE unsigned/**/short
 AO_short_fetch_and_add_release(volatile unsigned/**/short *addr, unsigned/**/short incr)
@@ -498,6 +536,8 @@ AO_short_fetch_and_add_release(volatile unsigned/**/short *addr, unsigned/**/sho
   }
 # define AO_HAVE_short_xor_release
 #endif
+
+#endif /* !AO_NO_short_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -514,6 +554,8 @@ AO_short_fetch_and_add_release(volatile unsigned/**/short *addr, unsigned/**/sho
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_int_ARITHM
 
 AO_INLINE unsigned
 AO_int_fetch_and_add_release(volatile unsigned *addr, unsigned incr)
@@ -548,6 +590,8 @@ AO_int_fetch_and_add_release(volatile unsigned *addr, unsigned incr)
   }
 # define AO_HAVE_int_xor_release
 #endif
+
+#endif /* !AO_NO_int_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -564,6 +608,8 @@ AO_int_fetch_and_add_release(volatile unsigned *addr, unsigned incr)
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_ARITHM
 
 AO_INLINE AO_t
 AO_fetch_and_add_release(volatile AO_t *addr, AO_t incr)
@@ -598,6 +644,8 @@ AO_fetch_and_add_release(volatile AO_t *addr, AO_t incr)
   }
 # define AO_HAVE_xor_release
 #endif
+
+#endif /* !AO_NO_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -614,6 +662,8 @@ AO_fetch_and_add_release(volatile AO_t *addr, AO_t incr)
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_char_ARITHM
 
 AO_INLINE unsigned/**/char
 AO_char_fetch_and_add_full(volatile unsigned/**/char *addr, unsigned/**/char incr)
@@ -648,6 +698,8 @@ AO_char_fetch_and_add_full(volatile unsigned/**/char *addr, unsigned/**/char inc
   }
 # define AO_HAVE_char_xor_full
 #endif
+
+#endif /* !AO_NO_char_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -664,6 +716,8 @@ AO_char_fetch_and_add_full(volatile unsigned/**/char *addr, unsigned/**/char inc
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_short_ARITHM
 
 AO_INLINE unsigned/**/short
 AO_short_fetch_and_add_full(volatile unsigned/**/short *addr, unsigned/**/short incr)
@@ -698,6 +752,8 @@ AO_short_fetch_and_add_full(volatile unsigned/**/short *addr, unsigned/**/short 
   }
 # define AO_HAVE_short_xor_full
 #endif
+
+#endif /* !AO_NO_short_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -714,6 +770,8 @@ AO_short_fetch_and_add_full(volatile unsigned/**/short *addr, unsigned/**/short 
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_int_ARITHM
 
 AO_INLINE unsigned
 AO_int_fetch_and_add_full(volatile unsigned *addr, unsigned incr)
@@ -748,6 +806,8 @@ AO_int_fetch_and_add_full(volatile unsigned *addr, unsigned incr)
   }
 # define AO_HAVE_int_xor_full
 #endif
+
+#endif /* !AO_NO_int_ARITHM */
 /*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -764,6 +824,8 @@ AO_int_fetch_and_add_full(volatile unsigned *addr, unsigned incr)
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef AO_NO_ARITHM
 
 AO_INLINE AO_t
 AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr)
@@ -798,3 +860,5 @@ AO_fetch_and_add_full(volatile AO_t *addr, AO_t incr)
   }
 # define AO_HAVE_xor_full
 #endif
+
+#endif /* !AO_NO_ARITHM */

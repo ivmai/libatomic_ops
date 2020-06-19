@@ -15,6 +15,8 @@
  *
  */
 
+#ifndef AO_NO_XSIZE_ARITHM
+
 AO_INLINE XCTYPE
 AO_XSIZE_fetch_and_add_XBAR(volatile XCTYPE *addr, XCTYPE incr)
 {
@@ -48,3 +50,5 @@ AO_XSIZE_fetch_and_add_XBAR(volatile XCTYPE *addr, XCTYPE incr)
   }
 # define AO_HAVE_XSIZE_xor_XBAR
 #endif
+
+#endif /* !AO_NO_XSIZE_ARITHM */
