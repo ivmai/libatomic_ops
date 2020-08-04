@@ -61,7 +61,21 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
 }
 #define AO_HAVE_compare_and_swap_full
 
-/* TODO: implement AO_fetch_compare_and_swap.   */
+AO_INLINE AO_t
+AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
+  __asm__ __volatile__ ("membar #StoreLoad | #LoadLoad\n\t"
+#                       if defined(__arch64__)
+                          "casx [%1],%2,%0\n\t"
+#                       else
+                          "cas [%1],%2,%0\n\t" /* 32-bit version */
+#                       endif
+                        "membar #StoreLoad | #StoreStore\n\t"
+                        : "+r" (new_val)
+                        : "r" (addr), "r" (old)
+                        : "memory");
+  return new_val;
+}
+#define AO_HAVE_fetch_compare_and_swap_full
 #endif /* !AO_NO_SPARC_V9 */
 
 /* TODO: Extend this for SPARC v8 and v9 (V8 also has swap, V9 has CAS, */
