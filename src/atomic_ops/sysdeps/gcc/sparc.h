@@ -41,7 +41,7 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
 /* Returns nonzero if the comparison succeeded. */
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
-  char ret;
+  AO_t ret;
   __asm__ __volatile__ ("membar #StoreLoad | #LoadLoad\n\t"
 #                       if defined(__arch64__)
                           "casx [%2],%0,%1\n\t"
