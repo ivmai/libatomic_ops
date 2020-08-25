@@ -337,6 +337,8 @@
 #   include "atomic_ops/sysdeps/gcc/riscv.h"
 # elif defined(__tile__)
 #   include "atomic_ops/sysdeps/gcc/tile.h"
+# elif defined(__arc__)
+#   include "atomic_ops/sysdeps/gcc/arc.h"
 # else /* etc. */
 #   include "atomic_ops/sysdeps/gcc/generic.h"
 # endif
