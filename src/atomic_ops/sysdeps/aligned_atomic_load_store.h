@@ -26,7 +26,13 @@
 AO_INLINE AO_t
 AO_load(const volatile AO_t *addr)
 {
+#if defined(__m68k__)
+  /* Even though AO_t is redefined in m68k.h, some clients use AO       */
+  /* pointer size primitives to access variables not declared as AO_t.  */
+  /* Such variables may have 2-byte alignment, while their sizeof is 4. */
+#else
   assert(((size_t)addr & (sizeof(AO_t) - 1)) == 0);
+#endif
   /* Cast away the volatile for architectures where             */
   /* volatile adds barrier semantics.                           */
   return *(AO_t *)addr;
@@ -36,7 +42,9 @@ AO_load(const volatile AO_t *addr)
 AO_INLINE void
 AO_store(volatile AO_t *addr, AO_t new_val)
 {
+#if !defined(__m68k__)
   assert(((size_t)addr & (sizeof(AO_t) - 1)) == 0);
+#endif
   (*(AO_t *)addr) = new_val;
 }
 #define AO_HAVE_store
