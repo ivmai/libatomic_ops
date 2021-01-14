@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
- * Copyright (c) 2008-2018 Ivan Maidanski
+ * Copyright (c) 2008-2021 Ivan Maidanski
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -230,6 +230,18 @@
 #   define AO_ATTR_NO_SANITIZE_THREAD __attribute__((no_sanitize_thread))
 # endif
 #endif /* !AO_ATTR_NO_SANITIZE_THREAD */
+
+#if (AO_GNUC_PREREQ(4, 3) || __STDC_VERSION__ >= 201112L) && !defined(LINT2)
+# define AO_ALIGNOF_SUPPORTED 1
+#endif
+
+#ifdef AO_ALIGNOF_SUPPORTED
+# define AO_ASSERT_ADDR_ALIGNED(addr) \
+    assert(((size_t)(addr) & (__alignof__(*(addr)) - 1)) == 0)
+#else
+# define AO_ASSERT_ADDR_ALIGNED(addr) \
+    assert(((size_t)(addr) & (sizeof(*(addr)) - 1)) == 0)
+#endif /* !AO_ALIGNOF_SUPPORTED */
 
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER)
 # define AO_compiler_barrier() __asm__ __volatile__("" : : : "memory")
