@@ -99,7 +99,7 @@ GitHub.
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 1999-2011 Hewlett-Packard Development Company, L.P.
- * Copyright (c) 2008-2019 Ivan Maidanski
+ * Copyright (c) 2008-2021 Ivan Maidanski
 
 The file armcc/arm_v6.h is also
 
@@ -117,4 +117,4 @@ The file gcc/sh.h is
 
  * Copyright (c) 2009 by Takashi YOSHII. All rights reserved.
 
-See doc/LICENSING.txt for the details.
+See [LICENSING.txt](doc/LICENSING.txt) for the details.
