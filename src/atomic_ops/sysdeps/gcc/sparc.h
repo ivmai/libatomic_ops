@@ -38,6 +38,8 @@ AO_test_and_set_full(volatile AO_TS_t *addr) {
 #define AO_HAVE_test_and_set_full
 
 #ifndef AO_NO_SPARC_V9
+
+# ifndef AO_GENERALIZE_ASM_BOOL_CAS
 /* Returns nonzero if the comparison succeeded. */
 AO_INLINE int
 AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
@@ -59,7 +61,8 @@ AO_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
                         : "memory", "cc");
   return (int)ret;
 }
-#define AO_HAVE_compare_and_swap_full
+#   define AO_HAVE_compare_and_swap_full
+# endif /* !AO_GENERALIZE_ASM_BOOL_CAS */
 
 AO_INLINE AO_t
 AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
@@ -76,6 +79,7 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
   return new_val;
 }
 #define AO_HAVE_fetch_compare_and_swap_full
+
 #endif /* !AO_NO_SPARC_V9 */
 
 /* TODO: Extend this for SPARC v8 and v9 (V8 also has swap, V9 has CAS, */
