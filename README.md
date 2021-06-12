@@ -14,7 +14,6 @@ IN NEW CODE, PLEASE USE C11 OR C++14 STANDARD ATOMICS INSTEAD OF THIS PACKAGE.
 [![Lines of code](https://img.shields.io/tokei/lines/github/ivmai/libatomic_ops)]()
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ivmai/libatomic_ops)]()
 [![Github All Releases](https://img.shields.io/github/downloads/ivmai/libatomic_ops/total.svg)]()
-[![HitCount](https://hits.dwyl.com/ivmai/libatomic_ops.svg)](https://hits.dwyl.com)
 
 This is version 7.7.0 (next release development) of libatomic_ops.
 
