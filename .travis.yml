@@ -236,6 +236,8 @@ jobs:
     compiler: gcc
     env:
     - CONF_OPTIONS="--enable-gcov --enable-shared"
+    - CC_FOR_CHECK=gcc
+    - MAKEFILE_TARGET=all
     - REPORT_COVERAGE=true
     - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE"
   - env:
