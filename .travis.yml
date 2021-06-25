@@ -19,6 +19,153 @@ jobs:
         build_command: make -j check CFLAGS_EXTRA=-DLINT2
   - env:
     - MAKEFILE_TARGET=dist
+  - addons:
+      apt:
+        packages:
+        - lcov
+    compiler: gcc
+    env:
+    - CONF_OPTIONS="--enable-gcov --enable-shared"
+    - CC_FOR_CHECK=gcc
+    - MAKEFILE_TARGET=all
+    - REPORT_COVERAGE=true
+    - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE"
+  - env:
+    - CPPCHECK_ENABLE="-j16 -q --enable=information,performance,portability,style,warning"
+    - MAKEFILE_TARGET=all
+  - env:
+    - CPPCHECK_ENABLE="-q --enable=unusedFunction -D AO_TEST_EMULATION"
+    - MAKEFILE_TARGET=all
+  - compiler: clang
+    env:
+    - CSA_CHECK=true
+    - MAKEFILE_TARGET=all
+    - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D HAVE_MMAP -D VERBOSE"
+  - arch: arm64
+    compiler: clang
+  - arch: arm64
+    compiler: gcc
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3 -D AO_AARCH64_ASM_LOAD_STORE_CAS -D AO_PREFER_BUILTIN_ATOMICS"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - gcc-9
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: gcc-9
+    env:
+    - CFLAGS_EXTRA="-O3 -march=native"
+    - CONF_OPTIONS="--enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: arm64
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - musl-tools
+    arch: arm64
+    compiler: musl-gcc
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
+  - arch: ppc64le
+    compiler: clang
+  - arch: ppc64le
+    compiler: gcc
+  - arch: ppc64le
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --disable-atomic-intrinsics"
+    - TESTS_CUSTOM_RUN=true
+  - arch: ppc64le
+    compiler: gcc
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--disable-atomic-intrinsics"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: ppc64le
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - gcc-9
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: ppc64le
+    compiler: gcc-9
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
+  - arch: s390x
+    compiler: clang
+  - arch: s390x
+    compiler: gcc
+  - addons:
+      apt:
+        packages:
+        - clang-8
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: s390x
+    compiler: clang-8
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - CONF_OPTIONS="--enable-assertions --enable-shared"
+    - TESTS_CUSTOM_RUN=true
+  - addons:
+      apt:
+        packages:
+        - gcc-9
+        sources:
+        - ubuntu-toolchain-r-test
+    arch: s390x
+    compiler: gcc-9
+    env:
+    - CFLAGS_EXTRA="-O3"
+    - TESTS_CUSTOM_RUN=true
   - compiler: clang
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
@@ -229,28 +376,6 @@ jobs:
     env:
     - CONF_OPTIONS="--disable-atomic-intrinsics"
     - CFLAGS_EXTRA="-march=native"
-  - addons:
-      apt:
-        packages:
-        - lcov
-    compiler: gcc
-    env:
-    - CONF_OPTIONS="--enable-gcov --enable-shared"
-    - CC_FOR_CHECK=gcc
-    - MAKEFILE_TARGET=all
-    - REPORT_COVERAGE=true
-    - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE"
-  - env:
-    - CPPCHECK_ENABLE="-j16 -q --enable=information,performance,portability,style,warning"
-    - MAKEFILE_TARGET=all
-  - env:
-    - CPPCHECK_ENABLE="-q --enable=unusedFunction -D AO_TEST_EMULATION"
-    - MAKEFILE_TARGET=all
-  - compiler: clang
-    env:
-    - CSA_CHECK=true
-    - MAKEFILE_TARGET=all
-    - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D HAVE_MMAP -D VERBOSE"
   - compiler: clang
     env:
     - CFLAGS_EXTRA="-x c++ -march=native -D VERBOSE"
@@ -473,131 +598,6 @@ jobs:
     - CROSS_GCC_VER=4.6.2
     - NOLIBC_ARCH_ABI=tilegx-linux
     - NOLIBC_DELIM=_
-  - arch: arm64
-    compiler: clang
-  - arch: arm64
-    compiler: gcc
-  - addons:
-      apt:
-        packages:
-        - clang-8
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: clang-8
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - clang-8
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: clang-8
-    env:
-    - CFLAGS_EXTRA="-O3 -D AO_AARCH64_ASM_LOAD_STORE_CAS -D AO_PREFER_BUILTIN_ATOMICS"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-9
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: gcc-9
-    env:
-    - CFLAGS_EXTRA="-O3 -march=native"
-    - CONF_OPTIONS="--enable-shared"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - clang-8
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: clang-8
-    env:
-    - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - musl-tools
-    arch: arm64
-    compiler: musl-gcc
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - TESTS_CUSTOM_RUN=true
-  - arch: ppc64le
-    compiler: clang
-  - arch: ppc64le
-    compiler: gcc
-  - arch: ppc64le
-    compiler: clang
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions --disable-atomic-intrinsics"
-    - TESTS_CUSTOM_RUN=true
-  - arch: ppc64le
-    compiler: gcc
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--disable-atomic-intrinsics"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - clang-8
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: ppc64le
-    compiler: clang-8
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions --enable-shared"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-9
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: ppc64le
-    compiler: gcc-9
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - TESTS_CUSTOM_RUN=true
-  - arch: s390x
-    compiler: clang
-  - arch: s390x
-    compiler: gcc
-  - addons:
-      apt:
-        packages:
-        - clang-8
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: s390x
-    compiler: clang-8
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions --enable-shared"
-    - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-9
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: s390x
-    compiler: gcc-9
-    env:
-    - CFLAGS_EXTRA="-O3"
-    - TESTS_CUSTOM_RUN=true
   - env:
     - MAKEFILE_TARGET=distcheck
     - AUTOMAKE_VER=1.15
