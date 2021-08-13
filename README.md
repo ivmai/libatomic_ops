@@ -11,9 +11,9 @@ IN NEW CODE, PLEASE USE C11 OR C++14 STANDARD ATOMICS INSTEAD OF THIS PACKAGE.
 [![LGTM Total Alerts](https://img.shields.io/lgtm/alerts/g/ivmai/libatomic_ops.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ivmai/libatomic_ops/alerts)
 
 [![Hits-of-Code](https://hitsofcode.com/github/ivmai/libatomic_ops?branch=master)](https://hitsofcode.com/github/ivmai/libatomic_ops/view)
-[![Lines of code](https://img.shields.io/tokei/lines/github/ivmai/libatomic_ops)]()
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ivmai/libatomic_ops)]()
-[![Github All Releases](https://img.shields.io/github/downloads/ivmai/libatomic_ops/total.svg)]()
+[![Lines of code](https://img.shields.io/tokei/lines/github/ivmai/libatomic_ops)](https://shields.io/category/size)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ivmai/libatomic_ops)](https://shields.io/category/size)
+[![Github All Releases](https://img.shields.io/github/downloads/ivmai/libatomic_ops/total.svg)](https://shields.io/category/downloads)
 
 This is version 7.7.0 (next release development) of libatomic_ops.
 
