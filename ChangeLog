@@ -169,6 +169,8 @@ Also, includes 7.4.6 changes
 
 * Fix gcc/sunc x86 AO_compare_double_and_swap_double missing side effect
 * Fix library name in README_details
+* Fix size of local variable passed to cas[x] (gcc/sparc)
+* Workaround assertion violation in AO_load/store on m68k
 
 
 == [7.4.14] 2019-03-01 ==
@@ -394,6 +396,8 @@ Also, includes 7.2 changes
 * Fix asm constraints of primitives in sunc/x86_64.h
 * Fix gcc/sunc x86 AO_compare_double_and_swap_double missing side effect
 * Fix library name in README details
+* Fix size of local variable passed to cas[x] (gcc/sparc)
+* Workaround assertion violation in AO_load/store on m68k
 
 
 == [7.2i] 2017-12-21 ==
