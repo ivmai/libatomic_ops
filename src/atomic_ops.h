@@ -231,7 +231,7 @@
 # endif
 #endif /* !AO_ATTR_NO_SANITIZE_THREAD */
 
-#if (AO_GNUC_PREREQ(4, 3) || __STDC_VERSION__ >= 201112L) && !defined(LINT2)
+#if (AO_GNUC_PREREQ(7, 5) || __STDC_VERSION__ >= 201112L) && !defined(LINT2)
 # define AO_ALIGNOF_SUPPORTED 1
 #endif
 
