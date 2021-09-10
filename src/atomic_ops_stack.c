@@ -130,7 +130,7 @@ void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
 /* data race (reported by TSan) is OK because it results in a retry.    */
 #ifdef AO_THREAD_SANITIZER
   AO_ATTR_NO_SANITIZE_THREAD
-  static AO_t AO_load_next(volatile AO_t *first_ptr)
+  static AO_t AO_load_next(const volatile AO_t *first_ptr)
   {
     /* Assuming an architecture on which loads of word type are atomic. */
     /* AO_load cannot be used here because it cannot be instructed to   */
