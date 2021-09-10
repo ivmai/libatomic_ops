@@ -77,7 +77,7 @@ jobs:
     arch: arm64
     compiler: gcc-9
     env:
-    - CFLAGS_EXTRA="-O3 -march=native"
+    - CFLAGS_EXTRA="-O3 -march=armv8.2-a"
     - CONF_OPTIONS="--enable-shared"
     - TESTS_CUSTOM_RUN=true
   - addons:
