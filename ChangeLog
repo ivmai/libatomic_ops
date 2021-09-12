@@ -2,6 +2,7 @@
 == [7.6.12] (not released yet) ==
 
 * Allow to generalize bool-CAS for sparc (gcc)
+* Declare argument of AO_load_next with const in atomic_ops_stack
 * Describe double_compare_and_swap operation in README_details
 * Document CAS operations better in README_details
 * Fix gcc/sunc x86 AO_compare_double_and_swap_double missing side effect
