@@ -19,6 +19,8 @@ jobs:
         packages:
         - musl-tools
     compiler: musl-gcc
+    env:
+    - WORKAROUND_ACLOCAL_MISSING=true
   - env:
     - MAKEFILE_TARGET=distcheck
     - AO_REAL_VERSION=7.2j
