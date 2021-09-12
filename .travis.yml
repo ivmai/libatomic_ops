@@ -21,7 +21,7 @@ jobs:
     compiler: musl-gcc
   - env:
     - MAKEFILE_TARGET=distcheck
-    - AO_REAL_VERSION=7.2i
+    - AO_REAL_VERSION=7.2j
     - AUTOMAKE_VER=1.14.1
 
 before_install:

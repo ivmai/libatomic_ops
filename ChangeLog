@@ -1,3 +1,9 @@
+[7.2j]
+
+2021-09-12  Ivan Maidanski <ivmai@mail.ru>
+
+	* README: Bump version to 7.2j (rev. J).
+
 2021-01-12  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops/sysdeps/aligned_atomic_load_store.h (AO_load,
