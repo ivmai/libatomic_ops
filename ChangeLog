@@ -1,5 +1,5 @@
 
-== [7.6.12] (not released yet) ==
+== [7.6.12] 2021-09-13 ==
 
 * Allow to generalize bool-CAS for sparc (gcc)
 * Declare argument of AO_load_next with const in atomic_ops_stack
