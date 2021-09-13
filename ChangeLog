@@ -1,5 +1,5 @@
 
-== [7.4.16] (not released yet) ==
+== [7.4.16] 2021-09-13 ==
 
 * Fix gcc/sunc x86 AO_compare_double_and_swap_double missing side effect
 * Fix library name in README_details
