@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
- * Copyright (c) 2009-2017 Ivan Maidanski
+ * Copyright (c) 2009-2021 Ivan Maidanski
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +21,6 @@
  * SOFTWARE.
  */
 
-#ifndef AO_ASSUME_WINDOWS98
-  /* CAS is always available */
-# define AO_ASSUME_WINDOWS98
-#endif
-#include "common32_defs.h"
-
 #include "../test_and_set_t_is_ao_t.h"
 /* AO_test_and_set_full() is emulated using CAS.                        */
 
@@ -35,6 +29,14 @@
 /* It is assumed that Windows interrupt handlers clear the LL/SC flag.  */
 /* Unaligned accesses are not guaranteed to be atomic.                  */
 #include "../all_aligned_atomic_load_store.h"
+
+#define AO_T_IS_INT
+
+#ifndef AO_ASSUME_WINDOWS98
+  /* CAS is always available */
+# define AO_ASSUME_WINDOWS98
+#endif
+#include "common32_defs.h"
 
 /* If only a single processor is used, we can define AO_UNIPROCESSOR.   */
 #ifdef AO_UNIPROCESSOR
@@ -58,5 +60,3 @@
 /* TODO: implement AO_test_and_set_full using SWP.      */
 
 #endif /* _M_ARM < 6 */
-
-#define AO_T_IS_INT

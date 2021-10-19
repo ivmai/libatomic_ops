@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2003 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2009-2021 Ivan Maidanski
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +33,8 @@
    /* Visual Studio 2005 (MS VC++ 8.0) discontinued support of Windows 95. */
 # define AO_ASSUME_WINDOWS98
 #endif
+
+#define AO_T_IS_INT
 
 #ifndef AO_USE_INTERLOCKED_INTRINSICS
   /* _Interlocked primitives (Inc, Dec, Xchg, Add) are always available */
@@ -133,8 +136,6 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
   }
 # define AO_HAVE_double_compare_and_swap_full
 #endif /* AO_ASSUME_VISTA */
-
-#define AO_T_IS_INT
 
 /* Real X86 implementations, except for some old WinChips, appear       */
 /* to enforce ordering between memory operations, EXCEPT that a later   */
