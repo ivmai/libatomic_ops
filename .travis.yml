@@ -73,11 +73,12 @@ jobs:
   - addons:
       apt:
         packages:
-        - gcc-9
+        - gcc-11
         sources:
         - ubuntu-toolchain-r-test
     arch: arm64
-    compiler: gcc-9
+    compiler: gcc-11
+    dist: bionic
     env:
     - CFLAGS_EXTRA="-O3 -march=armv8.2-a"
     - CONF_OPTIONS="--enable-shared"
@@ -135,11 +136,12 @@ jobs:
   - addons:
       apt:
         packages:
-        - gcc-9
+        - gcc-11
         sources:
         - ubuntu-toolchain-r-test
     arch: ppc64le
-    compiler: gcc-9
+    compiler: gcc-11
+    dist: bionic
     env:
     - CFLAGS_EXTRA="-O3"
     - TESTS_CUSTOM_RUN=true
@@ -163,11 +165,12 @@ jobs:
   - addons:
       apt:
         packages:
-        - gcc-9
+        - gcc-11
         sources:
         - ubuntu-toolchain-r-test
     arch: s390x
-    compiler: gcc-9
+    compiler: gcc-11
+    dist: bionic
     env:
     - CFLAGS_EXTRA="-O3"
     - TESTS_CUSTOM_RUN=true
@@ -260,19 +263,21 @@ jobs:
   - addons:
       apt:
         packages:
-        - gcc-9
+        - gcc-11
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-9
+    compiler: gcc-11
+    dist: bionic
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - addons:
       apt:
         packages:
-        - gcc-9
+        - gcc-11
         sources:
         - ubuntu-toolchain-r-test
-    compiler: gcc-9
+    compiler: gcc-11
+    dist: bionic
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - addons:
