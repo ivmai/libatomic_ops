@@ -42,6 +42,9 @@
   /* CAS is always available */
 # define AO_ASSUME_WINDOWS98
 #endif
+#ifndef AO_USE_INTERLOCKED_INTRINSICS
+# define AO_USE_INTERLOCKED_INTRINSICS
+#endif
 #include "common32_defs.h"
 
 #ifdef AO_ASM_X64_AVAILABLE

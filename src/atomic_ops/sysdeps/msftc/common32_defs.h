@@ -22,7 +22,7 @@
  */
 
 /* This file contains AO primitives based on VC++ built-in intrinsic    */
-/* functions commonly available across 32-bit architectures.            */
+/* functions commonly available across 32- and 64-bit architectures.    */
 
 /* This file should be included from arch-specific header files.        */
 /* Define AO_USE_INTERLOCKED_INTRINSICS if _Interlocked primitives      */
