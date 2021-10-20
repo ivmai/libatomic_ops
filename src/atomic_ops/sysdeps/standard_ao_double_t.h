@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2004-2011 Hewlett-Packard Development Company, L.P.
+ * Copyright (c) 2012-2021 Ivan Maidanski
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +40,9 @@
 # else /* pragma diagnostic is not supported */
     typedef unsigned __int128 double_ptr_storage;
 # endif
+#elif defined(_M_ARM64) && defined(_MSC_VER)
+  /* __int128 does not seem to be available.    */
+  typedef __declspec(align(16)) unsigned __int64 double_ptr_storage[2];
 #elif ((defined(__x86_64__) && AO_GNUC_PREREQ(4, 0)) || defined(_WIN64)) \
       && !defined(__ILP32__)
   /* x86-64 (except for x32): __m128 serves as a placeholder which also */
