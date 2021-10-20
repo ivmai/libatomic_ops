@@ -52,11 +52,67 @@
 #if _M_ARM >= 6
 /* ARMv6 is the first architecture providing support for simple LL/SC.  */
 
-/* #include "../standard_ao_double_t.h" */
-/* TODO: implement double-wide operations (similar to x86).     */
-
 #else /* _M_ARM < 6 */
-
 /* TODO: implement AO_test_and_set_full using SWP.      */
 
 #endif /* _M_ARM < 6 */
+
+#if _M_ARM >= 7 && !defined(AO_NO_DOUBLE_CAS)
+
+# include "../standard_ao_double_t.h"
+
+/* These intrinsics are supposed to use LDREXD/STREXD.  */
+# pragma intrinsic (_InterlockedCompareExchange64)
+# pragma intrinsic (_InterlockedCompareExchange64_acq)
+# pragma intrinsic (_InterlockedCompareExchange64_nf)
+# pragma intrinsic (_InterlockedCompareExchange64_rel)
+
+  AO_INLINE int
+  AO_double_compare_and_swap(volatile AO_double_t *addr,
+                             AO_double_t old_val, AO_double_t new_val)
+  {
+    AO_ASSERT_ADDR_ALIGNED(addr);
+    return (double_ptr_storage)_InterlockedCompareExchange64_nf(
+                                        (__int64 volatile *)addr,
+                                        new_val.AO_whole /* exchange */,
+                                        old_val.AO_whole) == old_val.AO_whole;
+  }
+# define AO_HAVE_double_compare_and_swap
+
+  AO_INLINE int
+  AO_double_compare_and_swap_acquire(volatile AO_double_t *addr,
+                                     AO_double_t old_val, AO_double_t new_val)
+  {
+    AO_ASSERT_ADDR_ALIGNED(addr);
+    return (double_ptr_storage)_InterlockedCompareExchange64_acq(
+                                        (__int64 volatile *)addr,
+                                        new_val.AO_whole /* exchange */,
+                                        old_val.AO_whole) == old_val.AO_whole;
+  }
+# define AO_HAVE_double_compare_and_swap_acquire
+
+  AO_INLINE int
+  AO_double_compare_and_swap_release(volatile AO_double_t *addr,
+                                     AO_double_t old_val, AO_double_t new_val)
+  {
+    AO_ASSERT_ADDR_ALIGNED(addr);
+    return (double_ptr_storage)_InterlockedCompareExchange64_rel(
+                                        (__int64 volatile *)addr,
+                                        new_val.AO_whole /* exchange */,
+                                        old_val.AO_whole) == old_val.AO_whole;
+  }
+# define AO_HAVE_double_compare_and_swap_release
+
+  AO_INLINE int
+  AO_double_compare_and_swap_full(volatile AO_double_t *addr,
+                                  AO_double_t old_val, AO_double_t new_val)
+  {
+    AO_ASSERT_ADDR_ALIGNED(addr);
+    return (double_ptr_storage)_InterlockedCompareExchange64(
+                                        (__int64 volatile *)addr,
+                                        new_val.AO_whole /* exchange */,
+                                        old_val.AO_whole) == old_val.AO_whole;
+  }
+# define AO_HAVE_double_compare_and_swap_full
+
+#endif /* _M_ARM >= 7 && !AO_NO_DOUBLE_CAS */
