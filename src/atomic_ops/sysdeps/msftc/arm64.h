@@ -32,7 +32,7 @@
 #endif
 #include "common32_defs.h"
 
-#indef AO_NO_DOUBLE_CAS
+#ifndef AO_NO_DOUBLE_CAS
 
 # include "../standard_ao_double_t.h"
 
