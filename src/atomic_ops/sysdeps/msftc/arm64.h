@@ -22,7 +22,6 @@
  */
 
 #include "../all_aligned_atomic_load_store.h"
-#include "../test_and_set_t_is_ao_t.h"
 
 #ifndef AO_ASSUME_WINDOWS98
 # define AO_ASSUME_WINDOWS98
@@ -31,6 +30,11 @@
 # define AO_USE_INTERLOCKED_INTRINSICS
 #endif
 #include "common32_defs.h"
+
+#ifndef AO_HAVE_test_and_set_full
+# include "../test_and_set_t_is_ao_t.h"
+  /* AO_test_and_set_full() is emulated using word-wide CAS.    */
+#endif
 
 #ifndef AO_NO_DOUBLE_CAS
 

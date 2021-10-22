@@ -274,4 +274,49 @@
     }
 #   define AO_HAVE_short_fetch_and_add_full
 # endif /* !AO_PREFER_GENERALIZED && !_M_ARM */
+
+# if !defined(_M_ARM) || _M_ARM >= 6
+#   include "../test_and_set_t_is_char.h"
+
+#   pragma intrinsic (_InterlockedExchange8)
+
+    AO_INLINE AO_TS_VAL_t
+    AO_test_and_set_full(volatile AO_TS_t *addr)
+    {
+      return (AO_TS_VAL_t)((unsigned char)_InterlockedExchange8(
+                                        (char volatile *)addr, AO_TS_SET));
+    }
+#   define AO_HAVE_test_and_set_full
+# endif /* !_M_ARM || _M_ARM >= 6 */
+
+# if _M_ARM >= 6 || defined(_M_ARM64)
+#   pragma intrinsic (_InterlockedExchange8_acq)
+#   pragma intrinsic (_InterlockedExchange8_nf)
+#   pragma intrinsic (_InterlockedExchange8_rel)
+
+    AO_INLINE AO_TS_VAL_t
+    AO_test_and_set(volatile AO_TS_t *addr)
+    {
+      return (AO_TS_VAL_t)((unsigned char)_InterlockedExchange8_nf(
+                                        (char volatile *)addr, AO_TS_SET));
+    }
+#   define AO_HAVE_test_and_set
+
+    AO_INLINE AO_TS_VAL_t
+    AO_test_and_set_acquire(volatile AO_TS_t *addr)
+    {
+      return (AO_TS_VAL_t)((unsigned char)_InterlockedExchange8_acq(
+                                        (char volatile *)addr, AO_TS_SET));
+    }
+#   define AO_HAVE_test_and_set_acquire
+
+    AO_INLINE AO_TS_VAL_t
+    AO_test_and_set_release(volatile AO_TS_t *addr)
+    {
+      return (AO_TS_VAL_t)((unsigned char)_InterlockedExchange8_rel(
+                                        (char volatile *)addr, AO_TS_SET));
+    }
+#   define AO_HAVE_test_and_set_release
+# endif /* _M_ARM >= 6 || _M_ARM64 */
+
 #endif /* _MSC_VER >= 1800 */

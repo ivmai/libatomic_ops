@@ -26,8 +26,6 @@
 
 #include "../all_aligned_atomic_load_store.h"
 
-#include "../test_and_set_t_is_char.h"
-
 #if !defined(AO_ASSUME_WINDOWS98) \
     && (defined(AO_ASSUME_VISTA) || _MSC_VER >= 1400)
    /* Visual Studio 2005 (MS VC++ 8.0) discontinued support of Windows 95. */
@@ -94,9 +92,12 @@ AO_nop_full(void)
 # define AO_HAVE_short_fetch_and_add_full
 #endif /* !AO_NO_ASM_XADD */
 
-AO_INLINE AO_TS_VAL_t
-AO_test_and_set_full(volatile AO_TS_t *addr)
-{
+#ifndef AO_HAVE_test_and_set_full
+# include "../test_and_set_t_is_char.h"
+
+  AO_INLINE AO_TS_VAL_t
+  AO_test_and_set_full(volatile AO_TS_t *addr)
+  {
     __asm
     {
         mov     eax,0xff                ; /* AO_TS_SET */
@@ -104,8 +105,9 @@ AO_test_and_set_full(volatile AO_TS_t *addr)
         xchg    byte ptr [ebx],al       ;
     }
     /* Ignore possible "missing return value" warning here. */
-}
-#define AO_HAVE_test_and_set_full
+  }
+# define AO_HAVE_test_and_set_full
+#endif
 
 #if defined(_WIN64) && !defined(CPPCHECK)
 # error wrong architecture

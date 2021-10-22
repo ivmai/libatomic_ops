@@ -31,12 +31,6 @@
 /* seem to be much weaker (and arguably too weak to be usable).         */
 #include "../ordered_except_wr.h"
 
-#ifdef AO_ASM_X64_AVAILABLE
-# include "../test_and_set_t_is_char.h"
-#else
-# include "../test_and_set_t_is_ao_t.h"
-#endif
-
 #ifndef AO_ASSUME_WINDOWS98
   /* CAS is always available */
 # define AO_ASSUME_WINDOWS98
@@ -85,19 +79,28 @@
   }
 # define AO_HAVE_nop_full
 
-  AO_INLINE AO_TS_VAL_t
-  AO_test_and_set_full(volatile AO_TS_t *addr)
-  {
-    __asm
+# ifndef AO_HAVE_test_and_set_full
+#   include "../test_and_set_t_is_char.h"
+
+    AO_INLINE AO_TS_VAL_t
+    AO_test_and_set_full(volatile AO_TS_t *addr)
     {
+      __asm
+      {
         mov     rax,AO_TS_SET           ;
         mov     rbx,addr                ;
         xchg    byte ptr [rbx],al       ;
+      }
     }
-  }
-# define AO_HAVE_test_and_set_full
+#   define AO_HAVE_test_and_set_full
+# endif
 
 #endif /* AO_ASM_X64_AVAILABLE */
+
+#ifndef AO_HAVE_test_and_set_full
+# include "../test_and_set_t_is_ao_t.h"
+  /* AO_test_and_set_full() is emulated using word-wide CAS.    */
+#endif
 
 #ifdef AO_CMPXCHG16B_AVAILABLE
 

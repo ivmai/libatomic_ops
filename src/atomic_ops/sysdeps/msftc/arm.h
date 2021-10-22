@@ -21,9 +21,6 @@
  * SOFTWARE.
  */
 
-#include "../test_and_set_t_is_ao_t.h"
-/* AO_test_and_set_full() is emulated using CAS.                        */
-
 /* Some ARM slide set, if it has been read correctly, claims that Loads */
 /* followed by either a Load or a Store are ordered, but nothing else.  */
 /* It is assumed that Windows interrupt handlers clear the LL/SC flag.  */
@@ -49,13 +46,10 @@
   /* AO_nop_full() is emulated using AO_test_and_set_full().            */
 #endif
 
-#if _M_ARM >= 6
-/* ARMv6 is the first architecture providing support for simple LL/SC.  */
-
-#else /* _M_ARM < 6 */
-/* TODO: implement AO_test_and_set_full using SWP.      */
-
-#endif /* _M_ARM < 6 */
+#ifndef AO_HAVE_test_and_set_full
+# include "../test_and_set_t_is_ao_t.h"
+  /* AO_test_and_set_full() is emulated. */
+#endif
 
 #if _M_ARM >= 7 && !defined(AO_NO_DOUBLE_CAS)
 
