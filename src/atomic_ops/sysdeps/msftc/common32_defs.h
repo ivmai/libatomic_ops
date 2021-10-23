@@ -244,6 +244,97 @@
 
 #if _MSC_VER >= 1800 /* Visual Studio 2013+ */
 
+# ifndef AO_PREFER_GENERALIZED
+#   pragma intrinsic (_InterlockedAnd16)
+#   pragma intrinsic (_InterlockedOr16)
+#   pragma intrinsic (_InterlockedXor16)
+
+    AO_INLINE void
+    AO_short_and_full(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedAnd16((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_and_full
+
+    AO_INLINE void
+    AO_short_or_full(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedOr16((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_or_full
+
+    AO_INLINE void
+    AO_short_xor_full(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedXor16((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_xor_full
+
+#   pragma intrinsic (_InterlockedAnd)
+#   pragma intrinsic (_InterlockedOr)
+#   pragma intrinsic (_InterlockedXor)
+
+#   ifndef AO_T_IS_INT
+      AO_INLINE void
+      AO_int_and_full(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedAnd((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_and_full
+
+      AO_INLINE void
+      AO_int_or_full(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedOr((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_or_full
+
+      AO_INLINE void
+      AO_int_xor_full(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedXor((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_xor_full
+
+#     pragma intrinsic (_InterlockedAnd64)
+#     pragma intrinsic (_InterlockedOr64)
+#     pragma intrinsic (_InterlockedXor64)
+#   endif /* !AO_T_IS_INT */
+
+    AO_INLINE void
+    AO_and_full(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedAnd((long volatile *)p, value);
+#     else
+        (void)_InterlockedAnd64((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_and_full
+
+    AO_INLINE void
+    AO_or_full(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedOr((long volatile *)p, value);
+#     else
+        (void)_InterlockedOr64((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_or_full
+
+    AO_INLINE void
+    AO_xor_full(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedXor((long volatile *)p, value);
+#     else
+        (void)_InterlockedXor64((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_xor_full
+# endif /* !AO_PREFER_GENERALIZED */
+
 # if !defined(AO_PREFER_GENERALIZED) && (defined(_M_ARM) || defined(_M_ARM64))
 #   pragma intrinsic (_InterlockedAnd8_acq)
 #   pragma intrinsic (_InterlockedAnd8_nf)
@@ -317,6 +408,263 @@
       _InterlockedXor8_rel((char volatile *)p, value);
     }
 #   define AO_HAVE_char_xor_release
+
+#   pragma intrinsic (_InterlockedAnd16_acq)
+#   pragma intrinsic (_InterlockedAnd16_nf)
+#   pragma intrinsic (_InterlockedAnd16_rel)
+#   pragma intrinsic (_InterlockedOr16_acq)
+#   pragma intrinsic (_InterlockedOr16_nf)
+#   pragma intrinsic (_InterlockedOr16_rel)
+#   pragma intrinsic (_InterlockedXor16_acq)
+#   pragma intrinsic (_InterlockedXor16_nf)
+#   pragma intrinsic (_InterlockedXor16_rel)
+
+    AO_INLINE void
+    AO_short_and(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedAnd16_nf((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_and
+
+    AO_INLINE void
+    AO_short_or(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedOr16_nf((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_or
+
+    AO_INLINE void
+    AO_short_xor(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedXor16_nf((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_xor
+
+    AO_INLINE void
+    AO_short_and_acquire(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedAnd16_acq((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_and_acquire
+
+    AO_INLINE void
+    AO_short_or_acquire(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedOr16_acq((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_or_acquire
+
+    AO_INLINE void
+    AO_short_xor_acquire(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedXor16_acq((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_xor_acquire
+
+    AO_INLINE void
+    AO_short_and_release(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedAnd16_rel((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_and_release
+
+    AO_INLINE void
+    AO_short_or_release(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedOr16_rel((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_or_release
+
+    AO_INLINE void
+    AO_short_xor_release(volatile unsigned short *p, unsigned short value)
+    {
+      (void)_InterlockedXor16_rel((short volatile *)p, value);
+    }
+#   define AO_HAVE_short_xor_release
+
+#   pragma intrinsic (_InterlockedAnd_acq)
+#   pragma intrinsic (_InterlockedAnd_nf)
+#   pragma intrinsic (_InterlockedAnd_rel)
+#   pragma intrinsic (_InterlockedOr_acq)
+#   pragma intrinsic (_InterlockedOr_nf)
+#   pragma intrinsic (_InterlockedOr_rel)
+#   pragma intrinsic (_InterlockedXor_acq)
+#   pragma intrinsic (_InterlockedXor_nf)
+#   pragma intrinsic (_InterlockedXor_rel)
+
+#   ifndef AO_T_IS_INT
+      AO_INLINE void
+      AO_int_and(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedAnd_nf((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_and
+
+      AO_INLINE void
+      AO_int_or(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedOr_nf((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_or
+
+      AO_INLINE void
+      AO_int_xor(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedXor_nf((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_xor
+
+      AO_INLINE void
+      AO_int_and_acquire(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedAnd_acq((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_and_acquire
+
+      AO_INLINE void
+      AO_int_or_acquire(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedOr_acq((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_or_acquire
+
+      AO_INLINE void
+      AO_int_xor_acquire(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedXor_acq((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_xor_acquire
+
+      AO_INLINE void
+      AO_int_and_release(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedAnd_rel((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_and_release
+
+      AO_INLINE void
+      AO_int_or_release(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedOr_rel((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_or_release
+
+      AO_INLINE void
+      AO_int_xor_release(volatile unsigned int *p, unsigned int value)
+      {
+        (void)_InterlockedXor_rel((long volatile *)p, value);
+      }
+#     define AO_HAVE_int_xor_release
+
+#     pragma intrinsic (_InterlockedAnd64_acq)
+#     pragma intrinsic (_InterlockedAnd64_nf)
+#     pragma intrinsic (_InterlockedAnd64_rel)
+#     pragma intrinsic (_InterlockedOr64_acq)
+#     pragma intrinsic (_InterlockedOr64_nf)
+#     pragma intrinsic (_InterlockedOr64_rel)
+#     pragma intrinsic (_InterlockedXor64_acq)
+#     pragma intrinsic (_InterlockedXor64_nf)
+#     pragma intrinsic (_InterlockedXor64_rel)
+#   endif /* !AO_T_IS_INT */
+
+    AO_INLINE void
+    AO_and(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedAnd_nf((long volatile *)p, value);
+#     else
+        (void)_InterlockedAnd64_nf((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_and
+
+    AO_INLINE void
+    AO_or(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedOr_nf((long volatile *)p, value);
+#     else
+        (void)_InterlockedOr64_nf((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_or
+
+    AO_INLINE void
+    AO_xor(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedXor_nf((long volatile *)p, value);
+#     else
+        (void)_InterlockedXor64_nf((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_xor
+
+    AO_INLINE void
+    AO_and_acquire(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedAnd_acq((long volatile *)p, value);
+#     else
+        (void)_InterlockedAnd64_acq((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_and_acquire
+
+    AO_INLINE void
+    AO_or_acquire(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedOr_acq((long volatile *)p, value);
+#     else
+        (void)_InterlockedOr64_acq((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_or_acquire
+
+    AO_INLINE void
+    AO_xor_acquire(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedXor_acq((long volatile *)p, value);
+#     else
+        (void)_InterlockedXor64_acq((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_xor_acquire
+
+    AO_INLINE void
+    AO_and_release(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedAnd_rel((long volatile *)p, value);
+#     else
+        (void)_InterlockedAnd64_rel((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_and_release
+
+    AO_INLINE void
+    AO_or_release(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedOr_rel((long volatile *)p, value);
+#     else
+        (void)_InterlockedOr64_rel((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_or_release
+
+    AO_INLINE void
+    AO_xor_release(volatile AO_t *p, AO_t value)
+    {
+#     ifdef AO_T_IS_INT
+        (void)_InterlockedXor_rel((long volatile *)p, value);
+#     else
+        (void)_InterlockedXor64_rel((__int64 volatile *)p, value);
+#     endif
+    }
+#   define AO_HAVE_xor_release
 
 #   pragma intrinsic (_InterlockedDecrement16_acq)
 #   pragma intrinsic (_InterlockedDecrement16_nf)
