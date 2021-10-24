@@ -17,7 +17,7 @@
 #!include <ntwin32.mak>
 
 CFLAGS_EXTRA=
-CFLAGS=-O2 -W3 $(CFLAGS_EXTRA)
+CFLAGS=-O2 -W4 $(CFLAGS_EXTRA)
 
 LIB_OBJS=atomic_ops.obj atomic_ops_malloc.obj atomic_ops_stack.obj
 
@@ -30,7 +30,7 @@ atomic_ops_stack.obj:
 	cl $(CFLAGS) -c atomic_ops_stack.c
 
 atomic_ops_malloc.obj:
-	cl $(CFLAGS) -c atomic_ops_malloc.c
+	cl $(CFLAGS) /wd4127 -c atomic_ops_malloc.c
 
 libatomic_ops_gpl.lib: $(LIB_OBJS)
 	lib /out:libatomic_ops_gpl.lib $(LIB_OBJS)
