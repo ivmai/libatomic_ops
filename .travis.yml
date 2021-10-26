@@ -176,7 +176,7 @@ jobs:
     - TESTS_CUSTOM_RUN=true
   - compiler: clang
     env:
-    - CFLAGS_EXTRA="-O3 -march=native"
+    - CFLAGS_EXTRA="-O3 -march=native -funsigned-char"
     - CONF_OPTIONS="--enable-assertions"
   - compiler: gcc
     env:
@@ -224,7 +224,7 @@ jobs:
         - gcc-multilib
     compiler: gcc
     env:
-    - CFLAGS_EXTRA="-m32 -march=native -D AO_USE_ALMOST_LOCK_FREE"
+    - CFLAGS_EXTRA="-m32 -march=native -funsigned-char -D AO_USE_ALMOST_LOCK_FREE"
     - CONF_OPTIONS="--enable-assertions"
   - addons:
       apt:
