@@ -1155,8 +1155,11 @@
     AO_INLINE AO_TS_VAL_t
     AO_test_and_set_full(volatile AO_TS_t *addr)
     {
-      return (AO_TS_VAL_t)((unsigned char)_InterlockedExchange8(
-                                        (char volatile *)addr, AO_TS_SET));
+      return (AO_TS_VAL_t)(_InterlockedExchange8((char volatile *)addr,
+                                                 (AO_TS_t)AO_TS_SET) & 0xff);
+      /* Note: bitwise "and 0xff" is applied to the result because cast */
+      /* to unsigned char does not work properly (for a reason) if /J   */
+      /* option is passed to the MS VC compiler.                        */
     }
 #   define AO_HAVE_test_and_set_full
 # endif /* !_M_ARM || _M_ARM >= 6 */
@@ -1169,24 +1172,24 @@
     AO_INLINE AO_TS_VAL_t
     AO_test_and_set(volatile AO_TS_t *addr)
     {
-      return (AO_TS_VAL_t)((unsigned char)_InterlockedExchange8_nf(
-                                        (char volatile *)addr, AO_TS_SET));
+      return (AO_TS_VAL_t)(_InterlockedExchange8_nf((char volatile *)addr,
+                                                (AO_TS_t)AO_TS_SET) & 0xff);
     }
 #   define AO_HAVE_test_and_set
 
     AO_INLINE AO_TS_VAL_t
     AO_test_and_set_acquire(volatile AO_TS_t *addr)
     {
-      return (AO_TS_VAL_t)((unsigned char)_InterlockedExchange8_acq(
-                                        (char volatile *)addr, AO_TS_SET));
+      return (AO_TS_VAL_t)(_InterlockedExchange8_acq((char volatile *)addr,
+                                                (AO_TS_t)AO_TS_SET) & 0xff);
     }
 #   define AO_HAVE_test_and_set_acquire
 
     AO_INLINE AO_TS_VAL_t
     AO_test_and_set_release(volatile AO_TS_t *addr)
     {
-      return (AO_TS_VAL_t)((unsigned char)_InterlockedExchange8_rel(
-                                        (char volatile *)addr, AO_TS_SET));
+      return (AO_TS_VAL_t)(_InterlockedExchange8_rel((char volatile *)addr,
+                                                (AO_TS_t)AO_TS_SET) & 0xff);
     }
 #   define AO_HAVE_test_and_set_release
 # endif /* _M_ARM >= 6 || _M_ARM64 */
