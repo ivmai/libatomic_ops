@@ -4,13 +4,8 @@
 # The really trivial win32/VC++ Makefile.  Note that atomic_ops.c defines
 # only AO_pause (used by atomic_ops_stack).
 # And we rely on a pre-built test_atomic_include.h and generalize-small.h,
-# since we can't rely on sed.  But we don't keep test_atomic_include.h in
-# the development repository any longer, so if you want to run all tests
-# for the sources obtained from the repository then
-# type "./autogen.sh && ./configure && make -j && make clean" in Cygwin first.
-# Otherwise type "nmake -f Makefile.msft check-noautogen" to run only the
-# tests not requiring the source auto-generation.
-# Win32 clients only need to include the header files.
+# since we can't rely on sed.  To run all the tests, type:
+# nmake -f Makefile.msft check
 # To install, copy atomic_ops.h and the atomic_ops/... tree to your favorite
 # include directory.
 
