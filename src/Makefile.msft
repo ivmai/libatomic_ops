@@ -30,29 +30,32 @@ atomic_ops_malloc.obj:
 libatomic_ops_gpl.lib: $(LIB_OBJS)
 	lib /out:libatomic_ops_gpl.lib $(LIB_OBJS)
 
-test_atomic: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
-	cl $(CFLAGS) -I. ..\tests\test_atomic.c /Fo.\test_atomic
+..\tests\test_atomic: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
+	cl $(CFLAGS) -I. ..\tests\test_atomic.c \
+	    /Fo..\tests\test_atomic /Fe..\tests\test_atomic
 
-test_atomic_generalized: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
+..\tests\test_atomic_generalized: ..\tests\test_atomic.c \
+        ..\tests\test_atomic_include.h
 	cl $(CFLAGS) -DAO_PREFER_GENERALIZED -I. ..\tests\test_atomic.c \
-	    /Fo.\test_atomic_generalized
+	    /Fo..\tests\test_atomic_generalized \
+	    /Fe..\tests\test_atomic_generalized
 
-test_malloc: ..\tests\test_malloc.c libatomic_ops_gpl.lib
-	cl $(CFLAGS) -I. ..\tests\test_malloc.c /Fo.\test_malloc \
-	    libatomic_ops_gpl.lib
+..\tests\test_malloc: ..\tests\test_malloc.c libatomic_ops_gpl.lib
+	cl $(CFLAGS) -I. ..\tests\test_malloc.c /Fo..\tests\test_malloc \
+	    /Fe..\tests\test_malloc libatomic_ops_gpl.lib
 
-test_stack: ..\tests\test_stack.c libatomic_ops_gpl.lib
-	cl $(CFLAGS) -I. ..\tests\test_stack.c /Fo.\test_stack \
-	    libatomic_ops_gpl.lib
+..\tests\test_stack: ..\tests\test_stack.c libatomic_ops_gpl.lib
+	cl $(CFLAGS) -I. ..\tests\test_stack.c \
+	    /Fo..\tests\test_stack /Fe..\tests\test_stack libatomic_ops_gpl.lib
 
-check: test_atomic test_atomic_generalized check-noautogen
+check: ..\tests\test_atomic ..\tests\test_atomic_generalized check-noautogen
 	@echo "The following will print some 'Missing ...' messages"
-	test_atomic
-	test_atomic_generalized
+	..\tests\test_atomic
+	..\tests\test_atomic_generalized
 
-check-noautogen: test_malloc test_stack
-	test_malloc
-	test_stack
+check-noautogen: ..\tests\test_malloc ..\tests\test_stack
+	..\tests\test_malloc
+	..\tests\test_stack
 
 clean:
-	del *.exe *.obj libatomic_ops_gpl.lib
+	del *.obj libatomic_ops_gpl.lib ..\tests\*.obj ..\tests\*.exe
