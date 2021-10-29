@@ -21,3 +21,21 @@ pieces from the resulting src directory contents:
 
 Note that the library is covered by the GNU General Public License, while
 the top 2 of these pieces allow use in proprietary code.
+
+There are several macros a client could use to configure the build with the
+Microsoft tools (except for AO_CMPXCHG16B_AVAILABLE one, others should be
+rarely needed in practice):
+* AO_ASM_X64_AVAILABLE - inline assembly available (only x86_64)
+* AO_ASSUME_VISTA - assume Windows Server 2003, Vista or later target (only
+  x86, implied if Visual Studio 2015 or older)
+* AO_CMPXCHG16B_AVAILABLE - assume target is not old AMD Opteron chip (only
+  x86_64)
+* AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE - assume ancient MS VS Win32
+  headers (only arm and x86)
+* AO_PREFER_GENERALIZED - prefer generalized definitions to direct
+  assembly-based ones
+* AO_UNIPROCESSOR - assume single-core target (only arm)
+* AO_USE_INTERLOCKED_INTRINSICS - assume Win32 _Interlocked* primitives
+  available as intrinsics (only arm)
+* AO_USE_PENTIUM4_INSTRS - use mfence instruction instead of xchg (only x86,
+  implied if SSE2 is available)

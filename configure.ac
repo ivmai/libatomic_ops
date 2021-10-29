@@ -1,5 +1,5 @@
 # Copyright (c) 2005-2006 Hewlett-Packard Development Company, L.P.
-# Copyright (c) 2009-2019 Ivan Maidanski
+# Copyright (c) 2009-2021 Ivan Maidanski
 #
 # THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
 # OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
@@ -170,23 +170,14 @@ AH_TEMPLATE([AO_PREFER_GENERALIZED],
 AH_TEMPLATE([AO_USE_PTHREAD_DEFS],
         [Emulate atomic operations via slow and async-signal-unsafe \
          pthread locking])
-AH_TEMPLATE([AO_ASM_X64_AVAILABLE],
-        [Inline assembly available (only VC/x86_64)])
-AH_TEMPLATE([AO_ASSUME_VISTA],
-        [Assume Windows Server 2003, Vista or later target (only VC/x86)])
 AH_TEMPLATE([AO_CMPXCHG16B_AVAILABLE],
         [Assume target is not old AMD Opteron chip (only x86_64)])
 AH_TEMPLATE([AO_FORCE_USE_SWP],
         [Force test_and_set to use SWP instruction instead of LDREX/STREX \
          (only arm v6+)])
 AH_TEMPLATE([AO_NO_SPARC_V9], [Assume target is not sparc v9+ (only sparc)])
-AH_TEMPLATE([AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE],
-        [Assume ancient MS VS Win32 headers (only VC/arm v6+, VC/x86)])
 AH_TEMPLATE([AO_UNIPROCESSOR],
         [Assume single-core target (only arm v6+ or GCC intrinsics)])
-AH_TEMPLATE([AO_USE_INTERLOCKED_INTRINSICS],
-        [Assume Win32 _Interlocked primitives available as intrinsics \
-         (only VC/arm)])
 AH_TEMPLATE([AO_USE_PENTIUM4_INSTRS],
         [Use Pentium 4 'mfence' instruction (only x86)])
 AH_TEMPLATE([AO_USE_SYNC_CAS_BUILTIN],
