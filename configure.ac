@@ -182,7 +182,8 @@ AH_TEMPLATE([AO_FORCE_USE_SWP],
 AH_TEMPLATE([AO_NO_SPARC_V9], [Assume target is not sparc v9+ (only sparc)])
 AH_TEMPLATE([AO_OLD_STYLE_INTERLOCKED_COMPARE_EXCHANGE],
         [Assume ancient MS VS Win32 headers (only VC/arm v6+, VC/x86)])
-AH_TEMPLATE([AO_UNIPROCESSOR], [Assume single-core target (only arm v6+)])
+AH_TEMPLATE([AO_UNIPROCESSOR],
+        [Assume single-core target (only arm v6+ or GCC intrinsics)])
 AH_TEMPLATE([AO_USE_INTERLOCKED_INTRINSICS],
         [Assume Win32 _Interlocked primitives available as intrinsics \
          (only VC/arm)])
