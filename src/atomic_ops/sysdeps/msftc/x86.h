@@ -35,6 +35,11 @@
 # define AO_ASSUME_WINDOWS98
 #endif
 
+#if !defined(AO_USE_PENTIUM4_INSTRS) && _M_IX86_FP >= 2 /* SSE2 */
+  /* "mfence" is a part of SSE2 set (introduced on Intel Pentium 4).    */
+# define AO_USE_PENTIUM4_INSTRS
+#endif
+
 #define AO_T_IS_INT
 
 #ifndef AO_USE_INTERLOCKED_INTRINSICS
