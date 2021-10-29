@@ -21,10 +21,13 @@
  * SOFTWARE.
  */
 
-/* If AO_ASSUME_VISTA is defined, we assume Windows Server 2003, Vista  */
-/* or later.                                                            */
-
 #include "../all_aligned_atomic_load_store.h"
+
+#if !defined(AO_ASSUME_VISTA) && _MSC_VER >= 1910
+  /* Visual Studio 2017 (15.0) discontinued support of Windows XP.  */
+  /* We assume Windows Server 2003, Vista or later.                 */
+# define AO_ASSUME_VISTA
+#endif
 
 #if !defined(AO_ASSUME_WINDOWS98) \
     && (defined(AO_ASSUME_VISTA) || _MSC_VER >= 1400)
