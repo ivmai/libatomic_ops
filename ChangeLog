@@ -134,16 +134,16 @@ Also, includes 7.4.8 changes
 * Fix missing double_compare_and_swap_dd_acquire_read
 * Fix reporting about missing and/or/xor_dd_acquire_read (test_atomic)
 * Hide AO_locks symbol
-* Implement AO_CLEAR using C11 atomic intrinsic (GCC)
+* Implement AO_CLEAR using atomic intrinsic (GCC)
 * Implement CAS_acquire/release/full using __atomic_compare_exchange_n (gcc)
 * Implement char and/or/xor and short CAS for msftc ARM and X86[_64]
 * Implement char CAS and char/short add for msftc X86[_64] (VS 2013+)
-* Implement compiler_barrier using C11 __atomic_signal_fence (GCC)
+* Implement compiler_barrier using __atomic_signal_fence (GCC)
 * Implement int CAS/inc/dec for msftc/x86_64
 * Implement short inc/dec directly for msftc ARM and X86[_64]
 * Initial ibmc/powerpc (xlc) support
 * New configure option (--enable-werror) to treat warnings as compiler errors
-* New macro AO_PREFER_BUILTIN_ATOMICS to rely on C11 atomics fully (AArch64)
+* New macro AO_PREFER_BUILTIN_ATOMICS to rely on GCC atomics fully (AArch64)
 * Refine AO_nop_write comment for ARM big.LITTLE architecture
 * Refine configure messages when checking for compiler options
 * Refine documentation about _full memory ordering suffix

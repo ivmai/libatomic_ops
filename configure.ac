@@ -124,10 +124,10 @@ fi
 
 AC_ARG_ENABLE(atomic-intrinsics,
         [AC_HELP_STRING([--disable-atomic-intrinsics],
-                        [Do not use C11 atomic intrinsics])])
+                        [Do not use GCC atomic intrinsics])])
 if test "$enable_atomic_intrinsics" = no; then
   AC_DEFINE([AO_DISABLE_GCC_ATOMICS], 1,
-            [Define to avoid C11 atomic intrinsics even if available.])
+            [Define to avoid GCC atomic intrinsics even if available.])
 fi
 
 AC_ARG_ENABLE(gcov, AC_HELP_STRING([--enable-gcov],
@@ -195,9 +195,9 @@ AH_TEMPLATE([AO_WEAK_DOUBLE_CAS_EMULATION],
         [Emulate double-width CAS via pthread locking in case of no hardware \
          support (only gcc/x86_64, the emulation is unsafe)])
 AH_TEMPLATE([AO_PREFER_BUILTIN_ATOMICS],
-        [Prefer C11 atomic intrinsics over assembly-based implementation \
+        [Prefer GCC atomic intrinsics over assembly-based implementation \
         even in case of inefficient implementation (do not use assembly for \
-        any atomic_ops primitive if C11/GCC atomic intrinsics available)])
+        any atomic_ops primitive if the atomic intrinsics are available)])
 
 AC_DEFINE(_REENTRANT, 1, [Required define if using POSIX threads.])
 
