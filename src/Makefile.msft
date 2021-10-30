@@ -48,12 +48,17 @@ libatomic_ops_gpl.lib: $(LIB_OBJS)
 	cl $(CFLAGS) -I. ..\tests\test_stack.c \
 	    /Fo..\tests\test_stack /Fe..\tests\test_stack libatomic_ops_gpl.lib
 
-check: ..\tests\test_atomic ..\tests\test_atomic_generalized check-noautogen
+check-deps: check-noautogen-deps ..\tests\test_atomic \
+        ..\tests\test_atomic_generalized
+
+check: check-deps check-noautogen
 	@echo "The following will print some 'Missing ...' messages"
 	..\tests\test_atomic
 	..\tests\test_atomic_generalized
 
-check-noautogen: ..\tests\test_malloc ..\tests\test_stack
+check-noautogen-deps: ..\tests\test_malloc ..\tests\test_stack
+
+check-noautogen: check-noautogen-deps
 	..\tests\test_malloc
 	..\tests\test_stack
 
