@@ -1,25 +1,28 @@
 version: 7.7.0-{build}
 
 image:
-- Visual Studio 2015
+- Visual Studio 2019
 
 environment:
-  BLD: debug
+  STUDIO_VERSION_EDITION: Studio\2019\Community
+  PLATFORM_TYPE:
   TEST_TARGET: check
   matrix:
   - ARCH: x86
-    CFLAGS_EXTRA: -DAO_ASSUME_VISTA /J
+    CFLAGS_EXTRA: /J
   - ARCH: x86
-    BLD: release
+    CFLAGS_EXTRA: -DNDEBUG
+    WINSDK_VERSION: 8.1
   - ARCH: x64
     CFLAGS_EXTRA: -DAO_CMPXCHG16B_AVAILABLE
-  - ARCH: x64
-    BLD: release
+    WINSDK_VERSION: 8.1
+  - ARCH: x86_x64
+    CFLAGS_EXTRA: -DNDEBUG
 
 clone_depth: 50
 
 install:
-- cmd: '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /%ARCH% /%BLD%'
+- cmd: '"C:\Program Files (x86)\Microsoft Visual %STUDIO_VERSION_EDITION%\VC\Auxiliary\Build\vcvarsall.bat" %ARCH% %PLATFORM_TYPE% %WINSDK_VERSION%'
 
 build_script:
 - cmd: cd src && nmake -f Makefile.msft clean all CFLAGS_EXTRA="/WX %CFLAGS_EXTRA%" && cd ..
