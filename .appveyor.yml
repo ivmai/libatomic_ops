@@ -18,6 +18,10 @@ environment:
     WINSDK_VERSION: 8.1
   - ARCH: x86_x64
     CFLAGS_EXTRA: -DNDEBUG
+  - ARCH: x86_arm
+    TEST_TARGET: check-deps
+  - ARCH: x64_arm64
+    TEST_TARGET: check-deps
 
 clone_depth: 50
 
