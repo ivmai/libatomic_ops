@@ -4,6 +4,7 @@ clone_depth: 50
 
 environment:
   MS_SDK_VER: v7.1
+  TEST_TARGET: check
   matrix:
   - CPU: x86
     BLD: debug
@@ -20,7 +21,7 @@ install:
   - cmd: '"C:\Program Files\Microsoft SDKs\Windows\%MS_SDK_VER%\Bin\SetEnv.cmd" /%CPU% /%BLD%'
 
 build_script:
-  - cmd: cd src && nmake -f Makefile.msft clean all CFLAGS_EXTRA="%CFLAGS_EXTRA%" && cd ..
+- cmd: cd src && nmake -f Makefile.msft clean all CFLAGS_EXTRA="/WX %CFLAGS_EXTRA%" && cd ..
 
 test_script:
-  - cmd: cd src && nmake -f Makefile.msft check CFLAGS_EXTRA="%CFLAGS_EXTRA%"
+- cmd: cd src && nmake -f Makefile.msft %TEST_TARGET% CFLAGS_EXTRA="/WX %CFLAGS_EXTRA%"
