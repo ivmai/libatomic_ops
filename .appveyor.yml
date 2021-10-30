@@ -1,23 +1,24 @@
 version: 7.6.x-{build}
 
-clone_depth: 50
+image:
+- Visual Studio 2015
 
 environment:
-  MS_SDK_VER: v7.1
+  BLD: debug
   matrix:
-  - CPU: x86
-    BLD: debug
+  - ARCH: x86
     CFLAGS_EXTRA: -DAO_ASSUME_VISTA -DAO_USE_PENTIUM4_INSTRS
-  - CPU: x86
+  - ARCH: x86
     BLD: release
-  - CPU: x64
-    BLD: debug
+  - ARCH: x64
     CFLAGS_EXTRA: -DAO_CMPXCHG16B_AVAILABLE
-  - CPU: x64
+  - ARCH: x64
     BLD: release
 
+clone_depth: 50
+
 install:
-  - cmd: '"C:\Program Files\Microsoft SDKs\Windows\%MS_SDK_VER%\Bin\SetEnv.cmd" /%CPU% /%BLD%'
+- cmd: '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /%ARCH% /%BLD%'
 
 build_script:
   - cmd: cd src && nmake -f Makefile.msft clean all CFLAGS_EXTRA="%CFLAGS_EXTRA%" && cd ..
