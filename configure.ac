@@ -231,7 +231,6 @@ AM_CONDITIONAL(NEED_ASM, test x$need_asm = xtrue)
 
 AC_CONFIG_FILES([
         Makefile
-        doc/Makefile
         src/Makefile
         tests/Makefile
         pkgconfig/atomic_ops.pc

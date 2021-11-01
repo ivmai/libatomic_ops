@@ -21,7 +21,7 @@
  */
 
 /* Almost lock-free malloc implementation based on stack implementation. */
-/* See doc/README_malloc.txt file for detailed usage rules.              */
+/* See README_malloc.txt file for detailed usage rules.                  */
 
 #ifndef AO_MALLOC_H
 #define AO_MALLOC_H

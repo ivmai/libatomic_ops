@@ -44,8 +44,15 @@ allow you to write code:
 
 * To experiment with new and much better thread programming paradigms, etc.
 
-For details and licensing restrictions see the files in the "doc"
-subdirectory.
+Please see other README files for the details:
+
+* [README_details.txt](README_details.txt) - details about atomic_ops.h
+
+* [README_malloc.txt](README_malloc.txt) - a simple almost-lock-free malloc
+  implementation
+
+* [README_stack.txt](README_stack.txt) -  an almost lock-free LIFO linked
+  lists (stack) implementation
 
 
 ## Installation and Usage
@@ -62,7 +69,7 @@ However, two small libraries are built and installed:
 * `libatomic_ops.a` is a support library, which is not needed on some
   platforms. This is intended to be usable, under some mild restrictions,
   in free or proprietary code, as are all the header files.
-  See doc/LICENSING.txt for more details about the licensing.
+  See [LICENSING.txt](LICENSING.txt) for more details about the licensing.
 
 * `libatomic_ops_gpl.a` contains some higher level facilities.  This code is
   currently covered by the GPL.  The contents currently correspond to
@@ -73,7 +80,8 @@ However, two small libraries are built and installed:
 
 Win32/64: src/Makefile.msft contains a very simple Makefile for building
 and running tests and building the gpl library.  The core `libatomic_ops`
-implementation is entirely in header files.
+implementation is entirely in header files.  More information is provided in
+[README_win32.txt](README_win32.txt) file.
 
 HP-UX/PA-RISC: `aCC -Ae` won't work as a C compiler, since it doesn't support
 inline assembly code.  Use cc.
@@ -131,4 +139,4 @@ The file gcc/sh.h is
  * Copyright (c) 2009 by Takashi YOSHII. All rights reserved.
 
 Please be aware of the dual nature of the license of libatomic_ops,
-see [LICENSING.txt](doc/LICENSING.txt) for the details.
+see [LICENSING.txt](LICENSING.txt) for the details.
