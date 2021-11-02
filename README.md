@@ -73,7 +73,8 @@ However, two small libraries are built and installed:
 
 * `libatomic_ops_gpl.a` contains some higher level facilities.  This code is
   currently covered by the GPL.  The contents currently correspond to
-  the headers `atomic_ops_stack.h` and `atomic_ops_malloc.h`.
+  the headers `atomic_ops_malloc.h` and `atomic_ops_stack.h`.  Not built and
+  not installed if `--disable-gpl` option is passed to `configure`.
 
 
 ## Platform Specific Notes

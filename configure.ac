@@ -138,6 +138,11 @@ if test "$enable_gcov" = "yes"; then
   CFLAGS=`echo "$CFLAGS" | sed -e 's/-O\(1\|2\|3\|4\|s\|fast\)\?//g'`
 fi
 
+AC_ARG_ENABLE(gpl,
+        [AC_HELP_STRING([--disable-gpl],
+                        [Do not build libatomic_ops_gpl library])])
+AM_CONDITIONAL(ENABLE_GPL, test x$enable_gpl != xno)
+
 AC_ARG_ENABLE(docs,
         [AC_HELP_STRING([--disable-docs],
                         [Do not build and install documentation])])

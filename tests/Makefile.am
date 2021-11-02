@@ -12,12 +12,9 @@ AM_CPPFLAGS = \
 
 CFLAGS += $(CFLAGS_EXTRA)
 
-TESTS = test_atomic$(EXEEXT) test_atomic_generalized$(EXEEXT) \
-        test_stack$(EXEEXT) test_malloc$(EXEEXT)
-TEST_OBJS = test_atomic.o test_atomic_generalized-test_atomic.o \
-        test_stack.o test_malloc.o
-check_PROGRAMS = test_atomic test_atomic_generalized \
-        test_stack test_malloc
+TESTS = test_atomic$(EXEEXT) test_atomic_generalized$(EXEEXT)
+TEST_OBJS = test_atomic.o test_atomic_generalized-test_atomic.o
+check_PROGRAMS = test_atomic test_atomic_generalized
 
 if HAVE_PTHREAD_H
 TESTS += test_atomic_pthreads$(EXEEXT)
@@ -36,6 +33,12 @@ test_atomic_generalized_CPPFLAGS= \
         -DAO_PREFER_GENERALIZED -DAO_TEST_EMULATION $(AM_CPPFLAGS)
 test_atomic_generalized_LDADD=$(test_atomic_LDADD)
 
+if ENABLE_GPL
+
+TESTS += test_malloc$(EXEEXT) test_stack$(EXEEXT)
+TEST_OBJS += test_malloc.o test_stack.o
+check_PROGRAMS += test_malloc test_stack
+
 test_stack_SOURCES=test_stack.c
 test_stack_LDADD = $(THREADDLLIBS) \
         $(top_builddir)/src/libatomic_ops_gpl.la
@@ -51,14 +54,25 @@ test_malloc_LDADD += $(top_builddir)/src/libatomic_ops.la
 test_stack_LDADD += $(top_builddir)/src/libatomic_ops.la
 endif
 
+check-gpl-without-test-driver: test_malloc$(EXEEXT) test_stack$(EXEEXT)
+	./test_stack$(EXEEXT)
+	./test_malloc$(EXEEXT)
+
+else
+
+# Nothing to do.
+check-gpl-without-test-driver:
+
+endif
+
+.PHONY: check-gpl-without-test-driver
+
 # Run the tests directly (without test-driver):
 .PHONY: check-without-test-driver
-check-without-test-driver: $(TESTS)
+check-without-test-driver: $(TESTS) check-gpl-without-test-driver
 	@echo "The following will print some 'Missing ...' messages"
 	./test_atomic$(EXEEXT)
 	./test_atomic_generalized$(EXEEXT)
-	./test_stack$(EXEEXT)
-	./test_malloc$(EXEEXT)
 	test ! -f test_atomic_pthreads$(EXEEXT) || ./test_atomic_pthreads$(EXEEXT)
 
 test_atomic_include.h: test_atomic_include.template

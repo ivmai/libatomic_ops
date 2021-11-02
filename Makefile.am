@@ -8,8 +8,10 @@ noinst_DATA = pkgconfig/atomic_ops-uninstalled.pc
 
 # Installed documentation.
 if ENABLE_DOCS
-dist_doc_DATA = COPYING LICENSING.txt README.md README_details.txt \
-    README_malloc.txt README_stack.txt README_win32.txt
+dist_doc_DATA = LICENSING.txt README.md README_details.txt README_win32.txt
+if ENABLE_GPL
+dist_doc_DATA += COPYING README_malloc.txt README_stack.txt
+endif
 endif
 
 EXTRA_DIST = autogen.sh

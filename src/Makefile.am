@@ -10,8 +10,8 @@ AM_CPPFLAGS = -I$(top_builddir)/src -I$(top_srcdir)/src
 
 CFLAGS += $(CFLAGS_EXTRA)
 
-include_HEADERS = atomic_ops.h atomic_ops_stack.h atomic_ops_malloc.h
-lib_LTLIBRARIES = libatomic_ops.la libatomic_ops_gpl.la
+include_HEADERS = atomic_ops.h
+lib_LTLIBRARIES = libatomic_ops.la
 if NEED_ASM
 libatomic_ops_la_SOURCES = atomic_ops.c atomic_ops_sysdeps.S
 else
@@ -20,10 +20,14 @@ endif
 libatomic_ops_la_LDFLAGS = -version-info $(LIBATOMIC_OPS_VER_INFO) \
                             -no-undefined
 
+if ENABLE_GPL
+include_HEADERS += atomic_ops_malloc.h atomic_ops_stack.h
+lib_LTLIBRARIES += libatomic_ops_gpl.la
 libatomic_ops_gpl_la_SOURCES = atomic_ops_stack.c atomic_ops_malloc.c
 libatomic_ops_gpl_la_LDFLAGS = -version-info $(LIBATOMIC_OPS_GPL_VER_INFO) \
                                 -no-undefined
 libatomic_ops_gpl_la_LIBADD = libatomic_ops.la
+endif
 
 EXTRA_DIST = Makefile.msft atomic_ops/sysdeps/README \
         atomic_ops/generalize-arithm.template \
