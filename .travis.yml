@@ -41,6 +41,9 @@ jobs:
     - CSA_CHECK=true
     - MAKEFILE_TARGET=all
     - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D HAVE_MMAP -D VERBOSE"
+  - compiler: clang
+    env:
+    - CONF_OPTIONS="--disable-gpl"
   - arch: arm64
     compiler: clang
   - arch: arm64
