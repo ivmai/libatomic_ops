@@ -141,3 +141,5 @@ The file gcc/sh.h is
 
 Please be aware of the dual nature of the license of libatomic_ops,
 see [LICENSING.txt](LICENSING.txt) for the details.
+
+The library contributors are listed in [AUTHORS](AUTHORS) file.
