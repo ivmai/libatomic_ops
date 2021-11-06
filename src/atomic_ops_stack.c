@@ -36,7 +36,15 @@
 
 #ifdef AO_USE_ALMOST_LOCK_FREE
 
+# ifdef __cplusplus
+    extern "C" {
+# endif
+
   void AO_pause(int); /* defined in atomic_ops.c */
+
+# ifdef __cplusplus
+    } /* extern "C" */
+# endif
 
 /* LIFO linked lists based on compare-and-swap.  We need to avoid       */
 /* the case of a node deletion and reinsertion while I'm deleting       */

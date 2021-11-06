@@ -53,6 +53,16 @@
 #undef AO_REQUIRE_CAS
 #include "atomic_ops.h" /* Without cas emulation! */
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
+void AO_pause(int); /* defined below */
+
+#ifdef __cplusplus
+  } /* extern "C" */
+#endif
+
 #if !defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__BORLANDC__) \
     || defined(AO_USE_NO_SIGNALS)
 
@@ -80,9 +90,26 @@
 # include "atomic_ops/sysdeps/standard_ao_double_t.h"
 #endif
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
+AO_t AO_fetch_compare_and_swap_emulation(volatile AO_t *addr, AO_t old_val,
+                                         AO_t new_val);
+
+int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
+                                                AO_t old_val1, AO_t old_val2,
+                                                AO_t new_val1, AO_t new_val2);
+
+void AO_store_full_emulation(volatile AO_t *addr, AO_t val);
+
 /* Lock for pthreads-based implementation.      */
 #ifndef AO_NO_PTHREADS
   pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
+#endif
+
+#ifdef __cplusplus
+  } /* extern "C" */
 #endif
 
 /*
@@ -107,8 +134,6 @@ static AO_TS_t AO_locks[AO_HASH_SIZE] = {
   AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER,
   AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER,
 };
-
-void AO_pause(int); /* defined below */
 
 static void lock_ool(volatile AO_TS_t *l)
 {
