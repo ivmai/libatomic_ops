@@ -17,7 +17,7 @@ pieces from the resulting src directory contents:
                        header files in Win32.
         "libatomic_ops.lib" - Library containing implementation of AO_pause()
                               defined in atomic_ops.c (AO_pause is needed for
-                              for the almost lock-free stack implementation).
+                              the almost lock-free stack implementation).
         "atomic_ops_stack.h" - Header file describing almost lock-free stack.
         "atomic_ops_malloc.h" - Header file describing almost lock-free malloc.
         "libatomic_ops_gpl.lib" - Library containing implementation of the
