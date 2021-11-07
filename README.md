@@ -81,8 +81,10 @@ However, two small libraries are built and installed:
 
 Win32/64: src/Makefile.msft contains a very simple Makefile for building
 and running tests and building the gpl library.  The core `libatomic_ops`
-implementation is entirely in header files.  More information is provided in
-[README_win32.txt](README_win32.txt) file.
+implementation is entirely in header files (libatomic_ops.lib is built anyway
+to match that of the configure-based build process, but libatomic_ops.lib has
+only the implementation of the internal AO_pause() used by the gpl library).
+More information is provided in [README_win32.txt](README_win32.txt) file.
 
 HP-UX/PA-RISC: `aCC -Ae` won't work as a C compiler, since it doesn't support
 inline assembly code.  Use cc.
