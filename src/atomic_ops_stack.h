@@ -112,11 +112,11 @@ typedef struct AO__stack_aux {
 /* The following two routines should not normally be used directly.     */
 /* We make them visible here for the rare cases in which it makes sense */
 /* to share the an AO_stack_aux between stacks.                         */
-void
+AO_API void
 AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
                                   AO_stack_aux *);
 
-AO_t *
+AO_API AO_t *
 AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux *);
 
 /* And now AO_stack_t for the real interface:                           */
@@ -184,9 +184,9 @@ AO_INLINE void AO_stack_init(AO_stack_t *list)
 #define AO_REAL_HEAD_PTR(x) (AO_t *)((x).AO_val2)
 #define AO_REAL_NEXT_PTR(x) (AO_t *)(x)
 
-void AO_stack_push_release(AO_stack_t *list, AO_t *new_element);
+AO_API void AO_stack_push_release(AO_stack_t *list, AO_t *new_element);
 #define AO_HAVE_stack_push_release
-AO_t * AO_stack_pop_acquire(AO_stack_t *list);
+AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list);
 #define AO_HAVE_stack_pop_acquire
 
 #endif /* Wide CAS case */

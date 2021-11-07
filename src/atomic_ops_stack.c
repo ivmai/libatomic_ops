@@ -19,6 +19,10 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#ifndef AO_BUILD
+# define AO_BUILD
+#endif
+
 #define AO_REQUIRE_CAS
 #include "atomic_ops_stack.h"
 
@@ -40,7 +44,7 @@
     extern "C" {
 # endif
 
-  void AO_pause(int); /* defined in atomic_ops.c */
+  AO_API void AO_pause(int); /* defined in atomic_ops.c */
 
 # ifdef __cplusplus
     } /* extern "C" */
@@ -66,8 +70,8 @@
 /* to be inserted.                                                      */
 /* Both list headers and link fields contain "perturbed" pointers, i.e. */
 /* pointers with extra bits "or"ed into the low order bits.             */
-void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
-                                        AO_stack_aux *a)
+AO_API void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
+                                               AO_stack_aux *a)
 {
   AO_t x_bits = (AO_t)x;
   AO_t next;
@@ -149,8 +153,8 @@ void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
 # define AO_load_next AO_load
 #endif
 
-AO_t *
-AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
+AO_API AO_t *AO_stack_pop_explicit_aux_acquire(volatile AO_t *list,
+                                               AO_stack_aux *a)
 {
   unsigned i;
   int j = 0;
@@ -264,7 +268,7 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
   volatile /* non-static */ AO_t AO_noop_sink;
 #endif
 
-void AO_stack_push_release(AO_stack_t *list, AO_t *element)
+AO_API void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 {
     AO_t next;
 
@@ -283,7 +287,7 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 #   endif
 }
 
-AO_t *AO_stack_pop_acquire(AO_stack_t *list)
+AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list)
 {
 #   if defined(__clang__) && !AO_CLANG_PREREQ(3, 5)
       AO_t *volatile cptr;
@@ -317,7 +321,7 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
 /* We have a wide CAS, but only does an AO_t-wide comparison.   */
 /* We can't use the Treiber optimization, since we only check   */
 /* for an unchanged version number, not an unchanged pointer.   */
-void AO_stack_push_release(AO_stack_t *list, AO_t *element)
+AO_API void AO_stack_push_release(AO_stack_t *list, AO_t *element)
 {
     AO_t version;
 
@@ -333,7 +337,7 @@ void AO_stack_push_release(AO_stack_t *list, AO_t *element)
                            version+1, (AO_t) element));
 }
 
-AO_t *AO_stack_pop_acquire(AO_stack_t *list)
+AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list)
 {
     AO_t *cptr;
     AO_t next;

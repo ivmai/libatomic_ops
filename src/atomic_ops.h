@@ -235,6 +235,30 @@
 # define AO_ALIGNOF_SUPPORTED 1
 #endif
 
+#if defined(AO_DLL) && !defined(AO_API)
+# ifdef AO_BUILD
+#   if defined(__CEGCC__) || (defined(__MINGW32__) && !defined(__cplusplus))
+#     define AO_API __declspec(dllexport)
+#   elif defined(_MSC_VER) || defined(__BORLANDC__) || defined(__CYGWIN__) \
+         || defined(__DMC__) || defined(__MINGW32__) || defined(__WATCOMC__)
+#     define AO_API extern __declspec(dllexport)
+#   endif
+# else
+#   if defined(_MSC_VER) || defined(__BORLANDC__) || defined(__CEGCC__) \
+       || defined(__CYGWIN__) || defined(__DMC__)
+#     define AO_API __declspec(dllimport)
+#   elif defined(__MINGW32_DELAY_LOAD__)
+#     define AO_API __declspec(dllexport)
+#   elif defined(__MINGW32__) || defined(__WATCOMC__)
+#     define AO_API extern __declspec(dllimport)
+#   endif
+# endif
+#endif /* AO_DLL */
+
+#ifndef AO_API
+# define AO_API extern
+#endif
+
 #ifdef AO_ALIGNOF_SUPPORTED
 # define AO_ASSERT_ADDR_ALIGNED(addr) \
     assert(((size_t)(addr) & (__alignof__(*(addr)) - 1)) == 0)

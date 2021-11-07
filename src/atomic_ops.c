@@ -50,6 +50,10 @@
 # define _GNU_SOURCE 1
 #endif
 
+#ifndef AO_BUILD
+# define AO_BUILD
+#endif
+
 #undef AO_REQUIRE_CAS
 #include "atomic_ops.h" /* Without cas emulation! */
 
@@ -57,7 +61,7 @@
   extern "C" {
 #endif
 
-void AO_pause(int); /* defined below */
+AO_API void AO_pause(int); /* defined below */
 
 #ifdef __cplusplus
   } /* extern "C" */
@@ -94,22 +98,27 @@ void AO_pause(int); /* defined below */
   extern "C" {
 #endif
 
-AO_t AO_fetch_compare_and_swap_emulation(volatile AO_t *addr, AO_t old_val,
-                                         AO_t new_val);
+AO_API AO_t AO_fetch_compare_and_swap_emulation(volatile AO_t *addr,
+                                                AO_t old_val, AO_t new_val);
 
-int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
-                                                AO_t old_val1, AO_t old_val2,
-                                                AO_t new_val1, AO_t new_val2);
+AO_API int
+AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
+                                            AO_t old_val1, AO_t old_val2,
+                                            AO_t new_val1, AO_t new_val2);
 
-void AO_store_full_emulation(volatile AO_t *addr, AO_t val);
+AO_API void AO_store_full_emulation(volatile AO_t *addr, AO_t val);
 
 /* Lock for pthreads-based implementation.      */
 #ifndef AO_NO_PTHREADS
-  pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
+  AO_API pthread_mutex_t AO_pt_lock;
 #endif
 
 #ifdef __cplusplus
   } /* extern "C" */
+#endif
+
+#ifndef AO_NO_PTHREADS
+  pthread_mutex_t AO_pt_lock = PTHREAD_MUTEX_INITIALIZER;
 #endif
 
 /*
@@ -180,8 +189,8 @@ AO_INLINE void unlock(volatile AO_TS_t *l)
   }
 #endif /* !AO_USE_NO_SIGNALS */
 
-AO_t AO_fetch_compare_and_swap_emulation(volatile AO_t *addr, AO_t old_val,
-                                         AO_t new_val)
+AO_API AO_t AO_fetch_compare_and_swap_emulation(volatile AO_t *addr,
+                                                AO_t old_val, AO_t new_val)
 {
   AO_TS_t *my_lock = AO_locks + AO_HASH(addr);
   AO_t fetched_val;
@@ -201,9 +210,10 @@ AO_t AO_fetch_compare_and_swap_emulation(volatile AO_t *addr, AO_t old_val,
   return fetched_val;
 }
 
-int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
-                                                AO_t old_val1, AO_t old_val2,
-                                                AO_t new_val1, AO_t new_val2)
+AO_API int
+AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
+                                            AO_t old_val1, AO_t old_val2,
+                                            AO_t new_val1, AO_t new_val2)
 {
   AO_TS_t *my_lock = AO_locks + AO_HASH(addr);
   int result;
@@ -228,7 +238,7 @@ int AO_compare_double_and_swap_double_emulation(volatile AO_double_t *addr,
   return result;
 }
 
-void AO_store_full_emulation(volatile AO_t *addr, AO_t val)
+AO_API void AO_store_full_emulation(volatile AO_t *addr, AO_t val)
 {
   AO_TS_t *my_lock = AO_locks + AO_HASH(addr);
   lock(my_lock);
@@ -261,7 +271,7 @@ static void AO_spin(int n)
   AO_store(&spin_dummy, j);
 }
 
-void AO_pause(int n)
+AO_API void AO_pause(int n)
 {
   if (n < 12)
     AO_spin(n);

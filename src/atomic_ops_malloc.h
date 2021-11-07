@@ -66,13 +66,13 @@
 # endif
 #endif
 
-void AO_free(void *);
+AO_API void AO_free(void *);
 
-AO_ATTR_MALLOC AO_ATTR_ALLOC_SIZE(1)
+AO_API AO_ATTR_MALLOC AO_ATTR_ALLOC_SIZE(1)
 void * AO_malloc(size_t);
 
 /* Allow use of mmap to grow the heap.  No-op on some platforms.        */
-void AO_malloc_enable_mmap(void);
+AO_API void AO_malloc_enable_mmap(void);
 
 #ifdef __cplusplus
   } /* extern "C" */
