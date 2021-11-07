@@ -17,9 +17,9 @@ CFLAGS=-O2 -W4 $(CFLAGS_EXTRA)
 LIB_OBJS=atomic_ops.obj
 LIB_GPL_OBJS=atomic_ops_malloc.obj atomic_ops_stack.obj
 
-all-disable-gpl: libatomic_ops.lib
+all-disable-gpl: atomic_ops.lib
 
-all: all-disable-gpl libatomic_ops_gpl.lib
+all: all-disable-gpl atomic_ops_gpl.lib
 
 atomic_ops.obj:
 	cl $(CFLAGS) -c atomic_ops.c
@@ -30,11 +30,11 @@ atomic_ops_stack.obj:
 atomic_ops_malloc.obj:
 	cl $(CFLAGS) /wd4127 -c atomic_ops_malloc.c
 
-libatomic_ops.lib: $(LIB_OBJS)
-	lib /out:libatomic_ops.lib $(LIB_OBJS)
+atomic_ops.lib: $(LIB_OBJS)
+	lib /out:atomic_ops.lib $(LIB_OBJS)
 
-libatomic_ops_gpl.lib: $(LIB_GPL_OBJS)
-	lib /out:libatomic_ops_gpl.lib $(LIB_GPL_OBJS)
+atomic_ops_gpl.lib: $(LIB_GPL_OBJS)
+	lib /out:atomic_ops_gpl.lib $(LIB_GPL_OBJS)
 
 ..\tests\test_atomic: ..\tests\test_atomic.c ..\tests\test_atomic_include.h
 	cl $(CFLAGS) -I. ..\tests\test_atomic.c \
@@ -46,15 +46,13 @@ libatomic_ops_gpl.lib: $(LIB_GPL_OBJS)
 	    /Fo..\tests\test_atomic_generalized \
 	    /Fe..\tests\test_atomic_generalized
 
-..\tests\test_malloc: ..\tests\test_malloc.c libatomic_ops.lib \
-        libatomic_ops_gpl.lib
+..\tests\test_malloc: ..\tests\test_malloc.c atomic_ops.lib atomic_ops_gpl.lib
 	cl $(CFLAGS) -I. ..\tests\test_malloc.c /Fo..\tests\test_malloc \
-	    /Fe..\tests\test_malloc libatomic_ops.lib libatomic_ops_gpl.lib
+	    /Fe..\tests\test_malloc atomic_ops.lib atomic_ops_gpl.lib
 
-..\tests\test_stack: ..\tests\test_stack.c libatomic_ops.lib \
-        libatomic_ops_gpl.lib
+..\tests\test_stack: ..\tests\test_stack.c atomic_ops.lib atomic_ops_gpl.lib
 	cl $(CFLAGS) -I. ..\tests\test_stack.c /Fo..\tests\test_stack \
-	    /Fe..\tests\test_stack libatomic_ops.lib libatomic_ops_gpl.lib
+	    /Fe..\tests\test_stack atomic_ops.lib atomic_ops_gpl.lib
 
 check-deps: check-noautogen-deps ..\tests\test_atomic \
         ..\tests\test_atomic_generalized
@@ -71,4 +69,4 @@ check-noautogen: check-noautogen-deps
 	..\tests\test_stack
 
 clean:
-	del *.obj libatomic_ops*.lib ..\tests\*.obj ..\tests\*.exe
+	del *.obj atomic_ops*.lib ..\tests\*.obj ..\tests\*.exe

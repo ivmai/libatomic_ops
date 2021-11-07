@@ -140,7 +140,7 @@ fi
 
 AC_ARG_ENABLE(gpl,
         [AC_HELP_STRING([--disable-gpl],
-                        [Do not build libatomic_ops_gpl library])])
+                        [Do not build atomic_ops_gpl library])])
 AM_CONDITIONAL(ENABLE_GPL, test x$enable_gpl != xno)
 
 AC_ARG_ENABLE(docs,

@@ -54,8 +54,8 @@ modified is included with the above copyright notice.
 
 
 A few files are covered by the GNU General Public License.  (See file
-"COPYING".)  This applies only to the test code and the libatomic_ops_gpl
-portion of the library.  Thus, libatomic_ops_gpl should generally not be
+"COPYING".)  This applies only to the test code and the atomic_ops_gpl
+portion of the library.  Thus, atomic_ops_gpl should generally not be
 linked into proprietary code.  (This distinction was motivated by patent
 considerations.)
 

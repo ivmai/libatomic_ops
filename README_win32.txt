@@ -5,8 +5,8 @@ that on Linux/Unix platforms.
 To build and test the package:
 1) Make sure the Microsoft command-line tools (e.g. nmake) are available.
 2) Go to the src directory in the distribution and run
-"nmake -f Makefile.msft check".  This should build libatomic_ops.lib and
-libatomic_ops_gpl.lib, and execute some tests.
+"nmake -f Makefile.msft check".  This should build atomic_ops.lib and
+atomic_ops_gpl.lib, and execute some tests.
 
 To compile applications, you will need to retain or copy the following
 pieces from the resulting src directory contents:
@@ -15,15 +15,15 @@ pieces from the resulting src directory contents:
         "atomic_ops" - Subdirectory containing implementation header files.
                        The atomic_ops.h implementation is entirely in the
                        header files in Win32.
-        "libatomic_ops.lib" - Library containing implementation of AO_pause()
-                              defined in atomic_ops.c (AO_pause is needed for
-                              the almost lock-free stack implementation).
+        "atomic_ops.lib" - Library containing implementation of AO_pause()
+                           defined in atomic_ops.c (AO_pause is needed for
+                           the almost lock-free stack implementation).
         "atomic_ops_stack.h" - Header file describing almost lock-free stack.
         "atomic_ops_malloc.h" - Header file describing almost lock-free malloc.
-        "libatomic_ops_gpl.lib" - Library containing implementation of the
-                                  above two.
+        "atomic_ops_gpl.lib" - Library containing implementation of the
+                               above two.
 
-Note that libatomic_ops_gpl.lib is covered by the GNU General Public License,
+Note that atomic_ops_gpl.lib is covered by the GNU General Public License,
 while the top 3 of these pieces allow use in proprietary code.
 
 There are several macros a client could use to configure the build with the

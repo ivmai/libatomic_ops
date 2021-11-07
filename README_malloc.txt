@@ -1,4 +1,4 @@
-The libatomic_ops_gpl includes a simple almost-lock-free malloc implementation.
+The atomic_ops_gpl includes a simple almost-lock-free malloc implementation.
 
 Note that the AO malloc implementation is licensed under the GPL, unlike the
 lower level routines.
