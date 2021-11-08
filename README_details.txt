@@ -7,7 +7,20 @@ but the tests are much more likely to pass in the presence of serious problems.
 1) Type ./configure --prefix=<install dir>; make; make check
 in the directory containing unpacked source.  The usual GNU build machinery
 is used, except that only static, but position-independent, libraries
-are normally built.  On Windows, read README_win32.txt instead.
+are normally built.  On Windows, follow README_win32.txt to use
+src/Makefile.msft instead of the above sequence.
+
+Alternatively, the libraries could be built with CMake, even for Windows,
+like this:
+> mkdir out
+> cd out
+> cmake -Dbuild_tests=ON ..
+> cmake --build . --config Release
+> ctest --build-config Release
+
+The available options in the CMake script to customize the build is roughly
+the same as those in the configure one, please see the exact option list in
+CMakeLists.txt file.
 
 2) Applications should include atomic_ops.h.  Nearly all operations
 are implemented by header files included from it.  It is sometimes

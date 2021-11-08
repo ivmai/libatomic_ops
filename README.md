@@ -63,6 +63,9 @@ directory should work.  For a more customized build, see the output of
 `./configure --help`.  To build it from the development repository,
 `./autogen.sh` should be executed first.
 
+Alternatively, CMake could be use to build this package, e.g.
+`cmake . && cmake --build .` in this directory should work.
+
 Note that much of the content of this library is in the header files.
 However, two small libraries are built and installed:
 
@@ -74,7 +77,9 @@ However, two small libraries are built and installed:
 * `libatomic_ops_gpl.a` contains some higher level facilities.  This code is
   currently covered by the GPL.  The contents currently correspond to
   the headers `atomic_ops_malloc.h` and `atomic_ops_stack.h`.  Not built and
-  not installed if `--disable-gpl` option is passed to `configure`.
+  not installed if `--disable-gpl` option is passed to `configure` (or if
+  `-Denable_gpl=OFF` option is passed to `cmake` if the latter is used to
+  build the package).
 
 
 ## Platform Specific Notes

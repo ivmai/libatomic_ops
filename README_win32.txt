@@ -7,6 +7,7 @@ To build and test the package:
 2) Go to the src directory in the distribution and run
 "nmake -f Makefile.msft check".  This should build atomic_ops.lib and
 atomic_ops_gpl.lib, and execute some tests.
+Alternatively, CMake could be used (e.g., see how to in README_details.txt).
 
 To compile applications, you will need to retain or copy the following
 pieces from the resulting src directory contents:

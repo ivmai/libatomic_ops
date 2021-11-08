@@ -15,7 +15,7 @@ dist_doc_DATA += COPYING README_malloc.txt README_stack.txt
 endif
 endif
 
-EXTRA_DIST = autogen.sh
+EXTRA_DIST = autogen.sh CMakeLists.txt Config.cmake.in
 
 ## TODO: After migration to autoconf-1.13+, remove check-nolink definition
 ## from this Makefile.am and add AM_EXTRA_RECURSIVE_TARGETS([check-nolink])
