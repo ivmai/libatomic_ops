@@ -407,7 +407,7 @@ jobs:
         - gcc-mingw-w64
     compiler: x86_64-w64-mingw32-gcc
     env:
-    - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared"
+    - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared --disable-static"
     - MAKEFILE_TARGET=all
   - addons:
       apt:
