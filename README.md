@@ -72,7 +72,7 @@ However, two small libraries are built and installed:
 * `libatomic_ops.a` is a support library, which is not needed on some
   platforms. This is intended to be usable, under some mild restrictions,
   in free or proprietary code, as are all the header files.
-  See [LICENSING.txt](LICENSING.txt) for more details about the licensing.
+  See [LICENSE](LICENSE) for more details about the licensing.
 
 * `libatomic_ops_gpl.a` contains some higher level facilities.  This code is
   currently covered by the GPL.  The contents currently correspond to
@@ -146,7 +146,7 @@ The file gcc/sh.h is
 
  * Copyright (c) 2009 by Takashi YOSHII. All rights reserved.
 
-Please be aware of the dual nature of the license of libatomic_ops,
-see [LICENSING.txt](LICENSING.txt) for the details.
+Please be aware of the dual nature of the license of libatomic_ops, see
+[LICENSE](LICENSE) for the details.
 
 The library contributors are listed in [AUTHORS](AUTHORS) file.

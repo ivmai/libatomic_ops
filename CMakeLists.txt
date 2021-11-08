@@ -322,7 +322,7 @@ if (build_tests)
 endif(build_tests)
 
 if (enable_docs)
-  install(FILES AUTHORS LICENSING.txt README.md
+  install(FILES AUTHORS LICENSE README.md
                 README_details.txt README_win32.txt
           DESTINATION "${CMAKE_INSTALL_DOCDIR}")
   if (enable_gpl)
