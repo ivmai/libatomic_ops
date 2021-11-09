@@ -2,4 +2,4 @@
 
 @PACKAGE_INIT@
 include("${CMAKE_CURRENT_LIST_DIR}/Atomic_opsTargets.cmake")
-check_required_components(atomic_ops)
+check_required_components(libatomic_ops)

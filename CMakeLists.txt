@@ -31,7 +31,7 @@ set(PACKAGE_VERSION 7.7.0)
 set(LIBATOMIC_OPS_VER_INFO      2:1:1)
 set(LIBATOMIC_OPS_GPL_VER_INFO  2:2:1)
 
-project(atomic_ops C)
+project(libatomic_ops C)
 
 include(CheckCCompilerFlag)
 include(CheckFunctionExists)
