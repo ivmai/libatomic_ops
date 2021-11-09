@@ -71,14 +71,9 @@ if (BUILD_SHARED_LIBS)
 endif(BUILD_SHARED_LIBS)
 
 # Output all warnings.
-if (BORLAND)
-  # All warnings except for particular ones.
-  add_compile_options(/w) #?? /w-pro /w-aus /w-par /w-ccc /w-inl /w-rch
-elseif (MSVC)
+if (MSVC)
   # All warnings but ignoring "conditional expression is constant" ones.
   add_compile_options(/W4 /wd4127)
-elseif (WATCOM)
-  add_compile_options(/wx)
 else()
   # TODO: add -[W]pedantic -Wno-long-long
   add_compile_options(-Wall -Wextra)
@@ -115,12 +110,8 @@ if (BUILD_SHARED_LIBS)
 endif()
 
 if (enable_werror)
-  if (BORLAND)
-    add_compile_options(/w!)
-  elseif (MSVC)
+  if (MSVC)
     add_compile_options(/WX)
-  elseif (WATCOM)
-    add_compile_options(/we)
   else()
     add_compile_options(-Werror)
   endif()
