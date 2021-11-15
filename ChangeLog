@@ -1,4 +1,13 @@
 
+== [7.6.14] (not released yet) ==
+
+* Add note to README that AO malloc code has same license as AO stack
+* Do not assume 'ordered except earlier write' for UWP/arm64
+* Do not name GCC intrinsics as C11 ones in ChangeLog and configure
+* Fix 'AO_malloc redefinition' MS VC warning caused by attributes mismatch
+* Refine AO_UNIPROCESSOR macro description in configure
+
+
 == [7.6.12] 2021-09-13 ==
 
 * Allow to generalize bool-CAS for sparc (gcc)
