@@ -1,4 +1,31 @@
 
+== [7.7.0] (development) ==
+
+* Add AUTHORS file to the list of installed documentation
+* Add goal to Makefile.msft to build all tests but not execute them
+* Always use 'mfence' for nop_full if target CPU supports SSE2 (MS VC/x86)
+* Build atomic_ops.lib by Makefile.msft (MS VC)
+* Build test object and executable files in tests folder (MS VC)
+* Define double_compare_and_swap_full if MS VS 2017+ (x86)
+* Document config macros in README_win32 and remove them from configure
+* Enforce most strict level of compiler warnings (MS VC)
+* Ensure atomic_ops.c global symbols are always declared as extern 'C'
+* Explicitly outline symbols exported in AO shared libraries with AO_API
+* Hide AO_free_list symbol
+* Implement AO_test_and_set using InterlockedExchange8 (MS VC)
+* Implement and/or/xor for AO_t, short and int types (MS VC)
+* Implement nf/acq/rel variants of primitives on Windows RT (MS VC)
+* Move all README_*.txt and license files to the top folder
+* Move all non-double intrinsic-based primitives to msftc/common32_defs.h
+* New configure option (--disable-gpl) to skip building of libatomic_ops_gpl
+* Refine LICENSE and README about code parts covered by MIT and GPL-2.0
+* Remove 'lib' prefix for atomic_ops_gpl.lib in Makefile.msft
+* Rename LICENSING.txt to LICENSE file
+* Support build with CMake
+* Support double-wide CAS on armv7+ and UWP/arm64 (MS VC)
+* Support test_atomic with MS build w/o the need to run GNU make first
+
+
 == [7.6.14] (not released yet) ==
 
 * Add note to README that AO malloc code has same license as AO stack
