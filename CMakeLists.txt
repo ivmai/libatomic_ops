@@ -119,7 +119,8 @@ endif(enable_werror)
 
 # Extra user-defined flags to pass to the C compiler.
 if (DEFINED CFLAGS_EXTRA)
-  add_compile_options(${CFLAGS_EXTRA})
+  separate_arguments(CFLAGS_EXTRA_LIST UNIX_COMMAND "${CFLAGS_EXTRA}")
+  add_compile_options(${CFLAGS_EXTRA_LIST})
 endif()
 
 set(SRC src/atomic_ops.c)
