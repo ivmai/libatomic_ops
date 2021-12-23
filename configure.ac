@@ -53,11 +53,12 @@ if test "$GCC" = yes; then
       # Workaround: at least GCC 3.4.6 (Solaris) does not define this macro.
       old_CFLAGS="$CFLAGS"
       CFLAGS="$PICFLAG $CFLAGS"
-      AC_TRY_COMPILE([],[
+      AC_COMPILE_IFELSE(
+        [AC_LANG_SOURCE([
  #ifndef __PIC__
  # error
  #endif
-      ], [ac_cv_pic_macro=yes], [ac_cv_pic_macro=no])
+        ])], [ac_cv_pic_macro=yes], [ac_cv_pic_macro=no])
       CFLAGS="$old_CFLAGS"
       AC_MSG_RESULT($ac_cv_pic_macro)
       AS_IF([test "$ac_cv_pic_macro" = yes], [],
@@ -69,15 +70,16 @@ if test "$GCC" = yes; then
   AC_MSG_CHECKING([whether compiler supports -Wextra])
   old_CFLAGS="$CFLAGS"
   CFLAGS="-Wextra $CFLAGS"
-  AC_TRY_COMPILE([],[], [ac_cv_cc_wextra=yes], [ac_cv_cc_wextra=no])
+  AC_COMPILE_IFELSE([AC_LANG_SOURCE([])],
+                    [ac_cv_cc_wextra=yes], [ac_cv_cc_wextra=no])
   CFLAGS="$old_CFLAGS"
   AC_MSG_RESULT($ac_cv_cc_wextra)
   AS_IF([test "$ac_cv_cc_wextra" = yes], [WEXTRA="-Wextra"], [WEXTRA="-W"])
   AC_MSG_CHECKING([whether compiler supports -Wpedantic])
   CFLAGS="-Wpedantic -Wno-long-long $CFLAGS"
-  AC_TRY_COMPILE([],[
+  AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 extern int quiet;
-  ], [ac_cv_cc_pedantic=yes], [ac_cv_cc_pedantic=no])
+    ])], [ac_cv_cc_pedantic=yes], [ac_cv_cc_pedantic=no])
   CFLAGS="$old_CFLAGS"
   AC_MSG_RESULT($ac_cv_cc_pedantic)
   WPEDANTIC=
