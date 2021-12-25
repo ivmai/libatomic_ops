@@ -223,7 +223,7 @@ jobs:
     - CFLAGS_EXTRA="-O3 -march=native -std=c11 -D AO_BL_SIZE=4 -D DEFAULT_NTHREADS=32"
   - compiler: gcc
     env:
-    - CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=3 -std=c89"
+    - CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=2 -std=c89"
   - addons:
       apt:
         packages:
@@ -265,7 +265,7 @@ jobs:
     - CONF_OPTIONS="--disable-atomic-intrinsics"
   - os: osx
     env:
-    - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=3"
+    - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions"
   - compiler: gcc
     env:
@@ -328,7 +328,7 @@ jobs:
         - ubuntu-toolchain-r-test
     compiler: gcc-9
     env:
-    - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=3"
+    - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
   - addons:
       apt:
