@@ -215,6 +215,7 @@ if (install_headers)
                 src/atomic_ops/sysdeps/gcc/arm.h
                 src/atomic_ops/sysdeps/gcc/avr32.h
                 src/atomic_ops/sysdeps/gcc/cris.h
+                src/atomic_ops/sysdeps/gcc/e2k.h
                 src/atomic_ops/sysdeps/gcc/generic-arithm.h
                 src/atomic_ops/sysdeps/gcc/generic-small.h
                 src/atomic_ops/sysdeps/gcc/generic.h

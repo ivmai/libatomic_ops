@@ -364,6 +364,8 @@
 #   define AO_CAN_EMUL_CAS
 # elif defined(__avr32__)
 #   include "atomic_ops/sysdeps/gcc/avr32.h"
+# elif defined(__e2k__)
+#   include "atomic_ops/sysdeps/gcc/e2k.h"
 # elif defined(__hexagon__)
 #   include "atomic_ops/sysdeps/gcc/hexagon.h"
 # elif defined(__nios2__)
