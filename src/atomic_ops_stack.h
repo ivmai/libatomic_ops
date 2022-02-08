@@ -77,7 +77,6 @@
 /* The number of low order pointer bits we can use for a small  */
 /* version number.                                              */
 # if defined(__LP64__) || defined(_LP64) || defined(_WIN64)
-   /* WIN64 isn't really supported yet. */
 #  define AO_N_BITS 3
 # else
 #  define AO_N_BITS 2
