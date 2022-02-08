@@ -159,11 +159,11 @@ volatile AO_t ops_performed = 0;
 #endif
 
 #ifdef AO_HAVE_fetch_and_add
-# define fetch_and_add(addr, val) AO_fetch_and_add(addr, val)
+# define fetch_then_add(addr, val) AO_fetch_and_add(addr, val)
 #else
-  /* Fake it.  This is really quite unacceptable for timing */
-  /* purposes.  But as a correctness test, it should be OK. */
-  AO_INLINE AO_t fetch_and_add(volatile AO_t * addr, AO_t val)
+  /* OK to perform it in two atomic steps, but really quite     */
+  /* unacceptable for timing purposes.                          */
+  AO_INLINE AO_t fetch_then_add(volatile AO_t * addr, AO_t val)
   {
     AO_t result = AO_load(addr);
     AO_store(addr, result + val);
@@ -185,7 +185,7 @@ volatile AO_t ops_performed = 0;
 
     printf("starting thread %u\n", index);
 # endif
-  while (fetch_and_add(&ops_performed, index + 1) + index + 1 < LIMIT)
+  while (fetch_then_add(&ops_performed, index + 1) + index + 1 < LIMIT)
     {
       for (i = 0; i <= index; ++i)
         {
