@@ -112,39 +112,45 @@ void print_list(void)
 }
 #endif /* VERBOSE_STACK */
 
-static char marks[MAX_NTHREADS * (MAX_NTHREADS + 1) / 2 + 1];
-
 void check_list(int n)
 {
   list_element *p;
   int i;
+  int err_cnt = 0;
+  char *marks = (char*)calloc(n + 1, 1);
 
-  for (i = 1; i <= n; ++i) marks[i] = 0;
+  if (0 == marks)
+    {
+      fprintf(stderr, "Out of memory (marks)\n");
+      exit(2);
+    }
 
   for (p = (list_element *)AO_REAL_HEAD_PTR(the_list);
-       p != 0;
-       p = (list_element *)AO_REAL_NEXT_PTR(p -> next))
+       p != 0; p = (list_element *)AO_REAL_NEXT_PTR(p -> next))
     {
       i = p -> data;
       if (i > n || i <= 0)
         {
           fprintf(stderr, "Found erroneous list element %d\n", i);
-          abort();
+          err_cnt++;
         }
-      if (marks[i] != 0)
+      else if (marks[i] != 0)
         {
           fprintf(stderr, "Found duplicate list element %d\n", i);
-          abort();
+          err_cnt++;
         }
-      marks[i] = 1;
+      else marks[i] = 1;
     }
 
   for (i = 1; i <= n; ++i)
     if (marks[i] != 1)
       {
         fprintf(stderr, "Missing list element %d\n", i);
-        abort();
+        err_cnt++;
       }
+
+  free(marks);
+  if (err_cnt > 0) abort();
 }
 
 volatile AO_t ops_performed = 0;
