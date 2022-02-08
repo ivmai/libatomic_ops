@@ -79,12 +79,17 @@ AO_API void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
   /* No deletions of x can start here, since x is not currently in the  */
   /* list.                                                              */
  retry:
-# if AO_BL_SIZE == 2
   {
+# if AO_BL_SIZE == 2
     /* Start all loads as close to concurrently as possible. */
     AO_t entry1 = AO_load(&a->AO_stack_bl[0]);
     AO_t entry2 = AO_load(&a->AO_stack_bl[1]);
     if (entry1 == x_bits || entry2 == x_bits)
+# else
+    int i;
+    for (i = 0; i < AO_BL_SIZE; ++i)
+      if (AO_load(&a->AO_stack_bl[i]) == x_bits)
+# endif
       {
         /* Entry is currently being removed.  Change it a little.       */
           ++x_bits;
@@ -95,24 +100,7 @@ AO_API void AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
         goto retry;
       }
   }
-# else
-  {
-    int i;
-    for (i = 0; i < AO_BL_SIZE; ++i)
-      {
-        if (AO_load(&a->AO_stack_bl[i]) == x_bits)
-          {
-            /* Entry is currently being removed.  Change it a little.   */
-              ++x_bits;
-              if ((x_bits & AO_BIT_MASK) == 0)
-                /* Version count overflowed;         */
-                /* EXTREMELY unlikely, but possible. */
-                x_bits = (AO_t)x;
-            goto retry;
-          }
-      }
-  }
-# endif
+
   /* x_bits is not currently being deleted */
   do
     {
