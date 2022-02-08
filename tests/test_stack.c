@@ -241,7 +241,10 @@ int main(int argc, char **argv)
       fprintf(stderr, "Usage: %s [max # of threads]\n", argv[0]);
       exit(1);
     }
-  for (exper_n = 0; exper_n < N_EXPERIMENTS; ++ exper_n)
+# ifdef AO_USE_ALMOST_LOCK_FREE
+    printf("Use almost-lock-free implementation\n");
+# endif
+  for (exper_n = 0; exper_n < N_EXPERIMENTS; ++exper_n)
     for (nthreads = 1; nthreads <= max_nthreads; ++nthreads)
       {
         unsigned i;
