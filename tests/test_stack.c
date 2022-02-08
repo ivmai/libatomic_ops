@@ -101,17 +101,16 @@ void add_elements(int n)
   AO_stack_push(&the_list, (AO_t *)le);
 }
 
-#ifdef VERBOSE
+#ifdef VERBOSE_STACK
 void print_list(void)
 {
   list_element *p;
 
   for (p = (list_element *)AO_REAL_HEAD_PTR(the_list);
-       p != 0;
-       p = (list_element *)AO_REAL_NEXT_PTR(p -> next))
+       p != 0; p = (list_element *)AO_REAL_NEXT_PTR(p -> next))
     printf("%d\n", p -> data);
 }
-#endif /* VERBOSE */
+#endif /* VERBOSE_STACK */
 
 static char marks[MAX_NTHREADS * (MAX_NTHREADS + 1) / 2 + 1];
 
@@ -181,7 +180,7 @@ volatile AO_t ops_performed = 0;
   list_element * t[MAX_NTHREADS + 1];
   unsigned index = (unsigned)(size_t)arg;
   unsigned i;
-# ifdef VERBOSE
+# ifdef VERBOSE_STACK
     unsigned j = 0;
 
     printf("starting thread %u\n", index);
@@ -201,11 +200,11 @@ volatile AO_t ops_performed = 0;
         {
           AO_stack_push(&the_list, (AO_t *)t[i]);
         }
-#     ifdef VERBOSE
+#     ifdef VERBOSE_STACK
         j += index + 1;
 #     endif
     }
-# ifdef VERBOSE
+# ifdef VERBOSE_STACK
     printf("finished thread %u: %u total ops\n", index, j);
 # endif
   return 0;
@@ -258,13 +257,13 @@ int main(int argc, char **argv)
         unsigned long start_time;
         list_element * le;
 
-#       ifdef VERBOSE
+#       ifdef VERBOSE_STACK
           printf("Before add_elements: exper_n=%d, nthreads=%d,"
                  " max_nthreads=%d, list_length=%d\n",
                  exper_n, nthreads, max_nthreads, list_length);
 #       endif
         add_elements(list_length);
-#       ifdef VERBOSE
+#       ifdef VERBOSE_STACK
           printf("Initial list (nthreads = %d):\n", nthreads);
           print_list();
 #       endif
@@ -304,7 +303,7 @@ int main(int argc, char **argv)
           }
         }
         times[nthreads][exper_n] = get_msecs() - start_time;
-  #     ifdef VERBOSE
+  #     ifdef VERBOSE_STACK
           printf("nthreads=%d, time_ms=%lu\n",
                  nthreads, times[nthreads][exper_n]);
           printf("final list (should be reordered initial list):\n");
@@ -324,7 +323,7 @@ int main(int argc, char **argv)
                LIMIT, LIMIT, nthreads);
 #       ifndef NO_TIMES
           for (exper_n = 0; exper_n < N_EXPERIMENTS; ++exper_n) {
-#           ifdef VERBOSE
+#           ifdef VERBOSE_STACK
               printf(" [%lums]", times[nthreads][exper_n]);
 #           endif
             sum += times[nthreads][exper_n];
