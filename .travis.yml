@@ -29,7 +29,7 @@ jobs:
     - CC_FOR_CHECK=gcc
     - MAKEFILE_TARGET=all
     - REPORT_COVERAGE=true
-    - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE"
+    - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE_STACK"
   - env:
     - CPPCHECK_ENABLE="-j16 -q --enable=information,performance,portability,style,warning"
     - MAKEFILE_TARGET=all
@@ -40,7 +40,7 @@ jobs:
     env:
     - CSA_CHECK=true
     - MAKEFILE_TARGET=all
-    - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D HAVE_MMAP -D VERBOSE"
+    - CFLAGS_EXTRA="-D AO_TRACE_MALLOC -D HAVE_MMAP -D VERBOSE_STACK"
   - compiler: clang
     env:
     - CONF_OPTIONS="--disable-gpl"
@@ -412,7 +412,7 @@ jobs:
     - CFLAGS_EXTRA="-march=native"
   - compiler: clang
     env:
-    - CFLAGS_EXTRA="-x c++ -march=native -D VERBOSE"
+    - CFLAGS_EXTRA="-x c++ -march=native -D VERBOSE_STACK"
     - CONF_OPTIONS="--enable-assertions"
     - MAKEFILE_TARGET=all
   - compiler: gcc
