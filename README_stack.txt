@@ -60,7 +60,7 @@ AO_t * AO_stack_pop_acquire(volatile AO_stack_t *list);
 
 We require that the objects pushed as list elements remain addressable
 as long as any push or pop operation are in progress.  (It is OK for an object
-to be "pop"ped off a stack and "deallocated" with a concurrent "pop" on
+to be "popped" off a stack and "deallocated" with a concurrent "pop" on
 the same stack still in progress, but only if "deallocation" leaves the
 object addressable.  The second "pop" may still read the object, but
 the value it reads will not matter.)
