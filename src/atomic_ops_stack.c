@@ -26,6 +26,11 @@
 #define AO_REQUIRE_CAS
 #include "atomic_ops_stack.h"
 
+AO_API void AO_stack_init(AO_stack_t *list)
+{
+  memset((char *)list, 0, sizeof(list));
+}
+
 /* This function call must be a part of a do-while loop with a CAS      */
 /* designating the condition of the loop (see the use cases below).     */
 #ifdef AO_THREAD_SANITIZER
@@ -215,19 +220,6 @@
     return first_ptr;
   }
 
-  AO_API void AO_stack_init(AO_stack_t *list)
-  {
-#   if AO_BL_SIZE == 2
-      list -> AO_aux.AO_stack_bl[0] = 0;
-      list -> AO_aux.AO_stack_bl[1] = 0;
-#   else
-      int i;
-      for (i = 0; i < AO_BL_SIZE; ++i)
-        list -> AO_aux.AO_stack_bl[i] = 0;
-#   endif
-    list -> AO_ptr = 0;
-  }
-
   AO_API void AO_stack_push_release(AO_stack_t *list, AO_t *x)
   {
     AO_stack_push_explicit_aux_release(&list->AO_ptr, x, &list->AO_aux);
@@ -239,12 +231,6 @@
   }
 
 #else /* ! USE_ALMOST_LOCK_FREE */
-
-  AO_API void AO_stack_init(AO_stack_t *list)
-  {
-    list -> AO_val1 = 0;
-    list -> AO_val2 = 0;
-  }
 
   /* The functionality is the same as of AO_load_next but the atomicity */
   /* is not needed.  The usage is similar to that of store_before_cas.  */
