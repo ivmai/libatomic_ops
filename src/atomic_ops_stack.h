@@ -126,30 +126,9 @@
 
 # define AO_STACK_INITIALIZER {0,{{0}}}
 
-  AO_INLINE void AO_stack_init(AO_stack_t *list)
-  {
-#   if AO_BL_SIZE == 2
-      list -> AO_aux.AO_stack_bl[0] = 0;
-      list -> AO_aux.AO_stack_bl[1] = 0;
-#   else
-      int i;
-      for (i = 0; i < AO_BL_SIZE; ++i)
-        list -> AO_aux.AO_stack_bl[i] = 0;
-#   endif
-    list -> AO_ptr = 0;
-  }
-
   /* Convert an AO_stack_t to a pointer to the link field in    */
   /* the first element.                                         */
 # define AO_REAL_HEAD_PTR(x) AO_REAL_NEXT_PTR((x).AO_ptr)
-
-# define AO_stack_push_release(l, e) \
-        AO_stack_push_explicit_aux_release(&((l)->AO_ptr), e, &((l)->AO_aux))
-# define AO_HAVE_stack_push_release
-
-# define AO_stack_pop_acquire(l) \
-        AO_stack_pop_explicit_aux_acquire(&((l)->AO_ptr), &((l)->AO_aux))
-# define AO_HAVE_stack_pop_acquire
 
 #else /* Use fully non-blocking data structure, wide CAS.       */
 
@@ -173,32 +152,24 @@
 
 # define AO_STACK_INITIALIZER AO_DOUBLE_T_INITIALIZER
 
-  AO_INLINE void AO_stack_init(AO_stack_t *list)
-  {
-    list -> AO_val1 = 0;
-    list -> AO_val2 = 0;
-  }
-
 # define AO_REAL_HEAD_PTR(x) (AO_t *)((x).AO_val2)
 # define AO_REAL_NEXT_PTR(x) (AO_t *)(x)
 
-  AO_API void AO_stack_push_release(AO_stack_t *list, AO_t *new_element);
-# define AO_HAVE_stack_push_release
-
-  AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list);
-# define AO_HAVE_stack_pop_acquire
-
 #endif /* !AO_USE_ALMOST_LOCK_FREE */
 
-#if defined(AO_HAVE_stack_push_release) && !defined(AO_HAVE_stack_push)
-# define AO_stack_push(l, e) AO_stack_push_release(l, e)
-# define AO_HAVE_stack_push
-#endif
+AO_API void AO_stack_init(AO_stack_t *list);
 
-#if defined(AO_HAVE_stack_pop_acquire) && !defined(AO_HAVE_stack_pop)
-# define AO_stack_pop(l) AO_stack_pop_acquire(l)
-# define AO_HAVE_stack_pop
-#endif
+AO_API void AO_stack_push_release(AO_stack_t *list, AO_t *new_element);
+#define AO_HAVE_stack_push_release
+
+#define AO_stack_push(l, e) AO_stack_push_release(l, e)
+#define AO_HAVE_stack_push
+
+AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list);
+#define AO_HAVE_stack_pop_acquire
+
+#define AO_stack_pop(l) AO_stack_pop_acquire(l)
+#define AO_HAVE_stack_pop
 
 #ifdef __cplusplus
   } /* extern "C" */
