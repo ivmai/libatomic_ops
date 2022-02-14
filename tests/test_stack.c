@@ -85,7 +85,11 @@ typedef struct le {
   int data;
 } list_element;
 
-AO_stack_t the_list = AO_STACK_INITIALIZER;
+#if defined(CPPCHECK)
+  AO_stack_t the_list; /* to test AO_stack_init() */
+#else
+  AO_stack_t the_list = AO_STACK_INITIALIZER;
+#endif
 
 /* Add elements from 1 to n to the list (1 is pushed first).    */
 /* This is called from a single thread only.                    */
@@ -261,6 +265,9 @@ int main(int argc, char **argv)
     }
 # ifdef AO_USE_ALMOST_LOCK_FREE
     printf("Use almost-lock-free implementation\n");
+# endif
+# if defined(CPPCHECK)
+    AO_stack_init(&the_list);
 # endif
   for (exper_n = 0; exper_n < N_EXPERIMENTS; ++exper_n)
     for (nthreads = 1; nthreads <= max_nthreads; ++nthreads)
