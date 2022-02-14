@@ -39,6 +39,7 @@
 # include <pthread.h>
 #endif
 
+#include <assert.h>
 #include <stdlib.h>
 
 #include "atomic_ops_stack.h" /* includes atomic_ops.h as well */
@@ -86,6 +87,8 @@ typedef struct le {
 
 AO_stack_t the_list = AO_STACK_INITIALIZER;
 
+/* Add elements from 1 to n to the list (1 is pushed first).    */
+/* This is called from a single thread only.                    */
 void add_elements(int n)
 {
   list_element * le;
@@ -112,6 +115,8 @@ void print_list(void)
 }
 #endif /* VERBOSE_STACK */
 
+/* Check that the list contains only values from 1 to n, in any order,  */
+/* w/o duplications.  Executed when the list mutation is finished.      */
 void check_list(int n)
 {
   list_element *p;
@@ -191,14 +196,20 @@ volatile AO_t ops_performed = 0;
 
     printf("starting thread %u\n", index);
 # endif
+  assert(index <= MAX_NTHREADS);
   while (fetch_then_add(&ops_performed, index + 1) + index + 1 < LIMIT)
     {
+      /* Pop index+1 elements (where index is the thread one), then     */
+      /* push them back (in the same order of operations).              */
+      /* Note that this is done in parallel by many threads.            */
       for (i = 0; i <= index; ++i)
         {
           t[i] = (list_element *)AO_stack_pop(&the_list);
           if (0 == t[i])
             {
-              fprintf(stderr, "FAILED\n");
+              /* This should not happen as at most n*(n+1)/2 elements   */
+              /* could be popped off at a time.                         */
+              fprintf(stderr, "Failed - nothing to pop\n");
               abort();
             }
         }
@@ -210,6 +221,8 @@ volatile AO_t ops_performed = 0;
         j += index + 1;
 #     endif
     }
+    /* Repeat until LIMIT push/pop operations are performed (by all     */
+    /* the threads simultaneously).                                     */
 # ifdef VERBOSE_STACK
     printf("finished thread %u: %u total ops\n", index, j);
 # endif
@@ -268,6 +281,7 @@ int main(int argc, char **argv)
                  " max_nthreads=%d, list_length=%d\n",
                  exper_n, nthreads, max_nthreads, list_length);
 #       endif
+        /* Create a list with n*(n+1)/2 elements. */
         add_elements(list_length);
 #       ifdef VERBOSE_STACK
           printf("Initial list (nthreads = %d):\n", nthreads);
@@ -275,6 +289,7 @@ int main(int argc, char **argv)
 #       endif
         ops_performed = 0;
         start_time = get_msecs();
+        /* Start n-1 threads to run_one_test in parallel.       */
         for (i = 1; (int)i < nthreads; ++i) {
           int code;
 
@@ -294,6 +309,7 @@ int main(int argc, char **argv)
         /* We use the main thread to run one test.  This allows gprof   */
         /* profiling to work, for example.                              */
         run_one_test(0);
+        /* Wait for all the threads to complete. */
         for (i = 1; (int)i < nthreads; ++i) {
           int code;
 
@@ -315,10 +331,14 @@ int main(int argc, char **argv)
           printf("final list (should be reordered initial list):\n");
           print_list();
   #     endif
+        /* Ensure that no element is lost or duplicated.        */
         check_list(list_length);
+        /* And, free the entire list.   */
         while ((le = (list_element *)AO_stack_pop(&the_list)) != 0)
           free(le);
+        /* Retry with larger n values, probably retry the experiment again. */
       }
+    /* Output the performance statistic finally. */
     for (nthreads = 1; nthreads <= max_nthreads; ++nthreads)
       {
 #       ifndef NO_TIMES
