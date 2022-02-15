@@ -222,12 +222,14 @@ AO_API void AO_stack_init(AO_stack_t *list)
 
   AO_API void AO_stack_push_release(AO_stack_t *list, AO_t *x)
   {
-    AO_stack_push_explicit_aux_release(&list->AO_ptr, x, &list->AO_aux);
+    AO_stack_push_explicit_aux_release(&list->AO_pa.AO_ptr, x,
+                                       &list->AO_pa.AO_aux);
   }
 
   AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list)
   {
-    return AO_stack_pop_explicit_aux_acquire(&list->AO_ptr, &list->AO_aux);
+    return AO_stack_pop_explicit_aux_acquire(&list->AO_pa.AO_ptr,
+                                             &list->AO_pa.AO_aux);
   }
 
 #else /* ! USE_ALMOST_LOCK_FREE */
@@ -254,8 +256,8 @@ AO_API void AO_stack_init(AO_stack_t *list)
 # endif /* !AO_THREAD_SANITIZER */
 
   /* Better names for fields in AO_stack_t.     */
-# define ptr AO_val2
-# define version AO_val1
+# define version AO_vp.AO_val1
+# define ptr AO_vp.AO_val2
 
 # if defined(AO_HAVE_compare_double_and_swap_double) \
      && !(defined(AO_STACK_PREFER_CAS_DOUBLE) \
@@ -303,9 +305,9 @@ AO_API void AO_stack_init(AO_stack_t *list)
         if (NULL == cptr)
           return NULL;
         next = load_before_cas((AO_t *)cptr);
-      } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(list,
-                                          cversion, (AO_t)cptr,
-                                          cversion+1, (AO_t)next)));
+      } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(
+                                        &list->AO_vp, cversion, (AO_t)cptr,
+                                        cversion+1, (AO_t)next)));
       return cptr;
     }
 
@@ -319,17 +321,17 @@ AO_API void AO_stack_init(AO_stack_t *list)
     /* for an unchanged version number, not an unchanged pointer.       */
     AO_API void AO_stack_push_release(AO_stack_t *list, AO_t *element)
     {
-      AO_t version;
+      AO_t cversion;
 
       do {
         AO_t next_ptr;
 
         /* Again version must be loaded first, for different reason.    */
-        version = AO_load_acquire(&list->version);
+        cversion = AO_load_acquire(&list->version);
         next_ptr = AO_load(&list->ptr);
         store_before_cas(element, next_ptr);
-      } while (!AO_compare_and_swap_double_release(list, version, version+1,
-                                                   (AO_t)element));
+      } while (!AO_compare_and_swap_double_release(&list->AO_vp, cversion,
+                                                   cversion+1, (AO_t)element));
     }
 
     AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list)
@@ -344,10 +346,12 @@ AO_API void AO_stack_init(AO_stack_t *list)
         if (NULL == cptr)
           return NULL;
         next = load_before_cas(cptr);
-      } while (!AO_compare_double_and_swap_double_release(list,
+      } while (!AO_compare_double_and_swap_double_release(&list->AO_vp,
                                 cversion, (AO_t)cptr, cversion+1, next));
       return cptr;
     }
 # endif /* AO_HAVE_compare_and_swap_double */
 
+# undef ptr
+# undef version
 #endif /* ! USE_ALMOST_LOCK_FREE */

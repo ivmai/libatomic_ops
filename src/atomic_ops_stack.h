@@ -31,6 +31,12 @@
 
 #include "atomic_ops.h"
 
+#ifndef AO_HAVE_double_t
+  /* Can happen if we are using CAS emulation, since we do not want to  */
+  /* force that here, in case other atomic_ops clients do not want it.  */
+# include "atomic_ops/sysdeps/standard_ao_double_t.h"
+#endif
+
 #ifdef __cplusplus
   extern "C" {
 #endif
@@ -73,31 +79,49 @@
  * compare-and-swap operations are available.
  */
 
+/* AO_stack_aux should be treated as opaque.  It is fully defined       */
+/* here, so it can be allocated, and also to facilitate debugging.      */
+/* Note: changing the value of AO_BL_SIZE leads to the ABI change.      */
+#ifndef AO_BL_SIZE
+# define AO_BL_SIZE 2
+#endif
+
+/* The number of low order pointer bits we can use for a small          */
+/* version number.                                                      */
+#if defined(__LP64__) || defined(_LP64) || defined(_WIN64)
+# define AO_N_BITS 3
+#else
+# define AO_N_BITS 2
+#endif
+
+#define AO_BIT_MASK ((1 << AO_N_BITS) - 1)
+
+#if AO_BL_SIZE > (1 << AO_N_BITS)
+# error AO_BL_SIZE too big
+#endif
+
+typedef struct AO__stack_aux {
+  volatile AO_t AO_stack_bl[AO_BL_SIZE];
+} AO_stack_aux;
+
+struct AO__stack_ptr_aux {
+  volatile AO_t AO_ptr;
+  AO_stack_aux AO_aux;
+};
+
+/* The AO stack type.  Should be treated as opaque.                     */
+/* Note: AO_stack_t variables are not intended to be local ones,        */
+/* otherwise it is the client responsibility to ensure they have        */
+/* double-word alignment.                                               */
+typedef union AO__stack {
+  struct AO__stack_ptr_aux AO_pa;
+  volatile AO_double_t AO_vp;
+} AO_stack_t;
+
+/* The static initializer of the AO stack type. */
+#define AO_STACK_INITIALIZER { /* .AO_pa= */ { 0, { {0} } } }
+
 #ifdef AO_USE_ALMOST_LOCK_FREE
-
-  /* The number of low order pointer bits we can use for a small        */
-  /* version number.                                                    */
-# if defined(__LP64__) || defined(_LP64) || defined(_WIN64)
-#  define AO_N_BITS 3
-# else
-#  define AO_N_BITS 2
-# endif
-
-# define AO_BIT_MASK ((1 << AO_N_BITS) - 1)
-
-  /* AO_stack_aux should be treated as opaque.  It is fully defined     */
-  /* here, so it can be allocated, and to facilitate debugging.         */
-# ifndef AO_BL_SIZE
-#   define AO_BL_SIZE 2
-# endif
-
-# if AO_BL_SIZE > (1 << AO_N_BITS)
-#   error AO_BL_SIZE too big
-# endif
-
-  typedef struct AO__stack_aux {
-    volatile AO_t AO_stack_bl[AO_BL_SIZE];
-  } AO_stack_aux;
 
   /* The stack implementation knows only about the location of  */
   /* link fields in nodes, and nothing about the rest of the    */
@@ -110,6 +134,7 @@
   /* The following two routines should not normally be used directly.   */
   /* We make them visible here for the rare cases in which it makes     */
   /* sense to share the AO_stack_aux between stacks.                    */
+
   AO_API void
   AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
                                      AO_stack_aux *);
@@ -117,42 +142,13 @@
   AO_API AO_t *
   AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux *);
 
-  /* And now AO_stack_t for the real interface: */
-
-  typedef struct AO__stack {
-    volatile AO_t AO_ptr;
-    AO_stack_aux AO_aux;
-  } AO_stack_t;
-
-# define AO_STACK_INITIALIZER {0,{{0}}}
-
   /* Convert an AO_stack_t to a pointer to the link field in    */
   /* the first element.                                         */
-# define AO_REAL_HEAD_PTR(x) AO_REAL_NEXT_PTR((x).AO_ptr)
+# define AO_REAL_HEAD_PTR(x) AO_REAL_NEXT_PTR((x).AO_pa.AO_ptr)
 
 #else /* Use fully non-blocking data structure, wide CAS.       */
 
-# ifndef AO_HAVE_double_t
-    /* Can happen if we are using CAS emulation, since we don't want to */
-    /* force that here, in case other atomic_ops clients don't want it. */
-#   ifdef __cplusplus
-      } /* extern "C" */
-#   endif
-#   include "atomic_ops/sysdeps/standard_ao_double_t.h"
-#   ifdef __cplusplus
-      extern "C" {
-#   endif
-# endif
-
-  typedef volatile AO_double_t AO_stack_t;
-  /* AO_val1 is version, AO_val2 is pointer.                            */
-  /* Note: AO_stack_t variables are not intended to be local ones,      */
-  /* otherwise it is the client responsibility to ensure they have      */
-  /* double-word alignment.                                             */
-
-# define AO_STACK_INITIALIZER AO_DOUBLE_T_INITIALIZER
-
-# define AO_REAL_HEAD_PTR(x) (AO_t *)((x).AO_val2)
+# define AO_REAL_HEAD_PTR(x) (AO_t *)((x).AO_vp.AO_val2)
 # define AO_REAL_NEXT_PTR(x) (AO_t *)(x)
 
 #endif /* !AO_USE_ALMOST_LOCK_FREE */
