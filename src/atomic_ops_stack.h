@@ -110,7 +110,7 @@ typedef struct AO__stack_aux {
 
 /* The following two routines should not normally be used directly.     */
 /* We make them visible here for the rare cases in which it makes sense */
-/* to share the an AO_stack_aux between stacks.                         */
+/* to share the AO_stack_aux between stacks.                            */
 void
 AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
                                   AO_stack_aux *);
