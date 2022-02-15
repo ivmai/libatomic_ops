@@ -142,7 +142,7 @@ jobs:
     compiler: clang-12
     dist: focal
     env:
-    - CFLAGS_EXTRA="-O3 -D CPPCHECK"
+    - CFLAGS_EXTRA="-O3"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
     - TESTS_CUSTOM_RUN=true
   - addons:
