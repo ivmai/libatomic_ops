@@ -231,12 +231,12 @@ int main(int argc, char **argv)
           }
         }
         times[nthreads][exper_n] = (unsigned long)(get_msecs() - start_time);
-  #     ifdef VERBOSE
+#       ifdef VERBOSE
           printf("%d %lu\n", nthreads,
                  (unsigned long)(get_msecs() - start_time));
           printf("final list (should be reordered initial list):\n");
           print_list();
-  #     endif
+#       endif
         check_list(list_length);
         while ((le = (list_element *)AO_stack_pop(&the_list)) != 0)
           free(le);
