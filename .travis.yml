@@ -48,6 +48,11 @@ jobs:
     compiler: clang
   - arch: arm64
     compiler: gcc
+  - arch: arm64
+    compiler: clang
+    env:
+    - CFLAGS_EXTRA="-O3 -D N_EXPERIMENTS=10"
+    - CONF_OPTIONS="--enable-assertions"
   - addons:
       apt:
         packages:
