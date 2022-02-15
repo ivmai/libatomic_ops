@@ -32,7 +32,7 @@
 
 AO_API void AO_stack_init(AO_stack_t *list)
 {
-  memset((char *)list, 0, sizeof(list));
+  memset(list, 0, sizeof(AO_stack_t));
 }
 
 AO_API AO_t *AO_real_head_ptr(const AO_stack_t *list)
