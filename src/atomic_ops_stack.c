@@ -23,12 +23,26 @@
 # define AO_BUILD
 #endif
 
+#ifndef AO_REAL_PTR_AS_MACRO
+# define AO_REAL_PTR_AS_MACRO
+#endif
+
 #define AO_REQUIRE_CAS
 #include "atomic_ops_stack.h"
 
 AO_API void AO_stack_init(AO_stack_t *list)
 {
   memset((char *)list, 0, sizeof(list));
+}
+
+AO_API AO_t *AO_real_head_ptr(const AO_stack_t *list)
+{
+  return AO_REAL_HEAD_PTR(*list);
+}
+
+AO_API AO_t *AO_real_next_ptr(AO_t next)
+{
+  return AO_REAL_NEXT_PTR(next);
 }
 
 /* This function call must be a part of a do-while loop with a CAS      */
