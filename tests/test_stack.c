@@ -332,12 +332,12 @@ int main(int argc, char **argv)
           }
         }
         times[nthreads][exper_n] = get_msecs() - start_time;
-  #     ifdef VERBOSE_STACK
+#       ifdef VERBOSE_STACK
           printf("nthreads=%d, time_ms=%lu\n",
                  nthreads, times[nthreads][exper_n]);
           printf("final list (should be reordered initial list):\n");
           print_list();
-  #     endif
+#       endif
         /* Ensure that no element is lost or duplicated.        */
         check_list(list_length);
         /* And, free the entire list.   */
@@ -345,8 +345,9 @@ int main(int argc, char **argv)
           free(le);
         /* Retry with larger n values, probably retry the experiment again. */
       }
-    /* Output the performance statistic finally. */
-    for (nthreads = 1; nthreads <= max_nthreads; ++nthreads)
+
+  /* Output the performance statistic finally.  */
+  for (nthreads = 1; nthreads <= max_nthreads; ++nthreads)
       {
 #       ifndef NO_TIMES
           unsigned long sum = 0;
