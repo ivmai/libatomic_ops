@@ -101,11 +101,11 @@ AO_API AO_t *AO_real_next_ptr(AO_t next)
         /* Start all loads as close to concurrently as possible.        */
         AO_t entry1 = AO_load(&a->AO_stack_bl[0]);
         AO_t entry2 = AO_load(&a->AO_stack_bl[1]);
-        if (entry1 == x_bits || entry2 == x_bits)
+        if (AO_EXPECT_FALSE(entry1 == x_bits || entry2 == x_bits))
 #     else
         int i;
         for (i = 0; i < AO_BL_SIZE; ++i)
-          if (AO_load(&a->AO_stack_bl[i]) == x_bits)
+          if (AO_EXPECT_FALSE(AO_load(&a->AO_stack_bl[i]) == x_bits))
 #     endif
         {
           /* Entry is currently being removed.  Change it a little.     */
