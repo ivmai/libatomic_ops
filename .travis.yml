@@ -720,6 +720,7 @@ script:
     make check CC=$CC_FOR_CHECK CFLAGS_EXTRA="$CFLAGS_EXTRA";
   fi
 - if [ -f tests/test_atomic.log ]; then cat tests/test_atomic*.log; fi
+- if [ -f tests/test_stack.log ]; then cat tests/test_stack.log; fi
 - if [[ "$CSA_CHECK" == true ]]; then
     ${CC} --analyze -Xanalyzer -analyzer-output=text -Werror -I src
           $CFLAGS_EXTRA tests/*.c src/*.c;
