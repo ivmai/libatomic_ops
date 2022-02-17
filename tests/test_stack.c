@@ -80,9 +80,14 @@
   }
 #endif /* !NO_TIMES */
 
-typedef struct le {
-  AO_t next;
+struct le {
+  AO_t next; /* must be the first field */
   int data;
+};
+
+typedef union le_u {
+  AO_t next;
+  struct le e;
 } list_element;
 
 #if defined(CPPCHECK)
@@ -104,18 +109,18 @@ void add_elements(int n)
       fprintf(stderr, "Out of memory\n");
       exit(2);
     }
-  le -> data = n;
-  AO_stack_push(&the_list, (AO_t *)le);
+  le->e.data = n;
+  AO_stack_push(&the_list, &le->next);
 }
 
 #ifdef VERBOSE_STACK
 void print_list(void)
 {
-  list_element *p;
+  AO_t *p;
 
-  for (p = (list_element *)AO_REAL_HEAD_PTR(the_list);
-       p != 0; p = (list_element *)AO_REAL_NEXT_PTR(p -> next))
-    printf("%d\n", p -> data);
+  for (p = AO_REAL_HEAD_PTR(the_list);
+       p != 0; p = AO_REAL_NEXT_PTR(*p))
+    printf("%d\n", ((list_element*)p)->e.data);
 }
 #endif /* VERBOSE_STACK */
 
@@ -123,7 +128,7 @@ void print_list(void)
 /* w/o duplications.  Executed when the list mutation is finished.      */
 void check_list(int n)
 {
-  list_element *p;
+  AO_t *p;
   int i;
   int err_cnt = 0;
   char *marks = (char*)calloc(n + 1, 1);
@@ -134,10 +139,10 @@ void check_list(int n)
       exit(2);
     }
 
-  for (p = (list_element *)AO_REAL_HEAD_PTR(the_list);
-       p != 0; p = (list_element *)AO_REAL_NEXT_PTR(p -> next))
+  for (p = AO_REAL_HEAD_PTR(the_list);
+       p != 0; p = AO_REAL_NEXT_PTR(*p))
     {
-      i = p -> data;
+      i = ((list_element*)p)->e.data;
       if (i > n || i <= 0)
         {
           fprintf(stderr, "Found erroneous list element %d\n", i);
@@ -192,7 +197,7 @@ volatile AO_t ops_performed = 0;
   void * run_one_test(void * arg)
 #endif
 {
-  list_element * t[MAX_NTHREADS + 1];
+  AO_t *t[MAX_NTHREADS + 1];
   unsigned index = (unsigned)(size_t)arg;
   unsigned i;
 # ifdef VERBOSE_STACK
@@ -208,7 +213,7 @@ volatile AO_t ops_performed = 0;
       /* Note that this is done in parallel by many threads.            */
       for (i = 0; i <= index; ++i)
         {
-          t[i] = (list_element *)AO_stack_pop(&the_list);
+          t[i] = AO_stack_pop(&the_list);
           if (0 == t[i])
             {
               /* This should not happen as at most n*(n+1)/2 elements   */
@@ -219,7 +224,7 @@ volatile AO_t ops_performed = 0;
         }
       for (i = 0; i <= index; ++i)
         {
-          AO_stack_push(&the_list, (AO_t *)t[i]);
+          AO_stack_push(&the_list, t[i]);
         }
 #     ifdef VERBOSE_STACK
         j += index + 1;
@@ -281,7 +286,7 @@ int main(int argc, char **argv)
 #       endif
         int list_length = nthreads*(nthreads+1)/2;
         unsigned long start_time;
-        list_element * le;
+        AO_t *le;
 
 #       ifdef VERBOSE_STACK
           printf("Before add_elements: exper_n=%d, nthreads=%d,"
@@ -341,7 +346,7 @@ int main(int argc, char **argv)
         /* Ensure that no element is lost or duplicated.        */
         check_list(list_length);
         /* And, free the entire list.   */
-        while ((le = (list_element *)AO_stack_pop(&the_list)) != 0)
+        while ((le = AO_stack_pop(&the_list)) != 0)
           free(le);
         /* Retry with larger n values, probably retry the experiment again. */
       }
