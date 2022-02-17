@@ -67,6 +67,13 @@ AO_API AO_t *AO_real_next_ptr(AO_t next)
     } /* extern "C" */
 # endif
 
+# if defined(__alpha__) && (__GNUC__ == 4)
+    /* Workaround __builtin_expect bug found in         */
+    /* gcc-4.6.3/alpha causing test_stack failure.      */
+#   undef AO_EXPECT_FALSE
+#   define AO_EXPECT_FALSE(expr) (expr)
+# endif
+
   /* LIFO linked lists based on compare-and-swap.  We need to avoid     */
   /* the case of a node deletion and reinsertion while I'm deleting     */
   /* it, since that may cause my CAS to succeed eventhough the next     */
@@ -193,27 +200,17 @@ AO_API AO_t *AO_real_next_ptr(AO_t next)
     /* list.  We need to make sure that first is still the first entry  */
     /* on the list.  Otherwise it is possible that a reinsertion of it  */
     /* was already started before we added the black list entry.        */
-#   if defined(__alpha__) && (__GNUC__ == 4)
-      if (first != AO_load_acquire(list))
-                        /* Workaround __builtin_expect bug found in     */
-                        /* gcc-4.6.3/alpha causing test_stack failure.  */
-#   else
-      if (AO_EXPECT_FALSE(first != AO_load_acquire(list)))
+    if (AO_EXPECT_FALSE(first != AO_load_acquire(list)))
                         /* Workaround test failure on AIX, at least, by */
                         /* using acquire ordering semantics for this    */
                         /* load.  Probably, it is not the right fix.    */
-#   endif
     {
       AO_store_release(a->AO_stack_bl+i, 0);
       goto retry;
     }
     first_ptr = AO_REAL_NEXT_PTR(first);
     next = AO_load_next(first_ptr);
-#   if defined(__alpha__) && (__GNUC__ == 4)
-      if (!AO_compare_and_swap_release(list, first, next))
-#   else
-      if (AO_EXPECT_FALSE(!AO_compare_and_swap_release(list, first, next)))
-#   endif
+    if (AO_EXPECT_FALSE(!AO_compare_and_swap_release(list, first, next)))
     {
       AO_store_release(a->AO_stack_bl+i, 0);
       goto retry;
