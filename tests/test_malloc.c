@@ -78,7 +78,7 @@ ln *cons(int d, ln *tail)
     size_t my_extra = (extra++) % 101;
 # endif
   ln *result;
-  int * extras;
+  char *extras;
   unsigned i;
 
   result = (ln *)AO_malloc(sizeof(ln) + sizeof(int)*my_extra);
@@ -91,8 +91,9 @@ ln *cons(int d, ln *tail)
 
   result -> data = d;
   result -> next = tail;
-  extras = (int *)(result+1);
-  for (i = 0; i < my_extra; ++i) extras[i] = 42;
+  extras = (char *)(result+1);
+  for (i = 0; i < my_extra; ++i)
+    extras[i*sizeof(int)] = 42;
   return result;
 }
 
