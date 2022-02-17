@@ -146,7 +146,7 @@ void check_list(int n)
       else if (marks[i] != 0)
         {
           fprintf(stderr, "Found duplicate list element %d\n", i);
-          err_cnt++;
+          abort();
         }
       else marks[i] = 1;
     }
