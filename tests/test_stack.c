@@ -109,6 +109,9 @@ void add_elements(int n)
       fprintf(stderr, "Out of memory\n");
       exit(2);
     }
+# if defined(CPPCHECK)
+    le->e.next = 0; /* mark field as used */
+# endif
   le->e.data = n;
   AO_stack_push(&the_list, &le->next);
 }
