@@ -318,7 +318,7 @@ AO_API AO_t *AO_real_next_ptr(AO_t next)
         next = load_before_cas((AO_t *)cptr);
       } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(
                                         &list->AO_vp, cversion, (AO_t)cptr,
-                                        cversion+1, (AO_t)next)));
+                                        cversion+1, next)));
       return cptr;
     }
 
