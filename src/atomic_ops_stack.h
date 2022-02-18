@@ -141,11 +141,11 @@ typedef union AO__stack {
   /* necessarily a real pointer.  This converts the AO_t to a   */
   /* real (AO_t *) which is either NULL, or points at the link  */
   /* field in the next node.                                    */
-# define AO_REAL_NEXT_PTR(x) AO_real_next_ptr(x)
+# define AO_REAL_NEXT_PTR(x) AO_stack_next_ptr(x)
 
   /* Convert an AO_stack_t to a pointer to the link field in    */
   /* the first element.                                         */
-# define AO_REAL_HEAD_PTR(x) AO_real_head_ptr(&(x))
+# define AO_REAL_HEAD_PTR(x) AO_stack_head_ptr(&(x))
 
 #elif defined(AO_USE_ALMOST_LOCK_FREE)
 # define AO_REAL_NEXT_PTR(x) (AO_t *)((x) & ~AO_BIT_MASK)
@@ -170,8 +170,8 @@ AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list);
 AO_API void AO_stack_init(AO_stack_t *list);
 AO_API int AO_stack_is_lock_free(void);
 
-AO_API AO_t *AO_real_head_ptr(const AO_stack_t *list);
-AO_API AO_t *AO_real_next_ptr(AO_t /* next */);
+AO_API AO_t *AO_stack_head_ptr(const AO_stack_t *list);
+AO_API AO_t *AO_stack_next_ptr(AO_t /* next */);
 
 #ifdef __cplusplus
   } /* extern "C" */

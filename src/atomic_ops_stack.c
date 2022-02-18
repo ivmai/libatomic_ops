@@ -44,12 +44,12 @@ AO_API int AO_stack_is_lock_free(void)
 # endif
 }
 
-AO_API AO_t *AO_real_head_ptr(const AO_stack_t *list)
+AO_API AO_t *AO_stack_head_ptr(const AO_stack_t *list)
 {
   return AO_REAL_HEAD_PTR(*list);
 }
 
-AO_API AO_t *AO_real_next_ptr(AO_t next)
+AO_API AO_t *AO_stack_next_ptr(AO_t next)
 {
   return AO_REAL_NEXT_PTR(next);
 }
