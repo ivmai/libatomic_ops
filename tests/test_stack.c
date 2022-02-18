@@ -247,17 +247,129 @@ volatile AO_t ops_performed = 0;
 
 unsigned long times[MAX_NTHREADS + 1][N_EXPERIMENTS];
 
-int main(int argc, char **argv)
+void run_one_experiment(int max_nthreads, int exper_n)
 {
   int nthreads;
-  int max_nthreads;
+
+  assert(max_nthreads <= MAX_NTHREADS);
+  assert(exper_n < N_EXPERIMENTS);
+  for (nthreads = 1; nthreads <= max_nthreads; ++nthreads) {
+    unsigned i;
+#   ifdef USE_WINTHREADS
+      DWORD thread_id;
+      HANDLE thread[MAX_NTHREADS];
+#   else
+      pthread_t thread[MAX_NTHREADS];
+#   endif
+    int list_length = nthreads*(nthreads+1)/2;
+    unsigned long start_time;
+    AO_t *le;
+
+#   ifdef VERBOSE_STACK
+      printf("Before add_elements: exper_n=%d, nthreads=%d,"
+             " max_nthreads=%d, list_length=%d\n",
+             exper_n, nthreads, max_nthreads, list_length);
+#   endif
+    /* Create a list with n*(n+1)/2 elements.   */
+    assert(0 == AO_REAL_HEAD_PTR(the_list));
+    add_elements(list_length);
+#   ifdef VERBOSE_STACK
+      printf("Initial list (nthreads = %d):\n", nthreads);
+      print_list();
+#   endif
+    ops_performed = 0;
+    start_time = get_msecs();
+    /* Start n-1 threads to run_one_test in parallel.   */
+    for (i = 1; (int)i < nthreads; ++i) {
+      int code;
+
+#     ifdef USE_WINTHREADS
+        thread[i] = CreateThread(NULL, 0, run_one_test, (LPVOID)(size_t)i,
+                                 0, &thread_id);
+        code = thread[i] != NULL ? 0 : (int)GetLastError();
+#     else
+        code = pthread_create(&thread[i], 0, run_one_test,
+                              (void *)(size_t)i);
+#     endif
+      if (code != 0) {
+        fprintf(stderr, "Thread creation failed %u\n", (unsigned)code);
+        exit(3);
+      }
+    }
+    /* We use the main thread to run one test.  This allows     */
+    /* gprof profiling to work, for example.                    */
+    run_one_test(0);
+    /* Wait for all the threads to complete.    */
+    for (i = 1; (int)i < nthreads; ++i) {
+      int code;
+
+#     ifdef USE_WINTHREADS
+        code = WaitForSingleObject(thread[i], INFINITE) == WAIT_OBJECT_0 ?
+                    0 : (int)GetLastError();
+#     else
+        code = pthread_join(thread[i], 0);
+#     endif
+      if (code != 0) {
+        fprintf(stderr, "Thread join failed %u\n", (unsigned)code);
+        abort();
+      }
+    }
+    times[nthreads][exper_n] = get_msecs() - start_time;
+#   ifdef VERBOSE_STACK
+      printf("nthreads=%d, time_ms=%lu\n",
+             nthreads, times[nthreads][exper_n]);
+      printf("final list (should be reordered initial list):\n");
+      print_list();
+#   endif
+    /* Ensure that no element is lost or duplicated.    */
+    check_list(list_length);
+    /* And, free the entire list.   */
+    while ((le = AO_stack_pop(&the_list)) != 0)
+      free(le);
+    /* Retry with larger n values.      */
+  }
+}
+
+void run_all_experiments(int max_nthreads)
+{
   int exper_n;
 
-  if (1 == argc)
-    {
-      max_nthreads = DEFAULT_NTHREADS;
-    }
-  else if (2 == argc)
+  for (exper_n = 0; exper_n < N_EXPERIMENTS; ++exper_n)
+    run_one_experiment(max_nthreads, exper_n);
+}
+
+/* Output the performance statistic.    */
+void output_stat(int max_nthreads)
+{
+  int nthreads, exper_n;
+
+  assert(max_nthreads <= MAX_NTHREADS);
+  for (nthreads = 1; nthreads <= max_nthreads; ++nthreads) {
+#   ifndef NO_TIMES
+      unsigned long sum = 0;
+#   endif
+
+    printf("About %d pushes + %d pops in %d threads:",
+           LIMIT, LIMIT, nthreads);
+#   ifndef NO_TIMES
+      for (exper_n = 0; exper_n < N_EXPERIMENTS; ++exper_n) {
+#       ifdef VERBOSE_STACK
+          printf(" [%lums]", times[nthreads][exper_n]);
+#       endif
+        sum += times[nthreads][exper_n];
+      }
+      printf(" %lu msecs\n", (sum + N_EXPERIMENTS/2)/N_EXPERIMENTS);
+#   else
+      printf(" completed\n");
+#   endif
+  }
+}
+
+int main(int argc, char **argv)
+{
+  int max_nthreads = DEFAULT_NTHREADS;
+
+  if (2 == argc)
     {
       max_nthreads = atoi(argv[1]);
       if (max_nthreads < 1 || max_nthreads > MAX_NTHREADS)
@@ -266,7 +378,7 @@ int main(int argc, char **argv)
           exit(1);
         }
     }
-  else
+  else if (argc > 2)
     {
       fprintf(stderr, "Usage: %s [max # of threads]\n", argv[0]);
       exit(1);
@@ -276,104 +388,8 @@ int main(int argc, char **argv)
 # if defined(CPPCHECK)
     AO_stack_init(&the_list);
 # endif
-  for (exper_n = 0; exper_n < N_EXPERIMENTS; ++exper_n)
-    for (nthreads = 1; nthreads <= max_nthreads; ++nthreads)
-      {
-        unsigned i;
-#       ifdef USE_WINTHREADS
-          DWORD thread_id;
-          HANDLE thread[MAX_NTHREADS];
-#       else
-          pthread_t thread[MAX_NTHREADS];
-#       endif
-        int list_length = nthreads*(nthreads+1)/2;
-        unsigned long start_time;
-        AO_t *le;
-
-#       ifdef VERBOSE_STACK
-          printf("Before add_elements: exper_n=%d, nthreads=%d,"
-                 " max_nthreads=%d, list_length=%d\n",
-                 exper_n, nthreads, max_nthreads, list_length);
-#       endif
-        /* Create a list with n*(n+1)/2 elements. */
-        add_elements(list_length);
-#       ifdef VERBOSE_STACK
-          printf("Initial list (nthreads = %d):\n", nthreads);
-          print_list();
-#       endif
-        ops_performed = 0;
-        start_time = get_msecs();
-        /* Start n-1 threads to run_one_test in parallel.       */
-        for (i = 1; (int)i < nthreads; ++i) {
-          int code;
-
-#         ifdef USE_WINTHREADS
-            thread[i] = CreateThread(NULL, 0, run_one_test, (LPVOID)(size_t)i,
-                                     0, &thread_id);
-            code = thread[i] != NULL ? 0 : (int)GetLastError();
-#         else
-            code = pthread_create(&thread[i], 0, run_one_test,
-                                  (void *)(size_t)i);
-#         endif
-          if (code != 0) {
-            fprintf(stderr, "Thread creation failed %u\n", (unsigned)code);
-            exit(3);
-          }
-        }
-        /* We use the main thread to run one test.  This allows gprof   */
-        /* profiling to work, for example.                              */
-        run_one_test(0);
-        /* Wait for all the threads to complete. */
-        for (i = 1; (int)i < nthreads; ++i) {
-          int code;
-
-#         ifdef USE_WINTHREADS
-            code = WaitForSingleObject(thread[i], INFINITE) == WAIT_OBJECT_0 ?
-                        0 : (int)GetLastError();
-#         else
-            code = pthread_join(thread[i], 0);
-#         endif
-          if (code != 0) {
-            fprintf(stderr, "Thread join failed %u\n", (unsigned)code);
-            abort();
-          }
-        }
-        times[nthreads][exper_n] = get_msecs() - start_time;
-#       ifdef VERBOSE_STACK
-          printf("nthreads=%d, time_ms=%lu\n",
-                 nthreads, times[nthreads][exper_n]);
-          printf("final list (should be reordered initial list):\n");
-          print_list();
-#       endif
-        /* Ensure that no element is lost or duplicated.        */
-        check_list(list_length);
-        /* And, free the entire list.   */
-        while ((le = AO_stack_pop(&the_list)) != 0)
-          free(le);
-        /* Retry with larger n values, probably retry the experiment again. */
-      }
-
-  /* Output the performance statistic finally.  */
-  for (nthreads = 1; nthreads <= max_nthreads; ++nthreads)
-      {
-#       ifndef NO_TIMES
-          unsigned long sum = 0;
-#       endif
-
-        printf("About %d pushes + %d pops in %d threads:",
-               LIMIT, LIMIT, nthreads);
-#       ifndef NO_TIMES
-          for (exper_n = 0; exper_n < N_EXPERIMENTS; ++exper_n) {
-#           ifdef VERBOSE_STACK
-              printf(" [%lums]", times[nthreads][exper_n]);
-#           endif
-            sum += times[nthreads][exper_n];
-          }
-          printf(" %lu msecs\n", (sum + N_EXPERIMENTS/2)/N_EXPERIMENTS);
-#       else
-          printf(" completed\n");
-#       endif
-      }
+  run_all_experiments(max_nthreads);
+  output_stat(max_nthreads);
   return 0;
 }
 
