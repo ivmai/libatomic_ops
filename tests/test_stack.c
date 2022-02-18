@@ -341,11 +341,12 @@ void run_all_experiments(int max_nthreads)
 /* Output the performance statistic.    */
 void output_stat(int max_nthreads)
 {
-  int nthreads, exper_n;
+  int nthreads;
 
   assert(max_nthreads <= MAX_NTHREADS);
   for (nthreads = 1; nthreads <= max_nthreads; ++nthreads) {
 #   ifndef NO_TIMES
+      int exper_n;
       unsigned long sum = 0;
 #   endif
 
