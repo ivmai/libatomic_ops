@@ -28,8 +28,9 @@ makes that less expensive, i.e. when we have a double-wide compare-and-swap
 operation available.  (The fully lock-free implementation uses an AO_t-
 sized version count, and assumes it does not wrap during the time any
 given operation is active.  This seems reasonably safe on 32-bit hardware,
-and very safe on 64-bit hardware.) If a fully lock-free implementation
-is used, the macro AO_STACK_IS_LOCK_FREE will be defined.
+and very safe on 64-bit hardware.)  If a fully lock-free implementation,
+AO_stack_is_lock_free() returns 1 (also, the macro AO_STACK_IS_LOCK_FREE is
+defined in this case but its usage by client is deprecated).
 
 The implementation is interesting only because it allows reuse of
 existing nodes.  This is necessary, for example, to implement a memory

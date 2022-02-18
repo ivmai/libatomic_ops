@@ -271,9 +271,8 @@ int main(int argc, char **argv)
       fprintf(stderr, "Usage: %s [max # of threads]\n", argv[0]);
       exit(1);
     }
-# ifdef AO_USE_ALMOST_LOCK_FREE
+  if (!AO_stack_is_lock_free())
     printf("Use almost-lock-free implementation\n");
-# endif
 # if defined(CPPCHECK)
     AO_stack_init(&the_list);
 # endif

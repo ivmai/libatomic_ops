@@ -35,6 +35,15 @@ AO_API void AO_stack_init(AO_stack_t *list)
   memset(list, 0, sizeof(AO_stack_t));
 }
 
+AO_API int AO_stack_is_lock_free(void)
+{
+# ifdef AO_USE_ALMOST_LOCK_FREE
+    return 0;
+# else
+    return 1;
+# endif
+}
+
 AO_API AO_t *AO_real_head_ptr(const AO_stack_t *list)
 {
   return AO_REAL_HEAD_PTR(*list);

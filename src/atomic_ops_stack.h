@@ -168,6 +168,7 @@ AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list);
 #define AO_HAVE_stack_pop
 
 AO_API void AO_stack_init(AO_stack_t *list);
+AO_API int AO_stack_is_lock_free(void);
 
 AO_API AO_t *AO_real_head_ptr(const AO_stack_t *list);
 AO_API AO_t *AO_real_next_ptr(AO_t /* next */);
