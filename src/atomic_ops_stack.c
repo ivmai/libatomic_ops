@@ -198,12 +198,11 @@ AO_API AO_t *AO_stack_next_ptr(AO_t next)
             AO_pause(++j);
           }
       }
-    assert(i < AO_BL_SIZE);
 #   ifndef AO_THREAD_SANITIZER
       assert(a -> AO_stack_bl[i] == first);
                                 /* No actual race with the above CAS.   */
 #   endif
-    /* First is on the auxiliary black list.  It may be removed by      */
+    /* first is on the auxiliary black list.  It may be removed by      */
     /* another thread before we get to it, but a new insertion of x     */
     /* cannot be started here.  Only we can remove it from the black    */
     /* list.  We need to make sure that first is still the first entry  */
