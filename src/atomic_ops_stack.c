@@ -98,6 +98,9 @@ AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
   /* No deletions of x can start here, since x is not currently in the  */
   /* list.                                                              */
  retry:
+  do {
+    next = AO_load_acquire(list);
+    *x = next;
 # if AO_BL_SIZE == 2
   {
     /* Start all loads as close to concurrently as possible. */
@@ -133,12 +136,7 @@ AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *x,
   }
 # endif
   /* x_bits is not currently being deleted */
-  do
-    {
-      next = AO_load(list);
-      *x = next;
-    }
-  while(!AO_compare_and_swap_release(list, next, x_bits));
+  } while (!AO_compare_and_swap_release(list, next, x_bits));
 }
 
 /*
