@@ -112,7 +112,10 @@ AO_API AO_t *AO_stack_next_ptr(AO_t next)
     /* No deletions of x can start here, since x is not         */
     /* currently in the list.                                   */
   retry:
-    {
+    do {
+      next = AO_load_acquire(list);
+      store_before_cas(x, next);
+      {
 #     if AO_BL_SIZE == 2
         /* Start all loads as close to concurrently as possible.        */
         AO_t entry1 = AO_load(&a->AO_stack_bl[0]);
@@ -131,15 +134,11 @@ AO_API AO_t *AO_stack_next_ptr(AO_t next)
             x_bits = (AO_t)x;
           goto retry;
         }
-    }
-
-    /* x_bits is not currently being deleted */
-    do
-      {
-        next = AO_load(list);
-        store_before_cas(x, next);
       }
-    while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(list, next, x_bits)));
+
+      /* x_bits value is not currently being deleted.   */
+    } while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(list, next,
+                                                          x_bits)));
   }
 
   /* I concluded experimentally that checking a value first before      */
