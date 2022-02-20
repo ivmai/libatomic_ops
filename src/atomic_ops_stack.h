@@ -100,6 +100,36 @@
 # error AO_BL_SIZE too big
 #endif
 
+#ifndef AO_STACK_ATTR_ALLIGNED
+  /* Enforce proper alignment of AO_stack_t.AO_pa to avoid the          */
+  /* structure value to cross the CPU cache line boundary.              */
+  /* A workaround for almost-lock-free push/pop test failures           */
+  /* on aarch64, at least.                                              */
+# if AO_BL_SIZE == 1
+    /* AO_vp is double-word aligned, so no extra align of AO_pa is needed.  */
+#   define AO_STACK_ATTR_ALLIGNED /* empty */
+# elif AO_GNUC_PREREQ(3, 1)
+#   define AO_STACK_LOG_BL_SZP1 (AO_BL_SIZE > 7 ? 4 : AO_BL_SIZE > 3 ? 3 : 2)
+#   define AO_STACK_ATTR_ALLIGNED \
+        __attribute__((__aligned__(sizeof(AO_t) << AO_STACK_LOG_BL_SZP1)))
+# elif defined(_MSC_VER) && _MSC_VER >= 1400 /* Visual Studio 2005+ */
+    /* MS compiler accepts only a literal number in align, not expression.  */
+    /* AO_STACK_ALLIGN_N is 1 << (AO_N_BITS + AO_STACK_LOG_BL_SZP1).        */
+#   if AO_N_BITS > 2 && AO_BL_SIZE > 7
+#     define AO_STACK_ALLIGN_N 128
+#   elif (AO_N_BITS > 2 && AO_BL_SIZE > 3) || AO_BL_SIZE > 7
+#     define AO_STACK_ALLIGN_N 64
+#   elif AO_N_BITS > 2 || AO_BL_SIZE > 3
+#     define AO_STACK_ALLIGN_N 32
+#   else
+#     define AO_STACK_ALLIGN_N 16
+#   endif
+#   define AO_STACK_ATTR_ALLIGNED __declspec(align(AO_STACK_ALLIGN_N))
+# else
+#   define AO_STACK_ATTR_ALLIGNED /* TODO: alignment is not enforced */
+# endif
+#endif /* !AO_STACK_ATTR_ALLIGNED */
+
 typedef struct AO__stack_aux {
   volatile AO_t AO_stack_bl[AO_BL_SIZE];
 } AO_stack_aux;
@@ -114,7 +144,7 @@ struct AO__stack_ptr_aux {
 /* otherwise it is the client responsibility to ensure they have        */
 /* double-word alignment.                                               */
 typedef union AO__stack {
-  struct AO__stack_ptr_aux AO_pa;
+  AO_STACK_ATTR_ALLIGNED struct AO__stack_ptr_aux AO_pa;
   volatile AO_double_t AO_vp;
 } AO_stack_t;
 
