@@ -2,6 +2,10 @@
 == [7.4.18] (not released yet) ==
 
 * Do not assume 'ordered except earlier write' for UWP/arm64
+* Fix 'use of undeclared SIG_BLOCK' Clang error if -std=c89 on Cygwin
+* Fix a typo in comment of AO_stack_push_explicit_aux_release
+* Fix code indentation in main of test_stack.c
+* Remove outdated comment about unsupported Win64 in atomic_ops_stack.h
 
 
 == [7.4.16] 2021-09-13 ==
@@ -227,6 +231,13 @@ Also, includes 7.2e changes
 * Turn off AO primitives inlining if AO_NO_INLINE defined
 * Use __builtin_expect in CAS failure loop condition checks (GCC only)
 Also, includes 7.2 changes
+
+
+== [7.2k] (not released yet) ==
+
+* Fix a typo in comment of AO_stack_push_explicit_aux_release
+* Fix code indentation in main of test_stack.c
+* Remove outdated comment about unsupported Win64 in atomic_ops_stack.h
 
 
 == [7.2j] 2021-09-12 ==
