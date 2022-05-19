@@ -10,6 +10,7 @@ LIBRARY IN THIS PACKAGE.
 [![Coverity Scan build status](https://scan.coverity.com/projects/10809/badge.svg)](https://scan.coverity.com/projects/ivmai-libatomic_ops)
 [![LGTM Code Quality: Cpp](https://img.shields.io/lgtm/grade/cpp/g/ivmai/libatomic_ops.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ivmai/libatomic_ops/context:cpp)
 [![LGTM Total Alerts](https://img.shields.io/lgtm/alerts/g/ivmai/libatomic_ops.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ivmai/libatomic_ops/alerts)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fivmai%2Flibatomic_ops.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fivmai%2Flibatomic_ops?ref=badge_shield)
 
 [![Hits-of-Code](https://hitsofcode.com/github/ivmai/libatomic_ops?branch=master)](https://hitsofcode.com/github/ivmai/libatomic_ops/view)
 [![Lines of code](https://img.shields.io/tokei/lines/github/ivmai/libatomic_ops)](https://shields.io/category/size)
@@ -87,6 +88,9 @@ However, two small libraries are built and installed:
   latter is used to build the package).  The licensing details are given in
   [COPYING](COPYING) and [LICENSE](LICENSE) files.
 
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fivmai%2Flibatomic_ops.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fivmai%2Flibatomic_ops?ref=badge_large)
 
 ## Platform Specific Notes
 
