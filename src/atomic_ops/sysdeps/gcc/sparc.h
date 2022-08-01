@@ -15,8 +15,13 @@
  *
  */
 
-/* TODO: Very incomplete; Add support for sparc64.      */
-/* Non-ancient SPARCs provide compare-and-swap (casa).  */
+#if (AO_GNUC_PREREQ(12, 0) || AO_CLANG_PREREQ(13, 0)) \
+    && !defined(AO_DISABLE_GCC_ATOMICS)
+  /* Probably, it could be enabled for earlier compiler versions as well. */
+
+# include "generic.h"
+
+#else /* AO_DISABLE_GCC_ATOMICS */
 
 #include "../all_atomic_load_store.h"
 
@@ -85,3 +90,5 @@ AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val) {
 /* TODO: Extend this for SPARC v8 and v9 (V8 also has swap, V9 has CAS, */
 /* there are barriers like membar #LoadStore, CASA (32-bit) and         */
 /* CASXA (64-bit) instructions added in V9).                            */
+
+#endif /* AO_DISABLE_GCC_ATOMICS */
