@@ -11,6 +11,7 @@ LIBRARY IN THIS PACKAGE.
 [![LGTM Code Quality: Cpp](https://img.shields.io/lgtm/grade/cpp/g/ivmai/libatomic_ops.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ivmai/libatomic_ops/context:cpp)
 [![LGTM Total Alerts](https://img.shields.io/lgtm/alerts/g/ivmai/libatomic_ops.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ivmai/libatomic_ops/alerts)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fivmai%2Flibatomic_ops.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fivmai%2Flibatomic_ops?ref=badge_shield)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6333/badge)](https://bestpractices.coreinfrastructure.org/projects/6333)
 [![Hits-of-Code](https://hitsofcode.com/github/ivmai/libatomic_ops?branch=master)](https://hitsofcode.com/github/ivmai/libatomic_ops/view)
 [![Lines of code](https://img.shields.io/tokei/lines/github/ivmai/libatomic_ops)](https://shields.io/category/size)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ivmai/libatomic_ops)](https://shields.io/category/size)
