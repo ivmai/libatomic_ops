@@ -3,7 +3,7 @@
 IN NEW CODE, PLEASE USE C11 OR C++14 STANDARD ATOMICS INSTEAD OF THE CORE
 LIBRARY IN THIS PACKAGE.
 
-[![Travis-CI build status](https://travis-ci.com/ivmai/libatomic_ops.svg?branch=master)](https://travis-ci.com/ivmai/libatomic_ops)
+[![Travis-CI build status](https://app.travis-ci.com/ivmai/libatomic_ops.svg?branch=master)](https://app.travis-ci.com/github/ivmai/libatomic_ops)
 [![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/ivmai/libatomic_ops?branch=master&svg=true)](https://ci.appveyor.com/project/ivmai/libatomic-ops)
 [![Codecov.io](https://codecov.io/github/ivmai/libatomic_ops/coverage.svg?branch=master)](https://codecov.io/github/ivmai/libatomic_ops?branch=master)
 [![Coveralls test coverage status](https://coveralls.io/repos/ivmai/libatomic_ops/badge.png?branch=master)](https://coveralls.io/github/ivmai/libatomic_ops)
