@@ -711,7 +711,7 @@ script:
 - if [[ "$CMAKE_CONFIG" != "" ]]; then
     cmake $CMAKE_OPTIONS -Dbuild_tests=ON -Denable_werror=ON
           -Werror=deprecated . &&
-    cmake --build . --config $CMAKE_CONFIG;
+    cmake --build . --config $CMAKE_CONFIG --verbose;
   fi
 - if [[ "$CMAKE_CONFIG" != "" ]]; then
     ctest --build-config $CMAKE_CONFIG -V;
