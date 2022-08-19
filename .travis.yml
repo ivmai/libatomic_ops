@@ -115,7 +115,7 @@ jobs:
   - arch: arm64
     compiler: gcc
     env:
-    - CMAKE_CONFIG="Release"
+    - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release"
   - arch: ppc64le
     compiler: clang
   - arch: ppc64le
@@ -160,13 +160,11 @@ jobs:
   - arch: ppc64le
     compiler: clang
     env:
-    - CMAKE_CONFIG="Debug"
-    - CMAKE_OPTIONS="-DBUILD_SHARED_LIBS=ON -Denable_assertions=ON -Denable_docs=OFF"
+    - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON -Denable_assertions=ON -Denable_docs=OFF"
   - arch: ppc64le
     compiler: gcc
     env:
-    - CMAKE_CONFIG="Release"
-    - CMAKE_OPTIONS="-Denable_assertions=ON -Denable_atomic_intrinsics=OFF"
+    - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=MinSizeRel -Denable_assertions=ON -Denable_atomic_intrinsics=OFF"
   - arch: s390x
     compiler: clang
   - arch: s390x
@@ -198,15 +196,12 @@ jobs:
     - TESTS_CUSTOM_RUN=true
   - os: freebsd
     env:
-    - CMAKE_CONFIG="Release"
-    - CMAKE_OPTIONS="-Denable_gpl=OFF"
+    - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release -Denable_gpl=OFF"
   - compiler: clang
     env:
-    - CMAKE_CONFIG="Debug"
-    - CMAKE_OPTIONS="-Denable_atomic_intrinsics=OFF"
+    - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -Denable_atomic_intrinsics=OFF"
   - compiler: gcc
     env:
-    - CMAKE_CONFIG="Release"
     - CMAKE_OPTIONS="-DBUILD_SHARED_LIBS=ON -Dinstall_headers=OFF"
   - compiler: clang
     env:
@@ -690,31 +685,31 @@ before_install:
 - if [[ "$MAKEFILE_TARGET" == "" ]]; then MAKEFILE_TARGET=check; fi
 
 install:
-- if [[ "$CMAKE_CONFIG" == "" ]]; then
+- if [[ "$CMAKE_OPTIONS" == "" ]]; then
     ./autogen.sh;
   fi
 - if [[ "$REPORT_COVERAGE" == true ]]; then gem install coveralls-lcov; fi
 
 script:
-- if [[ "$CMAKE_CONFIG" == "" && "$COVERITY_SCAN_BRANCH" != 1 ]]; then
+- if [[ "$CMAKE_OPTIONS" == "" && "$COVERITY_SCAN_BRANCH" != 1 ]]; then
     ./configure $CONF_OPTIONS --enable-werror;
   fi
-- if [[ "$CSA_CHECK" != true && "$CMAKE_CONFIG" == ""
+- if [[ "$CSA_CHECK" != true && "$CMAKE_OPTIONS" == ""
         && "$CPPCHECK_ENABLE" == "" && "$COVERITY_SCAN_BRANCH" != 1 ]]; then
     cat src/config.h;
   fi
 - if [[ "$CROSS_GCC_VER" != "" ]]; then CC=$CROSS_CC; fi
-- if [[ "$CMAKE_CONFIG" == "" && "$COVERITY_SCAN_BRANCH" != 1 ]]; then
+- if [[ "$CMAKE_OPTIONS" == "" && "$COVERITY_SCAN_BRANCH" != 1 ]]; then
     make -j $MAKEFILE_TARGET CC=$CC CFLAGS_EXTRA="$CFLAGS_EXTRA"
             LDFLAGS="$LDFLAGS";
   fi
-- if [[ "$CMAKE_CONFIG" != "" ]]; then
+- if [[ "$CMAKE_OPTIONS" != "" ]]; then
     cmake $CMAKE_OPTIONS -Dbuild_tests=ON -Denable_werror=ON
           -Werror=deprecated . &&
-    cmake --build . --config $CMAKE_CONFIG --verbose;
+    cmake --build . --verbose;
   fi
-- if [[ "$CMAKE_CONFIG" != "" ]]; then
-    ctest --build-config $CMAKE_CONFIG -j4 -V;
+- if [[ "$CMAKE_OPTIONS" != "" ]]; then
+    ctest -j4 -V;
   fi
 - if [[ "$CC_FOR_CHECK" != "" ]]; then
     make check CC=$CC_FOR_CHECK CFLAGS_EXTRA="$CFLAGS_EXTRA";
