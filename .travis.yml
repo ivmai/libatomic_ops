@@ -714,7 +714,7 @@ script:
     cmake --build . --config $CMAKE_CONFIG --verbose;
   fi
 - if [[ "$CMAKE_CONFIG" != "" ]]; then
-    ctest --build-config $CMAKE_CONFIG -V;
+    ctest --build-config $CMAKE_CONFIG -j4 -V;
   fi
 - if [[ "$CC_FOR_CHECK" != "" ]]; then
     make check CC=$CC_FOR_CHECK CFLAGS_EXTRA="$CFLAGS_EXTRA";
