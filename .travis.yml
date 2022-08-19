@@ -682,6 +682,9 @@ before_install:
     m4 --version;
     libtool --version || true;
   fi
+- if [[ "$CMAKE_OPTIONS" != "" ]]; then
+    cmake --version;
+  fi
 - if [[ "$MAKEFILE_TARGET" == "" ]]; then MAKEFILE_TARGET=check; fi
 
 install:
