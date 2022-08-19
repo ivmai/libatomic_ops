@@ -197,6 +197,7 @@ jobs:
   - os: freebsd
     env:
     - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release -Denable_gpl=OFF"
+    - CMAKE_BUILD_OPTIONS="--verbose"
   - compiler: clang
     env:
     - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -Denable_atomic_intrinsics=OFF"
@@ -708,7 +709,7 @@ script:
   fi
 - if [[ "$CMAKE_OPTIONS" != "" ]]; then
     cmake $CMAKE_OPTIONS -Dbuild_tests=ON -Denable_werror=ON -Werror=dev . &&
-    cmake --build . --verbose;
+    cmake --build . $CMAKE_BUILD_OPTIONS;
   fi
 - if [[ "$CMAKE_OPTIONS" != "" ]]; then
     ctest -j4 -V;
