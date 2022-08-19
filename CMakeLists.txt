@@ -49,6 +49,15 @@ option(enable_docs "Build and install documentation" ON)
 option(enable_gpl "Build atomic_ops_gpl library" ON)
 option(install_headers "Install header and pkg-config metadata files" ON)
 
+# Override the default build type to RelWithDebInfo (this instructs cmake to
+# pass -O2 -g -DNDEBUG options to the compiler).
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE
+      STRING "Choose the type of build." FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
+               STRINGS "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
+endif()
+
 # Convert VER_INFO values to [SO]VERSION ones.
 if (BUILD_SHARED_LIBS)
   # atomic_ops:
@@ -94,7 +103,10 @@ else()
   add_definitions("-DAO_NO_PTHREADS")
 endif()
 
-if (NOT enable_assertions)
+if (enable_assertions)
+  # In case NDEBUG macro is defined e.g. by cmake -DCMAKE_BUILD_TYPE=Release.
+  add_compile_options("-UNDEBUG")
+else()
   # Define to disable assertion checking.
   add_definitions("-DNDEBUG")
 endif()
