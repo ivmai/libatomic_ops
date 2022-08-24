@@ -209,7 +209,7 @@ Also, includes 7.4.8 changes
 Also, includes 7.4.6 changes
 
 
-== [7.4.18] (not released yet) ==
+== [7.4.18] 2022-08-25 ==
 
 * Avoid AO_stack_t to cross CPU cache line boundary
 * Do not assume 'ordered except earlier write' for UWP/arm64
