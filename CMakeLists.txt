@@ -299,15 +299,16 @@ if (build_tests)
   add_test(NAME test_atomic COMMAND test_atomic)
 
   add_executable(test_atomic_generalized tests/test_atomic.c)
-  target_compile_options(test_atomic_generalized
-                         PRIVATE -DAO_PREFER_GENERALIZED -DAO_TEST_EMULATION)
+  target_compile_definitions(test_atomic_generalized
+                             PRIVATE AO_PREFER_GENERALIZED AO_TEST_EMULATION)
   target_link_libraries(test_atomic_generalized
                         PRIVATE atomic_ops ${THREADDLLIBS_LIST})
   add_test(NAME test_atomic_generalized COMMAND test_atomic_generalized)
 
   if (CMAKE_USE_PTHREADS_INIT)
     add_executable(test_atomic_pthreads tests/test_atomic.c)
-    target_compile_options(test_atomic_pthreads PRIVATE -DAO_USE_PTHREAD_DEFS)
+    target_compile_definitions(test_atomic_pthreads
+                               PRIVATE AO_USE_PTHREAD_DEFS)
     target_link_libraries(test_atomic_pthreads
                           PRIVATE atomic_ops ${THREADDLLIBS_LIST})
     add_test(NAME test_atomic_pthreads COMMAND test_atomic_pthreads)
