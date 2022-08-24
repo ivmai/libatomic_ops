@@ -236,7 +236,7 @@ Also, includes 7.2e changes
 Also, includes 7.2 changes
 
 
-== [7.2k] (not released yet) ==
+== [7.2k] 2022-08-24 ==
 
 * Avoid AO_stack_t to cross CPU cache line boundary
 * Fix a typo in comment of AO_stack_push_explicit_aux_release
