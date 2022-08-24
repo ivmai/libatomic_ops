@@ -88,8 +88,6 @@ else()
   add_compile_options(-Wall -Wextra)
 endif()
 
-include_directories(src)
-
 find_package(Threads REQUIRED)
 message(STATUS "Thread library: ${CMAKE_THREAD_LIBS_INIT}")
 include_directories(${Threads_INCLUDE_DIR})
@@ -144,9 +142,9 @@ endif()
 
 add_library(atomic_ops ${SRC})
 target_link_libraries(atomic_ops PRIVATE ${THREADDLLIBS_LIST})
-target_include_directories(atomic_ops INTERFACE
-        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
-        "$<INSTALL_INTERFACE:include>")
+target_include_directories(atomic_ops
+                PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
+                INTERFACE "$<INSTALL_INTERFACE:include>")
 
 if (enable_gpl)
   set(AO_GPL_SRC src/atomic_ops_malloc.c src/atomic_ops_stack.c)
@@ -156,9 +154,9 @@ if (enable_gpl)
     target_compile_definitions(atomic_ops_gpl PRIVATE HAVE_MMAP)
   endif()
   target_link_libraries(atomic_ops_gpl PRIVATE atomic_ops)
-  target_include_directories(atomic_ops_gpl INTERFACE
-        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
-        "$<INSTALL_INTERFACE:include>")
+  target_include_directories(atomic_ops_gpl
+                PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
+                INTERFACE "$<INSTALL_INTERFACE:include>")
   if (BUILD_SHARED_LIBS)
     set_property(TARGET atomic_ops_gpl PROPERTY VERSION ${AO_GPL_VERSION_PROP})
     set_property(TARGET atomic_ops_gpl PROPERTY SOVERSION ${AO_GPL_SOVERSION})
