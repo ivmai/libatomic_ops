@@ -149,12 +149,12 @@ target_include_directories(atomic_ops INTERFACE
         "$<INSTALL_INTERFACE:include>")
 
 if (enable_gpl)
-  check_function_exists(mmap HAVE_MMAP)
-  if (HAVE_MMAP)
-    add_definitions("-DHAVE_MMAP")
-  endif()
   set(AO_GPL_SRC src/atomic_ops_malloc.c src/atomic_ops_stack.c)
   add_library(atomic_ops_gpl ${AO_GPL_SRC})
+  check_function_exists(mmap HAVE_MMAP)
+  if (HAVE_MMAP)
+    target_compile_definitions(atomic_ops_gpl PRIVATE HAVE_MMAP)
+  endif()
   target_link_libraries(atomic_ops_gpl PRIVATE atomic_ops)
   target_include_directories(atomic_ops_gpl INTERFACE
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
