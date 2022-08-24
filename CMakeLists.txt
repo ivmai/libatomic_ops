@@ -97,28 +97,28 @@ set(THREADDLLIBS_LIST ${CMAKE_THREAD_LIBS_INIT})
 
 if (CMAKE_USE_PTHREADS_INIT)
   # Required define if using POSIX threads.
-  add_definitions("-D_REENTRANT")
+  add_compile_options(-D_REENTRANT)
 else()
   # No pthreads library available.
-  add_definitions("-DAO_NO_PTHREADS")
+  add_compile_options(-DAO_NO_PTHREADS)
 endif()
 
 if (enable_assertions)
   # In case NDEBUG macro is defined e.g. by cmake -DCMAKE_BUILD_TYPE=Release.
-  add_compile_options("-UNDEBUG")
+  add_compile_options(-UNDEBUG)
 else()
   # Define to disable assertion checking.
-  add_definitions("-DNDEBUG")
+  add_compile_options(-DNDEBUG)
 endif()
 
 if (NOT enable_atomic_intrinsics)
   # Define to avoid GCC atomic intrinsics even if available.
-  add_definitions("-DAO_DISABLE_GCC_ATOMICS")
+  add_compile_options(-DAO_DISABLE_GCC_ATOMICS)
 endif()
 
 # AO API symbols export control.
 if (BUILD_SHARED_LIBS)
-  add_definitions("-DAO_DLL")
+  add_compile_options(-DAO_DLL)
 endif()
 
 if (enable_werror)
