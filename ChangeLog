@@ -2,10 +2,20 @@
 == [7.6.14] (not released yet) ==
 
 * Add note to README that AO malloc code has same license as AO stack
+* Adjust/reformat content of LICENSING.txt
+* Avoid AO_stack_t to cross CPU cache line boundary
 * Do not assume 'ordered except earlier write' for UWP/arm64
 * Do not name GCC intrinsics as C11 ones in ChangeLog and configure
+* Eliminate '-pedantic is not option that controls warnings' GCC-6.3 message
+* Ensure result of AO_test_and_set is always AO_TS_CLEAR or AO_TS_SET
 * Fix 'AO_malloc redefinition' MS VC warning caused by attributes mismatch
+* Fix 'use of undeclared SIG_BLOCK' Clang error if -std=c89 on Cygwin
+* Fix AO_compare_and_swap_full asm code for clang on sparc
+* Fix a typo in comment of AO_stack_push_explicit_aux_release
+* Fix code indentation in main() of test_stack.c
 * Refine AO_UNIPROCESSOR macro description in configure
+* Remove outdated comment about unsupported Win64 in atomic_ops_stack.h
+* Repeat black list check on CAS fail in stack_push_explicit_aux_release
 
 
 == [7.6.12] 2021-09-13 ==
