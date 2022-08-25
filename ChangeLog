@@ -26,7 +26,7 @@
 * Support test_atomic with MS build w/o the need to run GNU make first
 
 
-== [7.6.14] (not released yet) ==
+== [7.6.14] 2022-08-25 ==
 
 * Add note to README that AO malloc code has same license as AO stack
 * Adjust/reformat content of LICENSING.txt
