@@ -3,27 +3,53 @@
 
 * Add AUTHORS file to the list of installed documentation
 * Add goal to Makefile.msft to build all tests but not execute them
+* Allocate marks[] dynamically and report all found errors in test_stack
+* Always export stack_init/push_release/pop_acquire from atomic_ops_gpl
 * Always use 'mfence' for nop_full if target CPU supports SSE2 (MS VC/x86)
+* Avoid 'cast increases required alignment' warnings in atomic_ops_malloc.c
+* Avoid breaking strict-aliasing rules in test_malloc and test_stack
+* Avoid code duplication in AO_stack_push_explicit_aux_release
+* Better document test_stack internals
 * Build atomic_ops.lib by Makefile.msft (MS VC)
 * Build test object and executable files in tests folder (MS VC)
+* Define AO_stack_t uniformly
 * Define double_compare_and_swap_full if MS VS 2017+ (x86)
+* Do not expose AO_REAL_HEAD/NEXT_PTR implementation in header by default
 * Document config macros in README_win32 and remove them from configure
+* Eliminate 'function is never used' cppcheck warning for AO_stack_init
 * Enforce most strict level of compiler warnings (MS VC)
 * Ensure atomic_ops.c global symbols are always declared as extern 'C'
 * Explicitly outline symbols exported in AO shared libraries with AO_API
 * Hide AO_free_list symbol
+* Implement AO_stack_init using memset
 * Implement AO_test_and_set using InterlockedExchange8 (MS VC)
 * Implement and/or/xor for AO_t, short and int types (MS VC)
 * Implement nf/acq/rel variants of primitives on Windows RT (MS VC)
+* Mention MIT near core library licensing terms in LICENSE file
 * Move all README_*.txt and license files to the top folder
 * Move all non-double intrinsic-based primitives to msftc/common32_defs.h
+* Move gcc-4/alpha workaround outside AO_stack_pop_explicit_aux_acquire
+* New AO_stack_is_lock_free API function
 * New configure option (--disable-gpl) to skip building of libatomic_ops_gpl
+* Print message of almost-lock-free implementation in test_stack if used
 * Refine LICENSE and README about code parts covered by MIT and GPL-2.0
+* Refine copyright terms in GPL source files
+* Reformat atomic_ops_stack.c/h files
 * Remove 'lib' prefix for atomic_ops_gpl.lib in Makefile.msft
+* Remove redundant assert in AO_stack_pop_explicit_aux_acquire
+* Remove redundant cast to AO_t in lock-free AO_stack_pop_acquire
 * Rename LICENSING.txt to LICENSE file
+* Rename VERBOSE macro to VERBOSE_STACK in test_stack (refactoring)
+* Rename fetch_and_add to fetch_then_add in test_stack (refactoring)
+* Replace obsolete AC_HELP_STRING with AS_HELP_STRING in configure
+* Replace obsolete AC_TRY_COMPILE with AC_COMPILE_IFELSE in configure
+* Split test_stack main into several functions (refactoring)
+* Support Elbrus 2000 (gcc/e2k)
 * Support build with CMake
 * Support double-wide CAS on armv7+ and UWP/arm64 (MS VC)
 * Support test_atomic with MS build w/o the need to run GNU make first
+* Use GCC atomic intrinsics for SPARC
+* Use builtin_expect in AO_stack_push_explicit_aux_release
 
 
 == [7.6.14] 2022-08-25 ==
