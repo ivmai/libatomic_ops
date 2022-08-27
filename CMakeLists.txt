@@ -29,7 +29,7 @@ set(PACKAGE_VERSION 7.7.0)
 # Info (current:revision:age) for the Libtool versioning system.
 # These values should match those in src/Makefile.am.
 set(LIBATOMIC_OPS_VER_INFO      2:1:1)
-set(LIBATOMIC_OPS_GPL_VER_INFO  2:2:1)
+set(LIBATOMIC_OPS_GPL_VER_INFO  2:3:1)
 
 project(libatomic_ops C)
 
