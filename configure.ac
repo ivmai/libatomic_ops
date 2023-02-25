@@ -26,6 +26,7 @@ AC_CONFIG_HEADERS([src/config.h])
 dnl Checks for programs.
 AM_PROG_CC_C_O
 AM_PROG_AS
+AC_PROG_INSTALL
 LT_INIT([disable-shared])
 
 dnl Checks for functions.
