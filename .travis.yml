@@ -47,6 +47,7 @@ jobs:
     - CPPCHECK_ENABLE="-q --enable=unusedFunction -D AO_TEST_EMULATION"
     - MAKEFILE_TARGET=all
   - compiler: clang
+    dist: jammy
     env:
     - CSA_CHECK=true
     - MAKEFILE_TARGET=all
@@ -435,6 +436,7 @@ jobs:
         packages:
         - musl-tools
     compiler: musl-gcc
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-march=native"
     - CONF_OPTIONS="--enable-assertions"
@@ -443,6 +445,7 @@ jobs:
         packages:
         - gcc-mingw-w64
     compiler: x86_64-w64-mingw32-gcc
+    dist: jammy
     env:
     - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared --disable-static"
     - MAKEFILE_TARGET=all
@@ -451,6 +454,7 @@ jobs:
         packages:
         - gcc-mingw-w64
     compiler: i686-w64-mingw32-gcc
+    dist: jammy
     env:
     - CONF_OPTIONS="--host=i686-w64-mingw32"
     - MAKEFILE_TARGET=all
