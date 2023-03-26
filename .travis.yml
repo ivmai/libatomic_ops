@@ -314,16 +314,6 @@ jobs:
   - addons:
       apt:
         packages:
-        - gcc-11
-        sources:
-        - ubuntu-toolchain-r-test
-    compiler: gcc-11
-    dist: bionic
-    env:
-    - CFLAGS_EXTRA="-O3 -march=native"
-  - addons:
-      apt:
-        packages:
         - gcc-9
         - gcc-9-multilib
         sources:
