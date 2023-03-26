@@ -296,11 +296,9 @@ jobs:
   - addons:
       apt:
         packages:
-        - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
-    compiler: clang-12
-    dist: focal
+        - clang-14
+    compiler: clang-14
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - compiler: gcc
@@ -342,22 +340,18 @@ jobs:
   - addons:
       apt:
         packages:
-        - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
-    compiler: clang-12
-    dist: focal
+        - clang-14
+    compiler: clang-14
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-fsanitize=address -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
   - addons:
       apt:
         packages:
-        - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
-    compiler: clang-12
-    dist: focal
+        - clang-14
+    compiler: clang-14
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-fsanitize=address -march=native -fno-common -fno-omit-frame-pointer"
     - CONF_OPTIONS="--enable-assertions"
@@ -382,11 +376,9 @@ jobs:
   - addons:
       apt:
         packages:
-        - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
-    compiler: clang-12
-    dist: focal
+        - clang-14
+    compiler: clang-14
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-fsanitize=memory,undefined -march=native -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
@@ -396,11 +388,9 @@ jobs:
   - addons:
       apt:
         packages:
-        - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
-    compiler: clang-12
-    dist: focal
+        - clang-14
+    compiler: clang-14
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-fsanitize=thread -march=native -fno-omit-frame-pointer"
     - CONF_OPTIONS="--enable-assertions"
