@@ -3,20 +3,7 @@
 IN NEW CODE, PLEASE USE C11 OR C++14 STANDARD ATOMICS INSTEAD OF THE CORE
 LIBRARY IN THIS PACKAGE.
 
-[![Travis-CI build status](https://app.travis-ci.com/ivmai/libatomic_ops.svg?branch=master)](https://app.travis-ci.com/github/ivmai/libatomic_ops)
-[![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/ivmai/libatomic_ops?branch=master&svg=true)](https://ci.appveyor.com/project/ivmai/libatomic-ops)
-[![Codecov.io](https://codecov.io/github/ivmai/libatomic_ops/coverage.svg?branch=master)](https://codecov.io/github/ivmai/libatomic_ops?branch=master)
-[![Coveralls test coverage status](https://coveralls.io/repos/ivmai/libatomic_ops/badge.png?branch=master)](https://coveralls.io/github/ivmai/libatomic_ops)
-[![Coverity Scan build status](https://scan.coverity.com/projects/10809/badge.svg)](https://scan.coverity.com/projects/ivmai-libatomic_ops)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fivmai%2Flibatomic_ops.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fivmai%2Flibatomic_ops?ref=badge_shield)
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6333/badge)](https://bestpractices.coreinfrastructure.org/projects/6333)
-[![Hits-of-Code](https://hitsofcode.com/github/ivmai/libatomic_ops?branch=master)](https://hitsofcode.com/github/ivmai/libatomic_ops/view)
-[![Lines of code](https://img.shields.io/tokei/lines/github/ivmai/libatomic_ops)](https://shields.io/category/size)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ivmai/libatomic_ops)](https://shields.io/category/size)
-[![Github All Releases](https://img.shields.io/github/downloads/ivmai/libatomic_ops/total.svg)](https://shields.io/category/downloads)
-[![Packaging status](https://repology.org/badge/tiny-repos/libatomic-ops.svg)](https://repology.org/project/libatomic-ops/versions)
-
-This is version 7.7.0 (next release development) of libatomic_ops.
+This is version 7.8.0 of libatomic_ops.
 
 License: [MIT](LICENSE) for core library / [GPL-2.0](COPYING) for gpl
 extension.

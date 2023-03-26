@@ -12,7 +12,7 @@
 
 dnl Process this file with autoconf to produce configure.
 
-AC_INIT([libatomic_ops],[7.7.0],https://github.com/ivmai/libatomic_ops/issues)
+AC_INIT([libatomic_ops],[7.8.0],https://github.com/ivmai/libatomic_ops/issues)
 
 AC_PREREQ(2.61)
 AC_CANONICAL_TARGET([])
