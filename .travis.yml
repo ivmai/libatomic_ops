@@ -633,11 +633,9 @@ jobs:
     - CROSS_GCC_VER=4.6.2
     - NOLIBC_ARCH_ABI=tilegx-linux
     - NOLIBC_DELIM=_
-  - dist: focal
+  - dist: jammy
     env:
     - MAKEFILE_TARGET=distcheck
-    - AUTOMAKE_VER=1.16.5
-    - LIBTOOL_VER=2.4.6
 
 before_install:
 - if [[ "$CPPCHECK_ENABLE" != "" ]]; then
@@ -657,31 +655,10 @@ before_install:
     export C_INCLUDE_PATH=/usr/include;
     MAKEFILE_TARGET=check-nolink;
   fi
-- if [[ "$AUTOMAKE_VER" != "" || "$LIBTOOL_VER" != "" || "$M4_VER" != "" ]]; then
-    GNUTOOLS_ROOT=`pwd`/../gnu-tools;
-    export PATH=$GNUTOOLS_ROOT/bin:$PATH;
-    GNU_DOWNLOAD_SITE=https://ftp.gnu.org/gnu;
-  fi
-- if [[ "$M4_VER" != "" ]]; then
-    M4_XZ_URL=$GNU_DOWNLOAD_SITE/m4/m4-$M4_VER.tar.xz;
-    wget -O - $M4_XZ_URL | tar xf - --xz --directory ~;
-    (cd ~/m4-$M4_VER && ./configure --prefix=$GNUTOOLS_ROOT && make -j check && make install);
-  fi
-- if [[ "$LIBTOOL_VER" != "" ]]; then
-    LIBTOOL_XZ_URL=$GNU_DOWNLOAD_SITE/libtool/libtool-$LIBTOOL_VER.tar.xz;
-    wget -O - $LIBTOOL_XZ_URL | tar xf - --xz --directory ~;
-    (cd ~/libtool-$LIBTOOL_VER && ./configure --prefix=$GNUTOOLS_ROOT && make -j && make install);
-  fi
-- if [[ "$AUTOMAKE_VER" != "" ]]; then
-    AUTOMAKE_XZ_URL=$GNU_DOWNLOAD_SITE/automake/automake-$AUTOMAKE_VER.tar.xz;
-    wget -O - $AUTOMAKE_XZ_URL | tar xf - --xz --directory ~;
-    (cd ~/automake-$AUTOMAKE_VER && ./configure --prefix=$GNUTOOLS_ROOT && make -j && make install);
-  fi
 - if [[ "$MAKEFILE_TARGET" == "dist"* ]]; then
     autoconf --version;
     automake --version;
     m4 --version;
-    libtool --version || true;
   fi
 - if [[ "$CMAKE_OPTIONS" != "" ]]; then
     cmake --version;
