@@ -234,6 +234,7 @@ jobs:
     env:
     - CFLAGS_EXTRA="-O3 -march=native -std=c11 -D AO_BL_SIZE=4 -D DEFAULT_NTHREADS=32"
   - compiler: gcc
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=2 -std=c89"
   - addons:
@@ -264,6 +265,7 @@ jobs:
         packages:
         - gcc-multilib
     compiler: gcc
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-m32 -march=native -funsigned-char -D AO_USE_ALMOST_LOCK_FREE"
     - CONF_OPTIONS="--enable-assertions"
@@ -301,14 +303,8 @@ jobs:
     dist: focal
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
-  - addons:
-      apt:
-        packages:
-        - gcc-11
-        sources:
-        - ubuntu-toolchain-r-test
-    compiler: gcc-11
-    dist: bionic
+  - compiler: gcc
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - addons:
@@ -413,11 +409,13 @@ jobs:
     - CONF_OPTIONS="--disable-atomic-intrinsics"
     - CFLAGS_EXTRA="-march=native"
   - compiler: clang
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-x c++ -march=native -D VERBOSE_STACK"
     - CONF_OPTIONS="--enable-assertions"
     - MAKEFILE_TARGET=all
   - compiler: gcc
+    dist: jammy
     env:
     - CC_FOR_CHECK=g++
     - MAKEFILE_TARGET=all
