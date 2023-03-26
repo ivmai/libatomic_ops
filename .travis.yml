@@ -210,6 +210,7 @@ jobs:
     - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release -Denable_gpl=OFF"
     - CMAKE_BUILD_OPTIONS="--verbose"
   - compiler: clang
+    dist: jammy
     env:
     - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -Denable_atomic_intrinsics=OFF"
   - compiler: gcc
@@ -231,6 +232,7 @@ jobs:
     env:
     - CFLAGS_EXTRA="-march=native -std=c11"
   - compiler: clang
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-O3 -march=native -std=c11 -D AO_BL_SIZE=4 -D DEFAULT_NTHREADS=32"
   - compiler: gcc
@@ -242,6 +244,7 @@ jobs:
         packages:
         - gcc-multilib
     compiler: clang
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-m32"
     - CONF_OPTIONS="--enable-assertions"
