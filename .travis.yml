@@ -700,9 +700,6 @@ after_success:
     coveralls-lcov --repo-token ${COVERALLS_TOKEN} coverage.info;
     bash <(curl -s https://codecov.io/bash);
   fi
-- if [[ "$MAKEFILE_TARGET" == distcheck ]]; then
-    rvm $(travis_internal_ruby) --fuzzy do ruby -S gem install mime-types --pre;
-  fi
 
 deploy:
   provider: releases
