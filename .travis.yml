@@ -12,7 +12,7 @@ jobs:
       coverity_scan:
         project:
           name: ivmai/libatomic_ops
-          version: 7.8.0
+          version: 7.9.0
         notification_email: ivmai@mail.ru
         branch_pattern: master
         build_command_prepend: CFLAGS=-march=native ./configure
