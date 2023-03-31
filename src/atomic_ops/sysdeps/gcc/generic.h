@@ -58,6 +58,10 @@
   }
 # define AO_HAVE_nop_full
 
+#elif defined(AO_THREAD_SANITIZER) && !defined(AO_USE_ATOMIC_THREAD_FENCE)
+  /* Workaround a compiler warning (reported by gcc-11, at least)   */
+  /* that atomic_thread_fence is unsupported with thread sanitizer. */
+
 #else
   AO_INLINE void
   AO_nop_read(void)
@@ -82,7 +86,7 @@
     __atomic_thread_fence(__ATOMIC_SEQ_CST);
   }
 # define AO_HAVE_nop_full
-#endif /* !AO_UNIPROCESSOR */
+#endif /* !AO_UNIPROCESSOR && !AO_THREAD_SANITIZER */
 
 #include "generic-small.h"
 
