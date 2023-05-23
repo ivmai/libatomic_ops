@@ -235,7 +235,6 @@ jobs:
     - CFLAGS_EXTRA="-D AO_GENERALIZE_ASM_BOOL_CAS -D AO_USE_NANOSLEEP -D AO_USE_NO_SIGNALS"
     - CONF_OPTIONS="--enable-assertions"
   - compiler: clang
-    dist: xenial
     env:
     - CFLAGS_EXTRA="-D AO_STACK_PREFER_CAS_DOUBLE -D AO_USE_PTHREAD_DEFS"
     - CONF_OPTIONS="--enable-assertions"
