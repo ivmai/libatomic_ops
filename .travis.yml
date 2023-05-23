@@ -1,5 +1,6 @@
 language: c
 os: linux
+dist: jammy
 
 jobs:
   include:
@@ -34,7 +35,6 @@ jobs:
       apt:
         packages:
         - cppcheck
-    dist: jammy
     env:
     - CPPCHECK_ENABLE="-j16 -q --enable=information,performance,portability,style,warning --suppress=missingIncludeSystem --suppress=unmatchedSuppression"
     - MAKEFILE_TARGET=all
@@ -42,12 +42,10 @@ jobs:
       apt:
         packages:
         - cppcheck
-    dist: jammy
     env:
     - CPPCHECK_ENABLE="-q --enable=unusedFunction -D AO_TEST_EMULATION"
     - MAKEFILE_TARGET=all
   - compiler: clang
-    dist: jammy
     env:
     - CSA_CHECK=true
     - MAKEFILE_TARGET=all
@@ -64,53 +62,25 @@ jobs:
     env:
     - CFLAGS_EXTRA="-O3 -D N_EXPERIMENTS=10"
     - CONF_OPTIONS="--enable-assertions"
-  - addons:
-      apt:
-        packages:
-        - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: clang-12
-    dist: focal
+  - arch: arm64
+    compiler: gcc
     env:
     - CFLAGS_EXTRA="-O3"
     - CONF_OPTIONS="--enable-assertions --disable-static"
     - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: clang-12
-    dist: focal
+  - arch: arm64
+    compiler: clang
     env:
     - CFLAGS_EXTRA="-O3 -D AO_AARCH64_ASM_LOAD_STORE_CAS -D AO_PREFER_BUILTIN_ATOMICS"
     - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-11
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: gcc-11
-    dist: bionic
+  - arch: arm64
+    compiler: gcc
     env:
     - CFLAGS_EXTRA="-O3 -march=armv8.2-a"
     - CONF_OPTIONS="--enable-shared"
     - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: clang-12
-    dist: focal
+  - arch: arm64
+    compiler: clang
     env:
     - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
@@ -120,6 +90,7 @@ jobs:
         - musl-tools
     arch: arm64
     compiler: musl-gcc
+    dist: focal
     env:
     - CFLAGS_EXTRA="-O3"
     - TESTS_CUSTOM_RUN=true
@@ -143,28 +114,14 @@ jobs:
     - CFLAGS_EXTRA="-O3"
     - CONF_OPTIONS="--disable-atomic-intrinsics"
     - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: ppc64le
-    compiler: clang-12
-    dist: focal
+  - arch: ppc64le
+    compiler: clang
     env:
     - CFLAGS_EXTRA="-O3"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
     - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-11
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: ppc64le
-    compiler: gcc-11
-    dist: bionic
+  - arch: ppc64le
+    compiler: gcc
     env:
     - CFLAGS_EXTRA="-O3 -D NO_TIMES"
     - TESTS_CUSTOM_RUN=true
@@ -178,14 +135,14 @@ jobs:
     - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=MinSizeRel -Denable_assertions=ON -Denable_atomic_intrinsics=OFF"
   - arch: s390x
     compiler: clang
+    dist: focal
   - arch: s390x
     compiler: gcc
+    dist: focal
   - addons:
       apt:
         packages:
         - clang-12
-        sources:
-        - ubuntu-toolchain-r-test
     arch: s390x
     compiler: clang-12
     dist: focal
@@ -204,7 +161,6 @@ jobs:
     - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release -Denable_gpl=OFF"
     - CMAKE_BUILD_OPTIONS="--verbose"
   - compiler: clang
-    dist: jammy
     env:
     - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -Denable_atomic_intrinsics=OFF"
   - compiler: gcc
@@ -226,11 +182,9 @@ jobs:
     env:
     - CFLAGS_EXTRA="-march=native -std=c11"
   - compiler: clang
-    dist: jammy
     env:
     - CFLAGS_EXTRA="-O3 -march=native -std=c11 -D AO_BL_SIZE=4 -D DEFAULT_NTHREADS=32"
   - compiler: gcc
-    dist: jammy
     env:
     - CFLAGS_EXTRA="-march=native -D _FORTIFY_SOURCE=2 -std=c89"
   - addons:
@@ -238,7 +192,6 @@ jobs:
         packages:
         - gcc-multilib
     compiler: clang
-    dist: jammy
     env:
     - CFLAGS_EXTRA="-m32"
     - CONF_OPTIONS="--enable-assertions"
@@ -262,7 +215,6 @@ jobs:
         packages:
         - gcc-multilib
     compiler: gcc
-    dist: jammy
     env:
     - CFLAGS_EXTRA="-m32 -march=native -funsigned-char -D AO_USE_ALMOST_LOCK_FREE"
     - CONF_OPTIONS="--enable-assertions"
@@ -283,6 +235,7 @@ jobs:
     - CFLAGS_EXTRA="-D AO_GENERALIZE_ASM_BOOL_CAS -D AO_USE_NANOSLEEP -D AO_USE_NO_SIGNALS"
     - CONF_OPTIONS="--enable-assertions"
   - compiler: clang
+    dist: xenial
     env:
     - CFLAGS_EXTRA="-D AO_STACK_PREFER_CAS_DOUBLE -D AO_USE_PTHREAD_DEFS"
     - CONF_OPTIONS="--enable-assertions"
@@ -290,16 +243,10 @@ jobs:
     env:
     - CFLAGS_EXTRA="-D DONT_USE_MMAP -O3"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
-  - addons:
-      apt:
-        packages:
-        - clang-14
-    compiler: clang-14
-    dist: jammy
+  - compiler: clang
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
   - compiler: gcc
-    dist: jammy
     env:
     - CFLAGS_EXTRA="-O3 -march=native -funsigned-char"
     - CONF_OPTIONS="--enable-assertions --disable-static"
@@ -311,6 +258,7 @@ jobs:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-9
+    dist: xenial
     env:
     - CFLAGS_EXTRA="-m32 -O3 -march=native"
   - addons:
@@ -318,9 +266,8 @@ jobs:
         packages:
         - gcc-9
         - gcc-9-multilib
-        sources:
-        - ubuntu-toolchain-r-test
     compiler: gcc-9
+    dist: focal
     env:
     - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
@@ -329,27 +276,16 @@ jobs:
         packages:
         - gcc-9
         - gcc-9-multilib
-        sources:
-        - ubuntu-toolchain-r-test
     compiler: gcc-9
+    dist: focal
     env:
     - CFLAGS_EXTRA="-mx32 -march=native"
     - CONF_OPTIONS="--disable-atomic-intrinsics --disable-docs"
-  - addons:
-      apt:
-        packages:
-        - clang-14
-    compiler: clang-14
-    dist: jammy
+  - compiler: clang
     env:
     - CFLAGS_EXTRA="-fsanitize=address -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - clang-14
-    compiler: clang-14
-    dist: jammy
+  - compiler: clang
     env:
     - CFLAGS_EXTRA="-fsanitize=address -march=native -fno-common -fno-omit-frame-pointer"
     - CONF_OPTIONS="--enable-assertions"
@@ -365,30 +301,21 @@ jobs:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-9
+    dist: xenial
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -march=native -fno-omit-frame-pointer"
     - LDFLAGS="-fuse-ld=gold"
   - os: osx
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -fno-omit-frame-pointer"
-  - addons:
-      apt:
-        packages:
-        - clang-14
-    compiler: clang-14
-    dist: jammy
+  - compiler: clang
     env:
     - CFLAGS_EXTRA="-fsanitize=memory,undefined -march=native -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
   - compiler: clang
     env:
     - CFLAGS_EXTRA="-fsanitize=thread -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
-  - addons:
-      apt:
-        packages:
-        - clang-14
-    compiler: clang-14
-    dist: jammy
+  - compiler: clang
     env:
     - CFLAGS_EXTRA="-fsanitize=thread -march=native -fno-omit-frame-pointer"
     - CONF_OPTIONS="--enable-assertions"
@@ -397,13 +324,11 @@ jobs:
     - CONF_OPTIONS="--disable-atomic-intrinsics"
     - CFLAGS_EXTRA="-march=native"
   - compiler: clang
-    dist: jammy
     env:
     - CFLAGS_EXTRA="-x c++ -march=native -D VERBOSE_STACK"
     - CONF_OPTIONS="--enable-assertions"
     - MAKEFILE_TARGET=all
   - compiler: gcc
-    dist: jammy
     env:
     - CC_FOR_CHECK=g++
     - MAKEFILE_TARGET=all
@@ -412,7 +337,6 @@ jobs:
         packages:
         - musl-tools
     compiler: musl-gcc
-    dist: jammy
     env:
     - CFLAGS_EXTRA="-march=native"
     - CONF_OPTIONS="--enable-assertions"
@@ -421,7 +345,6 @@ jobs:
         packages:
         - gcc-mingw-w64
     compiler: x86_64-w64-mingw32-gcc
-    dist: jammy
     env:
     - CONF_OPTIONS="--host=x86_64-w64-mingw32 --enable-shared --disable-static"
     - MAKEFILE_TARGET=all
@@ -430,7 +353,6 @@ jobs:
         packages:
         - gcc-mingw-w64
     compiler: i686-w64-mingw32-gcc
-    dist: jammy
     env:
     - CONF_OPTIONS="--host=i686-w64-mingw32"
     - MAKEFILE_TARGET=all
@@ -472,6 +394,7 @@ jobs:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-4.6
+    dist: xenial
     env:
     - CROSS_GCC_VER=4.2.4
     - NOLIBC_ARCH_ABI=avr32-linux
@@ -485,6 +408,7 @@ jobs:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-4.6
+    dist: xenial
     env:
     - CROSS_GCC_VER=4.6.3
     - NOLIBC_ARCH_ABI=cris-linux
@@ -619,6 +543,7 @@ jobs:
         sources:
         - ubuntu-toolchain-r-test
     compiler: gcc-4.6
+    dist: xenial
     env:
     - CROSS_GCC_VER=4.6.2
     - NOLIBC_ARCH_ABI=tilegx-linux
