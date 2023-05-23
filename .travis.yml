@@ -75,7 +75,7 @@ jobs:
     dist: focal
     env:
     - CFLAGS_EXTRA="-O3"
-    - CONF_OPTIONS="--enable-assertions"
+    - CONF_OPTIONS="--enable-assertions --disable-static"
     - TESTS_CUSTOM_RUN=true
   - addons:
       apt:
@@ -301,7 +301,8 @@ jobs:
   - compiler: gcc
     dist: jammy
     env:
-    - CFLAGS_EXTRA="-O3 -march=native"
+    - CFLAGS_EXTRA="-O3 -march=native -funsigned-char"
+    - CONF_OPTIONS="--enable-assertions --disable-static"
   - addons:
       apt:
         packages:
