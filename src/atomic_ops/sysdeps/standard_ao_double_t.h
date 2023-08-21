@@ -23,8 +23,9 @@
 
 /* For 64-bit systems, we expect the double type to hold two int64's.   */
 
-#if ((defined(__x86_64__) && defined(AO_GCC_ATOMIC_TEST_AND_SET)) \
-     || defined(__aarch64__)) && !defined(__ILP32__)
+#if (((defined(__x86_64__) && defined(AO_GCC_ATOMIC_TEST_AND_SET)) \
+      || defined(__aarch64__)) && !defined(__ILP32__)) \
+    || (defined(__riscv) && __riscv_xlen == 64)
   /* x86-64: __m128 is not applicable to atomic intrinsics.     */
 # if AO_GNUC_PREREQ(4, 7) || AO_CLANG_PREREQ(3, 6)
 #   pragma GCC diagnostic push
