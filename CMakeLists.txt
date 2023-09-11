@@ -20,7 +20,7 @@
 # SOFTWARE.
 ##
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
 set(PACKAGE_VERSION 7.9.0)
 # Version must match that in AC_INIT of configure.ac and that in README.
