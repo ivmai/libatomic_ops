@@ -65,7 +65,7 @@
  *
  * We make some machine-dependent assumptions:
  *   - We have a compare-and-swap operation.
- *   - At least _AO_N_BITS low order bits in pointers are
+ *   - At least AO_N_BITS low order bits in pointers are
  *     zero and normally unused.
  *   - size_t and pointers have the same size.
  *
