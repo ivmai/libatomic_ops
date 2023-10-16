@@ -255,7 +255,7 @@ AO_API AO_t *AO_stack_next_ptr(AO_t next)
                                              &list->AO_pa.AO_aux);
   }
 
-#else /* ! USE_ALMOST_LOCK_FREE */
+#else /* !AO_USE_ALMOST_LOCK_FREE */
 
   /* The functionality is the same as of AO_load_next but the atomicity */
   /* is not needed.  The usage is similar to that of store_before_cas.  */
@@ -327,7 +327,7 @@ AO_API AO_t *AO_stack_next_ptr(AO_t next)
         cptr = (AO_t *)AO_load(&list->ptr);
         if (NULL == cptr)
           return NULL;
-        next = load_before_cas((AO_t *)cptr);
+        next = load_before_cas((/* no volatile */ AO_t *)cptr);
       } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(
                                         &list->AO_vp, cversion, (AO_t)cptr,
                                         cversion+1, next)));
@@ -377,4 +377,4 @@ AO_API AO_t *AO_stack_next_ptr(AO_t next)
 
 # undef ptr
 # undef version
-#endif /* ! USE_ALMOST_LOCK_FREE */
+#endif /* !AO_USE_ALMOST_LOCK_FREE */
