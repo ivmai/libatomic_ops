@@ -219,7 +219,7 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
   return first_ptr;
 }
 
-#else /* ! USE_ALMOST_LOCK_FREE */
+#else /* !AO_USE_ALMOST_LOCK_FREE */
 
 /* Better names for fields in AO_stack_t */
 #define ptr AO_val2
@@ -309,4 +309,4 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
 
 #endif /* AO_HAVE_compare_and_swap_double */
 
-#endif /* ! USE_ALMOST_LOCK_FREE */
+#endif /* !AO_USE_ALMOST_LOCK_FREE */
