@@ -219,7 +219,7 @@ AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux * a)
   return first_ptr;
 }
 
-#else /* ! USE_ALMOST_LOCK_FREE */
+#else /* !AO_USE_ALMOST_LOCK_FREE */
 
 /* The functionality is the same as of AO_load_next but the atomicity   */
 /* is not needed.  The usage is similar to that of store_before_cas.    */
@@ -291,7 +291,7 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
       cptr = (AO_t *)AO_load(&(list -> ptr));
       if (NULL == cptr)
         return NULL;
-      next = load_before_cas((AO_t *)cptr);
+      next = load_before_cas((/* no volatile */ AO_t *)cptr);
     } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(list,
                                         cversion, (AO_t)cptr,
                                         cversion+1, (AO_t)next)));
@@ -343,4 +343,4 @@ AO_t *AO_stack_pop_acquire(AO_stack_t *list)
 
 #endif /* AO_HAVE_compare_and_swap_double */
 
-#endif /* ! USE_ALMOST_LOCK_FREE */
+#endif /* !AO_USE_ALMOST_LOCK_FREE */
