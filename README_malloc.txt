@@ -19,7 +19,7 @@ on which malloc is completely lock-free, and hence these restrictions
 do not apply.
 
 In the presence of threads, but absence of contention, the time performance
-of this package should be as good, or slightly better than, most system
+of this package should be as good as, or slightly better than, most system
 malloc implementations.  Its space performance
 is theoretically optimal (to within a constant factor), but probably
 quite poor in practice.  In particular, no attempt is made to
@@ -34,8 +34,8 @@ high allocation rates.  If all threads happen to allocate different-sized
 objects, you might get lucky.  Otherwise expect contention and false-sharing
 problems.  If this is an issue, something like Maged Michael's algorithm
 (PLDI 2004) would be technically a far better choice.  If you are concerned
-only with scalability, and not signal-safety, you might also consider
-using Hoard instead.  We have seen a factor of 3 to 4 slowdown from the
+only with scalability, and not signal-safety, you might also consider using
+Hoard algorithm instead.  We have seen a factor of 3 to 4 slowdown from the
 standard glibc malloc implementation with contention, even when the
 performance without contention was faster.  (To make the implementation
 more scalable, one would need to replicate at least the free list headers,
@@ -54,7 +54,6 @@ explicit call.
 The entire interface to the AO_malloc package currently consists of:
 
 #include <atomic_ops_malloc.h> /* includes atomic_ops.h */
-
 void *AO_malloc(size_t sz);
 void AO_free(void *p);
 void AO_malloc_enable_mmap(void);

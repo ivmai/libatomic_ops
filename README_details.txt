@@ -1,4 +1,4 @@
-Usage:
+USAGE:
 
 0) If possible, do this on a multiprocessor, especially if you are planning
 on modifying or enhancing the package.  It will work on a uniprocessor,
@@ -30,6 +30,7 @@ see the corresponding README files, and also link against libatomic_ops_gpl.a
 before linking against libatomic_ops.a.
 
 OVERVIEW:
+
 Atomic_ops.h defines a large collection of operations, each one of which is
 a combination of an (optional) atomic memory operation, and a memory barrier.
 Also defines associated feature-test macros to determine whether a particular
@@ -56,7 +57,7 @@ of the atomic_ops package itself.
 
 Note that the implementation reflects our understanding of real processor
 behavior.  This occasionally diverges from the documented behavior.  (E.g.
-the documented X86 behavior seems to be weak enough that it is impractical
+the documented x86 behavior seems to be weak enough that it is impractical
 to use.  Current real implementations appear to be much better behaved.)
 We of course are in no position to guarantee that future processors
 (even HPs) will continue to behave this way, though we hope they will.
@@ -68,11 +69,11 @@ OPERATIONS:
 Most operations handle values of type AO_t, which are unsigned integers
 whose size matches that of pointers on the given architecture.  Additionally,
 on most supported architectures the operations are also implemented to handle
-smaller integers types; such operations are indicated by the appropriate size
+other integers types; such operations are indicated by the appropriate size
 prefix:
-- char_... Operates on unsigned char values;
-- short_... Operates on unsigned short values;
-- int_... Operates on unsigned int values.
+- char_     Operates on unsigned char values;
+- short_    Operates on unsigned short values;
+- int_      Operates on unsigned int values.
 
 The notable exception is AO_test_and_set operating only on AO_TS_t, which is
 whatever size the hardware supports with good performance.  In some cases this
@@ -87,9 +88,9 @@ are also specified:
 
 void nop()
         No atomic operation.  The barrier may still be useful.
-AO_t load(const volatile AO_t * addr)
+AO_t load(const volatile AO_t *addr)
         Atomic load of *addr.
-void store(volatile AO_t * addr, AO_t new_val)
+void store(volatile AO_t *addr, AO_t new_val)
         Atomically store new_val to *addr.
 AO_t fetch_and_add(volatile AO_t *addr, AO_t incr)
         Atomically add incr to *addr, and return the original value of *addr.
@@ -103,45 +104,45 @@ void or(volatile AO_t *addr, AO_t value)
         Atomically 'or' value into *addr.
 void xor(volatile AO_t *addr, AO_t value)
         Atomically 'xor' value into *addr.
-int compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
+int compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
         Atomically compare *addr to old_val, and replace *addr by new_val
         if the first comparison succeeds; returns nonzero if the comparison
         succeeded and *addr was updated; cannot fail spuriously.
-AO_t fetch_compare_and_swap(volatile AO_t * addr, AO_t old_val, AO_t new_val)
+AO_t fetch_compare_and_swap(volatile AO_t *addr, AO_t old_val, AO_t new_val)
         Atomically compare *addr to old_val, and replace *addr by new_val
         if the first comparison succeeds; returns the original value of *addr;
         cannot fail spuriously.
-AO_TS_VAL_t test_and_set(volatile AO_TS_t * addr)
-        Atomically read the binary value at *addr, and set it.  AO_TS_VAL_t
+AO_TS_VAL_t test_and_set(volatile AO_TS_t *addr)
+        Atomically read the binary value at *addr, and set it; AO_TS_VAL_t
         is an enumeration type which includes two values AO_TS_SET and
-        AO_TS_CLEAR.  An AO_TS_t location is capable of holding an
-        AO_TS_VAL_t, but may be much larger, as dictated by hardware
-        constraints.  Test_and_set logically sets the value to AO_TS_SET.
-        It may be reset to AO_TS_CLEAR with the AO_CLEAR(AO_TS_t *) macro.
-        AO_TS_t locations should be initialized to AO_TS_INITIALIZER.
-        The values of AO_TS_SET and AO_TS_CLEAR are hardware dependent.
-        (On PA-RISC, AO_TS_SET is zero!)
+        AO_TS_CLEAR; an AO_TS_t location is capable of holding an AO_TS_VAL_t,
+        but may be much larger, as dictated by hardware constraints;
+        test_and_set logically sets the value to AO_TS_SET; it may be reset
+        to AO_TS_CLEAR with the AO_CLEAR(AO_TS_t *) macro; AO_TS_t locations
+        should be initialized to AO_TS_INITIALIZER; the values of AO_TS_SET
+        and AO_TS_CLEAR are hardware dependent (e.g. AO_TS_SET is zero
+        on PA-RISC!).
 
-Test_and_set is a more limited version of compare_and_swap.  Its only
+AO_test_and_set is a more limited version of compare_and_swap.  Its only
 advantage is that it is more easily implementable on some hardware.  It
 should thus be used if only binary test-and-set functionality is needed.
 
 If available, we also provide compare_and_swap operations that operate
-on wider values.  Since standard data types for double width values
+on wider values.  Since the standard data types for double-width values
 may not be available, these explicitly take pairs of arguments for the
 new and/or old value.  Unfortunately, there are two common variants,
-neither of which can easily and efficiently emulate the other.
-The first performs a comparison against the entire value being replaced,
+neither of which can easily and efficiently emulate the other:
+the first performs a comparison against the entire value being replaced,
 where the second replaces a double-width replacement, but performs
 a single-width comparison:
 
-int compare_double_and_swap_double(volatile AO_double_t * addr,
-                                   AO_t old_val1, AO_t old_val2,
-                                   AO_t new_val1, AO_t new_val2);
+int AO_compare_double_and_swap_double(volatile AO_double_t *addr,
+                                      AO_t old_val1, AO_t old_val2,
+                                      AO_t new_val1, AO_t new_val2);
 
-int compare_and_swap_double(volatile AO_double_t * addr,
-                            AO_t old_val1,
-                            AO_t new_val1, AO_t new_val2);
+int AO_compare_and_swap_double(volatile AO_double_t *addr,
+                               AO_t old_val1,
+                               AO_t new_val1, AO_t new_val2);
 
 where AO_double_t is a structure containing AO_val1 and AO_val2 fields,
 both of type AO_t.  For compare_and_swap_double, we compare against
@@ -149,8 +150,8 @@ the val1 field.  AO_double_t exists only if AO_HAVE_double_t
 is defined.  If this type is available then the following operation is
 provided for convenience, fully equivalent to compare_double_and_swap_double:
 
-int double_compare_and_swap(volatile AO_double_t * addr,
-                            AO_double_t old_val, AO_double_t new_val)
+int AO_double_compare_and_swap(volatile AO_double_t *addr,
+                               AO_double_t old_val, AO_double_t new_val);
 
 Please note that AO_double_t (and AO_stack_t) variables should be properly
 aligned (8-byte alignment on 32-bit targets, 16-byte alignment on 64-bit ones)
@@ -173,7 +174,7 @@ are to ordinary cacheable memory; the ordering guarantee is with respect
 to other threads or processes, not I/O devices.  (Whether or not this
 distinction is important is platform-dependent.)
 
-Ordering suffixes are one of the following:
+The ordering suffixes (<barrier>) are one of the following:
 
 <none>: No memory barrier.  A plain AO_nop() really does nothing.
 _release: Earlier operations must become visible to other threads
@@ -234,7 +235,7 @@ Known issues include:
 We should be more precise in defining the semantics of the ordering
 constraints, and if and how we can guarantee sequential consistency.
 
-Dd_acquire_read is very hard or impossible to define in a way that cannot
+_dd_acquire_read is very hard or impossible to define in a way that cannot
 be invalidated by reasonably standard compiler transformations.
 
 Example:
@@ -242,13 +243,12 @@ Example:
 If you want to initialize an object, and then "publish" a pointer to it
 in a global location p, such that other threads reading the new value of
 p are guaranteed to see an initialized object, it suffices to use
-AO_release_write(p, ...) to write the pointer to the object, and to
-retrieve it in other threads with AO_acquire_read(p).
+..._release_write(p, ...) to write the pointer to the object, and
+..._acquire_read(p) to retrieve it in other threads.
 
-Platform notes:
+PLATFORM NOTES:
 
-All X86: We quietly assume 486 or better.
+All x86: We quietly assume 486 or better.
 
-Gcc on x86:
-Define AO_USE_PENTIUM4_INSTRS to use the Pentium 4 mfence instruction.
-Currently this is appears to be of marginal benefit.
+Gcc on x86: Define AO_USE_PENTIUM4_INSTRS to use the Pentium 4 mfence
+instruction.  Currently this is appears to be of a marginal benefit.
