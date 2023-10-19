@@ -60,11 +60,11 @@
 /*
  * We round up each allocation request to the next power of two
  * minus one word.
- * We keep one stack of free objects for each size.  Each object
- * has an initial word (offset -sizeof(AO_t) from the visible pointer)
- * which contains either
- *      The binary log of the object size in bytes (small objects)
- *      The object size (a multiple of CHUNK_SIZE) for large objects.
+ * We keep one stack of free objects for each size.  Each object has
+ * an initial word (offset from the visible pointer is -sizeof(AO_uintptr_t))
+ * which contains either:
+ * - the binary log of the object size in bytes (for small objects), or
+ * - the object size (a multiple of CHUNK_SIZE) for large objects.
  * The second case only arises if mmap-based allocation is supported.
  * We align the user-visible part of each object on a GRANULARITY
  * byte boundary.  That means that the actual (hidden) start of
@@ -78,7 +78,7 @@
 
 #ifndef ALIGNMENT
 # define ALIGNMENT 16
-        /* Assumed to be at least sizeof(AO_t).         */
+        /* Assumed to be at least sizeof(AO_uintptr_t).         */
 #endif
 
 #define CHUNK_SIZE (1 << LOG_MAX_SIZE)
@@ -89,7 +89,7 @@
 
 static char AO_initial_heap[AO_INITIAL_HEAP_SIZE]; /* ~2MB by default */
 
-static volatile AO_t initial_heap_ptr = (AO_t)AO_initial_heap;
+static volatile AO_uintptr_t initial_heap_ptr = (AO_uintptr_t)AO_initial_heap;
 
 #if defined(HAVE_MMAP)
 
@@ -181,35 +181,35 @@ static char *get_mmaped(size_t sz)
     (AO_EXPECT_FALSE((a) >= AO_SIZE_MAX - (b)) ? AO_SIZE_MAX : (a) + (b))
 
 /* Allocate an object of size (incl. header) of size > CHUNK_SIZE.      */
-/* sz includes space for an AO_t-sized header.                          */
+/* sz includes space for a pointer-sized header.                        */
 static char *
 AO_malloc_large(size_t sz)
 {
   void *result;
 
-  /* The header will force us to waste ALIGNMENT bytes, incl. header.   */
-  /* Round to multiple of CHUNK_SIZE.                                   */
+  /* The header will force us to waste ALIGNMENT bytes, including the   */
+  /* header.  Round to multiple of CHUNK_SIZE.                          */
   sz = SIZET_SAT_ADD(sz, ALIGNMENT + CHUNK_SIZE - 1) & ~(CHUNK_SIZE - 1);
   assert(sz > LOG_MAX_SIZE);
   result = get_mmaped(sz);
   if (AO_EXPECT_FALSE(NULL == result))
     return NULL;
 
-  result = (AO_t *)result + ALIGNMENT / sizeof(AO_t);
-  ((AO_t *)result)[-1] = (AO_t)sz;
+  result = (AO_uintptr_t *)result + ALIGNMENT / sizeof(AO_uintptr_t);
+  ((AO_uintptr_t *)result)[-1] = (AO_uintptr_t)sz;
   return (char *)result;
 }
 
 static void
 AO_free_large(void *p)
 {
-  AO_t sz = ((AO_t *)p)[-1];
-  if (munmap((AO_t *)p - ALIGNMENT / sizeof(AO_t), (size_t)sz) != 0)
+  size_t sz = (size_t)(((AO_uintptr_t *)p)[-1]);
+
+  if (munmap((AO_uintptr_t *)p - ALIGNMENT / sizeof(AO_uintptr_t), sz) != 0)
     abort();  /* Programmer error.  Not really async-signal-safe, but ... */
 }
 
-
-#else /*  No MMAP */
+#else /* !HAVE_MMAP */
 
 AO_API void
 AO_malloc_enable_mmap(void)
@@ -221,43 +221,47 @@ AO_malloc_enable_mmap(void)
 #define AO_free_large(p) abort()
                 /* Programmer error.  Not really async-signal-safe, but ... */
 
-#endif /* No MMAP */
+#endif /* !HAVE_MMAP */
+
+/* TODO: Duplicates (partially) the definitions in atomic_ops_stack.c.  */
+# define AO_uintptr_compare_and_swap AO_compare_and_swap
+# define AO_uintptr_compare_and_swap_acquire AO_compare_and_swap_acquire
+# define AO_uintptr_load AO_load
 
 static char *
 get_chunk(void)
 {
-  char *my_chunk_ptr;
+  AO_uintptr_t my_chunk_ptr;
 
   for (;;) {
-    char *initial_ptr = (char *)AO_load(&initial_heap_ptr);
+    AO_uintptr_t initial_ptr = AO_uintptr_load(&initial_heap_ptr);
 
-    my_chunk_ptr = (char *)(((AO_t)initial_ptr + (ALIGNMENT - 1))
-                            & ~(ALIGNMENT - 1));
-    if (initial_ptr != my_chunk_ptr)
-      {
-        /* Align correctly.  If this fails, someone else did it for us. */
-        (void)AO_compare_and_swap_acquire(&initial_heap_ptr,
-                                    (AO_t)initial_ptr, (AO_t)my_chunk_ptr);
-      }
+    my_chunk_ptr = (initial_ptr + ALIGNMENT - 1) & ~(ALIGNMENT - 1);
+    if (initial_ptr != my_chunk_ptr) {
+      /* Align correctly.  If this fails, someone else did it for us.   */
+      (void)AO_uintptr_compare_and_swap_acquire(&initial_heap_ptr,
+                                                initial_ptr, my_chunk_ptr);
+    }
 
-    if (AO_EXPECT_FALSE((AO_t)my_chunk_ptr - (AO_t)AO_initial_heap
-                        > (size_t)(AO_INITIAL_HEAP_SIZE - CHUNK_SIZE))) {
+    if (AO_EXPECT_FALSE(my_chunk_ptr < (AO_uintptr_t)AO_initial_heap)
+        || AO_EXPECT_FALSE(my_chunk_ptr > (AO_uintptr_t)(AO_initial_heap
+                                    + AO_INITIAL_HEAP_SIZE - CHUNK_SIZE))) {
       /* We failed.  The initial heap is used up.       */
-      my_chunk_ptr = get_mmaped(CHUNK_SIZE);
+      my_chunk_ptr = (AO_uintptr_t)get_mmaped(CHUNK_SIZE);
 #     if !defined(CPPCHECK)
-        assert(((AO_t)my_chunk_ptr & (ALIGNMENT-1)) == 0);
+        assert((my_chunk_ptr & (ALIGNMENT - 1)) == 0);
 #     endif
       break;
     }
-    if (AO_compare_and_swap(&initial_heap_ptr, (AO_t)my_chunk_ptr,
-                            (AO_t)(my_chunk_ptr + CHUNK_SIZE))) {
+    if (AO_uintptr_compare_and_swap(&initial_heap_ptr, my_chunk_ptr,
+                                    my_chunk_ptr + CHUNK_SIZE)) {
       break;
     }
   }
-  return my_chunk_ptr;
+  return (char *)my_chunk_ptr;
 }
 
-/* Object free lists.  Ith entry corresponds to objects         */
+/* Object free lists.  I-th entry corresponds to objects        */
 /* of total size 2**i bytes.                                    */
 static AO_stack_t AO_free_list[LOG_MAX_SIZE+1];
 
@@ -269,12 +273,13 @@ static void add_chunk_as(void * chunk, unsigned log_sz)
   size_t sz = (size_t)1 << log_sz;
 
   assert(CHUNK_SIZE >= sz);
-  assert(sz % sizeof(AO_t) == 0);
+  assert(sz % sizeof(AO_uintptr_t) == 0);
   limit = (size_t)CHUNK_SIZE - sz;
-  for (ofs = ALIGNMENT - sizeof(AO_t); ofs <= limit; ofs += sz) {
-    ASAN_POISON_MEMORY_REGION((char *)chunk + ofs + sizeof(AO_t),
-                              sz - sizeof(AO_t));
-    AO_stack_push(&AO_free_list[log_sz], (AO_t *)chunk + ofs / sizeof(AO_t));
+  for (ofs = ALIGNMENT - sizeof(AO_uintptr_t); ofs <= limit; ofs += sz) {
+    ASAN_POISON_MEMORY_REGION((char *)chunk + ofs + sizeof(AO_uintptr_t),
+                              sz - sizeof(AO_uintptr_t));
+    AO_stack_push(&AO_free_list[log_sz],
+                  (AO_uintptr_t *)chunk + ofs / sizeof(AO_uintptr_t));
   }
 }
 
@@ -335,22 +340,22 @@ AO_API AO_ATTR_MALLOC AO_ATTR_ALLOC_SIZE(1)
 void *
 AO_malloc(size_t sz)
 {
-  AO_t *result;
+  AO_uintptr_t *result;
   unsigned log_sz;
 
-  if (AO_EXPECT_FALSE(sz > CHUNK_SIZE - sizeof(AO_t)))
+  if (AO_EXPECT_FALSE(sz > CHUNK_SIZE - sizeof(AO_uintptr_t)))
     return AO_malloc_large(sz);
-  log_sz = msb(sz + (sizeof(AO_t) - 1));
+  log_sz = msb(sz + sizeof(AO_uintptr_t) - 1);
   assert(log_sz <= LOG_MAX_SIZE);
-  assert(((size_t)1 << log_sz) >= sz + sizeof(AO_t));
-  result = AO_stack_pop(AO_free_list+log_sz);
+  assert(((size_t)1 << log_sz) >= sz + sizeof(AO_uintptr_t));
+  result = AO_stack_pop(AO_free_list + log_sz);
   while (AO_EXPECT_FALSE(NULL == result)) {
-    void * chunk = get_chunk();
+    void *chunk = get_chunk();
 
     if (AO_EXPECT_FALSE(NULL == chunk))
       return NULL;
     add_chunk_as(chunk, log_sz);
-    result = AO_stack_pop(AO_free_list+log_sz);
+    result = AO_stack_pop(AO_free_list + log_sz);
   }
   *result = log_sz;
 # ifdef AO_TRACE_MALLOC
@@ -364,13 +369,13 @@ AO_malloc(size_t sz)
 AO_API void
 AO_free(void *p)
 {
-  AO_t *base;
+  AO_uintptr_t *base;
   int log_sz;
 
   if (AO_EXPECT_FALSE(NULL == p))
     return;
 
-  base = (AO_t *)p - 1;
+  base = (AO_uintptr_t *)p - 1;
   log_sz = (int)(*base);
 # ifdef AO_TRACE_MALLOC
     fprintf(stderr, "%p: AO_free(%p sz:%lu)\n", (void *)pthread_self(), p,
@@ -379,7 +384,8 @@ AO_free(void *p)
   if (AO_EXPECT_FALSE(log_sz > LOG_MAX_SIZE)) {
     AO_free_large(p);
   } else {
-    ASAN_POISON_MEMORY_REGION(base + 1, ((size_t)1 << log_sz) - sizeof(AO_t));
+    ASAN_POISON_MEMORY_REGION(base + 1,
+                              ((size_t)1 << log_sz) - sizeof(AO_uintptr_t));
     AO_stack_push(AO_free_list + log_sz, base);
   }
 }

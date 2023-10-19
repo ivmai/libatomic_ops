@@ -153,7 +153,10 @@
 /* atomic_ops/generalize.h.                                     */
 
 /* Some common defaults.  Overridden for some architectures.    */
+
 #define AO_t size_t
+
+#define AO_uintptr_t AO_t
 
 /* The test_and_set primitive returns an AO_TS_VAL_t value.     */
 /* AO_TS_t is the type of an in-memory test-and-set location.   */
@@ -261,10 +264,10 @@
 
 #ifdef AO_ALIGNOF_SUPPORTED
 # define AO_ASSERT_ADDR_ALIGNED(addr) \
-    assert(((size_t)(addr) & (__alignof__(*(addr)) - 1)) == 0)
+    assert(((AO_uintptr_t)(addr) & (__alignof__(*(addr)) - 1)) == 0)
 #else
 # define AO_ASSERT_ADDR_ALIGNED(addr) \
-    assert(((size_t)(addr) & (sizeof(*(addr)) - 1)) == 0)
+    assert(((AO_uintptr_t)(addr) & (sizeof(*(addr)) - 1)) == 0)
 #endif /* !AO_ALIGNOF_SUPPORTED */
 
 #if defined(__GNUC__) && !defined(__INTEL_COMPILER)

@@ -52,10 +52,6 @@
 # define abort() _exit(-1) /* there is no abort() in WinCE */
 #endif
 
-#ifndef AO_PTRDIFF_T
-# define AO_PTRDIFF_T ptrdiff_t
-#endif
-
 #ifndef MAX_NTHREADS
 # define MAX_NTHREADS 100
 #endif
@@ -89,7 +85,8 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name);
     pthread_attr_init(&attr);
 
     for (i = 0; i < nthreads; ++i) {
-      int code = pthread_create(thr + i, &attr, f1, (void *)(long)i);
+      int code = pthread_create(thr + i, &attr, f1,
+                                (void *)(AO_uintptr_t)(unsigned)i);
       if (code != 0) {
         fprintf(stderr, "pthread_create returned %d, thread %d\n", code, i);
         abort();
@@ -149,14 +146,14 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name);
 #ifdef USE_WINTHREADS
   struct tramp_args {
     thr_func fn;
-    long arg;
+    unsigned arg;
   };
 
   DWORD WINAPI tramp(LPVOID param)
   {
     struct tramp_args *args = (struct tramp_args *)param;
 
-    return (DWORD)(AO_PTRDIFF_T)(*args->fn)((LPVOID)(AO_PTRDIFF_T)args->arg);
+    return (DWORD)(AO_uintptr_t)(*args->fn)((LPVOID)(AO_uintptr_t)args->arg);
   }
 
   void *run_parallel(int nthreads, thr_func f1, test_func t, const char *name)
@@ -173,7 +170,7 @@ void * run_parallel(int nthreads, thr_func f1, test_func t, const char *name);
 
     for (i = 0; i < nthreads; ++i) {
       args[i].fn = f1;
-      args[i].arg = i;
+      args[i].arg = (unsigned)i;
       if ((thr[i] = CreateThread(NULL, 0, tramp, (LPVOID)(args+i), 0, NULL))
           == NULL) {
         fprintf(stderr, "CreateThread failed with %lu, thread %d\n",

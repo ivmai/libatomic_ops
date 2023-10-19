@@ -66,8 +66,8 @@ Corrections/additions for other platforms are greatly appreciated.
 
 OPERATIONS:
 
-Most operations handle values of type AO_t, which are unsigned integers
-whose size matches that of pointers on the given architecture.  Additionally,
+Most operations handle values of type AO_t, which are unsigned integers whose
+size matches that of machine word on the given architecture.  Additionally,
 on most supported architectures the operations are also implemented to handle
 other integers types; such operations are indicated by the appropriate size
 prefix:

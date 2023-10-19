@@ -167,7 +167,7 @@ static void * run_one_test(void * arg) {
   int i;
   char *p = (char *)AO_malloc(LARGE_OBJ_SIZE);
   char *q;
-  char a = 'a' + ((int)((AO_PTRDIFF_T)arg) * 2) % ('z' - 'a' + 1);
+  char a = 'a' + ((int)(AO_uintptr_t)arg * 2) % ('z' - 'a' + 1);
   char b = a + 1;
 
   if (NULL == p) {
@@ -240,7 +240,8 @@ int main(int argc, char **argv) {
   AO_free(NULL);
   AO_free(AO_malloc(0));
 # ifdef HAVE_MMAP
-      AO_free(AO_malloc(CHUNK_SIZE - (sizeof(AO_t)-1))); /* large alloc */
+    /* A large allocation.      */
+    AO_free(AO_malloc(CHUNK_SIZE - (sizeof(AO_uintptr_t) - 1)));
 # endif
 
   run_parallel(nthreads, run_one_test, dummy_test, "AO_malloc/AO_free");

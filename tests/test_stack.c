@@ -86,12 +86,12 @@
 #endif /* !NO_TIMES */
 
 struct le {
-  AO_t next; /* must be the first field */
+  AO_uintptr_t next; /* must be the first field */
   int data;
 };
 
 typedef union le_u {
-  AO_t next;
+  AO_uintptr_t next;
   struct le e;
 } list_element;
 
@@ -123,7 +123,7 @@ static void add_elements(int n)
 #ifdef VERBOSE_STACK
   static void print_list(void)
   {
-    AO_t *p;
+    AO_uintptr_t *p;
 
     for (p = AO_REAL_HEAD_PTR(the_list);
          p != NULL; p = AO_REAL_NEXT_PTR(*p))
@@ -135,7 +135,7 @@ static void add_elements(int n)
 /* w/o duplications.  Executed when the list mutation is finished.      */
 static void check_list(int n)
 {
-  AO_t *p;
+  AO_uintptr_t *p;
   int i;
   int err_cnt = 0;
   char *marks = (char*)calloc(n + 1, 1);
@@ -198,8 +198,8 @@ static volatile AO_t ops_performed = 0;
   static void * run_one_test(void * arg)
 #endif
 {
-  AO_t *t[MAX_NTHREADS + 1];
-  unsigned index = (unsigned)(size_t)arg;
+  AO_uintptr_t *t[MAX_NTHREADS + 1];
+  unsigned index = (unsigned)(AO_uintptr_t)arg;
   unsigned i;
 # ifdef VERBOSE_STACK
     unsigned j = 0;
@@ -257,7 +257,7 @@ static void run_one_experiment(int max_nthreads, int exper_n)
 #   endif
     int list_length = nthreads*(nthreads+1)/2;
     unsigned long start_time;
-    AO_t *le;
+    AO_uintptr_t *le;
 
 #   ifdef VERBOSE_STACK
       printf("Before add_elements: exper_n=%d, nthreads=%d,"
@@ -278,12 +278,12 @@ static void run_one_experiment(int max_nthreads, int exper_n)
       int code;
 
 #     ifdef USE_WINTHREADS
-        thread[i] = CreateThread(NULL, 0, run_one_test, (LPVOID)(size_t)i,
-                                 0, &thread_id);
+        thread[i] = CreateThread(NULL, 0, run_one_test,
+                                 (LPVOID)(AO_uintptr_t)i, 0, &thread_id);
         code = thread[i] != NULL ? 0 : (int)GetLastError();
 #     else
         code = pthread_create(&thread[i], 0, run_one_test,
-                              (void *)(size_t)i);
+                              (void *)(AO_uintptr_t)i);
 #     endif
       if (code != 0) {
         fprintf(stderr, "Thread creation failed %u\n", (unsigned)code);

@@ -36,16 +36,16 @@ The implementation is interesting only because it allows reuse of
 existing nodes.  This is necessary, for example, to implement a memory
 allocator.
 
-Since we want to leave the precise stack node type up to the client,
-we insist only that each stack node contains a link field of type AO_t.
+Since we want to leave the precise stack node type up to the client, we
+insist only that each stack node contains a link field of type AO_uintptr_t.
 When a new node is pushed on the stack, the push operation expects to be
 passed the pointer to this link field, which will then be overwritten by
 this link field.  Similarly, the pop operation returns a pointer to the
 link field of the object that previously was on the top of the stack.
 
 The cleanest way to use these routines is probably to define the stack node
-type with an initial AO_t link field, so that the conversion between the
-link-field pointer and the stack element pointer is just a compile-time
+type with an initial AO_uintptr_t link field, so that the conversion between
+the link-field pointer and the stack element pointer is just a compile-time
 cast.  But other possibilities exist.  (This would be cleaner in C++ with
 templates.)
 
@@ -56,8 +56,8 @@ an empty stack with AO_stack_init.  There are only three operations for
 accessing stacks:
 
 void AO_stack_init(AO_stack_t *list);
-void AO_stack_push_release(AO_stack_t *list, AO_t *new_element);
-AO_t * AO_stack_pop_acquire(volatile AO_stack_t *list);
+void AO_stack_push(volatile AO_stack_t *list, AO_uintptr_t *new_element);
+AO_uintptr_t *AO_stack_pop(volatile AO_stack_t *list);
 
 We require that the objects pushed as list elements remain addressable
 as long as any push or pop operation are in progress.  (It is OK for an object

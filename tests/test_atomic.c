@@ -48,7 +48,7 @@ static AO_t counter = 0;
 
 static void * add1sub1_thr(void * id)
 {
-  int me = (int)(AO_PTRDIFF_T)id;
+  int me = (int)(AO_uintptr_t)id;
   int i;
 
   for (i = 0; i < NITERS; ++i) {
@@ -76,7 +76,7 @@ static AO_t counter2 = 0;
 
 static void * acqrel_thr(void *id)
 {
-  int me = (int)(AO_PTRDIFF_T)id;
+  int me = (int)(AO_uintptr_t)id;
   int i;
 
   for (i = 0; i < NITERS; ++i) {
@@ -145,7 +145,7 @@ static void * test_and_set_thr(void * id)
     ++locked_counter;
     if (locked_counter != 1) {
       fprintf(stderr, "Test and set failure 1, counter = %ld, id = %d\n",
-              (long)locked_counter, (int)(AO_PTRDIFF_T)id);
+              (long)locked_counter, (int)(AO_uintptr_t)id);
       abort();
     }
     locked_counter *= 2;
@@ -154,7 +154,7 @@ static void * test_and_set_thr(void * id)
     locked_counter -= 4;
     if (locked_counter != 1) {
       fprintf(stderr, "Test and set failure 2, counter = %ld, id = %d\n",
-              (long)locked_counter, (int)(AO_PTRDIFF_T)id);
+              (long)locked_counter, (int)(AO_uintptr_t)id);
       abort();
     }
     --locked_counter;

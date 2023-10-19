@@ -136,7 +136,7 @@ AO_API void AO_store_full_emulation(volatile AO_t *addr, AO_t val);
  */
 #define AO_HASH_SIZE 16
 
-#define AO_HASH(x) (((unsigned long)(x) >> 12) & (AO_HASH_SIZE-1))
+#define AO_HASH(x) ((unsigned)((AO_uintptr_t)(x) >> 12) & (AO_HASH_SIZE-1))
 
 static AO_TS_t AO_locks[AO_HASH_SIZE] = {
   AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER, AO_TS_INITIALIZER,

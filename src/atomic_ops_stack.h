@@ -70,10 +70,9 @@
  * with the same AO_list_aux structure.
  *
  * We make some machine-dependent assumptions:
- *   - We have a compare-and-swap operation.
- *   - At least AO_N_BITS low order bits in pointers are
+ *   - we have a compare-and-swap operation;
+ *   - at least AO_N_BITS low order bits in pointers are
  *     zero and normally unused.
- *   - size_t and pointers have the same size.
  *
  * We do use a fully lock-free implementation if double-width
  * compare-and-swap operations are available.
@@ -131,11 +130,11 @@
 #endif /* !AO_STACK_ATTR_ALLIGNED */
 
 typedef struct AO__stack_aux {
-  volatile AO_t AO_stack_bl[AO_BL_SIZE];
+  volatile AO_uintptr_t AO_stack_bl[AO_BL_SIZE];
 } AO_stack_aux;
 
 struct AO__stack_ptr_aux {
-  volatile AO_t AO_ptr;
+  volatile AO_uintptr_t AO_ptr;
   AO_stack_aux AO_aux;
 };
 
@@ -156,21 +155,23 @@ typedef union AO__stack {
   /* We make them visible here for the rare cases in which it makes     */
   /* sense to share the AO_stack_aux between stacks.                    */
 
-  AO_API void
-  AO_stack_push_explicit_aux_release(volatile AO_t *list, AO_t *new_element,
-                                     AO_stack_aux *);
+  AO_API void AO_stack_push_explicit_aux_release(
+                                        volatile AO_uintptr_t * /* list */,
+                                        AO_uintptr_t * /* new_element */,
+                                        AO_stack_aux *);
 
-  AO_API AO_t *
-  AO_stack_pop_explicit_aux_acquire(volatile AO_t *list, AO_stack_aux *);
+  AO_API AO_uintptr_t *AO_stack_pop_explicit_aux_acquire(
+                                        volatile AO_uintptr_t * /* list */,
+                                        AO_stack_aux *);
 #endif /* AO_USE_ALMOST_LOCK_FREE */
 
 #ifndef AO_REAL_PTR_AS_MACRO
   /* The stack implementation knows only about the location of  */
   /* link fields in nodes, and nothing about the rest of the    */
-  /* stack elements.  Link fields hold an AO_t, which is not    */
-  /* necessarily a real pointer.  This converts the AO_t to a   */
-  /* real (AO_t *) which is either NULL, or points at the link  */
-  /* field in the next node.                                    */
+  /* stack elements.  Link fields hold an AO_uintptr_t, which   */
+  /* is not necessarily a real pointer.  This converts the      */
+  /* AO_uintptr_t value to a real AO_uintptr_t* which is either */
+  /* NULL, or points at the link field in the next node.        */
 # define AO_REAL_NEXT_PTR(x) AO_stack_next_ptr(x)
 
   /* Convert an AO_stack_t to a pointer to the link field in    */
@@ -178,30 +179,31 @@ typedef union AO__stack {
 # define AO_REAL_HEAD_PTR(x) AO_stack_head_ptr(&(x))
 
 #elif defined(AO_USE_ALMOST_LOCK_FREE)
-# define AO_REAL_NEXT_PTR(x) (AO_t *)((x) & ~AO_BIT_MASK)
+# define AO_REAL_NEXT_PTR(x) (AO_uintptr_t *)((x) & ~AO_BIT_MASK)
 # define AO_REAL_HEAD_PTR(x) AO_REAL_NEXT_PTR((x).AO_pa.AO_ptr)
 #else
 # define AO_REAL_NEXT_PTR(x) (AO_t *)(x)
 # define AO_REAL_HEAD_PTR(x) (AO_t *)((x).AO_vp.AO_val2 /* ptr */)
 #endif /* AO_REAL_PTR_AS_MACRO && !AO_USE_ALMOST_LOCK_FREE */
 
-AO_API void AO_stack_push_release(AO_stack_t *list, AO_t *new_element);
+AO_API void AO_stack_push_release(AO_stack_t *,
+                                  AO_uintptr_t * /* new_element */);
 #define AO_HAVE_stack_push_release
 
 #define AO_stack_push(l, e) AO_stack_push_release(l, e)
 #define AO_HAVE_stack_push
 
-AO_API AO_t *AO_stack_pop_acquire(AO_stack_t *list);
+AO_API AO_uintptr_t *AO_stack_pop_acquire(AO_stack_t *);
 #define AO_HAVE_stack_pop_acquire
 
 #define AO_stack_pop(l) AO_stack_pop_acquire(l)
 #define AO_HAVE_stack_pop
 
-AO_API void AO_stack_init(AO_stack_t *list);
+AO_API void AO_stack_init(AO_stack_t *);
 AO_API int AO_stack_is_lock_free(void);
 
-AO_API AO_t *AO_stack_head_ptr(const AO_stack_t *list);
-AO_API AO_t *AO_stack_next_ptr(AO_t /* next */);
+AO_API AO_uintptr_t *AO_stack_head_ptr(const AO_stack_t *);
+AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t /* next */);
 
 #ifdef __cplusplus
   } /* extern "C" */
