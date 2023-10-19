@@ -66,7 +66,7 @@
  *      The binary log of the object size in bytes (small objects)
  *      The object size (a multiple of CHUNK_SIZE) for large objects.
  * The second case only arises if mmap-based allocation is supported.
- * We align the user-visible part of each object on a GRANULARITY
+ * We align the user-visible part of each object on an ALIGNMENT
  * byte boundary.  That means that the actual (hidden) start of
  * the object starts a word before this boundary.
  */
