@@ -207,7 +207,8 @@ get_chunk(void)
                                     (AO_t)initial_ptr, (AO_t)my_chunk_ptr);
       }
 
-    if (my_chunk_ptr - AO_initial_heap > AO_INITIAL_HEAP_SIZE - CHUNK_SIZE)
+    if ((AO_t)my_chunk_ptr - (AO_t)AO_initial_heap
+                        > (size_t)(AO_INITIAL_HEAP_SIZE - CHUNK_SIZE))
       break;
     if (AO_compare_and_swap(&initial_heap_ptr, (AO_t)my_chunk_ptr,
                             (AO_t)(my_chunk_ptr + CHUNK_SIZE))) {
