@@ -268,7 +268,7 @@ static void add_chunk_as(void * chunk, unsigned log_sz)
   size_t ofs, limit;
   size_t sz = (size_t)1 << log_sz;
 
-  assert(CHUNK_SIZE >= sz);
+  assert((size_t)CHUNK_SIZE >= sz);
   assert(sz % sizeof(AO_t) == 0);
   limit = (size_t)CHUNK_SIZE - sz;
   for (ofs = ALIGNMENT - sizeof(AO_t); ofs <= limit; ofs += sz) {
