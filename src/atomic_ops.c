@@ -258,7 +258,7 @@ AO_API void AO_store_full_emulation(volatile AO_t *addr, AO_t val)
 
 #endif
 
-static AO_t spin_dummy = 1;
+static volatile AO_t spin_dummy = 0;
 
 /* Spin for 2**n units. */
 static void AO_spin(int n)
@@ -267,35 +267,34 @@ static void AO_spin(int n)
   int i = 2 << n;
 
   while (i-- > 0)
-    j += (j - 1) << 2;
-  /* Given 'spin_dummy' is initialized to 1, j is 1 after the loop.     */
+    j += j << 2;
+  /* Given spin_dummy is initialized to 0, j is 0 after the loop.   */
   AO_store(&spin_dummy, j);
 }
 
 AO_API void AO_pause(int n)
 {
-  if (n < 12)
+  if (n < 12) {
     AO_spin(n);
-  else
-    {
-#     ifdef AO_USE_NANOSLEEP
-        struct timespec ts;
-        ts.tv_sec = 0;
-        ts.tv_nsec = n > 28 ? 100000L * 1000 : 1L << (n - 2);
-        nanosleep(&ts, 0);
-#     elif defined(AO_USE_WIN32_PTHREADS)
-        Sleep(n > 28 ? 100 /* millis */
-                     : n < 22 ? 1 : (DWORD)1 << (n - 22));
-#     else
-        struct timeval tv;
-        /* Short async-signal-safe sleep. */
-        int usec = n > 28 ? 100000 : 1 << (n - 12);
+  } else {
+#   ifdef AO_USE_NANOSLEEP
+      struct timespec ts;
+      ts.tv_sec = 0;
+      ts.tv_nsec = n > 28 ? 100000L * 1000 : 1L << (n - 2);
+      nanosleep(&ts, 0);
+#   elif defined(AO_USE_WIN32_PTHREADS)
+      Sleep(n > 28 ? 100 /* millis */
+                   : n < 22 ? 1 : (DWORD)1 << (n - 22));
+#   else
+      struct timeval tv;
+      /* Short async-signal-safe sleep. */
+      int usec = n > 28 ? 100000 : 1 << (n - 12);
                 /* Use an intermediate variable (of int type) to avoid  */
                 /* "shift followed by widening conversion" warning.     */
 
-        tv.tv_sec = 0;
-        tv.tv_usec = usec;
-        (void)select(0, 0, 0, 0, &tv);
-#     endif
-    }
+      tv.tv_sec = 0;
+      tv.tv_usec = usec;
+      (void)select(0, 0, 0, 0, &tv);
+#   endif
+  }
 }

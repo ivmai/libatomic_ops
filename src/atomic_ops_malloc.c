@@ -89,7 +89,11 @@
 
 static char AO_initial_heap[AO_INITIAL_HEAP_SIZE]; /* ~2MB by default */
 
-static volatile AO_uintptr_t initial_heap_ptr = (AO_uintptr_t)AO_initial_heap;
+static volatile AO_uintptr_t initial_heap_ptr = 0;
+                /* Note: the real initialization of this variable is    */
+                /* deferred to get_chunk() - it is workaround for an    */
+                /* E2K compiler complaining about the cast of a pointer */
+                /* to uintptr_t type in a static initializer.           */
 
 #if defined(HAVE_MMAP)
 
@@ -236,9 +240,12 @@ get_chunk(void)
   for (;;) {
     AO_uintptr_t initial_ptr = AO_uintptr_load(&initial_heap_ptr);
 
-    my_chunk_ptr = (initial_ptr + ALIGNMENT - 1) & ~(ALIGNMENT - 1);
+    my_chunk_ptr = ((AO_EXPECT_FALSE(0 == initial_ptr) ?
+                        (AO_uintptr_t)AO_initial_heap : initial_ptr)
+                     + ALIGNMENT - 1) & ~(ALIGNMENT - 1);
     if (initial_ptr != my_chunk_ptr) {
       /* Align correctly.  If this fails, someone else did it for us.   */
+      assert(my_chunk_ptr != 0);
       (void)AO_uintptr_compare_and_swap_acquire(&initial_heap_ptr,
                                                 initial_ptr, my_chunk_ptr);
     }
