@@ -214,7 +214,7 @@ retry:
                                   (AO_t)my_chunk_ptr);
     }
   my_lim = my_chunk_ptr + CHUNK_SIZE;
-  if (my_lim <= initial_heap_lim)
+  if (my_lim <= initial_heap_lim && my_lim > AO_initial_heap)
     {
       if (!AO_compare_and_swap(&initial_heap_ptr, (AO_t)my_chunk_ptr,
                                                   (AO_t)my_lim))
