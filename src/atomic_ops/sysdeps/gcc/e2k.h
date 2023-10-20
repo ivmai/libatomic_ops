@@ -23,6 +23,15 @@
 /* As of clang-9, all __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n are missing.   */
 #define AO_GCC_FORCE_HAVE_CAS
 
+#if defined(__ptr32__)
+# define AO_GCC_HAVE_double_SYNC_CAS
+# include "../standard_ao_double_t.h"
+#else
+  /* TODO: As of lcc-1.26.20, an illegal instruction is generated for   */
+  /* some double-word GCC atomic intrinsics.                            */
+#endif
+
 #include "generic.h"
 
 #undef AO_GCC_FORCE_HAVE_CAS
+#undef AO_GCC_HAVE_double_SYNC_CAS
