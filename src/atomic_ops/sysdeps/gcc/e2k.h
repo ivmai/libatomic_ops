@@ -27,8 +27,8 @@
 # define AO_GCC_HAVE_double_SYNC_CAS
 # include "../standard_ao_double_t.h"
 #else
-  /* TODO: As of lcc-1.26.20, an illegal instruction is generated for   */
-  /* some double-word GCC atomic intrinsics.                            */
+  /* TODO: This is not enabled because, as of lcc-1.26.20, this     */
+  /* requires -latomic and also leads to test_stack failure.        */
 #endif
 
 #include "generic.h"
