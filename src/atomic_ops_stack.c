@@ -89,11 +89,24 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
 # endif
 
   /* These AO_uintptr_... primitives are not a part of the API. */
+# ifdef AO_LONG_POINTER
+#   define AO_uintptr_compare_and_swap_acquire(p, o, n) \
+                (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
+                            __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE)
+#   define AO_uintptr_compare_and_swap_release(p, o, n) \
+                (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
+                            __ATOMIC_RELEASE, __ATOMIC_RELAXED /* on fail */)
+#   define AO_uintptr_load(p) __atomic_load_n(p, __ATOMIC_RELAXED)
+#   define AO_uintptr_load_acquire(p) __atomic_load_n(p, __ATOMIC_ACQUIRE)
+#   define AO_uintptr_store_release(p, v) \
+                __atomic_store_n(p, v, __ATOMIC_RELEASE)
+# else
 #   define AO_uintptr_compare_and_swap_acquire AO_compare_and_swap_acquire
 #   define AO_uintptr_compare_and_swap_release AO_compare_and_swap_release
 #   define AO_uintptr_load          AO_load
 #   define AO_uintptr_load_acquire  AO_load_acquire
 #   define AO_uintptr_store_release AO_store_release
+# endif
 
   /* LIFO linked lists based on compare-and-swap.  We need to avoid     */
   /* the case of a node deletion and reinsertion while I'm deleting     */
@@ -205,8 +218,10 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
     /* structure a are currently in progress.                           */
     for (i = 0; ; )
       {
+        /* no const */ AO_uintptr_t zero = 0;
+
         if (PRECHECK(a->AO_stack_bl[i])
-            AO_uintptr_compare_and_swap_acquire(a->AO_stack_bl+i, 0, first))
+            AO_uintptr_compare_and_swap_acquire(a->AO_stack_bl+i, zero, first))
           break;
         if (++i >= AO_BL_SIZE)
           {

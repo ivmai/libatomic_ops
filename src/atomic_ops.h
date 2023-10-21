@@ -156,7 +156,18 @@
 
 #define AO_t size_t
 
-#define AO_uintptr_t AO_t
+#if defined(__SIZEOF_POINTER__) \
+    && (__SIZEOF_POINTER__ == 2 * __SIZEOF_SIZE_T__)
+  /* Pointers are twice bigger than the machine word.   */
+# define AO_LONG_POINTER
+#endif
+
+#ifdef AO_LONG_POINTER
+# include <inttypes.h>
+# define AO_uintptr_t uintptr_t
+#else
+# define AO_uintptr_t AO_t
+#endif
 
 /* The test_and_set primitive returns an AO_TS_VAL_t value.     */
 /* AO_TS_t is the type of an in-memory test-and-set location.   */

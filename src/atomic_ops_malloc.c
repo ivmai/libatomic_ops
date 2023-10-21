@@ -228,9 +228,19 @@ AO_malloc_enable_mmap(void)
 #endif /* !HAVE_MMAP */
 
 /* TODO: Duplicates (partially) the definitions in atomic_ops_stack.c.  */
+#ifdef AO_LONG_POINTER
+# define AO_uintptr_compare_and_swap(p, o, n) \
+                (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
+                                        __ATOMIC_RELAXED, __ATOMIC_RELAXED)
+# define AO_uintptr_compare_and_swap_acquire(p, o, n) \
+                (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
+                                        __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE)
+# define AO_uintptr_load(p) __atomic_load_n(p, __ATOMIC_RELAXED)
+#else
 # define AO_uintptr_compare_and_swap AO_compare_and_swap
 # define AO_uintptr_compare_and_swap_acquire AO_compare_and_swap_acquire
 # define AO_uintptr_load AO_load
+#endif
 
 static char *
 get_chunk(void)
