@@ -180,7 +180,7 @@ jobs:
     - CONF_OPTIONS="--enable-assertions"
   - compiler: clang
     env:
-    - CFLAGS_EXTRA="-march=native -std=c11"
+    - CFLAGS_EXTRA="-march=native -std=c11 -D AO_INITIAL_HEAP_CHUNKS=2"
   - compiler: clang
     env:
     - CFLAGS_EXTRA="-O3 -march=native -std=c11 -D AO_BL_SIZE=4 -D DEFAULT_NTHREADS=32"
