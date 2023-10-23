@@ -23,12 +23,13 @@
 /* As of clang-9, all __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n are missing.   */
 #define AO_GCC_FORCE_HAVE_CAS
 
-#if defined(__ptr32__)
+#if defined(__ptr32__) || defined(AO_PREFER_BUILTIN_ATOMICS)
 # define AO_GCC_HAVE_double_SYNC_CAS
 # include "../standard_ao_double_t.h"
 #else
-  /* TODO: This is not enabled because, as of lcc-1.26.20, this     */
-  /* requires -latomic and also leads to test_stack failure.        */
+  /* TODO: This is not enabled for the 64-bit mode by default because,  */
+  /* as of lcc-1.26.20, this requires -latomic and also leads to        */
+  /* test_stack failure.                                                */
 #endif
 
 #include "generic.h"
