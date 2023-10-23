@@ -84,8 +84,11 @@
 #define CHUNK_SIZE (1 << LOG_MAX_SIZE)
 
 #ifndef AO_INITIAL_HEAP_SIZE
-# define AO_INITIAL_HEAP_SIZE (2*(LOG_MAX_SIZE+1)*CHUNK_SIZE)
-#endif
+# ifndef AO_INITIAL_HEAP_CHUNKS
+#   define AO_INITIAL_HEAP_CHUNKS 2*(LOG_MAX_SIZE+1)
+# endif
+# define AO_INITIAL_HEAP_SIZE (AO_INITIAL_HEAP_CHUNKS * CHUNK_SIZE)
+#endif /* !AO_INITIAL_HEAP_SIZE */
 
 static char AO_initial_heap[AO_INITIAL_HEAP_SIZE]; /* ~2MB by default */
 
