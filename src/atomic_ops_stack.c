@@ -288,8 +288,7 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
   /* The functionality is the same as of load_next but the atomicity    */
   /* is not needed.  The usage is similar to that of store_before_cas.  */
 # if defined(AO_THREAD_SANITIZER) \
-     && (defined(AO_HAVE_compare_and_swap_double) \
-         || defined(AO_HAVE_compare_double_and_swap_double))
+     && defined(AO_HAVE_compare_double_and_swap_double)
     /* TODO: If compiled by Clang (as of clang-4.0) with -O3 flag,      */
     /* no_sanitize attribute is ignored unless the argument is volatile.*/
 #   if defined(__clang__)
@@ -310,98 +309,53 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
 # define version AO_vp.AO_val1
 # define ptr AO_vp.AO_val2
 
-# if defined(AO_HAVE_compare_double_and_swap_double) \
-     && !(defined(AO_STACK_PREFER_CAS_DOUBLE) \
-          && defined(AO_HAVE_compare_and_swap_double))
+# ifdef LINT2
+    volatile /* non-static */ AO_t AO_noop_sink;
+# endif
 
+  AO_API void AO_stack_push_release(AO_stack_t *list, AO_uintptr_t *element)
+  {
+    AO_t next;
+
+    do {
+      next = AO_load(&list->ptr);
+      store_before_cas(element, (AO_uintptr_t)next);
+    } while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(&list->ptr, next,
+                                                          (AO_t)element)));
+    /* This uses a narrow CAS here, an old optimization suggested   */
+    /* by Treiber.  Pop is still safe, since we run into the ABA    */
+    /* problem only if there were both intervening pops and pushes. */
+    /* In that case we still see a change in the version number.    */
 #   ifdef LINT2
-      volatile /* non-static */ AO_t AO_noop_sink;
+      /* Instruct static analyzer that element is not lost.     */
+      AO_noop_sink = (AO_t)element;
 #   endif
+  }
 
-    AO_API void AO_stack_push_release(AO_stack_t *list, AO_uintptr_t *element)
-    {
-      AO_t next;
+  AO_API AO_uintptr_t *AO_stack_pop_acquire(AO_stack_t *list)
+  {
+#   if defined(__clang__) && !AO_CLANG_PREREQ(3, 5)
+      AO_t *volatile cptr;
+                /* Use volatile to workaround a bug in              */
+                /* clang-1.1/x86 causing test_stack failure.        */
+#   else
+      AO_t *cptr;
+#   endif
+    AO_t next;
+    AO_t cversion;
 
-      do {
-        next = AO_load(&list->ptr);
-        store_before_cas(element, (AO_uintptr_t)next);
-      } while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(&list->ptr, next,
-                                                            (AO_t)element)));
-      /* This uses a narrow CAS here, an old optimization suggested     */
-      /* by Treiber.  Pop is still safe, since we run into the ABA      */
-      /* problem only if there were both intervening pops and pushes.   */
-      /* In that case we still see a change in the version number.      */
-#     ifdef LINT2
-        /* Instruct static analyzer that element is not lost.   */
-        AO_noop_sink = (AO_t)element;
-#     endif
-    }
-
-    AO_API AO_uintptr_t *AO_stack_pop_acquire(AO_stack_t *list)
-    {
-#     if defined(__clang__) && !AO_CLANG_PREREQ(3, 5)
-        AO_t *volatile cptr;
-                        /* Use volatile to workaround a bug in          */
-                        /* clang-1.1/x86 causing test_stack failure.    */
-#     else
-        AO_t *cptr;
-#     endif
-      AO_t next;
-      AO_t cversion;
-
-      do {
-        /* Version must be loaded first.    */
-        cversion = AO_load_acquire(&list->version);
-        cptr = (AO_t *)AO_load(&list->ptr);
-        if (NULL == cptr)
-          return NULL;
-        next = load_before_cas((/* no volatile */ AO_t *)cptr);
-      } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(
+    do {
+      /* Version must be loaded first.  */
+      cversion = AO_load_acquire(&list->version);
+      cptr = (AO_t *)AO_load(&list->ptr);
+      if (NULL == cptr)
+        return NULL;
+      next = load_before_cas((/* no volatile */ AO_t *)cptr);
+    } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(
                                         &list->AO_vp, cversion, (AO_t)cptr,
                                         cversion+1, next)));
-      return (AO_uintptr_t *)cptr;
-    }
-
-# elif defined(AO_HAVE_compare_and_swap_double)
-
-    /* Needed for future IA64 processors.  No current clients?  */
-    /* TODO: Not tested thoroughly. */
-
-    /* We have a wide CAS, but only does an AO_t-wide comparison.       */
-    /* We cannot use the Treiber optimization, since we only check      */
-    /* for an unchanged version number, not an unchanged pointer.       */
-    AO_API void AO_stack_push_release(AO_stack_t *list, AO_uintptr_t *element)
-    {
-      AO_t cversion;
-
-      do {
-        AO_t next_ptr;
-
-        /* Again version must be loaded first, for different reason.    */
-        cversion = AO_load_acquire(&list->version);
-        next_ptr = AO_load(&list->ptr);
-        store_before_cas(element, (AO_uintptr_t)next_ptr);
-      } while (!AO_compare_and_swap_double_release(&list->AO_vp, cversion,
-                                                   cversion+1, (AO_t)element));
-    }
-
-    AO_API AO_uintptr_t *AO_stack_pop_acquire(AO_stack_t *list)
-    {
-      AO_t *cptr;
-      AO_t next;
-      AO_t cversion;
-
-      do {
-        cversion = AO_load_acquire(&list->version);
-        cptr = (AO_t *)AO_load(&list->ptr);
-        if (NULL == cptr)
-          return NULL;
-        next = load_before_cas(cptr);
-      } while (!AO_compare_double_and_swap_double_release(&list->AO_vp,
-                                cversion, (AO_t)cptr, cversion+1, next));
-      return (AO_uintptr_t *)cptr;
-    }
-# endif /* AO_HAVE_compare_and_swap_double */
+    return (AO_uintptr_t *)cptr;
+  }
 
 # undef ptr
 # undef version
