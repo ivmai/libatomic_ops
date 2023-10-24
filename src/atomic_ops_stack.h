@@ -32,7 +32,7 @@
 #include "atomic_ops.h"
 
 #if !defined(AO_HAVE_compare_double_and_swap_double) \
-    && !defined(AO_HAVE_compare_double_and_swap) \
+    && !defined(AO_HAVE_compare_and_swap_double) \
     && defined(AO_HAVE_compare_and_swap)
 # define AO_USE_ALMOST_LOCK_FREE
 #else
