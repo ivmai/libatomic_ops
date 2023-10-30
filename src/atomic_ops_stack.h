@@ -178,7 +178,7 @@ typedef union AO__stack {
 # define AO_REAL_HEAD_PTR(x) AO_stack_head_ptr(&(x))
 
 #elif defined(AO_USE_ALMOST_LOCK_FREE)
-# define AO_REAL_NEXT_PTR(x) (AO_uintptr_t *)((x) & ~AO_BIT_MASK)
+# define AO_REAL_NEXT_PTR(x) (AO_uintptr_t *)((x) & ~(AO_uintptr_t)AO_BIT_MASK)
 # define AO_REAL_HEAD_PTR(x) AO_REAL_NEXT_PTR((x).AO_pa.AO_ptr)
 #else
 # define AO_REAL_NEXT_PTR(x) (AO_t *)(x)
