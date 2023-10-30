@@ -93,10 +93,6 @@
 static char AO_initial_heap[AO_INITIAL_HEAP_SIZE]; /* ~2MB by default */
 
 static volatile AO_uintptr_t initial_heap_ptr = 0;
-                /* Note: the real initialization of this variable is    */
-                /* deferred to get_chunk() - it is workaround for an    */
-                /* E2K compiler complaining about the cast of a pointer */
-                /* to uintptr_t type in a static initializer.           */
 
 #if defined(HAVE_MMAP)
 
