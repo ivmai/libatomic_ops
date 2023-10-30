@@ -45,7 +45,7 @@
   /* Use the almost-non-blocking implementation regardless of the       */
   /* double-word CAS availability.                                      */
 #elif (!defined(AO_HAVE_compare_double_and_swap_double) \
-       && defined(AO_HAVE_compare_and_swap)) || defined(AO_LONG_POINTER)
+       && defined(AO_HAVE_compare_and_swap)) || defined(AO_FAT_POINTER)
 # define AO_USE_ALMOST_LOCK_FREE
 #else
   /* If we have no compare-and-swap operation defined, we assume        */

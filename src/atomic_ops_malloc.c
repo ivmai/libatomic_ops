@@ -227,7 +227,7 @@ AO_malloc_enable_mmap(void)
 #endif /* !HAVE_MMAP */
 
 /* TODO: Duplicates (partially) the definitions in atomic_ops_stack.c.  */
-#ifdef AO_LONG_POINTER
+#ifdef AO_FAT_POINTER
 # define AO_uintptr_compare_and_swap(p, o, n) \
                 (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
                                         __ATOMIC_RELAXED, __ATOMIC_RELAXED)

@@ -159,10 +159,10 @@
 #if defined(__SIZEOF_POINTER__) \
     && (__SIZEOF_POINTER__ == 2 * __SIZEOF_SIZE_T__)
   /* Pointers are twice bigger than the machine word.   */
-# define AO_LONG_POINTER
+# define AO_FAT_POINTER
 #endif
 
-#ifdef AO_LONG_POINTER
+#ifdef AO_FAT_POINTER
 # include <inttypes.h>
 # define AO_uintptr_t uintptr_t
 #else
