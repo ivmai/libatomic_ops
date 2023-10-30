@@ -86,7 +86,10 @@
 
 /* The number of low order pointer bits we can use for a small          */
 /* version number.                                                      */
-#if defined(__LP64__) || defined(_LP64) || defined(_WIN64)
+#if defined(AO_FAT_POINTER) && defined(__LP64__)
+# define AO_N_BITS 4
+#elif defined(__LP64__) || defined(_LP64) || defined(_WIN64) \
+      || defined(AO_FAT_POINTER)
 # define AO_N_BITS 3
 #else
 # define AO_N_BITS 2
