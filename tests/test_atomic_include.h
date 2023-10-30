@@ -27,6 +27,16 @@
 #define MISSING(name) \
   printf("Missing: %s\n", #name "")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomic(void);
   void char_list_atomic(void);
@@ -72,9 +82,8 @@ void test_atomic(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_store)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_store(&x, 13);
     TA_assert(x == 13);
@@ -122,8 +131,7 @@ void test_atomic(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_store)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_store(&s, 13);
@@ -165,8 +173,7 @@ void test_atomic(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_store)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_store(&b, 13);
@@ -207,8 +214,7 @@ void test_atomic(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_store)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_store(&zz, 13);
@@ -623,6 +629,16 @@ void test_atomic(void)
 #define MISSING(name) \
   printf("Missing: %s\n", #name "_release")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomic_release(void);
   void char_list_atomic_release(void);
@@ -668,9 +684,8 @@ void test_atomic_release(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_store_release)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_store_release(&x, 13);
     TA_assert(x == 13);
@@ -718,8 +733,7 @@ void test_atomic_release(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_store_release)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_store_release(&s, 13);
@@ -761,8 +775,7 @@ void test_atomic_release(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_store_release)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_store_release(&b, 13);
@@ -803,8 +816,7 @@ void test_atomic_release(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_store_release)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_store_release(&zz, 13);
@@ -1219,6 +1231,16 @@ void test_atomic_release(void)
 #define MISSING(name) \
   printf("Missing: %s\n", #name "_acquire")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomic_acquire(void);
   void char_list_atomic_acquire(void);
@@ -1264,9 +1286,8 @@ void test_atomic_acquire(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_store_acquire)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_store_acquire(&x, 13);
     TA_assert(x == 13);
@@ -1314,8 +1335,7 @@ void test_atomic_acquire(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_store_acquire)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_store_acquire(&s, 13);
@@ -1357,8 +1377,7 @@ void test_atomic_acquire(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_store_acquire)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_store_acquire(&b, 13);
@@ -1399,8 +1418,7 @@ void test_atomic_acquire(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_store_acquire)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_store_acquire(&zz, 13);
@@ -1815,6 +1833,16 @@ void test_atomic_acquire(void)
 #define MISSING(name) \
   printf("Missing: %s\n", #name "_read")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomic_read(void);
   void char_list_atomic_read(void);
@@ -1860,9 +1888,8 @@ void test_atomic_read(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_store_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_store_read(&x, 13);
     TA_assert(x == 13);
@@ -1910,8 +1937,7 @@ void test_atomic_read(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_store_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_store_read(&s, 13);
@@ -1953,8 +1979,7 @@ void test_atomic_read(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_store_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_store_read(&b, 13);
@@ -1995,8 +2020,7 @@ void test_atomic_read(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_store_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_store_read(&zz, 13);
@@ -2411,6 +2435,16 @@ void test_atomic_read(void)
 #define MISSING(name) \
   printf("Missing: %s\n", #name "_write")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomic_write(void);
   void char_list_atomic_write(void);
@@ -2456,9 +2490,8 @@ void test_atomic_write(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_store_write)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_store_write(&x, 13);
     TA_assert(x == 13);
@@ -2506,8 +2539,7 @@ void test_atomic_write(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_store_write)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_store_write(&s, 13);
@@ -2549,8 +2581,7 @@ void test_atomic_write(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_store_write)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_store_write(&b, 13);
@@ -2591,8 +2622,7 @@ void test_atomic_write(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_store_write)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_store_write(&zz, 13);
@@ -3007,6 +3037,16 @@ void test_atomic_write(void)
 #define MISSING(name) \
   printf("Missing: %s\n", #name "_full")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomic_full(void);
   void char_list_atomic_full(void);
@@ -3052,9 +3092,8 @@ void test_atomic_full(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_store_full)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_store_full(&x, 13);
     TA_assert(x == 13);
@@ -3102,8 +3141,7 @@ void test_atomic_full(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_store_full)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_store_full(&s, 13);
@@ -3145,8 +3183,7 @@ void test_atomic_full(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_store_full)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_store_full(&b, 13);
@@ -3187,8 +3224,7 @@ void test_atomic_full(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_store_full)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_store_full(&zz, 13);
@@ -3603,6 +3639,16 @@ void test_atomic_full(void)
 #define MISSING(name) \
   printf("Missing: %s\n", #name "_release_write")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomic_release_write(void);
   void char_list_atomic_release_write(void);
@@ -3648,9 +3694,8 @@ void test_atomic_release_write(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_store_release_write)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_store_release_write(&x, 13);
     TA_assert(x == 13);
@@ -3698,8 +3743,7 @@ void test_atomic_release_write(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_store_release_write)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_store_release_write(&s, 13);
@@ -3741,8 +3785,7 @@ void test_atomic_release_write(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_store_release_write)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_store_release_write(&b, 13);
@@ -3783,8 +3826,7 @@ void test_atomic_release_write(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_store_release_write)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_store_release_write(&zz, 13);
@@ -4199,6 +4241,16 @@ void test_atomic_release_write(void)
 #define MISSING(name) \
   printf("Missing: %s\n", #name "_acquire_read")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomic_acquire_read(void);
   void char_list_atomic_acquire_read(void);
@@ -4244,9 +4296,8 @@ void test_atomic_acquire_read(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_store_acquire_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_store_acquire_read(&x, 13);
     TA_assert(x == 13);
@@ -4294,8 +4345,7 @@ void test_atomic_acquire_read(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_store_acquire_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_store_acquire_read(&s, 13);
@@ -4337,8 +4387,7 @@ void test_atomic_acquire_read(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_store_acquire_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_store_acquire_read(&b, 13);
@@ -4379,8 +4428,7 @@ void test_atomic_acquire_read(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_store_acquire_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_store_acquire_read(&zz, 13);
@@ -4795,6 +4843,16 @@ void test_atomic_acquire_read(void)
 #define MISSING(name) \
   printf("Missing: %s\n", #name "_dd_acquire_read")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomic_dd_acquire_read(void);
   void char_list_atomic_dd_acquire_read(void);
@@ -4840,9 +4898,8 @@ void test_atomic_dd_acquire_read(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_store_dd_acquire_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_store_dd_acquire_read(&x, 13);
     TA_assert(x == 13);
@@ -4890,8 +4947,7 @@ void test_atomic_dd_acquire_read(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_store_dd_acquire_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_store_dd_acquire_read(&s, 13);
@@ -4933,8 +4989,7 @@ void test_atomic_dd_acquire_read(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_store_dd_acquire_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_store_dd_acquire_read(&b, 13);
@@ -4975,8 +5030,7 @@ void test_atomic_dd_acquire_read(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_store_dd_acquire_read)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_store_dd_acquire_read(&zz, 13);

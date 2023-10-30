@@ -27,6 +27,16 @@
 #define MISSING(name) \
   printf("Missing: %s\n", #name "XX")
 
+#undef INIT_BEFORE_FIRST_STORE
+#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+    && defined(AO_PREFER_GENERALIZED)
+  /* Explicitly initialize variable (to any value) before generalized   */
+  /* AO_store call to avoid a false warning about use of uninitialized  */
+  /* variable in a compare-and-swap operation.                          */
+# define INIT_BEFORE_FIRST_STORE
+#endif
+
 #if defined(CPPCHECK)
   void list_atomicXX(void);
   void char_list_atomicXX(void);
@@ -72,9 +82,8 @@ void test_atomicXX(void)
     MISSING(AO_nop);
 # endif
 # if defined(AO_HAVE_storeXX)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
-      *(volatile AO_t *)&x = 0; /* initialize to avoid false warning */
+#   ifdef INIT_BEFORE_FIRST_STORE
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_storeXX(&x, 13);
     TA_assert(x == 13);
@@ -122,8 +131,7 @@ void test_atomicXX(void)
     --x;
 # endif
 # if defined(AO_HAVE_short_storeXX)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile short *)&s = 0;
 #   endif
     AO_short_storeXX(&s, 13);
@@ -165,8 +173,7 @@ void test_atomicXX(void)
 # endif
   TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_storeXX)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile char *)&b = 0;
 #   endif
     AO_char_storeXX(&b, 13);
@@ -207,8 +214,7 @@ void test_atomicXX(void)
 # endif
   TA_assert(*(volatile char *)&b == 13);
 # if defined(AO_HAVE_int_storeXX)
-#   if (defined(AO_MEMORY_SANITIZER) || defined(LINT2)) \
-       && defined(AO_PREFER_GENERALIZED)
+#   ifdef INIT_BEFORE_FIRST_STORE
       *(volatile int *)&zz = 0;
 #   endif
     AO_int_storeXX(&zz, 13);
