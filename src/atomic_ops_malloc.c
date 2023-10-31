@@ -192,7 +192,8 @@ AO_malloc_large(size_t sz)
 
   /* The header will force us to waste ALIGNMENT bytes, including the   */
   /* header.  Round to multiple of CHUNK_SIZE.                          */
-  sz = SIZET_SAT_ADD(sz, ALIGNMENT + CHUNK_SIZE - 1) & ~(CHUNK_SIZE - 1);
+  sz = SIZET_SAT_ADD(sz, ALIGNMENT + CHUNK_SIZE - 1)
+            & ~(size_t)(CHUNK_SIZE - 1);
   assert(sz > LOG_MAX_SIZE);
   result = get_mmaped(sz);
   if (AO_EXPECT_FALSE(NULL == result))
@@ -251,7 +252,7 @@ get_chunk(void)
 
     my_chunk_ptr = ((AO_EXPECT_FALSE(0 == initial_ptr) ?
                         (AO_uintptr_t)AO_initial_heap : initial_ptr)
-                     + ALIGNMENT - 1) & ~(ALIGNMENT - 1);
+                     + ALIGNMENT - 1) & ~(AO_uintptr_t)(ALIGNMENT - 1);
     if (initial_ptr != my_chunk_ptr) {
       /* Align correctly.  If this fails, someone else did it for us.   */
       assert(my_chunk_ptr != 0);
