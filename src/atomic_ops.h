@@ -387,6 +387,8 @@
 #   define AO_CAN_EMUL_CAS
 # elif defined(__riscv)
 #   include "atomic_ops/sysdeps/gcc/riscv.h"
+# elif defined(__sw_64__)
+#   include "atomic_ops/sysdeps/gcc/sw_64.h"
 # elif defined(__tile__)
 #   include "atomic_ops/sysdeps/gcc/tile.h"
 # else /* etc. */
