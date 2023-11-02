@@ -208,7 +208,7 @@ static volatile AO_t ops_performed = 0;
 # endif
   assert(index <= MAX_NTHREADS);
   while (fetch_then_add(&ops_performed, index + 1) + index + 1 < LIMIT) {
-    /* Pop index+1 elements (where index is the thread one), then   */
+    /* Pop index+1 elements (where index is the thread's one), then */
     /* push them back (in the same order of operations).            */
     /* Note that this is done in parallel by many threads.          */
     for (i = 0; i <= index; ++i) {
