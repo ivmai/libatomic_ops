@@ -29,7 +29,7 @@
 
 #undef INIT_BEFORE_FIRST_STORE
 #if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
-     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+     || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
   /* AO_store call to avoid a false warning about use of uninitialized  */
@@ -631,7 +631,7 @@ void test_atomic(void)
 
 #undef INIT_BEFORE_FIRST_STORE
 #if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
-     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+     || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
   /* AO_store call to avoid a false warning about use of uninitialized  */
@@ -1233,7 +1233,7 @@ void test_atomic_release(void)
 
 #undef INIT_BEFORE_FIRST_STORE
 #if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
-     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+     || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
   /* AO_store call to avoid a false warning about use of uninitialized  */
@@ -1835,7 +1835,7 @@ void test_atomic_acquire(void)
 
 #undef INIT_BEFORE_FIRST_STORE
 #if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
-     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+     || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
   /* AO_store call to avoid a false warning about use of uninitialized  */
@@ -2437,7 +2437,7 @@ void test_atomic_read(void)
 
 #undef INIT_BEFORE_FIRST_STORE
 #if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
-     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+     || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
   /* AO_store call to avoid a false warning about use of uninitialized  */
@@ -3039,7 +3039,7 @@ void test_atomic_write(void)
 
 #undef INIT_BEFORE_FIRST_STORE
 #if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
-     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+     || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
   /* AO_store call to avoid a false warning about use of uninitialized  */
@@ -3641,7 +3641,7 @@ void test_atomic_full(void)
 
 #undef INIT_BEFORE_FIRST_STORE
 #if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
-     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+     || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
   /* AO_store call to avoid a false warning about use of uninitialized  */
@@ -4243,7 +4243,7 @@ void test_atomic_release_write(void)
 
 #undef INIT_BEFORE_FIRST_STORE
 #if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
-     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+     || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
   /* AO_store call to avoid a false warning about use of uninitialized  */
@@ -4845,7 +4845,7 @@ void test_atomic_acquire_read(void)
 
 #undef INIT_BEFORE_FIRST_STORE
 #if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
-     || (defined(__e2k__) && defined(__ptr128__) /* protected mode */)) \
+     || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
   /* AO_store call to avoid a false warning about use of uninitialized  */
