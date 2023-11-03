@@ -174,7 +174,7 @@ typedef union AO__stack {
   /* is not necessarily a real pointer.  This converts the      */
   /* AO_uintptr_t value to a real AO_uintptr_t* which is either */
   /* NULL, or points at the link field in the next node.        */
-# define AO_REAL_NEXT_PTR(x) AO_stack_next_ptr(x)
+# define AO_REAL_NEXT_PTR(x) AO_stack_next_ptr_d(&(x))
 
   /* Convert an AO_stack_t to a pointer to the link field in    */
   /* the first element.                                         */
@@ -182,10 +182,10 @@ typedef union AO__stack {
 
 #elif defined(AO_USE_ALMOST_LOCK_FREE)
 # define AO_REAL_NEXT_PTR(x) (AO_uintptr_t *)((x) & ~(AO_uintptr_t)AO_BIT_MASK)
-# define AO_REAL_HEAD_PTR(x) AO_REAL_NEXT_PTR((x).AO_pa.AO_ptr)
+# define AO_REAL_HEAD_PTR(x) AO_REAL_NEXT_PTR((&(x))->AO_pa.AO_ptr)
 #else
-# define AO_REAL_NEXT_PTR(x) (AO_t *)(x)
-# define AO_REAL_HEAD_PTR(x) (AO_t *)((x).AO_vp.AO_val2 /* ptr */)
+# define AO_REAL_NEXT_PTR(x) ((AO_t *)*(&(x)))
+# define AO_REAL_HEAD_PTR(x) (AO_t *)((&(x))->AO_vp.AO_val2 /* ptr */)
 #endif /* AO_REAL_PTR_AS_MACRO && !AO_USE_ALMOST_LOCK_FREE */
 
 AO_API void AO_stack_push_release(AO_stack_t *,
@@ -204,8 +204,10 @@ AO_API AO_uintptr_t *AO_stack_pop_acquire(AO_stack_t *);
 AO_API void AO_stack_init(AO_stack_t *);
 AO_API int AO_stack_is_lock_free(void);
 
+/* These primitives should not be used directly.        */
 AO_API AO_uintptr_t *AO_stack_head_ptr(const AO_stack_t *);
-AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t /* next */);
+AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t); /* deprecated */
+AO_API AO_uintptr_t *AO_stack_next_ptr_d(const AO_uintptr_t * /* pnext */);
 
 #ifdef __cplusplus
   } /* extern "C" */

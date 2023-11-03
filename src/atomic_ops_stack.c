@@ -54,6 +54,12 @@ AO_API AO_uintptr_t *AO_stack_head_ptr(const AO_stack_t *list)
   return AO_REAL_HEAD_PTR(*list);
 }
 
+AO_API AO_uintptr_t *AO_stack_next_ptr_d(const AO_uintptr_t *pnext)
+{
+  return AO_REAL_NEXT_PTR(*pnext);
+}
+
+/* Deprecated.  */
 AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
 {
   return AO_REAL_NEXT_PTR(next);
@@ -319,7 +325,7 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
 
     do {
       next = AO_load(&list->ptr);
-      store_before_cas(element, (AO_uintptr_t)next);
+      store_before_cas(element, next);
     } while (AO_EXPECT_FALSE(!AO_compare_and_swap_release(&list->ptr, next,
                                                           (AO_t)element)));
     /* This uses a narrow CAS here, an old optimization suggested   */
@@ -349,7 +355,7 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
       cversion = AO_load_acquire(&list->version);
       cptr = (AO_t *)AO_load(&list->ptr);
       if (NULL == cptr)
-        return NULL;
+        break;
       next = load_before_cas((/* no volatile */ AO_t *)cptr);
     } while (AO_EXPECT_FALSE(!AO_compare_double_and_swap_double_release(
                                         &list->AO_vp, cversion, (AO_t)cptr,

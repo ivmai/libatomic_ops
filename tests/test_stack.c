@@ -378,6 +378,7 @@ int main(int argc, char **argv)
     printf("Use almost-lock-free implementation\n");
 # if defined(CPPCHECK)
     AO_stack_init(&the_list);
+    (void)AO_stack_next_ptr(0);
 # endif
   run_all_experiments(max_nthreads);
   output_stat(max_nthreads);
