@@ -92,7 +92,7 @@
 
 static char AO_initial_heap[AO_INITIAL_HEAP_SIZE]; /* ~2MB by default */
 
-static volatile AO_uintptr_t initial_heap_ptr = 0;
+static AO_internal_ptr_t volatile initial_heap_ptr = 0;
 
 #if defined(HAVE_MMAP)
 
@@ -229,49 +229,54 @@ AO_malloc_enable_mmap(void)
 
 /* TODO: Duplicates (partially) the definitions in atomic_ops_stack.c.  */
 #ifdef AO_FAT_POINTER
-# define AO_uintptr_compare_and_swap(p, o, n) \
+# define AO_cptr_compare_and_swap(p, o, n) \
                 (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
                                         __ATOMIC_RELAXED, __ATOMIC_RELAXED)
-# define AO_uintptr_compare_and_swap_acquire(p, o, n) \
+# define AO_cptr_compare_and_swap_acquire(p, o, n) \
                 (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
                                         __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE)
-# define AO_uintptr_load(p) __atomic_load_n(p, __ATOMIC_RELAXED)
+# define AO_cptr_load(p) __atomic_load_n(p, __ATOMIC_RELAXED)
 #else
-# define AO_uintptr_compare_and_swap AO_compare_and_swap
-# define AO_uintptr_compare_and_swap_acquire AO_compare_and_swap_acquire
-# define AO_uintptr_load AO_load
+# define AO_cptr_compare_and_swap AO_compare_and_swap
+# define AO_cptr_compare_and_swap_acquire AO_compare_and_swap_acquire
+# define AO_cptr_load AO_load
 #endif
 
 static char *
 get_chunk(void)
 {
-  AO_uintptr_t my_chunk_ptr;
+  AO_internal_ptr_t my_chunk_ptr;
 
   for (;;) {
-    AO_uintptr_t initial_ptr = AO_uintptr_load(&initial_heap_ptr);
+    AO_internal_ptr_t initial_ptr = AO_cptr_load(&initial_heap_ptr);
 
-    my_chunk_ptr = ((AO_EXPECT_FALSE(0 == initial_ptr) ?
-                        (AO_uintptr_t)AO_initial_heap : initial_ptr)
-                     + ALIGNMENT - 1) & ~(AO_uintptr_t)(ALIGNMENT - 1);
+    my_chunk_ptr = AO_EXPECT_FALSE(0 == initial_ptr) ?
+                    (AO_internal_ptr_t)AO_initial_heap : initial_ptr;
+    /* Round up the pointer to ALIGNMENT.       */
+    my_chunk_ptr = (AO_internal_ptr_t)(((AO_uintptr_t)my_chunk_ptr
+                                            + ALIGNMENT-1)
+                                         & ~(AO_uintptr_t)(ALIGNMENT-1));
     if (initial_ptr != my_chunk_ptr) {
       /* Align correctly.  If this fails, someone else did it for us.   */
       assert(my_chunk_ptr != 0);
-      (void)AO_uintptr_compare_and_swap_acquire(&initial_heap_ptr,
-                                                initial_ptr, my_chunk_ptr);
+      (void)AO_cptr_compare_and_swap_acquire(&initial_heap_ptr, initial_ptr,
+                                             my_chunk_ptr);
     }
 
-    if (AO_EXPECT_FALSE(my_chunk_ptr < (AO_uintptr_t)AO_initial_heap)
-        || AO_EXPECT_FALSE(my_chunk_ptr > (AO_uintptr_t)(AO_initial_heap
+    if (AO_EXPECT_FALSE((AO_uintptr_t)my_chunk_ptr
+                            < (AO_uintptr_t)AO_initial_heap)
+        || AO_EXPECT_FALSE((AO_uintptr_t)my_chunk_ptr
+                            > (AO_uintptr_t)(AO_initial_heap
                                     + AO_INITIAL_HEAP_SIZE - CHUNK_SIZE))) {
       /* We failed.  The initial heap is used up.       */
-      my_chunk_ptr = (AO_uintptr_t)get_mmaped(CHUNK_SIZE);
+      my_chunk_ptr = (AO_internal_ptr_t)get_mmaped(CHUNK_SIZE);
 #     if !defined(CPPCHECK)
-        assert((my_chunk_ptr & (ALIGNMENT - 1)) == 0);
+        assert(((AO_uintptr_t)my_chunk_ptr & (ALIGNMENT - 1)) == 0);
 #     endif
       break;
     }
-    if (AO_uintptr_compare_and_swap(&initial_heap_ptr, my_chunk_ptr,
-                                    my_chunk_ptr + CHUNK_SIZE)) {
+    if (AO_cptr_compare_and_swap(&initial_heap_ptr, my_chunk_ptr,
+                                 my_chunk_ptr + CHUNK_SIZE)) {
       break;
     }
   }

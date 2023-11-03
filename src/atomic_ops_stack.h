@@ -131,12 +131,14 @@
 # endif
 #endif /* !AO_STACK_ATTR_ALLIGNED */
 
+  typedef AO_uintptr_t AO_internal_ptr_t;
+
 typedef struct AO__stack_aux {
-  volatile AO_uintptr_t AO_stack_bl[AO_BL_SIZE];
+  AO_internal_ptr_t volatile AO_stack_bl[AO_BL_SIZE];
 } AO_stack_aux;
 
 struct AO__stack_ptr_aux {
-  volatile AO_uintptr_t AO_ptr;
+  AO_internal_ptr_t volatile AO_ptr;
   AO_stack_aux AO_aux;
 };
 
@@ -182,7 +184,8 @@ typedef union AO__stack {
 
 #elif defined(AO_USE_ALMOST_LOCK_FREE)
 # define AO_REAL_NEXT_PTR(x) (AO_uintptr_t *)((x) & ~(AO_uintptr_t)AO_BIT_MASK)
-# define AO_REAL_HEAD_PTR(x) AO_REAL_NEXT_PTR((&(x))->AO_pa.AO_ptr)
+# define AO_REAL_HEAD_PTR(x) \
+            AO_REAL_NEXT_PTR(*(volatile AO_uintptr_t *)&(&(x))->AO_pa.AO_ptr)
 #else
 # define AO_REAL_NEXT_PTR(x) ((AO_t *)*(&(x)))
 # define AO_REAL_HEAD_PTR(x) (AO_t *)((&(x))->AO_vp.AO_val2 /* ptr */)
