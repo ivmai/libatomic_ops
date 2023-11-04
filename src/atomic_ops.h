@@ -162,12 +162,20 @@
 # define AO_FAT_POINTER
 #endif
 
-#ifdef AO_FAT_POINTER
+#ifndef AO_FAT_POINTER
+# define AO_uintptr_t AO_t
+#elif defined(__e2k__)
+  /* For some reason uintptr_t is 64-bit on E2K in the protected mode.  */
+  typedef unsigned __int128 AO_uintptr_t;
+#else
 # include <inttypes.h>
 # define AO_uintptr_t uintptr_t
-#else
-# define AO_uintptr_t AO_t
 #endif
+
+/* A compile-time assertion for AO_uintptr_t size.      */
+struct AO_uintptr_t_size_static_assert {
+  char dummy[sizeof(AO_uintptr_t) == sizeof(void *) ? 1 : -1];
+};
 
 /* The test_and_set primitive returns an AO_TS_VAL_t value.     */
 /* AO_TS_t is the type of an in-memory test-and-set location.   */
