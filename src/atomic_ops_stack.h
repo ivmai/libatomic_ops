@@ -45,7 +45,8 @@
   /* Use the almost-non-blocking implementation regardless of the       */
   /* double-word CAS availability.                                      */
 #elif (!defined(AO_HAVE_compare_double_and_swap_double) \
-       && defined(AO_HAVE_compare_and_swap)) || defined(AO_FAT_POINTER)
+       && defined(AO_HAVE_compare_and_swap)) \
+      || defined(AO_FAT_POINTER) || defined(AO_STACK_USE_CPTR)
 # define AO_USE_ALMOST_LOCK_FREE
 #else
   /* If we have no compare-and-swap operation defined, we assume        */
@@ -131,7 +132,16 @@
 # endif
 #endif /* !AO_STACK_ATTR_ALLIGNED */
 
+#if defined(__e2k__) && defined(AO_FAT_POINTER) || defined(AO_STACK_USE_CPTR)
+  /* A workaround because the platform does not allow conversion from   */
+  /* a numeric type (128-bit one) to a pointer.                         */
+  typedef char *AO_internal_ptr_t;
+# ifndef AO_STACK_USE_CPTR
+#   define AO_STACK_USE_CPTR
+# endif
+#else
   typedef AO_uintptr_t AO_internal_ptr_t;
+#endif
 
 typedef struct AO__stack_aux {
   AO_internal_ptr_t volatile AO_stack_bl[AO_BL_SIZE];
@@ -183,7 +193,14 @@ typedef union AO__stack {
 # define AO_REAL_HEAD_PTR(x) AO_stack_head_ptr(&(x))
 
 #elif defined(AO_USE_ALMOST_LOCK_FREE)
-# define AO_REAL_NEXT_PTR(x) (AO_uintptr_t *)((x) & ~(AO_uintptr_t)AO_BIT_MASK)
+# ifdef AO_STACK_USE_CPTR
+#   define AO_REAL_NEXT_PTR(x) \
+        ((AO_uintptr_t *)(*(AO_internal_ptr_t *)&(x) \
+                - ((AO_uintptr_t)(*(AO_internal_ptr_t *)&(x)) & AO_BIT_MASK)))
+# else
+#   define AO_REAL_NEXT_PTR(x) \
+            (AO_uintptr_t *)((x) & ~(AO_uintptr_t)AO_BIT_MASK)
+# endif
 # define AO_REAL_HEAD_PTR(x) \
             AO_REAL_NEXT_PTR(*(volatile AO_uintptr_t *)&(&(x))->AO_pa.AO_ptr)
 #else

@@ -96,7 +96,7 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
 # endif
 
   /* These AO_cptr_... primitives are not a part of the API.    */
-# ifdef AO_FAT_POINTER
+# if defined(AO_FAT_POINTER) || defined(AO_STACK_USE_CPTR)
 #   define AO_cptr_compare_and_swap_acquire(p, o, n) \
                 (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
                             __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE)

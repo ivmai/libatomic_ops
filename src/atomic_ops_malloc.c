@@ -228,7 +228,7 @@ AO_malloc_enable_mmap(void)
 #endif /* !HAVE_MMAP */
 
 /* TODO: Duplicates (partially) the definitions in atomic_ops_stack.c.  */
-#ifdef AO_FAT_POINTER
+#if defined(AO_FAT_POINTER) || defined(AO_STACK_USE_CPTR)
 # define AO_cptr_compare_and_swap(p, o, n) \
                 (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
                                         __ATOMIC_RELAXED, __ATOMIC_RELAXED)
@@ -253,9 +253,14 @@ get_chunk(void)
     my_chunk_ptr = AO_EXPECT_FALSE(0 == initial_ptr) ?
                     (AO_internal_ptr_t)AO_initial_heap : initial_ptr;
     /* Round up the pointer to ALIGNMENT.       */
-    my_chunk_ptr = (AO_internal_ptr_t)(((AO_uintptr_t)my_chunk_ptr
+#   ifdef AO_STACK_USE_CPTR
+      my_chunk_ptr += ((size_t)ALIGNMENT - (size_t)(AO_uintptr_t)my_chunk_ptr)
+                         & (ALIGNMENT - 1);
+#   else
+      my_chunk_ptr = (AO_internal_ptr_t)(((AO_uintptr_t)my_chunk_ptr
                                             + ALIGNMENT-1)
                                          & ~(AO_uintptr_t)(ALIGNMENT-1));
+#   endif
     if (initial_ptr != my_chunk_ptr) {
       /* Align correctly.  If this fails, someone else did it for us.   */
       assert(my_chunk_ptr != 0);
