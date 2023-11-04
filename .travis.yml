@@ -76,7 +76,7 @@ jobs:
   - arch: arm64
     compiler: gcc
     env:
-    - CFLAGS_EXTRA="-O3 -march=armv8.2-a"
+    - CFLAGS_EXTRA="-O3 -march=armv8.2-a -D AO_STACK_USE_CPTR"
     - CONF_OPTIONS="--enable-shared"
     - TESTS_CUSTOM_RUN=true
   - arch: arm64
