@@ -5,6 +5,7 @@ LIBRARY IN THIS PACKAGE.
 
 [![Travis-CI build status](https://app.travis-ci.com/ivmai/libatomic_ops.svg?branch=master)](https://app.travis-ci.com/github/ivmai/libatomic_ops)
 [![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/ivmai/libatomic_ops?branch=master&svg=true)](https://ci.appveyor.com/project/ivmai/libatomic-ops)
+[![GitHub Actions build status](https://github.com/ivmai/libatomic_ops/actions/workflows/cmake-multi-platform.yml/badge.svg?event=push)](https://github.com/ivmai/libatomic_ops/actions?query=branch%3Amaster)
 [![Codecov.io](https://codecov.io/github/ivmai/libatomic_ops/coverage.svg?branch=master)](https://codecov.io/github/ivmai/libatomic_ops?branch=master)
 [![Coveralls test coverage status](https://coveralls.io/repos/ivmai/libatomic_ops/badge.png?branch=master)](https://coveralls.io/github/ivmai/libatomic_ops)
 [![Coverity Scan build status](https://scan.coverity.com/projects/10809/badge.svg)](https://scan.coverity.com/projects/ivmai-libatomic_ops)
