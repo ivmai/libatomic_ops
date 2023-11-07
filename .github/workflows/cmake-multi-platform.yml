@@ -1,0 +1,70 @@
+# This workflow is for CMake-based build/test running on multiple platforms.
+name: CMake on multiple platforms
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ${{ matrix.target_arch }} ${{ matrix.os }} (${{ matrix.c_compiler }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      # Deliver the feedback for all matrix combinations.
+      fail-fast: false
+
+      matrix:
+        target_arch: [ aarch64, amd64, armv7, ppc64le, riscv64, s390x ]
+        os: [ macos-latest, ubuntu-latest, windows-latest ]
+        c_compiler: [ cl, clang, gcc ]
+        build_type: [ Release ]
+        exclude:
+        - os: macos-latest
+          c_compiler: cl
+        - os: macos-latest
+          c_compiler: gcc
+        - os: macos-latest
+          target_arch: armv7
+        - os: macos-latest
+          target_arch: ppc64le
+        - os: macos-latest
+          target_arch: riscv64
+        - os: macos-latest
+          target_arch: s390x
+        - os: ubuntu-latest
+          c_compiler: cl
+        - os: windows-latest
+          target_arch: ppc64le
+        - os: windows-latest
+          target_arch: riscv64
+        - os: windows-latest
+          target_arch: s390x
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set reusable strings
+      # Turn repeated input strings into step outputs.
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory.
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -Dbuild_tests=ON
+        -S ${{ github.workspace }}
+
+    - name: Build
+      # Build the code with the given configuration.
+      run: >
+        cmake --build ${{ steps.strings.outputs.build-output-dir }}
+        --config ${{ matrix.build_type }}
+
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      # Execute tests defined by the CMake configuration.
+      run: ctest --build-config ${{ matrix.build_type }} --verbose
