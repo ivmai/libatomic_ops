@@ -1,5 +1,5 @@
 # This workflow is for CMake-based build/test running on multiple platforms.
-name: CMake on multiple platforms
+name: cmake build
 
 on: [push, pull_request]
 
