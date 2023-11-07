@@ -70,8 +70,14 @@ static int add1sub1_test(void)
 
 #if defined(AO_HAVE_store_release_write) && defined(AO_HAVE_load_acquire_read)
 
+#if defined(__powerpc64__) && !defined(__clang__)
+  /* no static */ /* Workaround "Saw release store out of order" error. */
+#else
+  static
+#endif
+AO_t counter1 = 0;
+
 /* Invariant: counter1 >= counter2 */
-static AO_t counter1 = 0;
 static AO_t counter2 = 0;
 
 static void * acqrel_thr(void *id)
