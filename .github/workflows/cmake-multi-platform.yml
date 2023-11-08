@@ -24,6 +24,13 @@ jobs:
           c_compiler: gcc
         - os: ubuntu-latest
           c_compiler: cl
+        include:
+        - os: windows-latest
+          c_compiler: clang
+          cmake_generator_opt: '-G "Unix Makefiles"'
+        - os: windows-latest
+          c_compiler: gcc
+          cmake_generator_opt: '-G "Unix Makefiles"'
 
     steps:
     - uses: actions/checkout@v4
@@ -39,6 +46,7 @@ jobs:
       # Configure CMake in a 'build' subdirectory.
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        ${{ matrix.cmake_generator_opt }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -Dbuild_tests=ON
