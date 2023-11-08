@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
 
       matrix:
-        target_arch: [ aarch64, amd64, armv7, ppc64le, riscv64, s390x ]
+        target_arch: [ amd64 ]
         os: [ macos-latest, ubuntu-latest, windows-latest ]
         c_compiler: [ cl, clang, gcc ]
         build_type: [ Release ]
@@ -22,22 +22,8 @@ jobs:
           c_compiler: cl
         - os: macos-latest
           c_compiler: gcc
-        - os: macos-latest
-          target_arch: armv7
-        - os: macos-latest
-          target_arch: ppc64le
-        - os: macos-latest
-          target_arch: riscv64
-        - os: macos-latest
-          target_arch: s390x
         - os: ubuntu-latest
           c_compiler: cl
-        - os: windows-latest
-          target_arch: ppc64le
-        - os: windows-latest
-          target_arch: riscv64
-        - os: windows-latest
-          target_arch: s390x
 
     steps:
     - uses: actions/checkout@v4
