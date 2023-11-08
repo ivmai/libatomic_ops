@@ -50,13 +50,15 @@ jobs:
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -Dbuild_tests=ON
+        -Denable_werror=ON
+        -Werror=dev
         -S ${{ github.workspace }}
 
     - name: Build
       # Build the code with the given configuration.
       run: >
         cmake --build ${{ steps.strings.outputs.build-output-dir }}
-        --config ${{ matrix.build_type }}
+        --config ${{ matrix.build_type }} --verbose
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
