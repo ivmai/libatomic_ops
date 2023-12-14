@@ -78,15 +78,9 @@ jobs:
     env:
     - CFLAGS_EXTRA="-O3 -D AO_AARCH64_ASM_LOAD_STORE_CAS -D AO_PREFER_BUILTIN_ATOMICS"
     - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-11
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: arm64
-    compiler: gcc-11
-    dist: bionic
+  - arch: arm64
+    compiler: gcc
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-O3 -march=armv8.2-a"
     - CONF_OPTIONS="--enable-shared"
@@ -145,15 +139,9 @@ jobs:
     - CFLAGS_EXTRA="-O3"
     - CONF_OPTIONS="--enable-assertions --enable-shared"
     - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - gcc-11
-        sources:
-        - ubuntu-toolchain-r-test
-    arch: ppc64le
-    compiler: gcc-11
-    dist: bionic
+  - arch: ppc64le
+    compiler: gcc
+    dist: jammy
     env:
     - CFLAGS_EXTRA="-O3 -D NO_TIMES"
     - TESTS_CUSTOM_RUN=true
