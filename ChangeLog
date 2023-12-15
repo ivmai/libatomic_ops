@@ -1,4 +1,22 @@
 
+== [7.9.0] (development) ==
+
+* Change AO_REAL_NEXT_PTR() to accept argument as reference only
+* Change static initializer of initial_heap_ptr and spin_dummy to zero
+* Define AO_N_BITS to a bigger value if pointer type is larger than size_t
+* Define AO_uintptr_t and use it in AO malloc and stack (refactoring)
+* Define functions and variables of tests as static (refactoring)
+* Hide AO_initial_heap internal symbol
+* Minor text improvement in README_details.txt and README_malloc.txt
+* Provide AO_INITIAL_HEAP_CHUNKS macro to control AO_initial_heap size
+* Remove AO_stack_push/pop based on compare_and_swap_double
+* Support E2K protected mode
+* Support double-wide CAS on 64-bit RISC-V with Zacas extension
+* Support double-wide primitives on E2K (in 32- and 64-bit modes)
+* Support targets with double-wide pointers (CHERI)
+* Use AO_internal_ptr_t to operate link pointer inside AO stack and malloc
+
+
 == [7.8.2] 2023-12-15 ==
 
 * Eliminate 'atomic_thread_fence is unsupported with tsan' gcc-11 warning
