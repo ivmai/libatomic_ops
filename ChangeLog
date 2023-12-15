@@ -1,5 +1,5 @@
 
-== [7.4.20] (not released yet) ==
+== [7.4.20] 2023-12-15 ==
 
 * Eliminate 'comparing signed/unsigned values' lcc warning in add_chunk_as
 * Fix get_chunk for case of mmap area is located before AO_initial_heap
