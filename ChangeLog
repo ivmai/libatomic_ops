@@ -52,6 +52,17 @@
 * Use builtin_expect in AO_stack_push_explicit_aux_release
 
 
+== [7.6.16] (not released yet) ==
+
+* Eliminate 'atomic_thread_fence is unsupported with tsan' gcc-11 warning
+* Eliminate 'comparing signed/unsigned values' lcc warning in add_chunk_as
+* Fix 'undefined reference to AO_pt_lock' if configure is using clang-16
+* Fix 'undefined reference to __atomic_load/store/cas_16' Mingw64-gcc error
+* Fix get_chunk for case of mmap area is located before AO_initial_heap
+* Fix typo in AO_HAVE_compare_and_swap_double name in atomic_ops_stack.h
+* Fix typos in comments of atomic_ops_malloc.c and atomic_ops_stack.c/h
+
+
 == [7.6.14] 2022-08-25 ==
 
 * Add note to README that AO malloc code has same license as AO stack
