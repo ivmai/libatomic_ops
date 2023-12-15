@@ -1,3 +1,28 @@
+2023-10-24  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_stack.h [!AO_HAVE_compare_double_and_swap_double]:
+	Check AO_HAVE_compare_and_swap_double macro instead of mistyped
+	AO_HAVE_compare_double_and_swap one.
+
+2023-10-20  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_malloc.c (get_chunk): If my_chunk_ptr is less than
+	(or equal to) AO_initial_heap, then also call get_mmaped.
+
+2023-10-19  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_malloc.c: Fix mistyped name ("ALIGNMENT") in comment.
+
+2023-10-16  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_stack.c: Fix typo ("AO_USE_ALMOST_LOCK_FREE") in
+	comments (add missing AO_ prefix).
+
+2023-10-16  Ivan Maidanski <ivmai@mail.ru>
+
+	* src/atomic_ops_stack.h: Fix a typo ("AO_N_BITS") in comment (remove
+	leading underscore).
+
 [7.2k]
 
 2022-08-24  Ivan Maidanski <ivmai@mail.ru>
