@@ -3,7 +3,7 @@
 IN NEW CODE, PLEASE USE C11 OR C++14 STANDARD ATOMICS INSTEAD OF THE CORE
 LIBRARY IN THIS PACKAGE.
 
-This is version 7.8.0 of libatomic_ops.
+This is version 7.8.2 of libatomic_ops.
 
 License: [MIT](LICENSE) for core library / [GPL-2.0](COPYING) for gpl
 extension.
