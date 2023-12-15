@@ -1,3 +1,9 @@
+[7.2l]
+
+2023-12-15  Ivan Maidanski <ivmai@mail.ru>
+
+	* README: Bump version to 7.2l (rev. L).
+
 2023-10-24  Ivan Maidanski <ivmai@mail.ru>
 
 	* src/atomic_ops_stack.h [!AO_HAVE_compare_double_and_swap_double]:

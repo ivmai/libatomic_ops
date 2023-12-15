@@ -23,7 +23,7 @@ jobs:
     - WORKAROUND_ACLOCAL_MISSING=true
   - env:
     - MAKEFILE_TARGET=distcheck
-    - AO_REAL_VERSION=7.2k
+    - AO_REAL_VERSION=7.2l
     - AUTOMAKE_VER=1.14.1
 
 before_install:
