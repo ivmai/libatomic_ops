@@ -52,7 +52,7 @@
 * Use builtin_expect in AO_stack_push_explicit_aux_release
 
 
-== [7.6.16] (not released yet) ==
+== [7.6.16] 2023-12-15 ==
 
 * Eliminate 'atomic_thread_fence is unsupported with tsan' gcc-11 warning
 * Eliminate 'comparing signed/unsigned values' lcc warning in add_chunk_as
