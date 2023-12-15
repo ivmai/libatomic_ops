@@ -35,4 +35,4 @@
 /* The version here should match that in configure.ac and README.       */
 #define AO_VERSION_MAJOR 7
 #define AO_VERSION_MINOR 6
-#define AO_VERSION_MICRO 14 /* 7.6.14 */
+#define AO_VERSION_MICRO 16 /* 7.6.16 */
