@@ -192,6 +192,14 @@ Also, includes 7.4.8 changes
 Also, includes 7.4.6 changes
 
 
+== [7.4.20] (not released yet) ==
+
+* Eliminate 'comparing signed/unsigned values' lcc warning in add_chunk_as
+* Fix get_chunk for case of mmap area is located before AO_initial_heap
+* Fix typo in AO_HAVE_compare_and_swap_double name in atomic_ops_stack.h
+* Fix typos in comments of atomic_ops_malloc.c and atomic_ops_stack.c/h
+
+
 == [7.4.18] 2022-08-25 ==
 
 * Avoid AO_stack_t to cross CPU cache line boundary
@@ -427,6 +435,13 @@ Also, includes 7.2e changes
 * Turn off AO primitives inlining if AO_NO_INLINE defined
 * Use __builtin_expect in CAS failure loop condition checks (GCC only)
 Also, includes 7.2 changes
+
+
+== [7.2l] 2023-12-15 ==
+
+* Fix get_chunk for case of mmap area is located before AO_initial_heap
+* Fix typo in AO_HAVE_compare_and_swap_double name in atomic_ops_stack.h
+* Fix typos in comments of atomic_ops_malloc.c and atomic_ops_stack.c/h
 
 
 == [7.2k] 2022-08-24 ==
