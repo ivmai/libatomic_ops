@@ -7,7 +7,7 @@ set -e
 # Install libtool.m4 and ltmain.sh in the build tree.  This command is needed
 # if autoreconf and libtoolize are available from the different directories.
 # Note: libtoolize might be missing on some platforms.
-if which libtoolize > /dev/null 2>&1; then
+if (type libtoolize) > /dev/null 2>&1; then
   libtoolize -i -c
 else
   echo "libtoolize is not found, ignoring!"
