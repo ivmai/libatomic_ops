@@ -550,7 +550,7 @@ jobs:
   - dist: focal
     env:
     - MAKEFILE_TARGET=distcheck
-    - AUTOCONF_VER=2.71
+    - AUTOCONF_VER=2.72
     - AUTOMAKE_VER=1.16.5
     - LIBTOOL_VER=2.4.7
     - M4_VER=1.4.19
