@@ -247,7 +247,7 @@ jobs:
     - CFLAGS_EXTRA="-O3 -march=native"
   - compiler: gcc
     env:
-    - CFLAGS_EXTRA="-O3 -march=native -funsigned-char"
+    - CFLAGS_EXTRA="-O3 -march=native -fanalyzer -funsigned-char"
     - CONF_OPTIONS="--enable-assertions --disable-static"
   - addons:
       apt:
