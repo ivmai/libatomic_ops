@@ -229,12 +229,22 @@ AO_malloc_enable_mmap(void)
 
 /* TODO: Duplicates (partially) the definitions in atomic_ops_stack.c.  */
 #if defined(AO_FAT_POINTER) || defined(AO_STACK_USE_CPTR)
-# define AO_cptr_compare_and_swap(p, o, n) \
-                (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
-                                        __ATOMIC_RELAXED, __ATOMIC_RELAXED)
-# define AO_cptr_compare_and_swap_acquire(p, o, n) \
-                (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
-                                        __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE)
+  AO_INLINE int
+  AO_cptr_compare_and_swap(AO_internal_ptr_t volatile *addr,
+                        AO_internal_ptr_t old_val, AO_internal_ptr_t new_val)
+  {
+    return (int)__atomic_compare_exchange_n(addr, &old_val, new_val, 0,
+                        __ATOMIC_RELAXED, __ATOMIC_RELAXED);
+  }
+
+  AO_INLINE int
+  AO_cptr_compare_and_swap_acquire(AO_internal_ptr_t volatile *addr,
+                        AO_internal_ptr_t old_val, AO_internal_ptr_t new_val)
+  {
+    return (int)__atomic_compare_exchange_n(addr, &old_val, new_val, 0,
+                        __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE);
+  }
+
 # define AO_cptr_load(p) __atomic_load_n(p, __ATOMIC_RELAXED)
 #else
 # define AO_cptr_compare_and_swap AO_compare_and_swap

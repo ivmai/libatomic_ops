@@ -97,12 +97,22 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
 
   /* These AO_cptr_... primitives are not a part of the API.    */
 # if defined(AO_FAT_POINTER) || defined(AO_STACK_USE_CPTR)
-#   define AO_cptr_compare_and_swap_acquire(p, o, n) \
-                (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
-                            __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE)
-#   define AO_cptr_compare_and_swap_release(p, o, n) \
-                (int)__atomic_compare_exchange_n(p, &(o), n, 0, \
-                            __ATOMIC_RELEASE, __ATOMIC_RELAXED /* on fail */)
+    AO_INLINE int
+    AO_cptr_compare_and_swap_acquire(AO_internal_ptr_t volatile *addr,
+                        AO_internal_ptr_t old_val, AO_internal_ptr_t new_val)
+    {
+      return (int)__atomic_compare_exchange_n(addr, &old_val, new_val, 0,
+                        __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE);
+    }
+
+    AO_INLINE int
+    AO_cptr_compare_and_swap_release(AO_internal_ptr_t volatile *addr,
+                        AO_internal_ptr_t old_val, AO_internal_ptr_t new_val)
+    {
+      return (int)__atomic_compare_exchange_n(addr, &old_val, new_val, 0,
+                        __ATOMIC_RELEASE, __ATOMIC_RELAXED /* on fail */);
+    }
+
 #   define AO_cptr_load(p) __atomic_load_n(p, __ATOMIC_RELAXED)
 #   define AO_cptr_load_acquire(p) __atomic_load_n(p, __ATOMIC_ACQUIRE)
 #   define AO_cptr_store_release(p, v) \
@@ -225,10 +235,8 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
     /* structure a are currently in progress.                           */
     for (i = 0; ; )
       {
-        AO_internal_ptr_t /* no const */ zero = 0;
-
         if (PRECHECK(a->AO_stack_bl[i])
-            AO_cptr_compare_and_swap_acquire(a->AO_stack_bl+i, zero, first))
+            AO_cptr_compare_and_swap_acquire(a->AO_stack_bl+i, 0, first))
           break;
         if (++i >= AO_BL_SIZE)
           {
