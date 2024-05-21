@@ -110,12 +110,12 @@
   /* A workaround for almost-lock-free push/pop test failures           */
   /* on aarch64, at least.                                              */
 # if AO_BL_SIZE == 1
-    /* AO_vp is double-word aligned, so no extra align of AO_pa is needed.  */
+    /* AO_vp is double-pointer aligned, no extra align of AO_pa is needed.  */
 #   define AO_STACK_ATTR_ALLIGNED /* empty */
 # elif AO_GNUC_PREREQ(3, 1)
 #   define AO_STACK_LOG_BL_SZP1 (AO_BL_SIZE > 7 ? 4 : AO_BL_SIZE > 3 ? 3 : 2)
 #   define AO_STACK_ATTR_ALLIGNED \
-        __attribute__((__aligned__(sizeof(AO_t) << AO_STACK_LOG_BL_SZP1)))
+        __attribute__((__aligned__(sizeof(void*) << AO_STACK_LOG_BL_SZP1)))
 # elif defined(_MSC_VER) && _MSC_VER >= 1400 /* Visual Studio 2005+ */
     /* MS compiler accepts only a literal number in align, not expression.  */
     /* AO_STACK_ALLIGN_N is 1 << (AO_N_BITS + AO_STACK_LOG_BL_SZP1).        */
