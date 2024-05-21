@@ -23,14 +23,15 @@ http://portal.acm.org/citation.cfm?doid=1011767.1011774
 interface was cleaned up in the interim.  But it should perform
 very similarly.)
 
-We use a fully lock-free implementation when the underlying hardware
-makes that less expensive, i.e. when we have a double-wide compare-and-swap
-operation available.  (The fully lock-free implementation uses an AO_t-
-sized version count, and assumes it does not wrap during the time any
-given operation is active.  This seems reasonably safe on 32-bit hardware,
-and very safe on 64-bit hardware.)  If a fully lock-free implementation,
-AO_stack_is_lock_free() returns 1 (also, the macro AO_STACK_IS_LOCK_FREE is
-defined in this case but its usage by client is deprecated).
+We use a fully lock-free implementation when the underlying hardware makes
+that less expensive, i.e. when we have a double-wide (i.e. twice the size of
+a pointer) compare-and-swap operation available.  (The fully lock-free
+implementation uses a pointer-sized version count, and assumes it does not
+wrap during the time any given operation is active.  This seems reasonably
+safe on 32-bit hardware, and very safe on 64-bit hardware.)  In a fully
+lock-free implementation AO_stack_is_lock_free() returns 1 (also, the macro
+AO_STACK_IS_LOCK_FREE is defined in this case but its usage by client is
+deprecated).
 
 The implementation is interesting only because it allows reuse of
 existing nodes.  This is necessary, for example, to implement a memory

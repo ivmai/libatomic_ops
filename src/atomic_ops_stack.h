@@ -43,16 +43,18 @@
 
 #ifdef AO_USE_ALMOST_LOCK_FREE
   /* Use the almost-non-blocking implementation regardless of the       */
-  /* double-word CAS availability.                                      */
-#elif (!defined(AO_HAVE_compare_double_and_swap_double) \
-       && defined(AO_HAVE_compare_and_swap)) \
-      || defined(AO_FAT_POINTER) || defined(AO_STACK_USE_CPTR)
-# define AO_USE_ALMOST_LOCK_FREE
-#else
-  /* If we have no compare-and-swap operation defined, we assume        */
-  /* that we will actually be using CAS emulation.  If we do that,      */
-  /* it's cheaper to use the version-based implementation.              */
+  /* compare-and-swap availability.                                     */
+#elif defined(AO_HAVE_compare_double_and_swap_double) \
+      && !defined(AO_FAT_POINTER) && !defined(AO_STACK_USE_CPTR)
 # define AO_STACK_IS_LOCK_FREE
+#elif !defined(AO_HAVE_compare_and_swap)
+  /* If we have no compare-and-swap operation at all, we assume that we */
+  /* will actually be emulating it.                                     */
+# define AO_STACK_IS_LOCK_FREE
+#else
+# define AO_USE_ALMOST_LOCK_FREE
+  /* If we do have a real compare-and-swap operation, it is cheaper to  */
+  /* use the version-based implementation.                              */
 #endif
 
 /*
