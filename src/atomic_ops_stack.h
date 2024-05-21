@@ -197,8 +197,13 @@ typedef union AO__stack {
 #elif defined(AO_USE_ALMOST_LOCK_FREE)
 # ifdef AO_STACK_USE_CPTR
 #   define AO_REAL_NEXT_PTR(x) \
-        ((AO_uintptr_t *)(*(AO_internal_ptr_t *)&(x) \
-                - ((AO_uintptr_t)(*(AO_internal_ptr_t *)&(x)) & AO_BIT_MASK)))
+        ((AO_uintptr_t *)AO_real_next_ptr_i(*(const AO_internal_ptr_t *)&(x)))
+    /* Implemented as an inline function because the argument is used twice. */
+    AO_INLINE AO_internal_ptr_t
+    AO_real_next_ptr_i(AO_internal_ptr_t next)
+    {
+      return next - ((unsigned)(AO_uintptr_t)next & AO_BIT_MASK);
+    }
 # else
 #   define AO_REAL_NEXT_PTR(x) \
             (AO_uintptr_t *)((x) & ~(AO_uintptr_t)AO_BIT_MASK)
