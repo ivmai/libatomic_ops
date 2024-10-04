@@ -26,6 +26,11 @@
  * all zeroes, and the "set" value contains only one lowest bit set.
  * This can be used if test_and_set is synthesized from compare_and_swap.
  */
+
+#if defined(AO_TS_VAL_t) && !defined(CPPCHECK)
+# error test_and_set_t_is_ao_t.h or test_and_set_t_is_char.h already included.
+#endif
+
 typedef enum {AO_TS_clear = 0, AO_TS_set = 1} AO_TS_val;
 #define AO_TS_VAL_t AO_TS_val
 #define AO_TS_CLEAR AO_TS_clear
