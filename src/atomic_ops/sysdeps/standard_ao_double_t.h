@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-/* For 64-bit systems, we expect the double type to hold two int64's.   */
+/* We expect AO_double_t to hold two AO_t's.    */
 
 #if (((defined(__x86_64__) && defined(AO_GCC_ATOMIC_TEST_AND_SET)) \
       || defined(__aarch64__)) && !defined(__ILP32__)) \
