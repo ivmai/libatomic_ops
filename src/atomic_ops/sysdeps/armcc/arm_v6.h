@@ -1,13 +1,8 @@
 /*
- * Copyright (c) 2007 by NEC LE-IT:               All rights reserved.
- * A transcription of ARMv6 atomic operations for the ARM Realview Toolchain.
- * This code works with armcc from RVDS 3.1
- * This is based on work in gcc/arm.h by
- *   Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
- *   Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
- *   Copyright (c) 1999-2003 by Hewlett-Packard Company. All rights reserved.
- *
- *
+ * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
+ * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
+ * Copyright (c) 1999-2003 by Hewlett-Packard Company. All rights reserved.
+ * Copyright (c) 2007 by NEC LE-IT.  All rights reserved.
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
@@ -17,7 +12,12 @@
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
+ */
+
+/*
+ * A transcription of ARMv6 atomic operations for the ARM Realview Toolchain.
+ * This code works with armcc from RVDS 3.1.
+ * This file is based on gcc/arm.h.
  */
 
 #include "../test_and_set_t_is_ao_t.h" /* Probably suboptimal */
