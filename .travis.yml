@@ -55,32 +55,39 @@ jobs:
     - CONF_OPTIONS="--disable-gpl"
   - arch: arm64
     compiler: clang
+    dist: focal
   - arch: arm64
     compiler: gcc
+    dist: focal
   - arch: arm64
     compiler: clang
+    dist: focal
     env:
     - CFLAGS_EXTRA="-O3 -D AO_STACK_USE_CPTR -D N_EXPERIMENTS=10"
     - CONF_OPTIONS="--enable-assertions"
   - arch: arm64
     compiler: gcc
+    dist: focal
     env:
     - CFLAGS_EXTRA="-O3"
     - CONF_OPTIONS="--enable-assertions --disable-static"
     - TESTS_CUSTOM_RUN=true
   - arch: arm64
     compiler: clang
+    dist: focal
     env:
     - CFLAGS_EXTRA="-O3 -D AO_AARCH64_ASM_LOAD_STORE_CAS -D AO_PREFER_BUILTIN_ATOMICS"
     - TESTS_CUSTOM_RUN=true
   - arch: arm64
     compiler: gcc
+    dist: focal
     env:
     - CFLAGS_EXTRA="-O3 -march=armv8.2-a"
     - CONF_OPTIONS="--enable-shared"
     - TESTS_CUSTOM_RUN=true
   - arch: arm64
     compiler: clang
+    dist: focal
     env:
     - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
@@ -96,6 +103,7 @@ jobs:
     - TESTS_CUSTOM_RUN=true
   - arch: arm64
     compiler: gcc
+    dist: focal
     env:
     - CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release"
   - arch: ppc64le
