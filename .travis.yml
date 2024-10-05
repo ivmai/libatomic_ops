@@ -305,6 +305,7 @@ jobs:
     - CFLAGS_EXTRA="-fsanitize=address -march=native -fno-common -fno-omit-frame-pointer"
     - CONF_OPTIONS="--enable-assertions"
   - compiler: gcc
+    dist: focal
     env:
     - CFLAGS_EXTRA="-fsanitize=address -fno-omit-frame-pointer -D AO_USE_ALMOST_LOCK_FREE -D USE_STANDARD_MALLOC"
     - CONF_OPTIONS="--enable-assertions"
