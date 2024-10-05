@@ -3,7 +3,6 @@
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -12,8 +11,11 @@
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_char_ARITHM
 
@@ -57,7 +59,6 @@ AO_char_fetch_and_add(volatile unsigned/**/char *addr, unsigned/**/char incr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -66,8 +67,11 @@ AO_char_fetch_and_add(volatile unsigned/**/char *addr, unsigned/**/char incr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_short_ARITHM
 
@@ -111,7 +115,6 @@ AO_short_fetch_and_add(volatile unsigned/**/short *addr, unsigned/**/short incr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -120,8 +123,11 @@ AO_short_fetch_and_add(volatile unsigned/**/short *addr, unsigned/**/short incr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_int_ARITHM
 
@@ -165,7 +171,6 @@ AO_int_fetch_and_add(volatile unsigned *addr, unsigned incr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -174,8 +179,11 @@ AO_int_fetch_and_add(volatile unsigned *addr, unsigned incr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_ARITHM
 
@@ -219,7 +227,6 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -228,8 +235,11 @@ AO_fetch_and_add(volatile AO_t *addr, AO_t incr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_char_ARITHM
 
@@ -273,7 +283,6 @@ AO_char_fetch_and_add_acquire(volatile unsigned/**/char *addr, unsigned/**/char 
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -282,8 +291,11 @@ AO_char_fetch_and_add_acquire(volatile unsigned/**/char *addr, unsigned/**/char 
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_short_ARITHM
 
@@ -327,7 +339,6 @@ AO_short_fetch_and_add_acquire(volatile unsigned/**/short *addr, unsigned/**/sho
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -336,8 +347,11 @@ AO_short_fetch_and_add_acquire(volatile unsigned/**/short *addr, unsigned/**/sho
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_int_ARITHM
 
@@ -381,7 +395,6 @@ AO_int_fetch_and_add_acquire(volatile unsigned *addr, unsigned incr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -390,8 +403,11 @@ AO_int_fetch_and_add_acquire(volatile unsigned *addr, unsigned incr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_ARITHM
 
@@ -435,7 +451,6 @@ AO_fetch_and_add_acquire(volatile AO_t *addr, AO_t incr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -444,8 +459,11 @@ AO_fetch_and_add_acquire(volatile AO_t *addr, AO_t incr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_char_ARITHM
 
@@ -489,7 +507,6 @@ AO_char_fetch_and_add_release(volatile unsigned/**/char *addr, unsigned/**/char 
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -498,8 +515,11 @@ AO_char_fetch_and_add_release(volatile unsigned/**/char *addr, unsigned/**/char 
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_short_ARITHM
 
@@ -543,7 +563,6 @@ AO_short_fetch_and_add_release(volatile unsigned/**/short *addr, unsigned/**/sho
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -552,8 +571,11 @@ AO_short_fetch_and_add_release(volatile unsigned/**/short *addr, unsigned/**/sho
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_int_ARITHM
 
@@ -597,7 +619,6 @@ AO_int_fetch_and_add_release(volatile unsigned *addr, unsigned incr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -606,8 +627,11 @@ AO_int_fetch_and_add_release(volatile unsigned *addr, unsigned incr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_ARITHM
 
@@ -651,7 +675,6 @@ AO_fetch_and_add_release(volatile AO_t *addr, AO_t incr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -660,8 +683,11 @@ AO_fetch_and_add_release(volatile AO_t *addr, AO_t incr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_char_ARITHM
 
@@ -705,7 +731,6 @@ AO_char_fetch_and_add_full(volatile unsigned/**/char *addr, unsigned/**/char inc
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -714,8 +739,11 @@ AO_char_fetch_and_add_full(volatile unsigned/**/char *addr, unsigned/**/char inc
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_short_ARITHM
 
@@ -759,7 +787,6 @@ AO_short_fetch_and_add_full(volatile unsigned/**/short *addr, unsigned/**/short 
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -768,8 +795,11 @@ AO_short_fetch_and_add_full(volatile unsigned/**/short *addr, unsigned/**/short 
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_int_ARITHM
 
@@ -813,7 +843,6 @@ AO_int_fetch_and_add_full(volatile unsigned *addr, unsigned incr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -822,8 +851,11 @@ AO_int_fetch_and_add_full(volatile unsigned *addr, unsigned incr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifndef AO_NO_ARITHM
 

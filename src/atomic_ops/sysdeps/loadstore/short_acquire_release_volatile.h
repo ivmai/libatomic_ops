@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* This file adds definitions appropriate for environments in which     */
 /* volatile load of a given type has acquire semantics, and volatile    */
 /* store of a given type has release semantics.  This is arguably       */

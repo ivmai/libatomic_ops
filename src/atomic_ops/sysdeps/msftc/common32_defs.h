@@ -21,6 +21,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* This file contains AO primitives based on VC++ built-in intrinsic    */
 /* functions commonly available across 32- and 64-bit architectures.    */
 

@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* char_compare_and_swap (based on fetch_compare_and_swap) */
 #if defined(AO_HAVE_char_fetch_compare_and_swap_full) \
     && !defined(AO_HAVE_char_compare_and_swap_full)
@@ -871,6 +875,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 /* short_compare_and_swap (based on fetch_compare_and_swap) */
 #if defined(AO_HAVE_short_fetch_compare_and_swap_full) \
@@ -1724,6 +1732,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* int_compare_and_swap (based on fetch_compare_and_swap) */
 #if defined(AO_HAVE_int_fetch_compare_and_swap_full) \
     && !defined(AO_HAVE_int_compare_and_swap_full)
@@ -2575,6 +2587,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 /* compare_and_swap (based on fetch_compare_and_swap) */
 #if defined(AO_HAVE_fetch_compare_and_swap_full) \

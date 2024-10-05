@@ -21,6 +21,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_HAVE_double_t)
+# error This file should not be included directly (mostly).
+#endif
+
 /* We expect AO_double_t to hold two AO_t's.    */
 
 #if (((defined(__x86_64__) && defined(AO_GCC_ATOMIC_TEST_AND_SET)) \

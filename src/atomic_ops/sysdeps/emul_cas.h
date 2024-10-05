@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /*
  * Ensure, if at all possible, that AO_compare_and_swap_full() is
  * available.  The emulation should be brute-force signal-safe, even
@@ -34,10 +38,6 @@
  * variants are defined, and that AO_test_and_set_XXX is not used to
  * operate on compare_and_swap locations.
  */
-
-#ifndef AO_ATOMIC_OPS_H
-# error This file should not be included directly.
-#endif
 
 #ifndef AO_HAVE_double_t
 # include "standard_ao_double_t.h"

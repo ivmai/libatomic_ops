@@ -9,6 +9,10 @@
  * modified is included with the above copyright notice.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #if AO_CLANG_PREREQ(3, 9) && !defined(AO_DISABLE_GCC_ATOMICS)
   /* Probably, it could be enabled for earlier clang versions as well.  */
 

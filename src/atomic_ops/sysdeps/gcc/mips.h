@@ -11,6 +11,10 @@
  * modified is included with the above copyright notice.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /*
  * FIXME:  This should probably make finer distinctions.  SGI MIPS is
  * much more strongly ordered, and in fact closer to sequentially

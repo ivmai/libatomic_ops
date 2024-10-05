@@ -16,6 +16,10 @@
  * Some of the machine specific code was borrowed from our GC distribution.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #if (AO_GNUC_PREREQ(4, 8) || AO_CLANG_PREREQ(3, 4)) \
     && !defined(__INTEL_COMPILER) /* TODO: test and enable icc */ \
     && !defined(AO_DISABLE_GCC_ATOMICS)

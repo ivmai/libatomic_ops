@@ -528,4 +528,5 @@ struct AO_uintptr_t_size_static_assert {
 #define AO_T AO_t
 #define AO_TS_VAL AO_TS_VAL_t
 
+#define AO_ATOMIC_OPS_INCLUDED
 #endif /* !AO_ATOMIC_OPS_H */

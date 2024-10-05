@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #ifdef AO_HAVE_XSIZE_load
   /* XSIZE_load_read is defined in generalize-small.    */
 # define AO_XSIZE_load_acquire(addr) AO_XSIZE_load_read(addr)

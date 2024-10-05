@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* Describes architectures on which AO_t, unsigned char, unsigned       */
 /* short, and unsigned int loads are atomic for all normally legal      */
 /* alignments.                                                          */

@@ -22,6 +22,10 @@
  * Derived from the corresponding header file for gcc.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #include "../loadstore/atomic_load.h"
 #include "../loadstore/atomic_store.h"
 

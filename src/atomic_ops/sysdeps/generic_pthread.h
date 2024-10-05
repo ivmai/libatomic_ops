@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* The following is useful primarily for debugging and documentation.   */
 /* We define various atomic operations by acquiring a global pthread    */
 /* lock.  The resulting implementation will perform poorly, but should  */

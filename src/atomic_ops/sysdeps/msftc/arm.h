@@ -21,6 +21,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* Some ARM slide set, if it has been read correctly, claims that Loads */
 /* followed by either a Load or a Store are ordered, but nothing else.  */
 /* It is assumed that Windows interrupt handlers clear the LL/SC flag.  */

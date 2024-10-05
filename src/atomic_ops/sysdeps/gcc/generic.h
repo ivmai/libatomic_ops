@@ -12,8 +12,11 @@
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 /* The following implementation assumes GCC 4.7 or later.               */
 /* For the details, see GNU Manual, chapter 6.52 (Built-in functions    */

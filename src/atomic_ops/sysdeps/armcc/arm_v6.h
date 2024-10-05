@@ -14,6 +14,10 @@
  * modified is included with the above copyright notice.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /*
  * A transcription of ARMv6 atomic operations for the ARM Realview Toolchain.
  * This code works with armcc from RVDS 3.1.

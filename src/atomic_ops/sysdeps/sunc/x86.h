@@ -16,6 +16,10 @@
  * Some of the machine specific code was borrowed from our GC distribution.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* The following really assume we have a 486 or better.                 */
 
 #include "../all_aligned_atomic_load_store.h"

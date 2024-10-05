@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* Memory model documented at http://www-106.ibm.com/developerworks/    */
 /* eserver/articles/archguide.html and (clearer)                        */
 /* http://www-106.ibm.com/developerworks/eserver/articles/powerpc.html. */

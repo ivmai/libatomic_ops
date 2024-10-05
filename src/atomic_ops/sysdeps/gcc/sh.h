@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2009 by Takashi YOSHII. All rights reserved.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -11,6 +10,10 @@
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #include "../all_atomic_load_store.h"
 #include "../ordered.h"

@@ -21,6 +21,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* Definitions for architectures on which AO_double_t loads and stores  */
 /* are atomic (either for suitably aligned data only or for any legal   */
 /* alignment).                                                          */

@@ -9,6 +9,10 @@
  * modified is included with the above copyright notice.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #if (AO_GNUC_PREREQ(4, 8) || AO_CLANG_PREREQ(3, 4)) \
     && !defined(AO_DISABLE_GCC_ATOMICS)
 

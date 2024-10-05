@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#ifndef AO_ATOMIC_OPS_H
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
 # error This file should not be included directly.
 #endif
 

@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #ifdef AO_HAVE_char_load
   /* char_load_read is defined in generalize-small.    */
 # define AO_char_load_acquire(addr) AO_char_load_read(addr)
@@ -46,6 +50,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifdef AO_HAVE_short_load
   /* short_load_read is defined in generalize-small.    */
@@ -74,6 +82,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #ifdef AO_HAVE_int_load
   /* int_load_read is defined in generalize-small.    */
 # define AO_int_load_acquire(addr) AO_int_load_read(addr)
@@ -101,6 +113,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #ifdef AO_HAVE_load
   /* load_read is defined in generalize-small.    */
 # define AO_load_acquire(addr) AO_load_read(addr)
@@ -127,6 +143,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifdef AO_HAVE_double_load
   /* double_load_read is defined in generalize-small.    */

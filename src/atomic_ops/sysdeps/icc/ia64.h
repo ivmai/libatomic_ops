@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /*
  * This file specifies Itanimum primitives for use with the Intel (ecc)
  * compiler.  We use intrinsics instead of the inline assembly code in the

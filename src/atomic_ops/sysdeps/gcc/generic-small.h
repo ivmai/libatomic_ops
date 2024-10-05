@@ -3,7 +3,6 @@
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -12,8 +11,11 @@
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #if !defined(AO_GCC_HAVE_char_SYNC_CAS) || !defined(AO_PREFER_GENERALIZED)
 
@@ -161,7 +163,6 @@ AO_char_load_acquire(const volatile unsigned/**/char *addr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -170,8 +171,11 @@ AO_char_load_acquire(const volatile unsigned/**/char *addr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #if !defined(AO_GCC_HAVE_short_SYNC_CAS) || !defined(AO_PREFER_GENERALIZED)
 
@@ -319,7 +323,6 @@ AO_short_load_acquire(const volatile unsigned/**/short *addr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -328,8 +331,11 @@ AO_short_load_acquire(const volatile unsigned/**/short *addr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #if !defined(AO_GCC_HAVE_int_SYNC_CAS) || !defined(AO_PREFER_GENERALIZED)
 
@@ -477,7 +483,6 @@ AO_int_load_acquire(const volatile unsigned *addr)
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 2003-2011 Hewlett-Packard Development Company, L.P.
  *
- *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
  * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
  *
@@ -486,8 +491,11 @@ AO_int_load_acquire(const volatile unsigned *addr)
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #if !defined(AO_GCC_HAVE_SYNC_CAS) || !defined(AO_PREFER_GENERALIZED)
 

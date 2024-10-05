@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #ifdef AO_HAVE_char_store
 # define AO_char_store_release(addr, val) \
                                 (AO_nop_write(), AO_char_store(addr, val))
@@ -46,6 +50,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifdef AO_HAVE_short_store
 # define AO_short_store_release(addr, val) \
@@ -74,6 +82,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #ifdef AO_HAVE_int_store
 # define AO_int_store_release(addr, val) \
                                 (AO_nop_write(), AO_int_store(addr, val))
@@ -101,6 +113,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #ifdef AO_HAVE_store
 # define AO_store_release(addr, val) \
                                 (AO_nop_write(), AO_store(addr, val))
@@ -127,6 +143,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 #ifdef AO_HAVE_double_store
 # define AO_double_store_release(addr, val) \

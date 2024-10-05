@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #ifdef AO_HAVE_XSIZE_store
 # define AO_XSIZE_store_release(addr, val) \
                                 (AO_nop_write(), AO_XSIZE_store(addr, val))

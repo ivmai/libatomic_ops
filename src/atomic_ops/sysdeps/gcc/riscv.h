@@ -9,6 +9,10 @@
  * modified is included with the above copyright notice.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #if defined(__clang__) || defined(AO_PREFER_BUILTIN_ATOMICS)
   /* All __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n macros are still missing.   */
   /* The operations are lock-free even for the types smaller than word. */

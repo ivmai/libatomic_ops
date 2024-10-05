@@ -21,6 +21,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 #include "../all_aligned_atomic_load_store.h"
 
 /* Real X86 implementations appear                                      */

@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* char_fetch_compare_and_swap */
 #if defined(AO_HAVE_char_fetch_compare_and_swap) \
     && defined(AO_HAVE_nop_full) \
@@ -547,6 +551,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 /* short_fetch_compare_and_swap */
 #if defined(AO_HAVE_short_fetch_compare_and_swap) \
@@ -1076,6 +1084,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* int_fetch_compare_and_swap */
 #if defined(AO_HAVE_int_fetch_compare_and_swap) \
     && defined(AO_HAVE_nop_full) \
@@ -1604,6 +1616,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* fetch_compare_and_swap */
 #if defined(AO_HAVE_fetch_compare_and_swap) \
     && defined(AO_HAVE_nop_full) \
@@ -2131,6 +2147,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 /* double_fetch_compare_and_swap */
 #if defined(AO_HAVE_double_fetch_compare_and_swap) \

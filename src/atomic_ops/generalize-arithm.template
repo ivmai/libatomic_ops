@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* XSIZE_compare_and_swap (based on fetch_compare_and_swap) */
 #if defined(AO_HAVE_XSIZE_fetch_compare_and_swap_full) \
     && !defined(AO_HAVE_XSIZE_compare_and_swap_full)

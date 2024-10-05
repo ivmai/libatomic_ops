@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /*
  * Generalize atomic operations for atomic_ops.h.
  * Should not be included directly.
@@ -42,10 +46,6 @@
  * a barrier.  On platforms for which this is unsafe, the platform-specific
  * file must define AO_NO_DD_ORDERING.
  */
-
-#ifndef AO_ATOMIC_OPS_H
-# error This file should not be included directly.
-#endif
 
 /* Generate test_and_set_full, if necessary and possible.       */
 #if !defined(AO_HAVE_test_and_set) && !defined(AO_HAVE_test_and_set_release) \

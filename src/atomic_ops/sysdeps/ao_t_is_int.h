@@ -20,6 +20,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* Inclusion of this file signifies that AO_t is in fact int.           */
 /* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
@@ -111,6 +115,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 /* Inclusion of this file signifies that AO_t is in fact int.           */
 /* Hence any AO_... operation can also serve as AO_int_... operation.   */
@@ -204,6 +212,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* Inclusion of this file signifies that AO_t is in fact int.           */
 /* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
@@ -295,6 +307,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 /* Inclusion of this file signifies that AO_t is in fact int.           */
 /* Hence any AO_... operation can also serve as AO_int_... operation.   */
@@ -388,6 +404,10 @@
  * SOFTWARE.
  */
 
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
+
 /* Inclusion of this file signifies that AO_t is in fact int.           */
 /* Hence any AO_... operation can also serve as AO_int_... operation.   */
 
@@ -479,6 +499,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#if !defined(AO_ATOMIC_OPS_H) || defined(AO_ATOMIC_OPS_INCLUDED)
+# error This file should not be included directly.
+#endif
 
 /* Inclusion of this file signifies that AO_t is in fact int.           */
 /* Hence any AO_... operation can also serve as AO_int_... operation.   */
