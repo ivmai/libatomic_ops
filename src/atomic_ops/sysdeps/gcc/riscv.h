@@ -13,23 +13,24 @@
 # error This file should not be included directly.
 #endif
 
-#if defined(__clang__) || defined(AO_PREFER_BUILTIN_ATOMICS)
+#if defined(__clang__) || AO_GNUC_PREREQ(14, 0) \
+    || defined(AO_PREFER_BUILTIN_ATOMICS)
   /* The operations are lock-free even for the types smaller than word. */
 # if !(AO_GNUC_PREREQ(13, 0) || AO_CLANG_PREREQ(16, 0))
     /* __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n macros were missing.  */
 #   define AO_GCC_FORCE_HAVE_CAS
 # endif
 #else
-
-  /* As of gcc-7.5, CAS and arithmetic atomic operations for char and   */
-  /* short are supported by the compiler but require -latomic flag.     */
+  /* For older versions of gcc (e.g. gcc-7.5), CAS and arithmetic       */
+  /* atomic operations for char and short are supported by the compiler */
+  /* but require -latomic flag.                                         */
 # if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1)
 #   define AO_NO_char_ARITHM
 # endif
 # if !defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2)
 #   define AO_NO_short_ARITHM
 # endif
-#endif /* !__clang__ */
+#endif
 
 #if defined(__riscv_zacas) && !defined(AO_NO_DOUBLE_CAS) \
     && __SIZEOF_SIZE_T__ == 8
