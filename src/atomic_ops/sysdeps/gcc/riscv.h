@@ -29,8 +29,9 @@
 # endif
 #endif /* !__clang__ */
 
-#if defined(__riscv_zacas) && __riscv_xlen == 64 && !defined(AO_NO_DOUBLE_CAS)
-  /* TODO: Support also rv32, i.e. use amocas.d.        */
+#if defined(__riscv_zacas) && !defined(AO_NO_DOUBLE_CAS) \
+    && __SIZEOF_SIZE_T__ == 8
+  /* TODO: Support also rv32 and rv64ilp32 (i.e. use amocas.d). */
 
 # define AO_SKIPATOMIC_double_load
 # define AO_SKIPATOMIC_double_load_acquire
