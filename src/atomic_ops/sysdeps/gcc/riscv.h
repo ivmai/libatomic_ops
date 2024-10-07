@@ -14,9 +14,11 @@
 #endif
 
 #if defined(__clang__) || defined(AO_PREFER_BUILTIN_ATOMICS)
-  /* All __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n macros are still missing.   */
   /* The operations are lock-free even for the types smaller than word. */
-# define AO_GCC_FORCE_HAVE_CAS
+# if !(AO_GNUC_PREREQ(13, 0) || AO_CLANG_PREREQ(16, 0))
+    /* __GCC_HAVE_SYNC_COMPARE_AND_SWAP_n macros were missing.  */
+#   define AO_GCC_FORCE_HAVE_CAS
+# endif
 #else
 
   /* As of gcc-7.5, CAS and arithmetic atomic operations for char and   */
