@@ -38,9 +38,8 @@
  * store-conditional primitives, though I'm not quite sure how
  * this would work on a hypothetical multiprocessor.  -HB
  *
- * For details, see
- * http://developer.axis.com/doc/hardware/etrax100lx/prog_man/
- *      1_architectural_description.pdf
+ * For details, see Architectural description in
+ * https://www.axis.com/dam/public/25/67/ab/etrax-100lx-programmer%E2%80%99s-manual-en-US-33419.pdf
  *
  * TODO: Presumably many other primitives (notably CAS, including the double-
  * width versions) could be implemented in this manner, if someone got

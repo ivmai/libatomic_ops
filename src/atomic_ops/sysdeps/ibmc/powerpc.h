@@ -24,11 +24,9 @@
 # error This file should not be included directly.
 #endif
 
-/* Memory model documented at http://www-106.ibm.com/developerworks/    */
-/* eserver/articles/archguide.html and (clearer)                        */
-/* http://www-106.ibm.com/developerworks/eserver/articles/powerpc.html. */
-/* There appears to be no implicit ordering between any kind of         */
-/* independent memory references.                                       */
+/* Memory model is documented in "PowerPC Architecture Book" (see the   */
+/* link in gcc/powerpc.h).  There appears to be no implicit ordering    */
+/* between any kind of independent memory references.                   */
 /* Architecture enforces some ordering based on control dependence.     */
 /* I don't know if that could help.                                     */
 /* Data-dependent loads are always ordered.                             */

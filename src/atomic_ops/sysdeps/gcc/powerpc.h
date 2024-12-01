@@ -17,9 +17,10 @@
 # error This file should not be included directly.
 #endif
 
-/* Memory model documented at http://www-106.ibm.com/developerworks/    */
-/* eserver/articles/archguide.html and (clearer)                        */
-/* http://www-106.ibm.com/developerworks/eserver/articles/powerpc.html. */
+/* Memory model is documented in "PowerPC Architecture Book"            */
+/* (https://web.archive.org/web/20180310135820/https://www.nxp.com/docs/en/user-guide/BOOK_EUM.pdf) */
+/* and, clearer, in "Book I. PowerPC User Instruction Set Architecture" */
+/* (https://download.boulder.ibm.com/ibmdl/pub/software/dw/library/es-ppcbook1.zip). */
 /* There appears to be no implicit ordering between any kind of         */
 /* independent memory references.                                       */
 

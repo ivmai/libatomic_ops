@@ -26,9 +26,10 @@
 
 #else /* AO_DISABLE_GCC_ATOMICS */
 
-/* The relevant documentation appears to be at                  */
-/* http://publibz.boulder.ibm.com/epubs/pdf/dz9zr003.pdf        */
-/* around page 5-96.  Apparently:                               */
+/* The relevant documentation appears to be in                  */
+/* "z/Architecture Principles of Operation" book                */
+/* (https://publibfp.dhe.ibm.com/epubs/pdf/a227832c.pdf).       */
+/* Apparently:                                                  */
 /* - Memory references in general are atomic only for a single  */
 /*   byte.  But it appears that the most common load/store      */
 /*   instructions also guarantee atomicity for aligned          */
