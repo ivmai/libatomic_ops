@@ -33,6 +33,8 @@ rarely needed in practice):
 * AO_ASM_X64_AVAILABLE - inline assembly available (only x86_64)
 * AO_NO_ASM_XADD - do not define asm-based AO_char_fetch_and_add_full and
   AO_short_fetch_and_add_full primitives (x86 only)
+* AO_NO_ASM_XCHG - use Win32 _InterlockedExchange primitive to implement
+  test-and-set and AO_nop_full operations (x86 only)
 * AO_ASSUME_VISTA - assume Windows Server 2003, Vista or later target (only
   x86, implied if Visual Studio 2015 or older)
 * AO_CMPXCHG16B_AVAILABLE - assume target is not old AMD Opteron chip (only

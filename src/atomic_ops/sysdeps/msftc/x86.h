@@ -47,34 +47,35 @@
 #define AO_T_IS_INT
 
 #ifndef AO_USE_INTERLOCKED_INTRINSICS
-  /* _Interlocked primitives (Inc, Dec, Xchg, Add) are always available */
+  /* Interlocked primitives (Inc, Dec, Xchg, Add) are always available. */
 # define AO_USE_INTERLOCKED_INTRINSICS
 #endif
 #include "common32_defs.h"
 
-/* As far as we can tell, the lfence and sfence instructions are not    */
-/* currently needed or useful for cached memory accesses.               */
-
-/* Unfortunately mfence doesn't exist everywhere.               */
-/* IsProcessorFeaturePresent(PF_COMPARE_EXCHANGE128) is         */
-/* probably a conservative test for it?                         */
-
-#if defined(AO_USE_PENTIUM4_INSTRS)
-
-AO_INLINE void
-AO_nop_full(void)
-{
-  __asm { mfence }
-}
-#define AO_HAVE_nop_full
-
+#ifdef AO_NO_ASM_XCHG
+  /* Use the default implementation based on test_and_set_full. */
 #else
 
-/* We could use the cpuid instruction.  But that seems to be slower     */
-/* than the default implementation based on test_and_set_full.  Thus    */
-/* we omit that bit of misinformation here.                             */
+  /* As far as we can tell, the lfence and sfence instructions  */
+  /* are not currently needed or useful for cached memory       */
+  /* accesses.  Unfortunately mfence doesn't exist everywhere;  */
+  /* IsProcessorFeaturePresent(PF_COMPARE_EXCHANGE128) is       */
+  /* probably a conservative test for it.                       */
 
-#endif
+# ifdef AO_USE_PENTIUM4_INSTRS
+    AO_INLINE void
+    AO_nop_full(void)
+    {
+      __asm { mfence }
+    }
+#   define AO_HAVE_nop_full
+# else
+    /* We could use the cpuid instruction.  But that seems to   */
+    /* be slower than the default implementation based on       */
+    /* test_and_set_full.  Thus we omit that bit of             */
+    /* misinformation here.                                     */
+# endif
+#endif /* !AO_NO_ASM_XCHG */
 
 #if !defined(AO_NO_ASM_XADD) && !defined(AO_HAVE_char_fetch_and_add_full)
   AO_INLINE unsigned char
@@ -105,18 +106,27 @@ AO_nop_full(void)
 #endif /* !AO_NO_ASM_XADD */
 
 #ifndef AO_HAVE_test_and_set_full
-# include "../test_and_set_t_is_char.h"
+# ifdef AO_NO_ASM_XCHG
+#   include "../test_and_set_t_is_ao_t.h"
+# else
+#   include "../test_and_set_t_is_char.h"
+# endif
 
   AO_INLINE AO_TS_VAL_t
   AO_test_and_set_full(volatile AO_TS_t *addr)
   {
-    __asm
-    {
+#   ifdef AO_NO_ASM_XCHG
+      return _InterlockedExchange((long AO_INTERLOCKED_VOLATILE *)addr,
+                                  AO_TS_SET);
+#   else
+      __asm
+      {
         mov     eax,0xff                ; /* AO_TS_SET */
         mov     ebx,addr                ;
         xchg    byte ptr [ebx],al       ;
-    }
-    /* Ignore possible "missing return value" warning here. */
+      }
+      /* Ignore possible "missing return value" warning here. */
+#   endif
   }
 # define AO_HAVE_test_and_set_full
 #endif

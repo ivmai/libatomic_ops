@@ -50,6 +50,9 @@
 # define _InterlockedDecrement       InterlockedDecrement
 # define _InterlockedExchangeAdd     InterlockedExchangeAdd
 # define _InterlockedCompareExchange InterlockedCompareExchange
+# ifdef AO_NO_ASM_XCHG
+#   define _InterlockedExchange InterlockedExchange
+# endif
 
 # define AO_INTERLOCKED_VOLATILE /**/
 
@@ -61,18 +64,25 @@
 #   endif
 
 # else /* elif _MSC_VER < 1400 */
-#  ifdef __cplusplus
-     extern "C" {
-#  endif
-   LONG __cdecl _InterlockedIncrement(LONG volatile *);
-   LONG __cdecl _InterlockedDecrement(LONG volatile *);
-   LONG __cdecl _InterlockedExchangeAdd(LONG volatile *, LONG);
-   LONG __cdecl _InterlockedCompareExchange(LONG volatile *,
+#   ifdef __cplusplus
+      extern "C" {
+#   endif
+    LONG __cdecl _InterlockedIncrement(LONG volatile *);
+    LONG __cdecl _InterlockedDecrement(LONG volatile *);
+    LONG __cdecl _InterlockedExchangeAdd(LONG volatile *, LONG);
+    LONG __cdecl _InterlockedCompareExchange(LONG volatile *,
                                         LONG /* Exchange */, LONG /* Comp */);
-#  ifdef __cplusplus
-     } /* extern "C" */
-#  endif
+#   ifdef AO_NO_ASM_XCHG
+      LONG __cdecl _InterlockedExchange(LONG volatile *, LONG);
+#   endif
+#   ifdef __cplusplus
+      } /* extern "C" */
+#   endif
 # endif /* _MSC_VER < 1400 */
+
+# ifdef AO_NO_ASM_XCHG
+#   pragma intrinsic (_InterlockedExchange)
+# endif
 
 # if !defined(AO_PREFER_GENERALIZED) || !defined(AO_ASSUME_WINDOWS98)
 #   pragma intrinsic (_InterlockedIncrement)

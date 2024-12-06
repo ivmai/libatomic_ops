@@ -307,6 +307,9 @@ struct AO_uintptr_t_size_static_assert {
 #   define AO_compiler_barrier() _ReadWriteBarrier()
         /* We assume this does not generate a fence instruction.        */
         /* The documentation is a bit unclear.                          */
+# elif defined(AO_NO_ASM_XCHG)
+    static volatile int AO_barrier_dummy;
+#   define AO_compiler_barrier() (void)(AO_barrier_dummy++)
 # else
 #   define AO_compiler_barrier() __asm { }
         /* The preceding implementation may be preferable here too.     */
