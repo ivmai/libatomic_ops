@@ -353,7 +353,7 @@ jobs:
         packages:
         - clang-14
     compiler: clang-14
-    dist: jammy
+    dist: focal
     env:
     - CFLAGS_EXTRA="-fsanitize=memory,undefined -march=native -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
@@ -365,7 +365,7 @@ jobs:
         packages:
         - clang-14
     compiler: clang-14
-    dist: jammy
+    dist: focal
     env:
     - CFLAGS_EXTRA="-fsanitize=thread -march=native -fno-omit-frame-pointer"
     - CONF_OPTIONS="--enable-assertions"
