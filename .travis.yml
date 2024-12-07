@@ -312,20 +312,12 @@ jobs:
     env:
     - CFLAGS_EXTRA="-mx32 -march=native"
     - CONF_OPTIONS="--disable-atomic-intrinsics --disable-docs"
-  - addons:
-      apt:
-        packages:
-        - clang-14
-    compiler: clang-14
+  - compiler: clang
     dist: focal
     env:
     - CFLAGS_EXTRA="-fsanitize=address -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
     - TESTS_CUSTOM_RUN=true
-  - addons:
-      apt:
-        packages:
-        - clang-14
-    compiler: clang-14
+  - compiler: clang
     dist: focal
     env:
     - CFLAGS_EXTRA="-fsanitize=address -march=native -fno-common -fno-omit-frame-pointer"
@@ -348,11 +340,7 @@ jobs:
   - os: osx
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -fno-omit-frame-pointer"
-  - addons:
-      apt:
-        packages:
-        - clang-14
-    compiler: clang-14
+  - compiler: clang
     dist: focal
     env:
     - CFLAGS_EXTRA="-fsanitize=memory,undefined -march=native -fno-omit-frame-pointer"
@@ -360,11 +348,7 @@ jobs:
   - compiler: clang
     env:
     - CFLAGS_EXTRA="-fsanitize=thread -D AO_USE_ALMOST_LOCK_FREE -fno-omit-frame-pointer"
-  - addons:
-      apt:
-        packages:
-        - clang-14
-    compiler: clang-14
+  - compiler: clang
     dist: focal
     env:
     - CFLAGS_EXTRA="-fsanitize=thread -march=native -fno-omit-frame-pointer"
