@@ -279,9 +279,8 @@ jobs:
   - addons:
       apt:
         packages:
-        - gcc-9
-        - gcc-9-multilib
-    compiler: gcc-9
+        - gcc-multilib
+    compiler: gcc
     dist: focal
     env:
     - CFLAGS_EXTRA="-mx32 -march=native -D _FORTIFY_SOURCE=2"
@@ -289,9 +288,8 @@ jobs:
   - addons:
       apt:
         packages:
-        - gcc-9
-        - gcc-9-multilib
-    compiler: gcc-9
+        - gcc-multilib
+    compiler: gcc
     dist: focal
     env:
     - CFLAGS_EXTRA="-mx32 -march=native"
