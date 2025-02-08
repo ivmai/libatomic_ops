@@ -368,7 +368,7 @@ struct AO_uintptr_t_size_static_assert {
 #   define AO_GENERALIZE_TWICE
 # elif defined(__s390__)
 #   include "atomic_ops/sysdeps/gcc/s390.h"
-# elif defined(__sparc__)
+# elif defined(__sparc)
 #   include "atomic_ops/sysdeps/gcc/sparc.h"
 #   define AO_CAN_EMUL_CAS
 # elif defined(__m68k__)
