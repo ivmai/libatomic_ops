@@ -41,7 +41,13 @@ AO_test_and_set_full(volatile AO_TS_t *addr);
 /* Implemented in separate .S file, for now.    */
 #define AO_HAVE_test_and_set_full
 
-/* TODO: Like the gcc version, extend this for V8 and V9.   */
+#ifndef AO_NO_SPARC_V9
+
+  extern AO_t
+  AO_fetch_compare_and_swap_full(volatile AO_t *addr, AO_t old, AO_t new_val);
+# define AO_HAVE_fetch_compare_and_swap_full
+
+#endif /* !AO_NO_SPARC_V9 */
 
 #ifdef __cplusplus
   } /* extern "C" */
