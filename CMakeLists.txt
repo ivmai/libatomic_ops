@@ -146,6 +146,7 @@ set(SRC src/atomic_ops.c)
 
 if (CMAKE_C_COMPILER_ID STREQUAL "SunPro")
   # SunCC compiler on SunOS (Solaris).
+  enable_language(ASM)
   set(SRC ${SRC} src/atomic_ops_sysdeps.S)
 endif()
 
