@@ -100,7 +100,6 @@ else
       AC_MSG_RESULT(-Kpic)
       PICFLAG=-Kpic
       CFLAGS="-O $CFLAGS"
-      need_asm=true
       ;;
     *-*-linux*)
       AC_MSG_RESULT(-fPIC)
@@ -109,6 +108,11 @@ else
       ;;
     *)
       AC_MSG_RESULT([none])
+      ;;
+  esac
+  case "$host" in
+    sparc*)
+      need_asm=true
       ;;
   esac
 fi
