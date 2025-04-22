@@ -13,17 +13,29 @@ jobs:
       fail-fast: false
 
       matrix:
-        os: [ macos-latest, ubuntu-latest, windows-latest ]
+        os: [ macos-13, macos-latest, ubuntu-24.04-arm, ubuntu-latest, windows-11-arm, windows-latest ]
         c_compiler: [ cl, clang, gcc ]
         build_type: [ Release ]
         exclude:
+        - os: macos-13
+          c_compiler: cl
+        - os: macos-13
+          c_compiler: gcc
         - os: macos-latest
           c_compiler: cl
         - os: macos-latest
           c_compiler: gcc
+        - os: ubuntu-24.04-arm
+          c_compiler: cl
         - os: ubuntu-latest
           c_compiler: cl
         include:
+        - os: windows-11-arm
+          c_compiler: clang
+          cmake_generator_opt: '-G "Unix Makefiles"'
+        - os: windows-11-arm
+          c_compiler: gcc
+          cmake_generator_opt: '-G "Unix Makefiles"'
         - os: windows-latest
           c_compiler: clang
           cmake_generator_opt: '-G "Unix Makefiles"'
