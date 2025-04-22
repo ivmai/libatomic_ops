@@ -5,7 +5,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: ${{ matrix.target_arch }} ${{ matrix.os }} (${{ matrix.c_compiler }})
+    name: ${{ matrix.os }} (${{ matrix.c_compiler }})
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -13,7 +13,6 @@ jobs:
       fail-fast: false
 
       matrix:
-        target_arch: [ amd64 ]
         os: [ macos-latest, ubuntu-latest, windows-latest ]
         c_compiler: [ cl, clang, gcc ]
         build_type: [ Release ]
