@@ -25,11 +25,11 @@ extension.
 ## Download
 
 You might find a more recent/stable version on the
-[Download](https://github.com/ivmai/libatomic_ops/wiki/Download) page, or
+[Download](https://github.com/bdwgc/libatomic_ops/wiki/Download) page, or
 [BDWGC site](http://www.hboehm.info/gc/).
 
 Also, the latest bug fixes and new features are available in the
-[development repository](https://github.com/ivmai/libatomic_ops).
+[development repository](https://github.com/bdwgc/libatomic_ops).
 
 
 ## Overview
@@ -103,11 +103,11 @@ inline assembly code.  Use cc.
 ## Feedback, Contribution, Questions and Notifications
 
 Please address bug reports and new feature ideas to
-[GitHub issues](https://github.com/ivmai/libatomic_ops/issues).  Before the
+[GitHub issues](https://github.com/bdwgc/libatomic_ops/issues).  Before the
 submission please check that it has not been done yet by someone else.
 
 If you want to contribute, submit
-a [pull request](https://github.com/ivmai/libatomic_ops/pulls) to GitHub.
+a [pull request](https://github.com/bdwgc/libatomic_ops/pulls) to GitHub.
 
 If you need help, use
 [Stack Overflow](https://stackoverflow.com/questions/tagged/atomic-ops).
@@ -120,11 +120,11 @@ or browsed at [Narkive](http://bdwgc.opendylan.narkive.com) (please search
 for _atomic_ keyword).
 
 To get new release announcements, subscribe to
-[RSS feed](https://github.com/ivmai/libatomic_ops/releases.atom).
+[RSS feed](https://github.com/bdwgc/libatomic_ops/releases.atom).
 (To receive the notifications by email, a 3rd-party free service like
 [IFTTT RSS Feed](https://ifttt.com/feed) can be setup.)
 To be notified on all issues, please
-[watch](https://github.com/ivmai/libatomic_ops/watchers) the project on
+[watch](https://github.com/bdwgc/libatomic_ops/watchers) the project on
 GitHub.
 
 
