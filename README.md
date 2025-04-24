@@ -6,7 +6,6 @@ LIBRARY IN THIS PACKAGE.
 [![Travis-CI build status](https://app.travis-ci.com/bdwgc/libatomic_ops.svg?branch=master)](https://app.travis-ci.com/github/bdwgc/libatomic_ops)
 [![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/bdwgc/libatomic_ops?branch=master&svg=true)](https://ci.appveyor.com/project/ivmai/libatomic-ops)
 [![GitHub Actions build status](https://github.com/bdwgc/libatomic_ops/actions/workflows/cmake-build.yml/badge.svg?event=push)](https://github.com/bdwgc/libatomic_ops/actions?query=branch%3Amaster)
-[![Codecov.io](https://codecov.io/github/ivmai/libatomic_ops/coverage.svg?branch=master)](https://codecov.io/github/ivmai/libatomic_ops?branch=master)
 [![Coveralls test coverage status](https://coveralls.io/repos/bdwgc/libatomic_ops/badge.png?branch=master)](https://coveralls.io/github/bdwgc/libatomic_ops)
 [![Coverity Scan build status](https://scan.coverity.com/projects/10809/badge.svg)](https://scan.coverity.com/projects/ivmai-libatomic_ops)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbdwgc%2Flibatomic_ops.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbdwgc%2Flibatomic_ops/refs/branch/master?ref=badge_shield)
