@@ -4,7 +4,7 @@ IN NEW CODE, PLEASE USE C11 OR C++14 STANDARD ATOMICS INSTEAD OF THE CORE
 LIBRARY IN THIS PACKAGE.
 
 [![Travis-CI build status](https://app.travis-ci.com/bdwgc/libatomic_ops.svg?branch=master)](https://app.travis-ci.com/github/bdwgc/libatomic_ops)
-[![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/bdwgc/libatomic_ops?branch=master&svg=true)](https://ci.appveyor.com/project/ivmai/libatomic-ops)
+[![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/bdwgc/libatomic_ops?branch=master&svg=true)](https://ci.appveyor.com/project/bdwgc/libatomic-ops)
 [![GitHub Actions build status](https://github.com/bdwgc/libatomic_ops/actions/workflows/cmake-build.yml/badge.svg?event=push)](https://github.com/bdwgc/libatomic_ops/actions?query=branch%3Amaster)
 [![Coveralls test coverage status](https://coveralls.io/repos/bdwgc/libatomic_ops/badge.png?branch=master)](https://coveralls.io/github/bdwgc/libatomic_ops)
 [![Coverity Scan build status](https://scan.coverity.com/projects/10809/badge.svg)](https://scan.coverity.com/projects/ivmai-libatomic_ops)
