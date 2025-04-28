@@ -6,7 +6,6 @@ jobs:
   include:
   - compiler: clang
   - compiler: gcc
-  - os: osx
   - env:
     - COVERITY_SCAN_BRANCH=1
     addons:
@@ -190,10 +189,6 @@ jobs:
     env:
     - CFLAGS_EXTRA="-O3 -march=native"
     - CONF_OPTIONS="--enable-assertions"
-  - os: osx
-    env:
-    - CFLAGS_EXTRA="-O3 -march=native -D AO_USE_ALMOST_LOCK_FREE"
-    - CONF_OPTIONS="--enable-assertions"
   - compiler: clang
     env:
     - CFLAGS_EXTRA="-march=native -std=c11 -D AO_INITIAL_HEAP_CHUNKS=2"
@@ -242,10 +237,6 @@ jobs:
     env:
     - CFLAGS_EXTRA="-m32 -march=native"
     - CONF_OPTIONS="--disable-atomic-intrinsics"
-  - os: osx
-    env:
-    - CFLAGS_EXTRA="-m32 -march=native -D _FORTIFY_SOURCE=2"
-    - CONF_OPTIONS="--enable-assertions"
   - compiler: gcc
     env:
     - CFLAGS_EXTRA="-D AO_GENERALIZE_ASM_BOOL_CAS -D AO_USE_NANOSLEEP -D AO_USE_NO_SIGNALS"
@@ -319,9 +310,6 @@ jobs:
     env:
     - CFLAGS_EXTRA="-fsanitize=address -m32 -march=native -fno-omit-frame-pointer"
     - LDFLAGS="-fuse-ld=gold"
-  - os: osx
-    env:
-    - CFLAGS_EXTRA="-fsanitize=address -m32 -fno-omit-frame-pointer"
   - compiler: clang
     env:
     - CFLAGS_EXTRA="-fsanitize=memory,undefined -march=native -fno-omit-frame-pointer"
