@@ -5,8 +5,9 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: ${{ matrix.os }} (${{ matrix.c_compiler }})
+    name: ${{ matrix.os }} ${{ matrix.c_compiler }} ${{ matrix.build_type }} dll:${{ matrix.shared_libs }} assert:${{ matrix.assertions }} intrinsic:${{ matrix.atomic_intrinsics }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 3
 
     strategy:
       # Deliver the feedback for all matrix combinations.
@@ -15,20 +16,30 @@ jobs:
       matrix:
         os: [ macos-13, macos-latest, ubuntu-24.04-arm, ubuntu-latest, windows-11-arm, windows-latest ]
         c_compiler: [ cl, clang, gcc ]
-        build_type: [ Release ]
+        build_type: [ Release, Debug, MinSizeRel ]
+        shared_libs: [ off, on ]
+        assertions: [ off, on ]
+        atomic_intrinsics: [ on, off ]
         exclude:
-        - os: macos-13
-          c_compiler: cl
-        - os: macos-13
-          c_compiler: gcc
-        - os: macos-latest
-          c_compiler: cl
-        - os: macos-latest
-          c_compiler: gcc
-        - os: ubuntu-24.04-arm
-          c_compiler: cl
-        - os: ubuntu-latest
-          c_compiler: cl
+        - c_compiler: gcc
+          os: macos-13
+        - c_compiler: gcc
+          os: macos-latest
+        - c_compiler: cl
+          os: macos-13
+        - c_compiler: cl
+          os: macos-latest
+        - c_compiler: cl
+          os: ubuntu-24.04-arm
+        - c_compiler: cl
+          os: ubuntu-latest
+        # The following ones are to reduce amount of jobs.
+        - assertions: off
+          build_type: Debug
+        - assertions: on
+          build_type: Release
+        - build_type: MinSizeRel
+          shared_libs: off
         include:
         - os: windows-11-arm
           c_compiler: clang
@@ -42,6 +53,20 @@ jobs:
         - os: windows-latest
           c_compiler: gcc
           cmake_generator_opt: '-G "Unix Makefiles"'
+        # The following one are just to test some rare options.
+        - os: macos-latest
+          shared_libs: off
+          disable_docs_opt: '-Denable_docs=OFF'
+        - os: ubuntu-latest
+          assertions: on
+          c_compiler: gcc
+          shared_libs: on
+          no_install_headers: '-Dinstall_headers=OFF'
+        - os: windows-latest
+          assertions: off
+          c_compiler: clang
+          shared_libs: off
+          disable_gpl_opt: '-Denable_gpl=OFF'
 
     steps:
     - uses: actions/checkout@v4
@@ -56,12 +81,19 @@ jobs:
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory.
       run: >
+        cmake --version &&
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         ${{ matrix.cmake_generator_opt }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -Dbuild_tests=ON
         -Denable_werror=ON
+        -DBUILD_SHARED_LIBS=${{ matrix.shared_libs }}
+        -Denable_assertions=${{ matrix.assertions }}
+        -Denable_atomic_intrinsics=${{ matrix.atomic_intrinsics }}
+        ${{ matrix.disable_docs_opt }}
+        ${{ matrix.disable_gpl_opt }}
+        ${{ matrix.no_install_headers }}
         -Werror=dev
         -S ${{ github.workspace }}
 
