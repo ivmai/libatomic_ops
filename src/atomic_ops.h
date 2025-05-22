@@ -241,9 +241,10 @@ struct AO_uintptr_t_size_static_assert {
 # ifndef AO_MEMORY_SANITIZER
 #   define AO_ATTR_NO_SANITIZE_MEMORY /* empty */
 # elif AO_CLANG_PREREQ(3, 8)
-#   define AO_ATTR_NO_SANITIZE_MEMORY __attribute__((no_sanitize("memory")))
+#   define AO_ATTR_NO_SANITIZE_MEMORY \
+            __attribute__((__no_sanitize__("memory")))
 # else
-#   define AO_ATTR_NO_SANITIZE_MEMORY __attribute__((no_sanitize_memory))
+#   define AO_ATTR_NO_SANITIZE_MEMORY __attribute__((__no_sanitize_memory__))
 # endif
 #endif /* !AO_ATTR_NO_SANITIZE_MEMORY */
 
@@ -251,9 +252,10 @@ struct AO_uintptr_t_size_static_assert {
 # ifndef AO_THREAD_SANITIZER
 #   define AO_ATTR_NO_SANITIZE_THREAD /* empty */
 # elif AO_CLANG_PREREQ(3, 8)
-#   define AO_ATTR_NO_SANITIZE_THREAD __attribute__((no_sanitize("thread")))
+#   define AO_ATTR_NO_SANITIZE_THREAD \
+            __attribute__((__no_sanitize__("thread")))
 # else
-#   define AO_ATTR_NO_SANITIZE_THREAD __attribute__((no_sanitize_thread))
+#   define AO_ATTR_NO_SANITIZE_THREAD __attribute__((__no_sanitize_thread__))
 # endif
 #endif /* !AO_ATTR_NO_SANITIZE_THREAD */
 
