@@ -241,7 +241,7 @@ AO_API AO_uintptr_t *AO_stack_next_ptr(AO_uintptr_t next)
         if (++i >= AO_BL_SIZE)
           {
             i = 0;
-            AO_pause(++j);
+            AO_pause(++j); /* overflow is not possible in practice */
           }
       }
 #   ifndef AO_THREAD_SANITIZER
