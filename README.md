@@ -7,7 +7,7 @@ LIBRARY IN THIS PACKAGE.
 [![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/bdwgc/libatomic_ops?branch=master&svg=true)](https://ci.appveyor.com/project/bdwgc/libatomic-ops)
 [![GitHub Actions build status](https://github.com/bdwgc/libatomic_ops/actions/workflows/cmake-build.yml/badge.svg?event=push)](https://github.com/bdwgc/libatomic_ops/actions?query=branch%3Amaster)
 [![Coveralls test coverage status](https://coveralls.io/repos/bdwgc/libatomic_ops/badge.png?branch=master)](https://coveralls.io/github/bdwgc/libatomic_ops)
-[![Coverity Scan build status](https://scan.coverity.com/projects/10809/badge.svg)](https://scan.coverity.com/projects/ivmai-libatomic_ops)
+[![Coverity Scan build status](https://scan.coverity.com/projects/32089/badge.svg)](https://scan.coverity.com/projects/bdwgc-libatomic_ops)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbdwgc%2Flibatomic_ops.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbdwgc%2Flibatomic_ops/refs/branch/master?ref=badge_shield)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6333/badge)](https://bestpractices.coreinfrastructure.org/projects/6333)
 [![Hits-of-Code](https://hitsofcode.com/github/bdwgc/libatomic_ops?branch=master)](https://hitsofcode.com/github/bdwgc/libatomic_ops/view)
