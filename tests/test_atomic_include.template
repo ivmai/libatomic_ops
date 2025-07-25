@@ -28,7 +28,7 @@
   printf("Missing: %s\n", #name "XX")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */

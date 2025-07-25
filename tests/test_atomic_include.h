@@ -28,7 +28,7 @@
   printf("Missing: %s\n", #name "")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
@@ -630,7 +630,7 @@ void test_atomic(void)
   printf("Missing: %s\n", #name "_release")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
@@ -1232,7 +1232,7 @@ void test_atomic_release(void)
   printf("Missing: %s\n", #name "_acquire")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
@@ -1834,7 +1834,7 @@ void test_atomic_acquire(void)
   printf("Missing: %s\n", #name "_read")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
@@ -2436,7 +2436,7 @@ void test_atomic_read(void)
   printf("Missing: %s\n", #name "_write")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
@@ -3038,7 +3038,7 @@ void test_atomic_write(void)
   printf("Missing: %s\n", #name "_full")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
@@ -3640,7 +3640,7 @@ void test_atomic_full(void)
   printf("Missing: %s\n", #name "_release_write")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
@@ -4242,7 +4242,7 @@ void test_atomic_release_write(void)
   printf("Missing: %s\n", #name "_acquire_read")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
@@ -4844,7 +4844,7 @@ void test_atomic_acquire_read(void)
   printf("Missing: %s\n", #name "_dd_acquire_read")
 
 #undef INIT_BEFORE_FIRST_STORE
-#if (defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
+#if (AO_GNUC_PREREQ(13, 0) || defined(AO_MEMORY_SANITIZER) || defined(LINT2) \
      || (defined(__e2k__) && defined(AO_FAT_POINTER))) \
     && defined(AO_PREFER_GENERALIZED)
   /* Explicitly initialize variable (to any value) before generalized   */
