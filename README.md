@@ -114,7 +114,7 @@ Older questions on the site can be found by
 [this query](https://stackoverflow.com/search?q=atomic_ops).
 Older technical discussions are also available in `bdwgc` mailing list
 archive - it can be downloaded as a
-[compressed file](https://github.com/ivmai/bdwgc/files/1038163/bdwgc-mailing-list-archive-2017_04.tar.gz)
+[compressed file](https://github.com/bdwgc/bdwgc/files/1038163/bdwgc-mailing-list-archive-2017_04.tar.gz)
 or browsed at [Narkive](http://bdwgc.opendylan.narkive.com) (please search
 for _atomic_ keyword).
 
