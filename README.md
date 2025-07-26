@@ -11,8 +11,8 @@ LIBRARY IN THIS PACKAGE.
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbdwgc%2Flibatomic_ops.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbdwgc%2Flibatomic_ops/refs/branch/master?ref=badge_shield)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6333/badge)](https://bestpractices.coreinfrastructure.org/projects/6333)
 [![Hits-of-Code](https://hitsofcode.com/github/bdwgc/libatomic_ops?branch=master)](https://hitsofcode.com/github/bdwgc/libatomic_ops/view)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bdwgc/libatomic_ops)](https://shields.io/category/size)
-[![Github All Releases](https://img.shields.io/github/downloads/bdwgc/libatomic_ops/total.svg)](https://shields.io/category/downloads)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bdwgc/libatomic_ops)](https://shields.io/badges/git-hub-code-size-in-bytes)
+[![Github All Releases](https://img.shields.io/github/downloads/bdwgc/libatomic_ops/total.svg)](https://shields.io/badges/git-hub-downloads-all-assets-all-releases)
 [![Packaging status](https://repology.org/badge/tiny-repos/libatomic-ops.svg)](https://repology.org/project/libatomic-ops/versions)
 
 This is version 7.9.0 (next release development) of libatomic_ops.
