@@ -117,7 +117,12 @@ static void add_elements(int n)
     le->e.next = 0; /* mark field as used */
 # endif
   le->e.data = n;
-  AO_stack_push(&the_list, &le->next);
+# if defined(CPPCHECK)
+    (void)le->next;
+    AO_stack_push(&the_list, (AO_uintptr_t *)le);
+#else
+    AO_stack_push(&the_list, &le->next);
+# endif
 }
 
 #ifdef VERBOSE_STACK
