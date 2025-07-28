@@ -132,7 +132,7 @@ static int acqrel_test(void)
 
 static AO_TS_t lock = AO_TS_INITIALIZER;
 
-static unsigned long locked_counter;
+static volatile unsigned long locked_counter;
 /* no static */ volatile unsigned long junk = 13;
 
 AO_ATTR_NO_SANITIZE_THREAD
@@ -148,22 +148,22 @@ static void * test_and_set_thr(void * id)
 
   for (i = 0; i < NITERS/10; ++i) {
     while (AO_test_and_set_acquire(&lock) != AO_TS_CLEAR);
-    ++locked_counter;
+    /* Note: do not use compound assignment or increment/decrement for  */
+    /* a volatile variable.                                             */
+    locked_counter = locked_counter + 1;
     if (locked_counter != 1) {
       fprintf(stderr, "Test and set failure 1, counter = %ld, id = %d\n",
               (long)locked_counter, (int)(AO_uintptr_t)id);
       abort();
     }
-    locked_counter *= 2;
-    locked_counter -= 1;
-    locked_counter *= 5;
-    locked_counter -= 4;
+    locked_counter = locked_counter * 2 - 1;
+    locked_counter = locked_counter * 5 - 4;
     if (locked_counter != 1) {
       fprintf(stderr, "Test and set failure 2, counter = %ld, id = %d\n",
               (long)locked_counter, (int)(AO_uintptr_t)id);
       abort();
     }
-    --locked_counter;
+    locked_counter = locked_counter - 1;
     AO_CLEAR(&lock);
     /* Spend a bit of time outside the lock.    */
     do_junk();
