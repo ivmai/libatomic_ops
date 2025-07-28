@@ -168,7 +168,11 @@ static void * test_and_set_thr(void * id)
     /* Spend a bit of time outside the lock.    */
     do_junk();
   }
-  return 0;
+# if defined(CPPCHECK)
+    return id;
+# else
+    return 0;
+# endif
 }
 
 static int test_and_set_test(void)
