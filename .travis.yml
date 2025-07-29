@@ -7,17 +7,6 @@ jobs:
   - compiler: clang
   - compiler: gcc
   - env:
-    - COVERITY_SCAN_BRANCH=1
-    addons:
-      coverity_scan:
-        project:
-          name: bdwgc/libatomic_ops
-          version: 7.9.0
-        notification_email: ivmai@mail.ru
-        branch_pattern: master
-        build_command_prepend: CFLAGS=-march=native ./configure
-        build_command: make -j check CFLAGS_EXTRA=-DLINT2
-  - env:
     - MAKEFILE_TARGET=dist
   - addons:
       apt:
@@ -529,6 +518,18 @@ jobs:
     - AUTOMAKE_VER=1.17
     - LIBTOOL_VER=2.5.4
     - M4_VER=1.4.19
+  - if: type != pull_request
+    addons:
+      coverity_scan:
+        project:
+          name: bdwgc/libatomic_ops
+          version: 7.9.0
+        notification_email: ivmai@mail.ru
+        branch_pattern: master
+        build_command_prepend: CFLAGS=-march=native ./configure
+        build_command: make -j check CFLAGS_EXTRA=-DLINT2
+    env:
+    - COVERITY_SCAN_BRANCH=1
 
 before_install:
 - if [[ "$CROSS_GCC_VER" != "" ]]; then
