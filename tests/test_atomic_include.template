@@ -45,12 +45,22 @@
   void double_list_atomicXX(void);
 #endif
 
+#ifdef LINT2
+  /* Workaround a warning that the argument of TA_assert() has a side   */
+  /* effect because the variable is volatile.                           */
+# define LVAR_VOLATILE /* empty */
+#else
+  /* Workaround a cppcheck warning that the expression passed to        */
+  /* TA_assert() is always true.                                        */
+# define LVAR_VOLATILE volatile
+#endif
+
 void test_atomicXX(void)
 {
-  volatile AO_t x;
-  volatile unsigned char b;
-  volatile unsigned short s;
-  volatile unsigned int zz;
+  LVAR_VOLATILE AO_t x;
+  LVAR_VOLATILE unsigned char b;
+  LVAR_VOLATILE unsigned short s;
+  LVAR_VOLATILE unsigned int zz;
 # if defined(AO_HAVE_test_and_setXX)
     AO_TS_t z = AO_TS_INITIALIZER;
 # endif
@@ -83,7 +93,7 @@ void test_atomicXX(void)
 # endif
 # if defined(AO_HAVE_storeXX)
 #   ifdef INIT_BEFORE_FIRST_STORE
-      x = 0;
+      *(volatile AO_t *)&x = 0;
 #   endif
     AO_storeXX(&x, 13);
     TA_assert(x == 13);
@@ -133,7 +143,7 @@ void test_atomicXX(void)
 # endif
 # if defined(AO_HAVE_short_storeXX)
 #   ifdef INIT_BEFORE_FIRST_STORE
-      s = 0;
+      *(volatile short *)&s = 0;
 #   endif
     AO_short_storeXX(&s, 13);
 # else
@@ -172,10 +182,10 @@ void test_atomicXX(void)
     MISSING(AO_short_fetch_and_sub1);
     s = s - 1;
 # endif
-  TA_assert(s == 13);
+  TA_assert(*(volatile short *)&s == 13);
 # if defined(AO_HAVE_char_storeXX)
 #   ifdef INIT_BEFORE_FIRST_STORE
-      b = 0;
+      *(volatile unsigned char *)&b = 0;
 #   endif
     AO_char_storeXX(&b, 13);
 # else
@@ -213,10 +223,10 @@ void test_atomicXX(void)
     MISSING(AO_char_fetch_and_sub1);
     b = b - 1;
 # endif
-  TA_assert(b == 13);
+  TA_assert(*(volatile unsigned char *)&b == 13);
 # if defined(AO_HAVE_int_storeXX)
 #   ifdef INIT_BEFORE_FIRST_STORE
-      zz = 0;
+      *(volatile int *)&zz = 0;
 #   endif
     AO_int_storeXX(&zz, 13);
 # else
@@ -254,7 +264,7 @@ void test_atomicXX(void)
     MISSING(AO_int_fetch_and_sub1);
     zz = zz - 1;
 # endif
-  TA_assert(zz == 13);
+  TA_assert(*(volatile int *)&zz == 13);
 # if defined(AO_HAVE_compare_and_swapXX)
     TA_assert(!AO_compare_and_swapXX(&x, 14, 42));
     TA_assert(x == 13);
@@ -262,7 +272,7 @@ void test_atomicXX(void)
     TA_assert(x == 42);
 # else
     MISSING(AO_compare_and_swap);
-    if (x == 13) x = 42;
+    if (*(volatile AO_t *)&x == 13) x = 42;
 # endif
 # if defined(AO_HAVE_orXX)
     AO_orXX(&x, 66);
@@ -316,7 +326,7 @@ void test_atomicXX(void)
     TA_assert(s == 42);
 # else
     MISSING(AO_short_compare_and_swap);
-    if (s == 13) s = 42;
+    if (*(volatile short *)&s == 13) s = 42;
 # endif
 # if defined(AO_HAVE_short_orXX)
     AO_short_orXX(&s, 66);
@@ -378,7 +388,7 @@ void test_atomicXX(void)
     TA_assert(b == 42);
 # else
     MISSING(AO_char_compare_and_swap);
-    if (b == 13) b = 42;
+    if (*(volatile unsigned char *)&b == 13) b = 42;
 # endif
 # if defined(AO_HAVE_char_orXX)
     AO_char_orXX(&b, 66);
@@ -438,7 +448,7 @@ void test_atomicXX(void)
     TA_assert(zz == 42);
 # else
     MISSING(AO_int_compare_and_swap);
-    if (zz == 13) zz = 42;
+    if (*(volatile int *)&zz == 13) zz = 42;
 # endif
 # if defined(AO_HAVE_int_orXX)
     AO_int_orXX(&zz, 66);
