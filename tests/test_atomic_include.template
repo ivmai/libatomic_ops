@@ -45,7 +45,8 @@
   void double_list_atomicXX(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
