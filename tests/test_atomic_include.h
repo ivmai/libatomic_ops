@@ -45,7 +45,8 @@
   void double_list_atomic(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
@@ -658,7 +659,8 @@ void test_atomic(void)
   void double_list_atomic_release(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
@@ -1271,7 +1273,8 @@ void test_atomic_release(void)
   void double_list_atomic_acquire(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
@@ -1884,7 +1887,8 @@ void test_atomic_acquire(void)
   void double_list_atomic_read(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
@@ -2497,7 +2501,8 @@ void test_atomic_read(void)
   void double_list_atomic_write(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
@@ -3110,7 +3115,8 @@ void test_atomic_write(void)
   void double_list_atomic_full(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
@@ -3723,7 +3729,8 @@ void test_atomic_full(void)
   void double_list_atomic_release_write(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
@@ -4336,7 +4343,8 @@ void test_atomic_release_write(void)
   void double_list_atomic_acquire_read(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
@@ -4949,7 +4957,8 @@ void test_atomic_acquire_read(void)
   void double_list_atomic_dd_acquire_read(void);
 #endif
 
-#ifdef LINT2
+#undef LVAR_VOLATILE
+#if defined(LINT2) && !defined(CPPCHECK)
   /* Workaround a warning that the argument of TA_assert() has a side   */
   /* effect because the variable is volatile.                           */
 # define LVAR_VOLATILE /* empty */
