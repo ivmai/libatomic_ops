@@ -18,7 +18,7 @@ jobs:
     - CC_FOR_CHECK=gcc
     - MAKEFILE_TARGET=all
     - REPORT_COVERAGE=true
-    - CFLAGS_EXTRA="-march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE_STACK"
+    - CFLAGS_EXTRA="-fprofile-update=atomic -march=native -D DEBUG_RUN_ONE_TEST -D VERBOSE_STACK"
   - addons:
       apt:
         packages:
